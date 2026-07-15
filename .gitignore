@@ -1,0 +1,84 @@
+# For PCBs designed using KiCad: https://www.kicad.org/
+# Format documentation: https://kicad.org/help/file-formats/
+
+# -------------------------------------------------------------------------
+# Temporary Files & Auto-saves
+# -------------------------------------------------------------------------
+*.000
+*.bak
+*-bak
+*.bck
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*.sch-bak
+*~
+~*
+_autosave-*
+\#auto_saved_files\#
+*.tmp
+*-save.pro
+*-save.kicad_pcb
+
+# Lock files
+*.lck
+~*.lck
+
+# -------------------------------------------------------------------------
+# Caches
+# -------------------------------------------------------------------------
+fp-info-cache
+*-cache*
+
+# -------------------------------------------------------------------------
+# Backups (KiCad 6.0+)
+# -------------------------------------------------------------------------
+# KiCad zips up auto-backups into a directory named after your project
+*-backups/
+backups/
+
+# -------------------------------------------------------------------------
+# Local Project Settings & History
+# -------------------------------------------------------------------------
+# Contains local user preferences (like active layer and visibility). 
+# It changes every time you click around, so it shouldn't be tracked.
+*.kicad_prl
+
+# KiCad 9.0+ local git-based history feature
+.history/
+
+# -------------------------------------------------------------------------
+# Exported and Generated Files
+# -------------------------------------------------------------------------
+# Netlists
+*.net
+
+# Autorouter files (e.g., FreeRouting)
+*.dsn
+*.ses
+
+# Footprint association files
+*.cmp
+
+# Exported BOM files
+*.xml
+*.csv
+*.tsv
+
+# -------------------------------------------------------------------------
+# Output / Fabrication Directories
+# -------------------------------------------------------------------------
+# It's best practice to output your manufacturing files to a specific folder
+# and ignore that folder so your git history doesn't bloat.
+/gerber/
+/gerbers/
+/fabrication/
+/production/
+/jlcpcb/
+/build/
+
+# Ignore loose manufacturing files if they accidentally save to the root folder:
+*.gbr
+*.drl
+*.pos
+*.gbrjob
+*.plt
