@@ -5590,7 +5590,7 @@
 			(justify left bottom)
 		)
 		(uuid "172da434-f917-4865-91d2-5e8d81687d7a")
-		(property "Net Class" "1V1"
+		(property "Netclass" "1V1"
 			(at 79.4385 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -5627,7 +5627,7 @@
 			(justify left bottom)
 		)
 		(uuid "e6792610-5539-49cf-8888-b8d62a5fe1ff")
-		(property "Net Class" "5V0"
+		(property "Netclass" "5V0"
 			(at 193.7385 63.5 0)
 			(hide yes)
 			(show_name no)
