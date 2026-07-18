@@ -82,3 +82,4 @@ backups/
 *.pos
 *.gbrjob
 *.plt
+.history/
