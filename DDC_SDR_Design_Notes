@@ -1,0 +1,80 @@
+
+
+# SDR DDC Design Document: RP2350 + iCE40UP5K Educational SDR Transceiver
+
+## 1. System Overview
+*   **Target Audience:** University digital design/DSP class.
+*   **Architecture:** Direct Digital Conversion (DDC) Receiver / Direct Up-Conversion (DUC) Transmitter.
+*   **Data Rate:** 48 kHz I/Q Full-Duplex Audio over standard I2S.
+*   **Clocking:** **30.720 MHz** CMOS Oscillator. Decimation factor of $R=640$ yields exactly 48 kHz. 
+*   **Form Factor:** 4-layer PCB. **Top-side components only** (reduces JLCPCB assembly costs). 
+    *   *Layer 1:* Components / RF / High-Speed Digital
+    *   *Layer 2:* Solid Ground Plane
+    *   *Layer 3:* Power Planes / Slow routing
+    *   *Layer 4:* Solid Ground Plane
+
+## 2. Power Architecture (Noise Isolation)
+Do not use the Pico's onboard 3.3V out. Provide pristine power to the analog front-end.
+*   **Source:** 5V `VBUS` from the Pico socket.
+*   **Pico Socket:** Leave `3V3_EN` and `3V3(OUT)` completely disconnected. Allow the YD-RP2040 clone's internal ME6215 LDO to power itself silently.
+*   **LDO 1 (4.5V AVDD):** Dedicated 4.5V Linear Regulator for the Analog front end. 
+    *   *Feeds:* TPH2501 Op-Amps, MS9280 (ADC) `AVDD`, MS9708 (DAC) `AVDD`, T/R Switch, and Center-Tap Biases.
+*   **LDO 2 (3.3V Digital):** 
+    *   *Feeds:* iCE40 `VCCIO` banks (0, 1, 2), MS9280 `DRVDD`, MS9708 `DVDD`, Pico SPI Flash.
+*   **The "Clean 3.3V" Filter:** Run the 3.3V Digital rail through a Ferrite Bead + 10µF + 0.1µF capacitors to create an isolated 3.3V rail.
+    *   *Feeds:* 30.720 MHz Master Oscillator.
+
+## 3. iCE40UP5K (SG48) Pinout Strategy
+The board is geographically partitioned to prevent TX noise from deafening the RX. All `VCCIO` banks run at 3.3V.
+
+*   **Bank 1 (Right Edge - Pico Control):** 
+    *   `SPI_MISO` (14), `SPI_SCK` (15), `SPI_CS` (16), `SPI_MOSI` (17) -> Shared with SPI Flash for Pico boot.
+    *   `I2S Bus` (18, 19, 20, 21) -> `BCLK`, `LRCLK`, `DATA_RX`, `DATA_TX`.
+*   **Bank 2 (Bottom Left - DAC TX):**
+    *   `DAC_DATA` (48, 47, 46, 45, 44, 4, 3, 2).
+    *   `DAC_CLK_OUT` (6) -> Borrowed from Bank 1 for perfect physical length-matching.
+*   **Bank 0 (Top Left - ADC RX & Clocks):**
+    *   `MASTER_CLK_IN` (37) -> From 30.72 MHz Oscillator (GBIN).
+    *   `ADC_CLK_OUT` (35) -> To MS9280 (GBIN).
+    *   `ADC_DATA` D7 to D0 (34, 32, 31, 28, 27, 26, 25, 23).
+    *   `ADC_OTR` (Out of Range) -> Routed to a spare FPGA pin, pulse-stretched in Verilog, and sent to Pico interrupt.
+*   **Extras:**
+    *   Pins 39, 40, 41 are hard-IP open-drain RGB LED drivers. Hook up an Anode-Common RGB LED.
+
+## 4. Receiver (RX) Analog Chain
+**Path:** `Antenna` -> `Ethernet Transformer` -> `T/R Switch` -> `Shared Filter` -> `LNA 1` -> `Digital Attenuator` -> `LNA 2` -> `RF Balun` -> `ADC`.
+
+*   **Ethernet Transformer (H1102):** Connects to the SMA. Common Mode Choke faces SMA; Isolation Transformer faces the board. Blocks ground loops & coax noise.
+*   **Shared Filter Sandbox:** Placed between T/R Switch and Op-Amps. Use Combo Footprints (0805 + 0.2" THT spacing) so students can plug in SIP sockets or custom daughterboards (Pinout: `IN-GND-GND-OUT`).
+*   **LNA Stages:** Use single **TPH2501** (or SGM8051) op-amps. Do not use dual packages (prevents 30 MHz crosstalk). Set fixed gain (e.g., +20 dB).
+*   **Digital Step Attenuator (DSA):** Build a 3-stage PI-network (e.g., -10, -20, -30dB) using **74LVC1G3157** SPDT analog switches. Controlled by the Pico via AGC loop. 
+*   **ADC Conversion:** Use a **TC1-1T+** (or equivalent 1:1 RF transformer) to convert single-ended RF to Differential for the ADC. +3dB SNR gain and even-order harmonic cancellation.
+
+## 5. ADC Configuration (MS9280)
+Configured for "True Differential Mode" (Figure 2c) with a massive 4.0V peak-to-peak input span. 
+*   **Power:** `AVDD` = 4.5V. `DRVDD` = 3.3V.
+*   **Biasing (2.25V):** Generate $AVDD/2$ (2.25V) using a 10k/10k divider. Tie this to `MODE` and the *Center-Tap* of the input RF Transformer. (Decouple Center-Tap with 0.1µF cap to GND).
+*   **Reference Ladder:** 
+    *   `REFSENSE`: Tie to GND. (Forces VREF = 2.0V, yielding 4.0V p-p span).
+    *   `REFTS` and `REFBS`: Short together. 
+    *   `REFTF` and `REFBF`: 0.1µF caps to GND.
+    *   `VREF`: 0.1µF cap to GND.
+*   **Digital:** Tie `STBY`, `THREE-STATE`, and `CLAMP` to GND. 
+
+## 6. Transmitter (TX) Analog Chain
+**Path:** `DAC` -> `Passive I-V` -> `Ethernet Transformer` -> `Recon Filter` -> `TX LNA` -> `T/R Switch` -> `Antenna`.
+
+*   **DAC Configuration (MS9708):** 
+    *   $R_{SET}$ = 2kΩ to GND (sets 20mA max current). 
+    *   `COMP1` = 0.1µF to AVDD.
+*   **I-V Conversion:** Do NOT use active op-amps (compliance violation). Use **50-ohm passive resistors** from `IOUTA` and `IOUTB` to GND. Yields 1.0V p-p RF wave.
+*   **Isolation:** Pass through a physically separate **H1102** Ethernet Transformer to convert to Single-Ended and block common-mode TX noise.
+*   **Reconstruction Filter:** A fixed LC Low-Pass filter to smooth DAC stair-steps before the amplifier (prevents IMD). Put a test point before this filter for students to observe Zero-Order Hold. 
+*   **TX LNA:** TPH2501 in AC-Coupled Non-Inverting mode. Biased at 2.25V ($AVDD/2$). Voltage gain of 4 (Resistors: $R_f = 300\Omega$, $R_g = 100\Omega$ with series 0.1µF). Output drives a physical 50-ohm series back-termination resistor.
+
+## 7. Pico & Control Logic "Gotchas"
+*   **The CDONE Trap:** RP2350 logic HIGH is 2.14V. An LED on `CDONE` clamps the voltage to 1.8V. Fix: Drive the LED with a cheap 2N7002 N-Channel MOSFET.
+*   **T/R & Switch Levels:** 74LVC1G3157 switches routing the 4.0V TX analog signal *must* be powered by 4.5V AVDD. However, a 3.3V Pico GPIO cannot cleanly trigger a 4.5V switch. 
+    *   *Fix:* Use an N-Channel MOSFET logic inverter for each switch control line (Gate to Pico, Source to GND, Drain to Switch + 10k Pull-up to 4.5V). 
+*   **VNA & AWG Modes:** Use 0.1" (2.54mm) pin headers with plastic shunts to physically bypass RF transformers for DC-coupled Oscilloscope/AWG labs. 
+
