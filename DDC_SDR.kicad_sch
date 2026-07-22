@@ -25674,7 +25674,7 @@
 		)
 		(uuid "6718f857-7456-4d58-9b20-416da25ae2c8")
 	)
-	(label "PMOD_3"
+	(label "PMOD_2"
 		(at 83.82 157.48 0)
 		(effects
 			(font
@@ -40172,7 +40172,7 @@
 			(uuid "3c3a2494-9171-4ee0-bc45-51f9ae16ec34")
 		)
 		(pin "5"
-			(uuid "67929028-5b85-47f0-9335-4c3365393507")
+			(uuid "67929028-5b85-47f0-9335-4c3365393508")
 		)
 		(pin "6"
 			(uuid "8650c4a1-c8b8-482d-8cd7-c7f138253ff0")
@@ -40181,7 +40181,7 @@
 			(uuid "b259a564-0b6f-49bc-a92b-4018e741abf8")
 		)
 		(pin "2"
-			(uuid "8a8b9d6c-55ce-4ee3-9dd4-0c932ffe88c6")
+			(uuid "8a8b9d6c-55ce-4ee3-9dd4-0c932ffe88c7")
 		)
 		(instances
 			(project "DDC_SDR"
@@ -42236,7 +42236,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "AD9708AR"
+		(property "Value" "MS9708"
 			(at 395.8433 97.79 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -46200,19 +46200,19 @@
 			)
 		)
 		(pin "3"
-			(uuid "1e883ea2-87dd-43b9-b1d7-161ac27b6de1")
+			(uuid "1e883ea2-87dd-43b9-b1d7-161ac27b6de2")
 		)
 		(pin "1"
-			(uuid "a799f532-5a5b-4353-bcbd-aa4bd35b4f0d")
+			(uuid "a799f532-5a5b-4353-bcbd-aa4bd35b4f0e")
 		)
 		(pin "5"
 			(uuid "7c8c0db2-9ee9-40d3-807d-cf6bd497da58")
 		)
 		(pin "6"
-			(uuid "1aadab72-6311-45da-8f2d-d28f915b243b")
+			(uuid "1aadab72-6311-45da-8f2d-d28f915b243c")
 		)
 		(pin "4"
-			(uuid "1d134656-3b20-4f69-a124-65288c871096")
+			(uuid "1d134656-3b20-4f69-a124-65288c871097")
 		)
 		(pin "2"
 			(uuid "1123bd4f-81d2-45be-92fd-a968b5f51e3e")

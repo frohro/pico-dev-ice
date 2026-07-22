@@ -31,7 +31,7 @@ Designed specifically as an educational platform, it abandons "black box" RF chi
 ### The Receive (RX) Path
 * **Topology:** `SMA` ➔ `Ethernet Isolation/CMC` ➔ `Filter Sandbox` ➔ `T/R Switch` ➔ `LNA 1` ➔ `PGA (5/10/20dB)` ➔ `LNA 2` ➔ `ADC`.
 * **Amplifiers:** Uses discrete **TPH2501** high-speed op-amps wired as AC-coupled inverting amplifiers. 
-* **Programmable Gain:** A 3-bit Digital Step Attenuator (DSA) built from **74LVC1G3157** CMOS switches and precision T-networks, providing 0 to 55 dB of gain control in 5 dB steps.
+* **Programmable Gain:** A 4-bit Digital Step Attenuator (DSA) built from **74LVC1G3157** CMOS switches and precision T-networks, providing 0 to 55 dB of gain control in 5 dB steps.
 * **ADC (MS9280):** 8-bit, 32 MSPS. Driven by an RF balun into True Differential Mode with a 4.5V analog supply, yielding a massive 4.0V peak-to-peak input span for maximum dynamic range.
 
 ### The Transmit (TX) Path
@@ -81,7 +81,7 @@ This is formatted in Markdown so you can copy and paste it directly into your `R
 ## 📍 Hardware Pinout Reference
 
 ### 1. Microcontroller (Raspberry Pi Pico) Pinout
-*This map defines the interface for the software team handling AGC, VNA sweeps, user interface, and I2S audio routing.* (I checked this.)
+*This map defines the interface for the software team handling AGC, VNA sweeps, user interface, and I2S audio routing.* 
 
 | Pico GPIO | Net Name | Function | Direction | Notes |
 | :--- | :--- | :--- | :--- | :--- |
@@ -106,14 +106,14 @@ This is formatted in Markdown so you can copy and paste it directly into your `R
 | **GPIO 18** | `AF_DAC_MCLK` | Audio DAC Master | Output | I2S out to standalone headphone amp |
 | **GPIO 19** | `AF_DAC_SCLK` | Audio DAC Clock | Output | I2S out to standalone headphone amp |
 | **GPIO 20** | `AF_DAC_LRCK` | Audio DAC L/R | Output | I2S out to standalone headphone amp |
-| **GPIO 21** | `ICE_DONE` | FPGA Boot Status | Input | Goes HIGH when FPGA is running (Pulled up) |
+| **GPIO 21** | `ICE_DONE` | FPGA Boot Status | Input | Goes HIGH when FPGA is running |
 | **GPIO 22** | `~ICE_RST` | FPGA Reset | Output | Pull LOW to hold FPGA in reset |
 | **GPIO 26** | `~T/R` | Transmit/Receive Sw | Output | Toggles main antenna between ADC and DAC |
 | **GPIO 27** | `~REF` | VNA Reflection Sw | Output | Toggles paths to form the closed-loop VNA |
-
+| **GPIO 28** | `PMOD_3` | Spare connection to GBIN3 | I/O | Connects to the FPGA, the PMOD, 
 
 ### 2. FPGA (Lattice iCE40UP5K-SG48) Pinout
-*This map defines the interface for the digital design team writing Verilog and the `.pcf` constraints file.* (I only checked the first few.)
+*This map defines the interface for the digital design team writing Verilog and the `.pcf` constraints file.* 
 
 | Pin # | Lattice Name | Net Name | Function / Connection |
 | :---: | :--- | :--- | :--- |
@@ -137,6 +137,9 @@ This is formatted in Markdown so you can copy and paste it directly into your `R
 | **2** | `IOB_6a` | `DB5` | DAC Data Bit 5 |
 | **3** | `IOB_9b` | `DB6` | DAC Data Bit 6 |
 | **4** | `IOB_8a` | `DB7` | DAC Data Bit 7 (MSB) |
+Reserved — SPI Flash HOLD#/WP#
+| **12** | `IOB_22a` | `ICE_13|IO2` | FPGA Flash I/O | Flash |
+| **13** | `IOB_24a'` | `ICE_13|IO3` | FPGA Flash I/O |Flash |
 | **14** | `IOB_32a_SPI_SO` | `ICE_SO` | SPI MOSI (Data *from* Pico during runtime) |
 | **17** | `IOB_33b_SPI_SI` | `ICE_SI` | SPI MISO (Data *to* Pico during runtime) |
 | **15** | `IOB_34a_SPI_SCK`| `ICE_SCK` | SPI Clock IN |

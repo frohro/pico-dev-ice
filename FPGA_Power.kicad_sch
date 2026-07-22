@@ -7115,7 +7115,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "fdaf40c7-283d-4a10-9c76-a7423b544893")
-		(property "Reference" "U9"
+		(property "Reference" "U7"
 			(at 212.09 97.3582 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7494,7 +7494,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/2ce56689-3987-4b0d-b06d-53c251a2345f"
-					(reference "U9")
+					(reference "U7")
 					(unit 4)
 				)
 			)
