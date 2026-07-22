@@ -102,7 +102,7 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
 | **GPIO 18** | `AF_DAC_MCLK` | Audio DAC Master | Output | I2S out to standalone headphone amp |
 | **GPIO 19** | `AF_DAC_SCLK` | Audio DAC Clock | Output | I2S out to standalone headphone amp |
 | **GPIO 20** | `AF_DAC_LRCK` | Audio DAC L/R | Output | I2S out to standalone headphone amp |
-| **GPIO 21** | `ICE_DONE` | FPGA Boot Status | Input | Goes HIGH when FPGA is running |
+| **GPIO 21** | `ICE_DONE` | FPGA Boot Status | Input | Goes HIGH when FPGA is running and lights White LED|
 | **GPIO 22** | `~ICE_RST` | FPGA Reset | Output | Pull LOW to hold FPGA in reset |
 | **GPIO 26** | `REF` | VNA Reflection Sw | Output | Toggles paths to form the closed-loop VNA |
 | **GPIO 27** | *(Optional)* | PMOD / GPIO Jump | I/O | Jumper JP52 maps to PMOD_2 |
