@@ -16502,7 +16502,7 @@
 		(uuid "e810efa3-6d35-4dbc-91b3-cea0d0c6fae2")
 	)
 	(junction
-		(at 339.09 88.9)
+		(at 349.25 95.25)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "effb9e85-e5e8-485f-bc57-a49bc014c084")
@@ -16737,7 +16737,7 @@
 	)
 	(wire
 		(pts
-			(xy 339.09 83.82) (xy 339.09 88.9)
+			(xy 349.25 90.17) (xy 349.25 95.25)
 		)
 		(stroke
 			(width 0)
@@ -16764,6 +16764,16 @@
 			(type default)
 		)
 		(uuid "0d5b56ab-ca87-4dba-a560-7845b229bd1d")
+	)
+	(wire
+		(pts
+			(xy 327.66 90.17) (xy 328.93 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0db5c326-bbda-4eba-a389-a921f6780ea1")
 	)
 	(wire
 		(pts
@@ -16974,6 +16984,16 @@
 			(type default)
 		)
 		(uuid "2418e0e6-f41d-42a4-8ce1-48583a9d91cf")
+	)
+	(wire
+		(pts
+			(xy 318.77 90.17) (xy 320.04 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2465df76-5422-4b42-825c-66eefff3808b")
 	)
 	(wire
 		(pts
@@ -17317,7 +17337,7 @@
 	)
 	(wire
 		(pts
-			(xy 339.09 99.06) (xy 339.09 104.14)
+			(xy 349.25 105.41) (xy 349.25 110.49)
 		)
 		(stroke
 			(width 0)
@@ -17407,7 +17427,7 @@
 	)
 	(wire
 		(pts
-			(xy 346.71 83.82) (xy 350.52 83.82)
+			(xy 356.87 90.17) (xy 360.68 90.17)
 		)
 		(stroke
 			(width 0)
@@ -17727,16 +17747,6 @@
 	)
 	(wire
 		(pts
-			(xy 318.77 83.82) (xy 318.77 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6b7fea28-6357-40c7-9063-1cb6a0dbe8ff")
-	)
-	(wire
-		(pts
 			(xy 288.29 105.41) (xy 292.1 105.41)
 		)
 		(stroke
@@ -17997,6 +18007,16 @@
 	)
 	(wire
 		(pts
+			(xy 318.77 100.33) (xy 320.04 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7d925c52-e27d-49ba-a837-ad232033b02d")
+	)
+	(wire
+		(pts
 			(xy 181.61 238.76) (xy 181.61 242.57)
 		)
 		(stroke
@@ -18217,7 +18237,7 @@
 	)
 	(wire
 		(pts
-			(xy 339.09 96.52) (xy 339.09 97.79)
+			(xy 349.25 102.87) (xy 349.25 104.14)
 		)
 		(stroke
 			(width 0)
@@ -18804,6 +18824,16 @@
 			(type default)
 		)
 		(uuid "dade7101-ed6b-489d-bc11-71140dd13c92")
+	)
+	(wire
+		(pts
+			(xy 327.66 100.33) (xy 328.93 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc6bef78-175e-4ecd-8743-3227f4141695")
 	)
 	(wire
 		(pts
@@ -25189,7 +25219,7 @@
 		(uuid "1cc2e621-9ad1-4ab8-8cd0-3a42e7082f4c")
 	)
 	(label "TX_SDR"
-		(at 318.77 88.9 180)
+		(at 318.77 90.17 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25592,7 +25622,7 @@
 		(uuid "627dbefd-8726-49d9-bced-bfcc56bd463e")
 	)
 	(label "~{REF}"
-		(at 339.09 104.14 180)
+		(at 349.25 110.49 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25970,7 +26000,7 @@
 		(uuid "a1585cba-9f6f-4c47-ab2b-ff4e8118d9b0")
 	)
 	(label "TX_REFL"
-		(at 318.77 93.98 180)
+		(at 318.77 100.33 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -26079,6 +26109,16 @@
 			(justify right bottom)
 		)
 		(uuid "b234a0fd-aa3d-4642-8db4-027f541fe2f4")
+	)
+	(label "TX_REFL"
+		(at 297.18 97.79 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b4d52998-9e08-4a2f-98b5-7a8f5fd99a32")
 	)
 	(label "AF_DAC_LRCK"
 		(at 92.71 68.58 0)
@@ -26391,7 +26431,7 @@
 		(uuid "faba7698-7342-40cd-94b3-929b9551c4ee")
 	)
 	(label "TX_OUT"
-		(at 350.52 83.82 0)
+		(at 360.68 90.17 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -26484,7 +26524,7 @@
 	)
 	(global_label "VA{slash}2"
 		(shape input)
-		(at 339.09 97.79 0)
+		(at 349.25 104.14 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -26494,7 +26534,7 @@
 		)
 		(uuid "e0949127-47ae-4b9e-9ea3-bf5b20201bf8")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 346.7924 97.79 0)
+			(at 356.9524 104.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33067,7 +33107,7 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Resistors:0402,10kΩ")
-		(at 339.09 92.71 0)
+		(at 349.25 99.06 0)
 		(mirror x)
 		(unit 1)
 		(body_style 1)
@@ -33078,7 +33118,7 @@
 		(dnp no)
 		(uuid "4ce36421-1605-4fce-a152-9c57f162015c")
 		(property "Reference" "R81"
-			(at 341.63 92.7101 0)
+			(at 351.79 99.0601 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -33089,7 +33129,7 @@
 			)
 		)
 		(property "Value" "10kΩ"
-			(at 339.09 92.71 90)
+			(at 349.25 99.06 90)
 			(show_name no)
 			(do_not_autoplace yes)
 			(effects
@@ -33099,7 +33139,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:R_0402"
-			(at 337.312 92.71 90)
+			(at 347.472 99.06 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33110,7 +33150,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411221126_UNI-ROYAL-Uniroyal-Elec-0402WGF1002TCE_C25744.pdf"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33121,7 +33161,7 @@
 			)
 		)
 		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 10kΩ 0402 Chip Resistor - Surface Mount ROHS"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33132,7 +33172,7 @@
 			)
 		)
 		(property "LCSC" "C25744"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33143,7 +33183,7 @@
 			)
 		)
 		(property "Stock" "24372091"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33154,7 +33194,7 @@
 			)
 		)
 		(property "Price" "0.004USD"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33165,7 +33205,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33176,7 +33216,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33187,7 +33227,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33198,7 +33238,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33209,7 +33249,7 @@
 			)
 		)
 		(property "Category" "Resistors,Chip Resistor - Surface Mount"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33220,7 +33260,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33231,7 +33271,7 @@
 			)
 		)
 		(property "Part" "0402WGF1002TCE"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33242,7 +33282,7 @@
 			)
 		)
 		(property "Resistance" "10kΩ"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33253,7 +33293,7 @@
 			)
 		)
 		(property "Power(Watts)" "62.5mW"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33264,7 +33304,7 @@
 			)
 		)
 		(property "Type" "Thick Film Resistors"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33275,7 +33315,7 @@
 			)
 		)
 		(property "Overload Voltage (Max)" "50V"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33286,7 +33326,7 @@
 			)
 		)
 		(property "Operating Temperature Range" "-55°C~+155°C"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33297,7 +33337,7 @@
 			)
 		)
 		(property "Tolerance" "±1%"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33308,7 +33348,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "±100ppm/°C"
-			(at 339.09 92.71 0)
+			(at 349.25 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -40040,7 +40080,7 @@
 	)
 	(symbol
 		(lib_id "74xGxx:74LVC1G3157")
-		(at 328.93 88.9 0)
+		(at 339.09 95.25 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -40051,7 +40091,7 @@
 		(dnp no)
 		(uuid "82b7dcaa-bbca-4a80-815f-9bf1e2c23bca")
 		(property "Reference" "U27"
-			(at 325.628 89.154 0)
+			(at 335.788 95.504 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -40061,7 +40101,7 @@
 			)
 		)
 		(property "Value" "74LVC1G3157GW"
-			(at 330.962 79.248 0)
+			(at 341.122 85.598 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -40071,7 +40111,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:SOT-363_SC-70-6"
-			(at 328.93 88.9 0)
+			(at 339.09 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -40082,7 +40122,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/C52140494.pdf?spm=wm.sxq.inf.ggs&lcsc_vid=RlBYAwVTQlNeVFJRR1YPUVwHRAALBlwATwRWX1JXEQIxVlNeQ1dbX1VRQ1VcVTsOAxUeFF5JWBYZEEoBGA4JCwFIFA4DSA%3D%3D"
-			(at 328.93 88.9 0)
+			(at 339.09 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -40093,7 +40133,7 @@
 			)
 		)
 		(property "Description" "SPDT Analog Switch, Low-Voltage CMOS"
-			(at 328.93 88.9 0)
+			(at 339.09 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -40104,7 +40144,7 @@
 			)
 		)
 		(property "LCSC" "C52140494"
-			(at 328.93 88.9 0)
+			(at 339.09 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -40115,7 +40155,7 @@
 			)
 		)
 		(property "Price" "$0.09"
-			(at 328.93 88.9 0)
+			(at 339.09 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -42329,6 +42369,241 @@
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
 					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
+		(at 323.85 90.17 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "94521751-51f1-4f8b-b4b4-9c90ee46a500")
+		(property "Reference" "C108"
+			(at 326.39 87.884 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 322.58 89.154 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "PCM_JLCPCB:C_0402"
+			(at 323.85 91.948 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C307331"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Stock" "8389599"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "0.008USD"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Process" "SMT"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Minimum Qty" "20"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Attrition Qty" "10"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Class" "Basic Component"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Part" "CL05B104KB54PNC"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 322.834 91.186 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify left)
+			)
+		)
+		(property "Tolerance" "±10%"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Capacitance" "100nF"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Temperature Coefficient" "X7R"
+			(at 323.85 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "d428ba97-ece1-445e-ba22-a26aaa065c32")
+		)
+		(pin "1"
+			(uuid "c495556b-1f79-4623-b401-ad1b3e3802f7")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
+					(reference "C108")
 					(unit 1)
 				)
 			)
@@ -46791,6 +47066,241 @@
 		)
 	)
 	(symbol
+		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
+		(at 323.85 100.33 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b6b752bd-b937-482e-a251-45d8178914a9")
+		(property "Reference" "C109"
+			(at 326.39 98.044 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 322.58 99.314 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "PCM_JLCPCB:C_0402"
+			(at 323.85 102.108 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C307331"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Stock" "8389599"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "0.008USD"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Process" "SMT"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Minimum Qty" "20"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Attrition Qty" "10"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Class" "Basic Component"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Part" "CL05B104KB54PNC"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 322.834 101.346 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify left)
+			)
+		)
+		(property "Tolerance" "±10%"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Capacitance" "100nF"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Temperature Coefficient" "X7R"
+			(at 323.85 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "aee142b7-461d-41f0-a7ac-15d132c724f7")
+		)
+		(pin "1"
+			(uuid "4b785695-6fb5-4f4c-9264-4dca6288d5de")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
+					(reference "C109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "PCM_JLCPCB-Resistors:0402,330Ω")
 		(at 149.86 118.11 0)
 		(unit 1)
@@ -47598,7 +48108,7 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
-		(at 342.9 83.82 90)
+		(at 353.06 90.17 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -47608,7 +48118,7 @@
 		(dnp no)
 		(uuid "bd429ad0-cd7f-49d4-98e5-c30ec9b006eb")
 		(property "Reference" "C103"
-			(at 345.44 81.534 90)
+			(at 355.6 87.884 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -47619,7 +48129,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 341.63 82.804 90)
+			(at 351.79 89.154 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -47630,7 +48140,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 342.9 85.598 90)
+			(at 353.06 91.948 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47641,7 +48151,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47652,7 +48162,7 @@
 			)
 		)
 		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47663,7 +48173,7 @@
 			)
 		)
 		(property "LCSC" "C307331"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47674,7 +48184,7 @@
 			)
 		)
 		(property "Stock" "8389599"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47685,7 +48195,7 @@
 			)
 		)
 		(property "Price" "0.008USD"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47696,7 +48206,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47707,7 +48217,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47718,7 +48228,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47729,7 +48239,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47740,7 +48250,7 @@
 			)
 		)
 		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47751,7 +48261,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47762,7 +48272,7 @@
 			)
 		)
 		(property "Part" "CL05B104KB54PNC"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47773,7 +48283,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 341.884 84.836 90)
+			(at 352.044 91.186 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -47784,7 +48294,7 @@
 			)
 		)
 		(property "Tolerance" "±10%"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47795,7 +48305,7 @@
 			)
 		)
 		(property "Capacitance" "100nF"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -47806,7 +48316,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
-			(at 342.9 83.82 0)
+			(at 353.06 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -50487,7 +50997,7 @@
 				)
 			)
 		)
-		(property "Value" "S12_OUT"
+		(property "Value" "S21_OUT"
 			(at 240.9826 219.71 0)
 			(show_name no)
 			(do_not_autoplace no)
