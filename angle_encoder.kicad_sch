@@ -1592,6 +1592,16 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "These Alps encoders are expensive.  Maybe we could find something cheaper."
+		(exclude_from_sim no)
+		(at 164.592 60.452 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "627a0873-e53d-44f4-9b64-4e30997aed44")
+	)
 	(junction
 		(at 135.89 111.76)
 		(diameter 0)
@@ -2851,6 +2861,17 @@
 		)
 		(property "LCSC" "C202365"
 			(at 146.05 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$2.22"
+			(at 146.05 82.55 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

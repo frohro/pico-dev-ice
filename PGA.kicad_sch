@@ -607,6 +607,129 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "JLCPCB-Transistors:NMOS,2N7002"
 			(pin_names
 				(offset 0)
@@ -4243,6 +4366,12 @@
 		(uuid "264bf834-4f70-4500-a24f-4fd24778322a")
 	)
 	(junction
+		(at 57.15 41.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2bce1e98-05f4-4c3e-b07c-5b424820009c")
+	)
+	(junction
 		(at 185.42 107.95)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4265,6 +4394,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4bd43701-ae3e-496c-bd8d-fde7bcfeccd6")
+	)
+	(junction
+		(at 240.03 48.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5e0d3866-ae55-4b58-8eaf-887d23268abb")
 	)
 	(junction
 		(at 200.66 90.17)
@@ -4395,6 +4530,16 @@
 			(type default)
 		)
 		(uuid "08ad9d42-fa4f-4649-9d75-c47e24083310")
+	)
+	(wire
+		(pts
+			(xy 57.15 41.91) (xy 57.15 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0aaa958b-a23a-4018-8871-bb1534558fd9")
 	)
 	(wire
 		(pts
@@ -4878,7 +5023,7 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 36.83) (xy 57.15 48.26)
+			(xy 57.15 36.83) (xy 57.15 41.91)
 		)
 		(stroke
 			(width 0)
@@ -5128,6 +5273,16 @@
 	)
 	(wire
 		(pts
+			(xy 240.03 48.26) (xy 240.03 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "da85931b-65a2-401a-a794-4d2e3a54027b")
+	)
+	(wire
+		(pts
 			(xy 64.77 99.06) (xy 64.77 109.22)
 		)
 		(stroke
@@ -5228,7 +5383,7 @@
 	)
 	(wire
 		(pts
-			(xy 240.03 45.72) (xy 240.03 57.15)
+			(xy 240.03 45.72) (xy 240.03 48.26)
 		)
 		(stroke
 			(width 0)
@@ -7363,6 +7518,17 @@
 				)
 			)
 		)
+		(property "Price" "$0.09"
+			(at 36.83 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "58243447-2a39-4168-bdd7-f2611979a234")
 		)
@@ -8318,6 +8484,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 157.48 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 157.48 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -9533,6 +9710,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 243.84 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 243.84 133.35 0)
 			(hide yes)
 			(show_name no)
@@ -10838,6 +11026,17 @@
 				)
 			)
 		)
+		(property "Price" "$0.09"
+			(at 38.1 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "1e883ea2-87dd-43b9-b1d7-161ac27b6de1")
 		)
@@ -10861,6 +11060,96 @@
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/67b28a8f-f771-4a5b-b92d-ddb83c8150c9"
 					(reference "U19")
 					(unit 2)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 240.03 48.26 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "5e2710ea-2dd5-415e-9e1c-6eafa6aff03b")
+		(property "Reference" "TP32"
+			(at 246.38 48.26 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "U17"
+			(at 241.046 50.292 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+			(at 240.03 53.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 240.03 53.34 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 240.03 48.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB #" ""
+			(at 240.03 48.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "352acb2b-d0c3-404c-a194-c7c2539cc370")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/67b28a8f-f771-4a5b-b92d-ddb83c8150c9"
+					(reference "TP32")
+					(unit 1)
 				)
 			)
 		)
@@ -11436,6 +11725,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 96.52 124.46 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 96.52 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -12289,6 +12589,17 @@
 				)
 			)
 		)
+		(property "Price" "$0.09"
+			(at 217.17 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "1e883ea2-87dd-43b9-b1d7-161ac27b6de1")
 		)
@@ -12312,6 +12623,96 @@
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/67b28a8f-f771-4a5b-b92d-ddb83c8150c9"
 					(reference "U23")
 					(unit 2)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 57.15 41.91 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "79d0e852-3cf0-4dc1-bc1f-3a48220fe48a")
+		(property "Reference" "TP31"
+			(at 63.5 41.91 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "U16"
+			(at 58.928 39.878 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+			(at 57.15 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 57.15 46.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 57.15 41.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB #" ""
+			(at 57.15 41.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ec3d0474-5e55-4e6f-950b-0249429abd78")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/67b28a8f-f771-4a5b-b92d-ddb83c8150c9"
+					(reference "TP31")
+					(unit 1)
 				)
 			)
 		)
@@ -12382,6 +12783,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 63.5 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 63.5 66.04 0)
 			(hide yes)
 			(show_name no)
@@ -13763,6 +14175,17 @@
 				)
 			)
 		)
+		(property "Price" "$0.09"
+			(at 121.92 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "1e883ea2-87dd-43b9-b1d7-161ac27b6de0")
 		)
@@ -13858,6 +14281,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 158.75 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 158.75 128.27 0)
 			(hide yes)
 			(show_name no)
@@ -14117,6 +14551,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 184.15 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 184.15 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -15793,6 +16238,17 @@
 				)
 			)
 		)
+		(property "Price" "$0.09"
+			(at 185.42 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "1e883ea2-87dd-43b9-b1d7-161ac27b6de2")
 		)
@@ -16658,6 +17114,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 64.77 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 64.77 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -17621,6 +18088,17 @@
 				)
 			)
 		)
+		(property "Price" "$0.09"
+			(at 215.9 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "195da6d5-4556-4966-a9f0-ba04289d932c")
 		)
@@ -17880,6 +18358,17 @@
 				)
 			)
 		)
+		(property "Price" "$0.09"
+			(at 95.25 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "098fba49-fa23-4bcc-8b8c-c2f6cba25e25")
 		)
@@ -17975,6 +18464,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 123.19 124.46 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 123.19 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -18391,6 +18891,17 @@
 			)
 		)
 		(property "LCSC" "C52140494"
+			(at 242.57 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.09"
 			(at 242.57 80.01 0)
 			(hide yes)
 			(show_name no)

@@ -6229,28 +6229,28 @@
 		(uuid "0040e395-6999-48e0-b83b-852ebcc084b2")
 	)
 	(junction
+		(at 162.56 138.43)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "07b5f094-43f0-4ece-81bf-a8124b411851")
+	)
+	(junction
 		(at 138.43 135.89)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0ba53a58-a7e0-4844-80ff-013e51274d09")
 	)
 	(junction
-		(at 162.56 138.43)
+		(at 152.4 146.05)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "167385bf-ea68-41df-aa9a-2efdf85e122f")
+		(uuid "1479000b-bd53-477a-ae7f-5c0fe7ab002a")
 	)
 	(junction
 		(at 132.08 100.33)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1d1ccac7-951f-4ad7-8139-2f2156f6236e")
-	)
-	(junction
-		(at 142.24 135.89)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "218a0420-f2f1-4b26-b20e-84627ac40a8a")
 	)
 	(junction
 		(at 170.18 138.43)
@@ -6367,10 +6367,10 @@
 		(uuid "8eb9ec9d-90b0-4d7b-99dd-d3fe37e3d6a6")
 	)
 	(junction
-		(at 152.4 146.05)
+		(at 142.24 135.89)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "93cc2709-06b5-490d-99e7-139eb5a93dad")
+		(uuid "98e71417-ec26-4ea5-b9f9-2476d0ee16cd")
 	)
 	(junction
 		(at 125.73 135.89)
@@ -8203,7 +8203,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TP_Label:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 233.68 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -9388,7 +9388,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TP_Label:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 233.68 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -13284,120 +13284,6 @@
 		)
 	)
 	(symbol
-		(lib_name "ADP7142AUJZ_1")
-		(lib_id "Regulator_Linear:ADP7142AUJZ")
-		(at 152.4 138.43 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "758bfc48-b99a-4149-8cca-6ce1b375dbd7")
-		(property "Reference" "e10"
-			(at 152.4 128.27 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SGM2205-ADJXTDB8G/TR"
-			(at 152.4 130.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_DFN_QFN:DFN-8-1EP_3x3mm_P0.65mm_EP1.55x2.4mm"
-			(at 152.4 148.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-			)
-		)
-		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8590903048351141888"
-			(at 152.4 151.13 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "300mA, Low Noise,  Low Dropout Regulator, Positive, Adjustable, TSOT-23-5"
-			(at 152.4 138.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C5152847"
-			(at 152.4 138.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "7"
-			(uuid "701d452b-f4b8-4ff7-b4d5-ca4886ab3e6a")
-		)
-		(pin "6"
-			(uuid "97e387b0-c8fe-4da5-88b1-4c278cf27a35")
-		)
-		(pin "8"
-			(uuid "c5227f88-17e8-4594-8d65-0a6939104c2e")
-		)
-		(pin "1"
-			(uuid "893b689d-a579-4785-8934-5db8b8d292e1")
-		)
-		(pin "4"
-			(uuid "e8c1b100-4c2a-40ef-b5e8-2da933e271bd")
-		)
-		(pin "3"
-			(uuid "c290c25e-e5b5-4fbc-99a6-1799c7f2c11d")
-		)
-		(pin "2"
-			(uuid "cda9e7cb-dce2-4cb9-90d2-98e6c0b41829")
-		)
-		(pin "5"
-			(uuid "d93e5bcf-3864-43d6-b377-8b2244cfa5eb")
-		)
-		(pin "9"
-			(uuid "51e346e7-264a-4170-bf14-5cea457ac209")
-		)
-		(instances
-			(project "DDC_SDR"
-				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/48946e56-e004-4035-9a82-30e09af92ded"
-					(reference "e10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Jumper:Jumper_2_Open")
 		(at 176.53 50.8 0)
 		(unit 1)
@@ -14451,6 +14337,131 @@
 		)
 	)
 	(symbol
+		(lib_name "ADP7142AUJZ_1")
+		(lib_id "Regulator_Linear:ADP7142AUJZ")
+		(at 152.4 138.43 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "92cc0346-556d-4e61-ba48-aa1d0dea14d8")
+		(property "Reference" "e4"
+			(at 152.4 128.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SGM2205-ADJXTDB8G/TR"
+			(at 152.4 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_DFN_QFN:DFN-8-1EP_3x3mm_P0.65mm_EP1.55x2.4mm"
+			(at 152.4 148.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+			)
+		)
+		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8590903048351141888"
+			(at 152.4 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "300mA, Low Noise,  Low Dropout Regulator, Positive, Adjustable, TSOT-23-5"
+			(at 152.4 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5152847"
+			(at 152.4 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.76"
+			(at 152.4 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "7"
+			(uuid "55fef547-387a-4b56-b20e-ee09fa2bdcc6")
+		)
+		(pin "6"
+			(uuid "9925304f-d1fa-4d99-9dcb-7407b6113855")
+		)
+		(pin "8"
+			(uuid "9434b632-932a-4e65-84b4-9bcb5de93e69")
+		)
+		(pin "1"
+			(uuid "bd2e436d-c0d7-4787-a8d7-1e8d6b2b13a0")
+		)
+		(pin "4"
+			(uuid "a60c3431-c600-47bb-9291-0788932ec8ee")
+		)
+		(pin "3"
+			(uuid "908c99d5-10ac-4f51-807e-7a62c8397b76")
+		)
+		(pin "2"
+			(uuid "5c15f0a4-6b02-4990-9b2c-61a7c85846ce")
+		)
+		(pin "5"
+			(uuid "ac035910-658a-4c80-afea-a5117e4b54f0")
+		)
+		(pin "9"
+			(uuid "9ed27fd9-1f10-4b08-86c8-b7e71c72a4dd")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/48946e56-e004-4035-9a82-30e09af92ded"
+					(reference "e4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "PCM_JLCPCB-Resistors:0805,1Ω")
 		(at 193.04 135.89 90)
 		(unit 1)
@@ -15281,7 +15292,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TP_Label:TestPoint_THTPad_D2.0mm_Drill1.0mm"
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 62.23 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -15640,6 +15651,17 @@
 			)
 		)
 		(property "LCSC" "C5152847"
+			(at 146.05 102.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "$0.76"
 			(at 146.05 102.87 0)
 			(hide yes)
 			(show_name no)
