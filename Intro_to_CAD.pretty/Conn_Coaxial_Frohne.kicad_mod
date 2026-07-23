@@ -1,0 +1,227 @@
+(footprint "Conn_Coaxial_Frohne"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "BNC female PCB mount 4 pin straight chassis connector http://www.te.com/usa-en/product-1-1478204-0.html")
+	(tags "BNC female PCB mount 4 pin straight chassis connector ")
+	(property "Reference" "REF**"
+		(at -0.25 -6.25 0)
+		(layer "F.SilkS")
+		(uuid "075298f5-25ed-450d-a2df-cbd6dafc672a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "Conn_Coaxial_Frohne"
+		(at 0 6.5 0)
+		(layer "F.Fab")
+		(uuid "e1fc33c6-9bc2-4d6f-bc85-fe936f325313")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7657b7cf-512d-4ce8-92bd-3030384dc945")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5cc5e4a4-6d4f-429d-8d52-73457648ecb2")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_arc
+		(start -4.550965 1.67667)
+		(mid -4.849963 0.019034)
+		(end -4.563984 -1.640897)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "3c7935b4-a70e-4c11-807b-cc1e1a942bd2")
+	)
+	(fp_arc
+		(start -1.676671 -4.550965)
+		(mid -0.019034 -4.849963)
+		(end 1.640899 -4.563984)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7a7c6f0a-4cb8-4e61-baf0-4d6259ce4afa")
+	)
+	(fp_arc
+		(start 1.676671 4.550964)
+		(mid 0.019034 4.849963)
+		(end -1.640898 4.563984)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "ae45147a-810e-4cd2-abab-7d1c7d4b5969")
+	)
+	(fp_arc
+		(start 4.550963 -1.676673)
+		(mid 4.849962 -0.019035)
+		(end 4.563984 1.640898)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "852af795-9786-433a-8874-20cd484ca17e")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 4.85 0)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "Dwgs.User")
+		(uuid "f84dfff1-b975-4b81-96a4-08587ce469f4")
+	)
+	(fp_line
+		(start -5.5 -5.5)
+		(end 5.5 -5.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "1a2aef92-7847-4403-a749-dadbce11a776")
+	)
+	(fp_line
+		(start -5.5 5.5)
+		(end -5.5 -5.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "0d6f114f-d117-4070-aecb-2e30819b67bc")
+	)
+	(fp_line
+		(start 5.5 -5.5)
+		(end 5.5 5.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "b70e7f2b-4da4-4212-8e33-062d78794208")
+	)
+	(fp_line
+		(start 5.5 5.5)
+		(end -5.5 5.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "a51f1693-aee9-4bc4-9c85-e0d0adfaece3")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 4.8 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "f36a6e08-ae7d-49b0-a433-ea7c24a756bc")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "6b12e64e-de09-4cfa-9d55-3c256934975f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at 0 0)
+		(size 3.556 3.556)
+		(drill 1.27)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "80efc7b3-56cd-4421-87db-57e0c26ec614")
+	)
+	(pad "2" thru_hole circle
+		(at -3.4 -3.4)
+		(size 4 4)
+		(drill 2.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "691adcb8-f87d-450f-9744-349e4fe3441b")
+	)
+	(pad "2" thru_hole circle
+		(at -3.4 3.4)
+		(size 4 4)
+		(drill 2.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "21e288b5-f918-4a84-b125-754d4ba3cc56")
+	)
+	(pad "2" thru_hole circle
+		(at 3.4 -3.4)
+		(size 4 4)
+		(drill 2.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "ac4a0be0-07a3-41d9-a8e5-154a67f6396a")
+	)
+	(pad "2" thru_hole circle
+		(at 3.4 3.4)
+		(size 4 4)
+		(drill 2.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "20c85d84-a2be-4642-860f-2a67f17f5572")
+	)
+	(embedded_fonts no)
+	(model "${KICAD10_3DMODEL_DIR}/Connector_Coaxial.3dshapes/BNC_TEConnectivity_1478204_Vertical.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

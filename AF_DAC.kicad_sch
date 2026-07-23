@@ -1421,7 +1421,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "PCM_JLCPCB-Capacitors:0805,100nF"
+		(symbol "PCM_JLCPCB-Capacitors:0402,100nF,(2)"
 			(pin_numbers
 				(hide yes)
 			)
@@ -1455,7 +1455,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "PCM_JLCPCB:C_0805"
+			(property "Footprint" "PCM_JLCPCB:C_0402"
 				(at -1.778 0 90)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1466,7 +1466,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B104KCFNNNE_C28233.pdf"
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1477,7 +1477,7 @@
 					)
 				)
 			)
-			(property "Description" "100V 100nF X7R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+			(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1488,7 +1488,7 @@
 					)
 				)
 			)
-			(property "LCSC" "C28233"
+			(property "LCSC" "C307331"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1499,7 +1499,7 @@
 					)
 				)
 			)
-			(property "Stock" "1168020"
+			(property "Stock" "8389599"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1510,7 +1510,7 @@
 					)
 				)
 			)
-			(property "Price" "0.009USD"
+			(property "Price" "0.008USD"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1587,7 +1587,7 @@
 					)
 				)
 			)
-			(property "Part" "CL21B104KCFNNNE"
+			(property "Part" "CL05B104KB54PNC"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1598,7 +1598,7 @@
 					)
 				)
 			)
-			(property "Voltage Rated" "100V"
+			(property "Voltage Rated" "50V"
 				(at 2.032 -2.0462 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1653,7 +1653,7 @@
 					)
 				)
 			)
-			(symbol "0805,100nF_0_1"
+			(symbol "0402,100nF,(2)_0_1"
 				(polyline
 					(pts
 						(xy -1.27 0.635) (xy 1.27 0.635)
@@ -1679,7 +1679,7 @@
 					)
 				)
 			)
-			(symbol "0805,100nF_1_1"
+			(symbol "0402,100nF,(2)_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 3.175)
@@ -1719,7 +1719,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "PCM_JLCPCB-Capacitors:0805,1uF"
+		(symbol "PCM_JLCPCB-Capacitors:0603,1uF"
 			(pin_numbers
 				(hide yes)
 			)
@@ -1753,7 +1753,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "PCM_JLCPCB:C_0805"
+			(property "Footprint" "PCM_JLCPCB:C_0603"
 				(at -1.778 0 90)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1764,7 +1764,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf"
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1775,7 +1775,7 @@
 					)
 				)
 			)
-			(property "Description" "50V 1uF X7R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+			(property "Description" "50V 1uF X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1786,7 +1786,7 @@
 					)
 				)
 			)
-			(property "LCSC" "C28323"
+			(property "LCSC" "C15849"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1797,7 +1797,7 @@
 					)
 				)
 			)
-			(property "Stock" "4334256"
+			(property "Stock" "11535980"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1808,7 +1808,7 @@
 					)
 				)
 			)
-			(property "Price" "0.012USD"
+			(property "Price" "0.008USD"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1885,7 +1885,7 @@
 					)
 				)
 			)
-			(property "Part" "CL21B105KBFNNNE"
+			(property "Part" "CL10A105KB8NNNC"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1929,7 +1929,7 @@
 					)
 				)
 			)
-			(property "Temperature Coefficient" "X7R"
+			(property "Temperature Coefficient" "X5R"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1951,7 +1951,7 @@
 					)
 				)
 			)
-			(symbol "0805,1uF_0_1"
+			(symbol "0603,1uF_0_1"
 				(polyline
 					(pts
 						(xy -1.27 0.635) (xy 1.27 0.635)
@@ -1977,7 +1977,305 @@
 					)
 				)
 			)
-			(symbol "0805,1uF_1_1"
+			(symbol "0603,1uF_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 3.175)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 3.175)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "PCM_JLCPCB-Capacitors:0805,10uF,(2)"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 2.032 1.668 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "10uF"
+				(at 2.032 -0.3782 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 0.8 0.8)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "PCM_JLCPCB:C_0805"
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C440198"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Stock" "1422246"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Price" "0.066USD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Process" "SMT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Minimum Qty" "5"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Attrition Qty" "4"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Class" "Basic Component"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "Murata Electronics"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Part" "GRM21BR61H106KE43L"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Voltage Rated" "50V"
+				(at 2.032 -2.0462 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 0.8 0.8)
+					)
+					(justify left)
+				)
+			)
+			(property "Tolerance" "±10%"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Capacitance" "10uF"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Temperature Coefficient" "X5R"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "0805,10uF,(2)_0_1"
+				(polyline
+					(pts
+						(xy -1.27 0.635) (xy 1.27 0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -0.635) (xy 1.27 -0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "0805,10uF,(2)_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 3.175)
@@ -2574,339 +2872,6 @@
 				)
 			)
 			(symbol "0805,2.2uF_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 3.175)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 3.175)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "PCM_JLCPCB-Capacitors:CASE-A-3216-18(mm),10uF"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "C"
-				(at 2.032 1.668 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "10uF"
-				(at 2.032 -0.3782 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 0.8 0.8)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "PCM_JLCPCB:C_CASE-A-3216-18(mm)"
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Kyocera-AVX-TAJA106K016RNJ_C7171.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "10uF 16V 3Ω@100kHz ±10% CASE-A-3216-18(mm) Tantalum Capacitors ROHS"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "LCSC" "C7171"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Stock" "887054"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Price" "0.133USD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Process" "SMT"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Minimum Qty" "5"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Attrition Qty" "2"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Class" "Basic Component"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Category" "Capacitors,Tantalum Capacitors"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Manufacturer" "AVX"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Part" "TAJA106K016RNJ"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Operating Temperature" "-55°C~+125°C"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Equivalent Series Resistance(ESR)" "3Ω@100kHz"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Tolerance" "±10%"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Capacitance" "10uF"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Rated Voltage" "16V"
-				(at 2.032 -2.0462 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 0.8 0.8)
-					)
-					(justify left)
-				)
-			)
-			(property "ki_fp_filters" "C_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "CASE-A-3216-18(mm),10uF_0_1"
-				(polyline
-					(pts
-						(xy -1.27 1.27) (xy -0.635 1.27)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 0.635) (xy 1.27 0.635)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 -0.635) (xy 1.27 -0.635)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.9525 1.5875) (xy -0.9525 0.9525)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "CASE-A-3216-18(mm),10uF_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 3.175)
@@ -9006,7 +8971,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:0805,1uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0603,1uF")
 		(at 200.66 107.95 0)
 		(unit 1)
 		(body_style 1)
@@ -9039,7 +9004,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_0805"
+		(property "Footprint" "PCM_JLCPCB:C_0603"
 			(at 198.882 107.95 90)
 			(hide yes)
 			(show_name no)
@@ -9050,7 +9015,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
 			(at 200.66 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9061,7 +9026,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 1uF X7R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 1uF X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 200.66 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9072,7 +9037,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C28323"
+		(property "LCSC" "C15849"
 			(at 200.66 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9083,7 +9048,7 @@
 				)
 			)
 		)
-		(property "Stock" "4334256"
+		(property "Stock" "11535980"
 			(at 200.66 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9094,7 +9059,7 @@
 				)
 			)
 		)
-		(property "Price" "0.012USD"
+		(property "Price" "0.008USD"
 			(at 200.66 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9171,7 +9136,7 @@
 				)
 			)
 		)
-		(property "Part" "CL21B105KBFNNNE"
+		(property "Part" "CL10A105KB8NNNC"
 			(at 200.66 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9215,7 +9180,7 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "X7R"
+		(property "Temperature Coefficient" "X5R"
 			(at 200.66 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9242,7 +9207,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:0805,1uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0603,1uF")
 		(at 185.42 107.95 0)
 		(unit 1)
 		(body_style 1)
@@ -9275,7 +9240,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_0805"
+		(property "Footprint" "PCM_JLCPCB:C_0603"
 			(at 183.642 107.95 90)
 			(hide yes)
 			(show_name no)
@@ -9286,7 +9251,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
 			(at 185.42 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9297,7 +9262,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 1uF X7R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 1uF X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 185.42 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9308,7 +9273,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C28323"
+		(property "LCSC" "C15849"
 			(at 185.42 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9319,7 +9284,7 @@
 				)
 			)
 		)
-		(property "Stock" "4334256"
+		(property "Stock" "11535980"
 			(at 185.42 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9330,7 +9295,7 @@
 				)
 			)
 		)
-		(property "Price" "0.012USD"
+		(property "Price" "0.008USD"
 			(at 185.42 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9407,7 +9372,7 @@
 				)
 			)
 		)
-		(property "Part" "CL21B105KBFNNNE"
+		(property "Part" "CL10A105KB8NNNC"
 			(at 185.42 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9451,7 +9416,7 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "X7R"
+		(property "Temperature Coefficient" "X5R"
 			(at 185.42 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -9990,7 +9955,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:0805,100nF")
+		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
 		(at 226.06 101.6 180)
 		(unit 1)
 		(body_style 1)
@@ -10022,7 +9987,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_0805"
+		(property "Footprint" "PCM_JLCPCB:C_0402"
 			(at 227.838 101.6 90)
 			(hide yes)
 			(show_name no)
@@ -10033,7 +9998,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B104KCFNNNE_C28233.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
 			(at 226.06 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -10044,7 +10009,7 @@
 				)
 			)
 		)
-		(property "Description" "100V 100nF X7R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 226.06 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -10055,7 +10020,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C28233"
+		(property "LCSC" "C307331"
 			(at 226.06 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -10066,7 +10031,7 @@
 				)
 			)
 		)
-		(property "Stock" "1168020"
+		(property "Stock" "8389599"
 			(at 226.06 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -10077,7 +10042,7 @@
 				)
 			)
 		)
-		(property "Price" "0.009USD"
+		(property "Price" "0.008USD"
 			(at 226.06 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -10143,7 +10108,7 @@
 				)
 			)
 		)
-		(property "Part" "CL21B104KCFNNNE"
+		(property "Part" "CL05B104KB54PNC"
 			(at 226.06 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -10154,15 +10119,15 @@
 				)
 			)
 		)
-		(property "Voltage Rated" "100V"
-			(at 220.218 104.394 0)
+		(property "Voltage Rated" "50V"
+			(at 224.028 99.5538 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 0.8 0.8)
 				)
-				(justify right)
+				(justify left)
 			)
 		)
 		(property "Tolerance" "±10%"
@@ -10188,6 +10153,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
+			(at 226.06 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
 			(at 226.06 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -10450,7 +10426,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:0805,100nF")
+		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
 		(at 83.82 64.77 0)
 		(unit 1)
 		(body_style 1)
@@ -10483,7 +10459,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_0805"
+		(property "Footprint" "PCM_JLCPCB:C_0402"
 			(at 82.042 64.77 90)
 			(hide yes)
 			(show_name no)
@@ -10494,7 +10470,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B104KCFNNNE_C28233.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
 			(at 83.82 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -10505,7 +10481,7 @@
 				)
 			)
 		)
-		(property "Description" "100V 100nF X7R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 83.82 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -10516,7 +10492,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C28233"
+		(property "LCSC" "C307331"
 			(at 83.82 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -10527,7 +10503,7 @@
 				)
 			)
 		)
-		(property "Stock" "1168020"
+		(property "Stock" "8389599"
 			(at 83.82 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -10538,7 +10514,7 @@
 				)
 			)
 		)
-		(property "Price" "0.009USD"
+		(property "Price" "0.008USD"
 			(at 83.82 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -10604,7 +10580,7 @@
 				)
 			)
 		)
-		(property "Part" "CL21B104KCFNNNE"
+		(property "Part" "CL05B104KB54PNC"
 			(at 83.82 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -10615,7 +10591,7 @@
 				)
 			)
 		)
-		(property "Voltage Rated" "100V"
+		(property "Voltage Rated" "50V"
 			(at 86.36 67.31 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10649,6 +10625,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
+			(at 83.82 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
 			(at 83.82 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12058,7 +12045,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:CASE-A-3216-18(mm),10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 92.71 64.77 0)
 		(unit 1)
 		(body_style 1)
@@ -12088,7 +12075,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_CASE-A-3216-18(mm)"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 90.932 64.77 90)
 			(hide yes)
 			(show_name no)
@@ -12099,7 +12086,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Kyocera-AVX-TAJA106K016RNJ_C7171.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12110,7 +12097,7 @@
 				)
 			)
 		)
-		(property "Description" "10uF 16V 3Ω@100kHz ±10% CASE-A-3216-18(mm) Tantalum Capacitors ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12121,7 +12108,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C7171"
+		(property "LCSC" "C440198"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12132,7 +12119,7 @@
 				)
 			)
 		)
-		(property "Stock" "887054"
+		(property "Stock" "1422246"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12143,7 +12130,7 @@
 				)
 			)
 		)
-		(property "Price" "0.133USD"
+		(property "Price" "0.066USD"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12176,7 +12163,7 @@
 				)
 			)
 		)
-		(property "Attrition Qty" "2"
+		(property "Attrition Qty" "4"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12198,7 +12185,7 @@
 				)
 			)
 		)
-		(property "Category" "Capacitors,Tantalum Capacitors"
+		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12209,7 +12196,7 @@
 				)
 			)
 		)
-		(property "Part" "TAJA106K016RNJ"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 92.71 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -12266,11 +12253,45 @@
 		)
 		(property "Rated Voltage" "16V"
 			(at 96.266 67.564 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 0.8 0.8)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 92.71 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 94.742 66.8162 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify left)
+			)
+		)
+		(property "Temperature Coefficient" "X5R"
+			(at 92.71 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
 				)
 			)
 		)

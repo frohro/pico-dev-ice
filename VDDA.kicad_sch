@@ -1652,7 +1652,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "PCM_JLCPCB-Capacitors:1206,10uF"
+		(symbol "PCM_JLCPCB-Capacitors:0805,10uF,(2)"
 			(pin_numbers
 				(hide yes)
 			)
@@ -1686,7 +1686,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "PCM_JLCPCB:C_1206"
+			(property "Footprint" "PCM_JLCPCB:C_0805"
 				(at -1.778 0 90)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1697,7 +1697,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1708,7 +1708,7 @@
 					)
 				)
 			)
-			(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+			(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1719,7 +1719,7 @@
 					)
 				)
 			)
-			(property "LCSC" "C13585"
+			(property "LCSC" "C440198"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1730,7 +1730,7 @@
 					)
 				)
 			)
-			(property "Stock" "3698334"
+			(property "Stock" "1422246"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1741,7 +1741,7 @@
 					)
 				)
 			)
-			(property "Price" "0.035USD"
+			(property "Price" "0.066USD"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1807,7 +1807,7 @@
 					)
 				)
 			)
-			(property "Manufacturer" "Samsung Electro-Mechanics"
+			(property "Manufacturer" "Murata Electronics"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1818,7 +1818,7 @@
 					)
 				)
 			)
-			(property "Part" "CL31A106KBHNNNE"
+			(property "Part" "GRM21BR61H106KE43L"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1884,7 +1884,7 @@
 					)
 				)
 			)
-			(symbol "1206,10uF_0_1"
+			(symbol "0805,10uF,(2)_0_1"
 				(polyline
 					(pts
 						(xy -1.27 0.635) (xy 1.27 0.635)
@@ -1910,7 +1910,7 @@
 					)
 				)
 			)
-			(symbol "1206,10uF_1_1"
+			(symbol "0805,10uF,(2)_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 3.175)
@@ -3223,6 +3223,323 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "PCM_JLCPCB-Resistors:0402,1Ω"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 1.778 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "1Ω"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace yes)
+				(effects
+					(font
+						(size 0.8 0.8)
+					)
+				)
+			)
+			(property "Footprint" "PCM_JLCPCB:R_0402"
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C25086"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Stock" "305976"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Price" "0.004USD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Process" "SMT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Minimum Qty" "20"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Attrition Qty" "10"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Class" "Preferred Component"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Category" "Resistors,Chip Resistor - Surface Mount"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Part" "0402WGF100KTCE"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Resistance" "1Ω"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Power(Watts)" "62.5mW"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Type" "Thick Film Resistors"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Overload Voltage (Max)" "50V"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Operating Temperature Range" "-55°C~+155°C"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Tolerance" "±1%"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Temperature Coefficient" "±200ppm/°C"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "0402,1Ω_0_1"
+				(rectangle
+					(start -1.016 2.54)
+					(end 1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "0402,1Ω_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "PCM_JLCPCB-Resistors:0805,100kΩ"
 			(pin_numbers
 				(hide yes)
@@ -3818,323 +4135,6 @@
 				)
 			)
 			(symbol "0805,12kΩ_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "PCM_JLCPCB-Resistors:0805,1Ω"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
-				(at 1.778 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "1Ω"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace yes)
-				(effects
-					(font
-						(size 0.8 0.8)
-					)
-				)
-			)
-			(property "Footprint" "PCM_JLCPCB:R_0805"
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311845_UNI-ROYAL-Uniroyal-Elec-0805W8F100KT5E_C25271.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "125mW Thick Film Resistors 150V ±1% ±400ppm/°C 1Ω 0805 Chip Resistor - Surface Mount ROHS"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "LCSC" "C25271"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Stock" "413540"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Price" "0.006USD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Process" "SMT"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Minimum Qty" "20"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Attrition Qty" "10"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Class" "Basic Component"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Category" "Resistors,Chip Resistor - Surface Mount"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Part" "0805W8F100KT5E"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Resistance" "1Ω"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Power(Watts)" "125mW"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Type" "Thick Film Resistors"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Overload Voltage (Max)" "150V"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Operating Temperature Range" "-55°C~+155°C"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Tolerance" "±1%"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Temperature Coefficient" "±400ppm/°C"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "R_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "0805,1Ω_0_1"
-				(rectangle
-					(start -1.016 2.54)
-					(end 1.016 -2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "0805,1Ω_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 1.27)
@@ -8585,7 +8585,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:1206,10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 119.38 104.14 0)
 		(unit 1)
 		(body_style 1)
@@ -8617,7 +8617,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_1206"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 117.602 104.14 90)
 			(hide yes)
 			(show_name no)
@@ -8628,7 +8628,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 119.38 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -8639,7 +8639,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 119.38 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -8650,7 +8650,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13585"
+		(property "LCSC" "C440198"
 			(at 119.38 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -8661,7 +8661,7 @@
 				)
 			)
 		)
-		(property "Stock" "3698334"
+		(property "Stock" "1422246"
 			(at 119.38 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -8672,7 +8672,7 @@
 				)
 			)
 		)
-		(property "Price" "0.035USD"
+		(property "Price" "0.066USD"
 			(at 119.38 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -8738,7 +8738,7 @@
 				)
 			)
 		)
-		(property "Part" "CL31A106KBHNNNE"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 119.38 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -8750,7 +8750,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 119.888 108.204 0)
+			(at 116.84 106.172 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8793,6 +8793,17 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Murata Electronics"
+			(at 119.38 104.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "754b2d6a-a68d-465f-9e18-9be329275126")
 		)
@@ -8809,7 +8820,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
 		(at 105.41 71.12 180)
 		(unit 1)
 		(body_style 1)
@@ -8821,7 +8832,7 @@
 		(fields_autoplaced yes)
 		(uuid "10d95273-9718-4592-9a03-34cd1fde425d")
 		(property "Reference" "R21"
-			(at 107.95 71.1199 0)
+			(at 107.95 69.8499 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8841,7 +8852,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 107.188 71.12 90)
 			(hide yes)
 			(show_name no)
@@ -8852,7 +8863,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311845_UNI-ROYAL-Uniroyal-Elec-0805W8F100KT5E_C25271.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8863,7 +8874,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±1% ±400ppm/°C 1Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8874,7 +8885,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25271"
+		(property "LCSC" "C25086"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8885,7 +8896,7 @@
 				)
 			)
 		)
-		(property "Stock" "413540"
+		(property "Stock" "305976"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8896,7 +8907,7 @@
 				)
 			)
 		)
-		(property "Price" "0.006USD"
+		(property "Price" "0.004USD"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8940,7 +8951,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8962,7 +8973,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F100KT5E"
+		(property "Part" "0402WGF100KTCE"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8984,7 +8995,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9006,7 +9017,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9039,7 +9050,40 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±400ppm/°C"
+		(property "Temperature Coefficient" "±200ppm/°C"
+			(at 105.41 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 105.41 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 107.95 72.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify right)
+			)
+		)
+		(property "Capacitance" "10uF"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9760,7 +9804,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
 		(at 186.69 100.33 90)
 		(unit 1)
 		(body_style 1)
@@ -9772,7 +9816,7 @@
 		(fields_autoplaced yes)
 		(uuid "36be8a9c-a424-4f92-8bf0-db022f5f6f1d")
 		(property "Reference" "R7"
-			(at 186.69 96.52 90)
+			(at 186.69 93.98 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9791,7 +9835,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 186.69 102.108 90)
 			(hide yes)
 			(show_name no)
@@ -9802,7 +9846,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311845_UNI-ROYAL-Uniroyal-Elec-0805W8F100KT5E_C25271.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9813,7 +9857,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±1% ±400ppm/°C 1Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9824,7 +9868,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25271"
+		(property "LCSC" "C25086"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9835,7 +9879,7 @@
 				)
 			)
 		)
-		(property "Stock" "413540"
+		(property "Stock" "305976"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9846,7 +9890,7 @@
 				)
 			)
 		)
-		(property "Price" "0.006USD"
+		(property "Price" "0.004USD"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9890,7 +9934,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9912,7 +9956,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F100KT5E"
+		(property "Part" "0402WGF100KTCE"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9934,7 +9978,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9956,7 +10000,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9989,7 +10033,39 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±400ppm/°C"
+		(property "Temperature Coefficient" "±200ppm/°C"
+			(at 186.69 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 186.69 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 186.69 96.52 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+			)
+		)
+		(property "Capacitance" "10uF"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -10095,7 +10171,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
 		(at 193.04 138.43 90)
 		(mirror x)
 		(unit 1)
@@ -10126,7 +10202,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 193.04 136.652 90)
 			(hide yes)
 			(show_name no)
@@ -10137,7 +10213,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311845_UNI-ROYAL-Uniroyal-Elec-0805W8F100KT5E_C25271.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10148,7 +10224,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±1% ±400ppm/°C 1Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10159,7 +10235,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25271"
+		(property "LCSC" "C25086"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10170,7 +10246,7 @@
 				)
 			)
 		)
-		(property "Stock" "413540"
+		(property "Stock" "305976"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10181,7 +10257,7 @@
 				)
 			)
 		)
-		(property "Price" "0.006USD"
+		(property "Price" "0.004USD"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10225,7 +10301,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10247,7 +10323,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F100KT5E"
+		(property "Part" "0402WGF100KTCE"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10269,7 +10345,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10291,7 +10367,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10324,7 +10400,41 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±400ppm/°C"
+		(property "Temperature Coefficient" "±200ppm/°C"
+			(at 193.04 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 193.04 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 195.0862 140.462 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify left)
+			)
+		)
+		(property "Capacitance" "10uF"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -11324,7 +11434,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:1206,10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 177.8 104.14 0)
 		(unit 1)
 		(body_style 1)
@@ -11356,7 +11466,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_1206"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 176.022 104.14 90)
 			(hide yes)
 			(show_name no)
@@ -11367,7 +11477,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 177.8 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -11378,7 +11488,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 177.8 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -11389,7 +11499,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13585"
+		(property "LCSC" "C440198"
 			(at 177.8 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -11400,7 +11510,7 @@
 				)
 			)
 		)
-		(property "Stock" "3698334"
+		(property "Stock" "1422246"
 			(at 177.8 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -11411,7 +11521,7 @@
 				)
 			)
 		)
-		(property "Price" "0.035USD"
+		(property "Price" "0.066USD"
 			(at 177.8 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -11477,7 +11587,7 @@
 				)
 			)
 		)
-		(property "Part" "CL31A106KBHNNNE"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 177.8 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -11489,7 +11599,8 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 178.308 108.204 0)
+			(at 179.832 106.1862 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11522,6 +11633,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X5R"
+			(at 177.8 104.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
 			(at 177.8 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -13014,6 +13136,7 @@
 		)
 		(property "Voltage Rated" "50V"
 			(at 167.64 110.49 90)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13060,7 +13183,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:1206,10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 64.77 104.14 0)
 		(unit 1)
 		(body_style 1)
@@ -13092,7 +13215,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_1206"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 62.992 104.14 90)
 			(hide yes)
 			(show_name no)
@@ -13103,7 +13226,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 64.77 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -13114,7 +13237,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 64.77 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -13125,7 +13248,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13585"
+		(property "LCSC" "C440198"
 			(at 64.77 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -13136,7 +13259,7 @@
 				)
 			)
 		)
-		(property "Stock" "3698334"
+		(property "Stock" "1422246"
 			(at 64.77 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -13147,7 +13270,7 @@
 				)
 			)
 		)
-		(property "Price" "0.035USD"
+		(property "Price" "0.066USD"
 			(at 64.77 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -13213,7 +13336,7 @@
 				)
 			)
 		)
-		(property "Part" "CL31A106KBHNNNE"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 64.77 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -13225,7 +13348,8 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 65.278 108.204 0)
+			(at 66.802 106.1862 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13258,6 +13382,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X5R"
+			(at 64.77 104.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
 			(at 64.77 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -14462,7 +14597,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
 		(at 193.04 135.89 90)
 		(unit 1)
 		(body_style 1)
@@ -14474,7 +14609,7 @@
 		(fields_autoplaced yes)
 		(uuid "99aa1331-0cd8-43a9-9121-c771a440a8fc")
 		(property "Reference" "R25"
-			(at 193.04 132.08 90)
+			(at 193.04 129.54 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14493,7 +14628,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 193.04 137.668 90)
 			(hide yes)
 			(show_name no)
@@ -14504,7 +14639,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311845_UNI-ROYAL-Uniroyal-Elec-0805W8F100KT5E_C25271.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14515,7 +14650,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±1% ±400ppm/°C 1Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14526,7 +14661,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25271"
+		(property "LCSC" "C25086"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14537,7 +14672,7 @@
 				)
 			)
 		)
-		(property "Stock" "413540"
+		(property "Stock" "305976"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14548,7 +14683,7 @@
 				)
 			)
 		)
-		(property "Price" "0.006USD"
+		(property "Price" "0.004USD"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14592,7 +14727,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14614,7 +14749,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F100KT5E"
+		(property "Part" "0402WGF100KTCE"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14636,7 +14771,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14658,7 +14793,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14691,7 +14826,39 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±400ppm/°C"
+		(property "Temperature Coefficient" "±200ppm/°C"
+			(at 193.04 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 193.04 135.89 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 193.04 132.08 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+			)
+		)
+		(property "Capacitance" "10uF"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -15034,7 +15201,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:1206,10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 184.15 139.7 0)
 		(unit 1)
 		(body_style 1)
@@ -15066,7 +15233,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_1206"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 182.372 139.7 90)
 			(hide yes)
 			(show_name no)
@@ -15077,7 +15244,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 184.15 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -15088,7 +15255,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 184.15 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -15099,7 +15266,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13585"
+		(property "LCSC" "C440198"
 			(at 184.15 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -15110,7 +15277,7 @@
 				)
 			)
 		)
-		(property "Stock" "3698334"
+		(property "Stock" "1422246"
 			(at 184.15 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -15121,7 +15288,7 @@
 				)
 			)
 		)
-		(property "Price" "0.035USD"
+		(property "Price" "0.066USD"
 			(at 184.15 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -15187,7 +15354,7 @@
 				)
 			)
 		)
-		(property "Part" "CL31A106KBHNNNE"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 184.15 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -15199,7 +15366,8 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 184.658 143.764 0)
+			(at 186.182 141.7462 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15232,6 +15400,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X5R"
+			(at 184.15 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
 			(at 184.15 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -15709,7 +15888,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
 		(at 186.69 102.87 90)
 		(mirror x)
 		(unit 1)
@@ -15740,7 +15919,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 186.69 101.092 90)
 			(hide yes)
 			(show_name no)
@@ -15751,7 +15930,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311845_UNI-ROYAL-Uniroyal-Elec-0805W8F100KT5E_C25271.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15762,7 +15941,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±1% ±400ppm/°C 1Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15773,7 +15952,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25271"
+		(property "LCSC" "C25086"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15784,7 +15963,7 @@
 				)
 			)
 		)
-		(property "Stock" "413540"
+		(property "Stock" "305976"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15795,7 +15974,7 @@
 				)
 			)
 		)
-		(property "Price" "0.006USD"
+		(property "Price" "0.004USD"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15839,7 +16018,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15861,7 +16040,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F100KT5E"
+		(property "Part" "0402WGF100KTCE"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15883,7 +16062,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15905,7 +16084,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -15938,7 +16117,41 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±400ppm/°C"
+		(property "Temperature Coefficient" "±200ppm/°C"
+			(at 186.69 102.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 186.69 102.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage Rated" "50V"
+			(at 188.7362 104.902 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+				(justify left)
+			)
+		)
+		(property "Capacitance" "10uF"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16200,7 +16413,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:1206,10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 125.73 139.7 0)
 		(unit 1)
 		(body_style 1)
@@ -16232,7 +16445,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_1206"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 123.952 139.7 90)
 			(hide yes)
 			(show_name no)
@@ -16243,7 +16456,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 125.73 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -16254,7 +16467,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 125.73 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -16265,7 +16478,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13585"
+		(property "LCSC" "C440198"
 			(at 125.73 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -16276,7 +16489,7 @@
 				)
 			)
 		)
-		(property "Stock" "3698334"
+		(property "Stock" "1422246"
 			(at 125.73 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -16287,7 +16500,7 @@
 				)
 			)
 		)
-		(property "Price" "0.035USD"
+		(property "Price" "0.066USD"
 			(at 125.73 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -16353,7 +16566,7 @@
 				)
 			)
 		)
-		(property "Part" "CL31A106KBHNNNE"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 125.73 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -16365,7 +16578,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 126.238 143.764 0)
+			(at 127.762 141.7462 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16398,6 +16611,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X5R"
+			(at 125.73 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
 			(at 125.73 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -17821,7 +18045,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:1206,10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 95.25 80.01 0)
 		(unit 1)
 		(body_style 1)
@@ -17843,7 +18067,7 @@
 			)
 		)
 		(property "Value" "10uF"
-			(at 95.758 81.534 0)
+			(at 96.774 80.264 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17853,7 +18077,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_1206"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 93.472 80.01 90)
 			(hide yes)
 			(show_name no)
@@ -17864,7 +18088,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 95.25 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -17875,7 +18099,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 95.25 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -17886,7 +18110,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13585"
+		(property "LCSC" "C440198"
 			(at 95.25 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -17897,7 +18121,7 @@
 				)
 			)
 		)
-		(property "Stock" "3698334"
+		(property "Stock" "1422246"
 			(at 95.25 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -17908,7 +18132,7 @@
 				)
 			)
 		)
-		(property "Price" "0.035USD"
+		(property "Price" "0.066USD"
 			(at 95.25 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -17974,7 +18198,7 @@
 				)
 			)
 		)
-		(property "Part" "CL31A106KBHNNNE"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 95.25 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -17986,7 +18210,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 95.758 84.074 0)
+			(at 97.282 82.0562 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18019,6 +18243,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X5R"
+			(at 95.25 80.01 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
 			(at 95.25 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -18267,7 +18502,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Capacitors:1206,10uF")
+		(lib_id "PCM_JLCPCB-Capacitors:0805,10uF,(2)")
 		(at 121.92 64.77 0)
 		(unit 1)
 		(body_style 1)
@@ -18289,7 +18524,7 @@
 			)
 		)
 		(property "Value" "10uF"
-			(at 122.428 66.294 0)
+			(at 123.698 64.77 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18299,7 +18534,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:C_1206"
+		(property "Footprint" "PCM_JLCPCB:C_0805"
 			(at 120.142 64.77 90)
 			(hide yes)
 			(show_name no)
@@ -18310,7 +18545,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Murata-Electronics-GRM21BR61H106KE43L_C440198.pdf"
 			(at 121.92 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -18321,7 +18556,7 @@
 				)
 			)
 		)
-		(property "Description" "50V 10uF X5R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
+		(property "Description" "50V 10uF X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
 			(at 121.92 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -18332,7 +18567,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C13585"
+		(property "LCSC" "C440198"
 			(at 121.92 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -18343,7 +18578,7 @@
 				)
 			)
 		)
-		(property "Stock" "3698334"
+		(property "Stock" "1422246"
 			(at 121.92 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -18354,7 +18589,7 @@
 				)
 			)
 		)
-		(property "Price" "0.035USD"
+		(property "Price" "0.066USD"
 			(at 121.92 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -18420,7 +18655,7 @@
 				)
 			)
 		)
-		(property "Part" "CL31A106KBHNNNE"
+		(property "Part" "GRM21BR61H106KE43L"
 			(at 121.92 64.77 0)
 			(hide yes)
 			(show_name no)
@@ -18432,7 +18667,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 122.428 68.834 0)
+			(at 123.952 66.8162 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18465,6 +18700,17 @@
 			)
 		)
 		(property "Temperature Coefficient" "X5R"
+			(at 121.92 64.77 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Murata Electronics"
 			(at 121.92 64.77 0)
 			(hide yes)
 			(show_name no)

@@ -2171,6 +2171,323 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "PCM_JLCPCB-Resistors:0402,49.9Ω"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 1.778 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "49.9Ω"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace yes)
+				(effects
+					(font
+						(size 0.8 0.8)
+					)
+				)
+			)
+			(property "Footprint" "PCM_JLCPCB:R_0402"
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF499JTCE_C25120.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 49.9Ω 0402 Chip Resistor - Surface Mount ROHS"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C25120"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Stock" "464542"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Price" "0.004USD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Process" "SMT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Minimum Qty" "20"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Attrition Qty" "10"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Class" "Basic Component"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Category" "Resistors,Chip Resistor - Surface Mount"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Part" "0402WGF499JTCE"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Resistance" "49.9Ω"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Power(Watts)" "62.5mW"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Type" "Thick Film Resistors"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Overload Voltage (Max)" "50V"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Operating Temperature Range" "-55°C~+155°C"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Tolerance" "±1%"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Temperature Coefficient" "±100ppm/°C"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "0402,49.9Ω_0_1"
+				(rectangle
+					(start -1.016 2.54)
+					(end 1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "0402,49.9Ω_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "PCM_JLCPCB-Resistors:0603,10Ω"
 			(pin_numbers
 				(hide yes)
@@ -3717,323 +4034,6 @@
 				)
 			)
 			(symbol "0805,33Ω_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "PCM_JLCPCB-Resistors:0805,49.9Ω"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
-				(at 1.778 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "49.9Ω"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace yes)
-				(effects
-					(font
-						(size 0.8 0.8)
-					)
-				)
-			)
-			(property "Footprint" "PCM_JLCPCB:R_0805"
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010200_UNI-ROYAL-Uniroyal-Elec-0805W8F499JT5E_C17720.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "125mW Thick Film Resistors 150V ±100ppm/°C ±1% 49.9Ω 0805 Chip Resistor - Surface Mount ROHS"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "LCSC" "C17720"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Stock" "207522"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Price" "0.005USD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Process" "SMT"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Minimum Qty" "20"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Attrition Qty" "10"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Class" "Basic Component"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Category" "Resistors,Chip Resistor - Surface Mount"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Part" "0805W8F499JT5E"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Resistance" "49.9Ω"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Power(Watts)" "125mW"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Type" "Thick Film Resistors"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Overload Voltage (Max)" "150V"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Operating Temperature Range" "-55°C~+155°C"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Tolerance" "±1%"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Temperature Coefficient" "±100ppm/°C"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "R_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "0805,49.9Ω_0_1"
-				(rectangle
-					(start -1.016 2.54)
-					(end 1.016 -2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "0805,49.9Ω_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 1.27)
@@ -7323,7 +7323,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 64.008 104.648 0)
+			(at 58.928 104.9162 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7904,7 +7904,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 229.108 33.528 0)
+			(at 224.028 33.7962 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8333,7 +8333,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 46.228 27.178 0)
+			(at 41.148 27.4462 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8881,7 +8881,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 122.428 109.728 0)
+			(at 117.348 109.9962 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9309,7 +9309,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 173.228 53.848 0)
+			(at 168.148 54.1162 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10535,7 +10535,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 216.408 118.618 0)
+			(at 211.328 118.8862 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11385,7 +11385,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 157.988 113.538 0)
+			(at 152.908 113.8062 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12199,7 +12199,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 243.078 118.618 0)
+			(at 237.998 118.8862 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12258,7 +12258,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,49.9Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,49.9Ω")
 		(at 217.17 48.26 90)
 		(unit 1)
 		(body_style 1)
@@ -12289,7 +12289,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 217.17 50.038 90)
 			(hide yes)
 			(show_name no)
@@ -12300,7 +12300,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010200_UNI-ROYAL-Uniroyal-Elec-0805W8F499JT5E_C17720.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF499JTCE_C25120.pdf"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -12311,7 +12311,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±100ppm/°C ±1% 49.9Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 49.9Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -12322,7 +12322,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17720"
+		(property "LCSC" "C25120"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -12333,7 +12333,7 @@
 				)
 			)
 		)
-		(property "Stock" "207522"
+		(property "Stock" "464542"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -12344,7 +12344,7 @@
 				)
 			)
 		)
-		(property "Price" "0.005USD"
+		(property "Price" "0.004USD"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -12421,7 +12421,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F499JT5E"
+		(property "Part" "0402WGF499JTCE"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -12443,7 +12443,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -12465,7 +12465,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 217.17 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -13086,7 +13086,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 110.998 52.578 0)
+			(at 105.918 52.8462 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14222,7 +14222,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 95.758 109.728 0)
+			(at 90.678 109.9962 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15071,7 +15071,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 184.658 113.538 0)
+			(at 179.578 113.8062 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17485,7 +17485,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,49.9Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,49.9Ω")
 		(at 34.29 39.37 90)
 		(unit 1)
 		(body_style 1)
@@ -17516,7 +17516,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 34.29 41.148 90)
 			(hide yes)
 			(show_name no)
@@ -17527,7 +17527,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010200_UNI-ROYAL-Uniroyal-Elec-0805W8F499JT5E_C17720.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF499JTCE_C25120.pdf"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17538,7 +17538,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±100ppm/°C ±1% 49.9Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 49.9Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17549,7 +17549,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17720"
+		(property "LCSC" "C25120"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17560,7 +17560,7 @@
 				)
 			)
 		)
-		(property "Stock" "207522"
+		(property "Stock" "464542"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17571,7 +17571,7 @@
 				)
 			)
 		)
-		(property "Price" "0.005USD"
+		(property "Price" "0.004USD"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17648,7 +17648,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F499JT5E"
+		(property "Part" "0402WGF499JTCE"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17670,7 +17670,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17692,7 +17692,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 34.29 39.37 0)
 			(hide yes)
 			(show_name no)
@@ -17946,7 +17946,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0805,49.9Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0402,49.9Ω")
 		(at 53.34 55.88 180)
 		(unit 1)
 		(body_style 1)
@@ -17977,7 +17977,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0805"
+		(property "Footprint" "PCM_JLCPCB:R_0402"
 			(at 55.118 55.88 90)
 			(hide yes)
 			(show_name no)
@@ -17988,7 +17988,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010200_UNI-ROYAL-Uniroyal-Elec-0805W8F499JT5E_C17720.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF499JTCE_C25120.pdf"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -17999,7 +17999,7 @@
 				)
 			)
 		)
-		(property "Description" "125mW Thick Film Resistors 150V ±100ppm/°C ±1% 49.9Ω 0805 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 49.9Ω 0402 Chip Resistor - Surface Mount ROHS"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -18010,7 +18010,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17720"
+		(property "LCSC" "C25120"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -18021,7 +18021,7 @@
 				)
 			)
 		)
-		(property "Stock" "207522"
+		(property "Stock" "464542"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -18032,7 +18032,7 @@
 				)
 			)
 		)
-		(property "Price" "0.005USD"
+		(property "Price" "0.004USD"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -18109,7 +18109,7 @@
 				)
 			)
 		)
-		(property "Part" "0805W8F499JT5E"
+		(property "Part" "0402WGF499JTCE"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -18131,7 +18131,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "125mW"
+		(property "Power(Watts)" "62.5mW"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -18153,7 +18153,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "150V"
+		(property "Overload Voltage (Max)" "50V"
 			(at 53.34 55.88 0)
 			(hide yes)
 			(show_name no)
@@ -18390,7 +18390,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 24.638 36.322 90)
+			(at 24.9062 41.402 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -19355,7 +19355,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 37.338 104.648 0)
+			(at 32.258 104.9162 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22219,7 +22219,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 207.518 45.212 90)
+			(at 207.7862 50.292 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
