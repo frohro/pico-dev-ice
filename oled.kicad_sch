@@ -533,7 +533,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "1c559b49-9427-4afa-959d-33aab50133c5")
-		(property "Reference" "#PWR0141"
+		(property "Reference" "#PWR0109"
 			(at 111.76 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -593,7 +593,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/4077dc3d-4e49-4b1f-a6d3-5996e829870e"
-					(reference "#PWR0141")
+					(reference "#PWR0109")
 					(unit 1)
 				)
 			)
@@ -610,7 +610,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "4822e82b-260e-4841-b509-eca0b3f6bd4b")
-		(property "Reference" "J15"
+		(property "Reference" "J8"
 			(at 96.52 67.818 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -689,7 +689,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/4077dc3d-4e49-4b1f-a6d3-5996e829870e"
-					(reference "J15")
+					(reference "J8")
 					(unit 1)
 				)
 			)
@@ -706,7 +706,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "d5604d14-2669-4a0b-9d9c-d0e893e87cff")
-		(property "Reference" "#PWR0142"
+		(property "Reference" "#PWR0108"
 			(at 101.6 91.44 0)
 			(hide yes)
 			(show_name no)
@@ -766,7 +766,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/4077dc3d-4e49-4b1f-a6d3-5996e829870e"
-					(reference "#PWR0142")
+					(reference "#PWR0108")
 					(unit 1)
 				)
 			)

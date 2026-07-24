@@ -1978,7 +1978,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "10305e1b-c93d-460c-ac68-5ca3fd296ca4")
-		(property "Reference" "R2"
+		(property "Reference" "R56"
 			(at 138.43 102.8699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2217,7 +2217,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "R2")
+					(reference "R56")
 					(unit 1)
 				)
 			)
@@ -2235,7 +2235,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "25d9e683-3cd0-418c-9aec-a78e3701a74d")
-		(property "Reference" "R1"
+		(property "Reference" "R55"
 			(at 123.19 62.2299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2474,7 +2474,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "R1")
+					(reference "R55")
 					(unit 1)
 				)
 			)
@@ -2491,7 +2491,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "32898098-339d-41f7-bd50-f13a9dab349e")
-		(property "Reference" "#PWR0112"
+		(property "Reference" "#PWR0140"
 			(at 120.65 62.23 0)
 			(hide yes)
 			(show_name no)
@@ -2551,7 +2551,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR0112")
+					(reference "#PWR0140")
 					(unit 1)
 				)
 			)
@@ -2569,7 +2569,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4e92a144-de99-4b2e-bd9d-aa7833cb3b95")
-		(property "Reference" "#PWR01"
+		(property "Reference" "#PWR0144"
 			(at 146.05 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -2629,7 +2629,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR01")
+					(reference "#PWR0144")
 					(unit 1)
 				)
 			)
@@ -2647,7 +2647,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "62a41e7d-8a3a-4734-93c8-431e4c09981f")
-		(property "Reference" "#PWR02"
+		(property "Reference" "#PWR0147"
 			(at 171.45 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2707,7 +2707,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR02")
+					(reference "#PWR0147")
 					(unit 1)
 				)
 			)
@@ -2725,7 +2725,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "643c3bf4-b476-4edf-87cc-d741a4cfcea9")
-		(property "Reference" "#PWR03"
+		(property "Reference" "#PWR0141"
 			(at 120.65 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -2785,7 +2785,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR03")
+					(reference "#PWR0141")
 					(unit 1)
 				)
 			)
@@ -2920,7 +2920,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7e187a78-2100-434c-9748-089489021f47")
-		(property "Reference" "C4"
+		(property "Reference" "C80"
 			(at 158.75 115.5699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3127,7 +3127,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "C4")
+					(reference "C80")
 					(unit 1)
 				)
 			)
@@ -3144,7 +3144,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "7f40bcdf-97d3-40c9-958a-23caeb837616")
-		(property "Reference" "#PWR0219"
+		(property "Reference" "#PWR0142"
 			(at 135.89 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -3204,7 +3204,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR0219")
+					(reference "#PWR0142")
 					(unit 1)
 				)
 			)
@@ -3221,7 +3221,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "898cee07-3165-4200-8336-5a3afad18b2f")
-		(property "Reference" "#PWR0215"
+		(property "Reference" "#PWR0145"
 			(at 156.21 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -3281,7 +3281,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR0215")
+					(reference "#PWR0145")
 					(unit 1)
 				)
 			)
@@ -3299,7 +3299,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8fa7cd5b-6234-431f-a3f2-f21d886f6b3a")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR0143"
 			(at 135.89 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -3359,7 +3359,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR07")
+					(reference "#PWR0143")
 					(unit 1)
 				)
 			)
@@ -3377,7 +3377,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9b101229-d26d-4e2a-9d7a-2a7a547828c0")
-		(property "Reference" "C3"
+		(property "Reference" "C79"
 			(at 138.43 115.5699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3584,7 +3584,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "C3")
+					(reference "C79")
 					(unit 1)
 				)
 			)
@@ -3602,7 +3602,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b627a8ce-32ee-4643-b6f4-62034f0ba10c")
-		(property "Reference" "C1"
+		(property "Reference" "C78"
 			(at 123.19 74.9299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3820,7 +3820,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "C1")
+					(reference "C78")
 					(unit 1)
 				)
 			)
@@ -3838,7 +3838,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d04dd174-4d24-4b61-902a-68230ff5cc7b")
-		(property "Reference" "R3"
+		(property "Reference" "R57"
 			(at 158.75 102.8699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4077,7 +4077,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "R3")
+					(reference "R57")
 					(unit 1)
 				)
 			)
@@ -4095,7 +4095,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "da7cbef6-bdd8-45fb-a718-8e4428bdf5db")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR0146"
 			(at 156.21 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -4155,7 +4155,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/c5c7ebe4-c2cf-476b-acef-eee73a74faf1"
-					(reference "#PWR09")
+					(reference "#PWR0146")
 					(unit 1)
 				)
 			)

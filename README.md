@@ -9,7 +9,7 @@ This board is a low-cost, high-performance "Lab-in-a-Box." It combines the high-
 Designed specifically as an educational platform, it abandons "black box" RF chips in favor of discrete, observable analog blocks. Students can physically probe the RF signal path, design their own LC filters on pluggable sandboxes, and write Verilog to perform Direct Digital Conversion (DDC), digital decimation, and hardware I2S audio routing.
 
 ## 🚀 Key Capabilities
-* **HF Software Defined Radio (RX/TX):** Full-duplex DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30 MHz.
+* **HF Software Defined Radio (RX/TX):** DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30 MHz.
 * **Vector Network Analyzer (VNA):** Built-in Return Loss Bridge (RLB) for S11 (reflection) antenna tuning, and Port-to-Port S21 (transmission) filter characterization.
 * **Arbitrary Waveform Generator (AWG):** Dedicated DC-coupled and AC-coupled SMA outputs for 30 MSPS generic signal generation.
 * **Real-Time Spectrum Analyzer:** Visualize the entire 15 MHz HF spectrum simultaneously via FPGA-accelerated FFTs.
@@ -30,13 +30,13 @@ Designed specifically as an educational platform, it abandons "black box" RF chi
 * **Process Gain:** The 640x decimation provides ~ 28 dB of digital processing gain, turning the raw 8-bit ADC into a highly sensitive 12.6-bit effective receiver!
 
 ### The Receive (RX) Path
-* **Topology:** `SMA` ➔ `Ethernet Isolation/CMC` ➔ `Filter Sandbox` ➔ `T/R Switch` ➔ `LNA 1` ➔ `PGA (5/10/20dB)` ➔ `LNA 2` ➔ `ADC`.
-* **Amplifiers:** Uses discrete **TPH2501** high-speed op-amps wired as AC-coupled inverting amplifiers. 
-* **Programmable Gain:** A 4-bit Digital Step Attenuator (DSA) built from **74LVC1G3157** CMOS switches and precision T-networks, providing 0 to 55 dB of gain control in 5 dB steps.
+* **Topology:** `SMA` ➔ `Ethernet Isolation/CMC` ➔ `Band Sandbox` ➔ `T/R Switch` ➔ `LNA 1` ➔ `PGA (5/10/20dB)` ➔ `LNA 2` ➔ `ADC`.
+* **Amplifiers:** Uses discrete high-speed op-amps wired as AC-coupled inverting amplifiers. 
+* **Programmable Gain:** A 4-bit Digital Step Attenuator (DSA) built from CMOS switches and precision T-networks, providing 0 to 55 dB of gain control in 5 dB steps. LNA 1 and LNA 2 are both bypassable to prevent clipping on massive signals.
 * **ADC (MS9280):** 8-bit, 32 MSPS. Driven by an RF balun into True Differential Mode with a 4.5V analog supply, yielding a massive 4.0V peak-to-peak input span for maximum dynamic range.
 
 ### The Transmit (TX) Path
-* **Topology:** `DAC` ➔ `Passive I-V` ➔ `Ethernet Transformer` ➔ `TX Switch` ➔ `Recon Filter Sandbox` ➔ `TX Op-Amp (+12dB)` ➔ `T/R Switch` ➔ `SMA`.
+* **Topology:** `DAC` ➔ `Passive I-V` ➔ `Ethernet Transformer` ➔ `TX Switch` ➔ `Recon Sandbox` ➔ `TX Op-Amp (+12dB)` ➔ `T/R Switch` ➔ `SMA`.
 * **DAC (MS9708):** 8-bit, 32 MSPS Current-Steering DAC.
 * Passive 50Ω resistors and an Ethernet transformer gracefully map the DAC's strict output compliance limits into a clean 1.0V p-p RF signal, which is then amplified to drive a 50-ohm antenna.
 
@@ -50,24 +50,24 @@ To achieve commercial-grade noise floors, the noisy Switch-Mode Power Supply (SM
 
 ## 🎛️ Port & Jumper Reference
 
-### SMA Connectors
+### BNC Connectors
 1. **`SDR_ANT`:** Main Transceiver Port (Transformer isolated, AC-Coupled).
 2. **`DUT` (VNA_TEST):** Device Under Test port for S11/VSWR Antenna measurements. Connects to the internal Return Loss Bridge.
-3. **`AWG_OUT_DC`:** Direct DC-coupled output (0V to +4V) from the DAC. Perfect for baseband signal generation.
-4. **`AWG_OUT_AC`:** AC-coupled output for S21 Filter sweeps and RF signal generation. Protects the op-amp from DC-shorted filters.
+3. **`AWG_OUT` (DC-Coupled):** Direct DC-coupled output (0V to +4V) from the DAC. Perfect for baseband signal generation.
+4. **`AWG_OUT` (AC-Coupled):** AC-coupled output for S21 Filter sweeps and RF signal generation. Protects the op-amp from DC-shorted filters.
 
 ### Filter Sandboxes (Plug-and-Play)
 The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter daughterboards. 
-* **Main Sandbox:** Shared by both RX and TX (post-T/R switch). Students calculate and test bandpass filters here.
+* **Band Sandbox:** Shared by both RX and TX (pre-T/R switch). Students calculate and test bandpass filters here.
 * **TX Pre-Sandbox:** Placed before the TX amplifier. Used for mild Nyquist reconstruction filters or super-Nyquist image-selection filters.
 
 ---
 
 ## 🛠️ Software & HDL Notes
 
-* **Level Shifters (Logic Inversion):** The 4.5V analog switches are controlled by 3.3V GPIOs via N-Channel MOSFETs. **Note:** This results in a logic inversion. Writing `0` to the pin in MicroPython = Switch HIGH (Max Gain / Default Path). Writing `1` = Switch LOW (Attenuated / VNA / TX Path).
+* **Level Shifters (Logic Inversion):** The 4.5V analog switches are controlled by 3.3V GPIOs via 2N7002 N-Channel MOSFETs. **Note:** This results in a logic inversion. Writing `0` to the pin in MicroPython = Switch HIGH (Max Gain / Default Path). Writing `1` = Switch LOW (Attenuated / VNA / TX Path).
 * **FPGA Boot & SPI0 Bus:** 
-    *   The external FPGA Flash chip was removed to simplify the architecture. The Pico boots the FPGA directly by blasting the bitstream into CRAM using its Hardware `SPI0` block. 
+    *   The external FPGA Flash chip used on the pico2-ice was removed to simplify the architecture. The Pico boots the FPGA directly by blasting the bitstream into CRAM using its Hardware `SPI0` block. 
     *   Because the Pico drives the bus, the net names match the Pico's hardware roles: `SPI0_TX` (MOSI) is data entering the FPGA, and `SPI0_RX` (MISO) is data leaving the FPGA. 
     *   **Runtime:** Once booted, the Pico reuses the exact same `SPI0` bus and `ICE_SSN` Chip Select pin to send DSP commands to the user's Verilog.
 * **ADC OTR:** The MS9280 "Out of Range" (Clipping) pin pulses for only 32ns. The FPGA catches this, stretches the pulse, and triggers a hardware interrupt on the Pico to engage the AGC.
@@ -91,7 +91,7 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
 | **GPIO 7** | `SPI0_TX` | SPI0 MOSI | Output | Data leaving Pico to FPGA |
 | **GPIO 8** | `PGA0` | 5 dB Attenuator | Output | Logic 1 = Attenuator Active (LOW at switch) |
 | **GPIO 9** | `PGA1` | 10 dB Attenuator | Output | Logic 1 = Attenuator Active (LOW at switch) |
-| **GPIO 10** | `PGA2` | 20 dB Attenuator | Output | Logic 1 = Attenuator Active (LOW at switch) |
+| **GPIO 10** | `PGA2` | LNA 2 Bypass | Output | Logic 1 = LNA Bypassed (LOW at switch) |
 | **GPIO 11** | `PGA3` | LNA 1 Bypass | Output | Logic 1 = LNA Bypassed (LOW at switch) |
 | **GPIO 12** | `BAND_SW` | Band Filter Sandbox | Output | Toggles sandbox selection switch |
 | **GPIO 13** | `TX_DATA` | I2S TX Data | Output | Full-Duplex Baseband Audio TO the FPGA |
@@ -105,8 +105,8 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
 | **GPIO 21** | `ICE_DONE` | FPGA Boot Status | Input | Goes HIGH when FPGA is running and lights White LED|
 | **GPIO 22** | `~ICE_RST` | FPGA Reset | Output | Pull LOW to hold FPGA in reset |
 | **GPIO 26** | `REF` | VNA Reflection Sw | Output | Toggles paths to form the closed-loop VNA |
-| **GPIO 27** | *(Optional)* | PMOD / GPIO Jump | I/O | Jumper JP52 maps to PMOD_2 |
-| **GPIO 28** | *(Optional)* | PMOD / GPIO Jump | I/O | Jumper JP51 maps to PMOD_3 |
+| **GPIO 27** | *(Optional)* | PMOD / GPIO Jump | I/O | Jumper JP3 maps to PMOD_2 |
+| **GPIO 28** | *(Optional)* | PMOD / GPIO Jump | I/O | Jumper JP1 maps to PMOD_3 |
 
 ### 2. FPGA (Lattice iCE40UP5K-SG48) Pinout
 *This map defines the interface for the digital design team writing Verilog and the `.pcf` constraints file.* 

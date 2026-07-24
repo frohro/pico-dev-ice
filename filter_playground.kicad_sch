@@ -1907,6 +1907,323 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "PCM_JLCPCB-Resistors:0402,100kΩ"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 1.778 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "100kΩ"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace yes)
+				(effects
+					(font
+						(size 0.8 0.8)
+					)
+				)
+			)
+			(property "Footprint" "PCM_JLCPCB:R_0402"
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 100kΩ 0402 Chip Resistor - Surface Mount ROHS"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C25741"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Stock" "6969783"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Price" "0.004USD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Process" "SMT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Minimum Qty" "20"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Attrition Qty" "10"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Class" "Basic Component"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Category" "Resistors,Chip Resistor - Surface Mount"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Part" "0402WGF1003TCE"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Resistance" "100kΩ"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Power(Watts)" "62.5mW"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Type" "Thick Film Resistors"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Overload Voltage (Max)" "50V"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Operating Temperature Range" "-55°C~+155°C"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Tolerance" "±1%"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Temperature Coefficient" "±100ppm/°C"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "0402,100kΩ_0_1"
+				(rectangle
+					(start -1.016 2.54)
+					(end 1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "0402,100kΩ_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "PCM_JLCPCB-Resistors:0402,10kΩ"
 			(pin_numbers
 				(hide yes)
@@ -3731,13 +4048,31 @@
 		(uuid "0f297fad-b46a-4b36-838b-25ad7b90f618")
 	)
 	(junction
+		(at 129.54 67.31)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "32e40142-71df-430b-9232-12331f83a738")
+	)
+	(junction
+		(at 129.54 77.47)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3f345e3a-b340-4e86-9f02-ffebda4a5ccb")
+	)
+	(junction
+		(at 101.6 67.31)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "444574d3-3f91-44c7-b0d5-d24d8d82b6c0")
+	)
+	(junction
 		(at 116.84 77.47)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4ecd0689-82a8-4e69-a164-791dbf3f35fe")
 	)
 	(junction
-		(at 99.06 156.21)
+		(at 115.57 156.21)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "51119199-8631-49bd-9bcb-dfeeed2b6082")
@@ -3755,7 +4090,13 @@
 		(uuid "5a3e0345-950a-48b7-85b6-a1c0b040e7ee")
 	)
 	(junction
-		(at 73.66 156.21)
+		(at 101.6 77.47)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "802f52ba-b34e-4f14-9bd0-c43f4ee83343")
+	)
+	(junction
+		(at 140.97 156.21)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9f927fe1-48de-4800-bf08-d9a060a12194")
@@ -3767,7 +4108,7 @@
 		(uuid "a44a9fce-8f18-4819-b5ee-0f5ef4a2bb1b")
 	)
 	(junction
-		(at 123.19 154.94)
+		(at 91.44 154.94)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a7de4c99-39a2-448e-97dc-02a5e86d04e6")
@@ -3832,7 +4173,17 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 156.21) (xy 99.06 166.37)
+			(xy 129.54 67.31) (xy 130.81 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0d3bd790-3ade-43c5-8270-7f2d2e19720e")
+	)
+	(wire
+		(pts
+			(xy 115.57 156.21) (xy 115.57 166.37)
 		)
 		(stroke
 			(width 0)
@@ -3852,7 +4203,7 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 153.67) (xy 99.06 156.21)
+			(xy 115.57 153.67) (xy 115.57 156.21)
 		)
 		(stroke
 			(width 0)
@@ -3902,6 +4253,16 @@
 	)
 	(wire
 		(pts
+			(xy 129.54 85.09) (xy 132.08 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3476aab9-b199-4b0d-8af4-79088b0a838b")
+	)
+	(wire
+		(pts
 			(xy 115.57 67.31) (xy 116.84 67.31)
 		)
 		(stroke
@@ -3922,7 +4283,7 @@
 	)
 	(wire
 		(pts
-			(xy 120.65 67.31) (xy 123.19 67.31)
+			(xy 120.65 67.31) (xy 121.92 67.31)
 		)
 		(stroke
 			(width 0)
@@ -3939,6 +4300,16 @@
 			(type default)
 		)
 		(uuid "4c8f94ab-7bb1-4706-aec9-810540e39c7f")
+	)
+	(wire
+		(pts
+			(xy 100.33 66.04) (xy 100.33 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "578915c6-12bf-4c0f-910e-cf0dd068665b")
 	)
 	(wire
 		(pts
@@ -3962,7 +4333,7 @@
 	)
 	(wire
 		(pts
-			(xy 120.65 77.47) (xy 124.46 77.47)
+			(xy 120.65 77.47) (xy 121.92 77.47)
 		)
 		(stroke
 			(width 0)
@@ -3982,7 +4353,7 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 156.21) (xy 73.66 156.21)
+			(xy 137.16 156.21) (xy 140.97 156.21)
 		)
 		(stroke
 			(width 0)
@@ -4022,6 +4393,16 @@
 	)
 	(wire
 		(pts
+			(xy 129.54 77.47) (xy 130.81 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7621e89e-bdab-4822-8eca-c77f89b7d7f1")
+	)
+	(wire
+		(pts
 			(xy 175.26 62.23) (xy 175.26 55.88)
 		)
 		(stroke
@@ -4052,7 +4433,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 153.67) (xy 73.66 156.21)
+			(xy 140.97 153.67) (xy 140.97 156.21)
 		)
 		(stroke
 			(width 0)
@@ -4062,7 +4443,7 @@
 	)
 	(wire
 		(pts
-			(xy 127 154.94) (xy 123.19 154.94)
+			(xy 87.63 154.94) (xy 91.44 154.94)
 		)
 		(stroke
 			(width 0)
@@ -4072,7 +4453,7 @@
 	)
 	(wire
 		(pts
-			(xy 102.87 156.21) (xy 99.06 156.21)
+			(xy 111.76 156.21) (xy 115.57 156.21)
 		)
 		(stroke
 			(width 0)
@@ -4082,7 +4463,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 154.94) (xy 123.19 165.1)
+			(xy 91.44 154.94) (xy 91.44 165.1)
 		)
 		(stroke
 			(width 0)
@@ -4142,16 +4523,6 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 77.47) (xy 132.08 77.47)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cbb04762-b8c1-41c1-bd09-96bfc5b68dbc")
-	)
-	(wire
-		(pts
 			(xy 80.645 82.55) (xy 80.645 107.95)
 		)
 		(stroke
@@ -4172,7 +4543,17 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 152.4) (xy 123.19 154.94)
+			(xy 100.33 77.47) (xy 101.6 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc96ccd4-cd33-4707-8256-c355df1c830b")
+	)
+	(wire
+		(pts
+			(xy 91.44 152.4) (xy 91.44 154.94)
 		)
 		(stroke
 			(width 0)
@@ -4182,13 +4563,33 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 156.21) (xy 73.66 166.37)
+			(xy 140.97 156.21) (xy 140.97 166.37)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "f2ff1fa2-c70c-41c3-8bc8-1cb9702ff56f")
+	)
+	(wire
+		(pts
+			(xy 129.54 66.04) (xy 129.54 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f5b89e49-9fd5-418b-9750-b26426702e6c")
+	)
+	(wire
+		(pts
+			(xy 100.33 67.31) (xy 101.6 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f68a8c3d-00ed-4276-91c5-12d0d6248bfa")
 	)
 	(wire
 		(pts
@@ -4248,6 +4649,102 @@
 			)
 		)
 	)
+	(global_label "VA{slash}2"
+		(shape input)
+		(at 132.08 85.09 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9d27d2be-637d-4877-bc60-f0ca77dc9447")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 139.7824 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
+	(global_label "VA{slash}2"
+		(shape input)
+		(at 100.33 58.42 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "cb99e673-6521-4547-8de3-739666cd2e8c")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 92.6276 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+	)
+	(global_label "VA{slash}2"
+		(shape input)
+		(at 100.33 85.09 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "dafe6144-cf95-4ca8-bfe1-2aee49ac4456")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 92.6276 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+	)
+	(global_label "VA{slash}2"
+		(shape input)
+		(at 129.54 58.42 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ed8b0c23-112a-4d04-b7d0-8abfa2896887")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 137.2424 58.42 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+	)
 	(hierarchical_label "TX_OUT"
 		(shape input)
 		(at 214.63 77.47 0)
@@ -4294,7 +4791,7 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
-		(at 127 67.31 90)
+		(at 125.73 67.31 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4302,10 +4799,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "0026bfcd-c480-40cb-b68e-4d4da6402809")
-		(property "Reference" "C13"
-			(at 127 58.42 90)
+		(property "Reference" "C101"
+			(at 125.73 61.976 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4315,7 +4811,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 127 60.96 90)
+			(at 125.73 64.516 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4325,7 +4821,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 127 69.088 90)
+			(at 125.73 69.088 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4336,7 +4832,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4347,7 +4843,7 @@
 			)
 		)
 		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4358,7 +4854,7 @@
 			)
 		)
 		(property "LCSC" "C307331"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4369,7 +4865,7 @@
 			)
 		)
 		(property "Stock" "8389599"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4380,7 +4876,7 @@
 			)
 		)
 		(property "Price" "0.008USD"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4391,7 +4887,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4402,7 +4898,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4413,7 +4909,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4424,7 +4920,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4435,7 +4931,7 @@
 			)
 		)
 		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4446,7 +4942,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4457,7 +4953,7 @@
 			)
 		)
 		(property "Part" "CL05B104KB54PNC"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4468,7 +4964,8 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 127 63.5 90)
+			(at 125.73 63.5 90)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4478,7 +4975,7 @@
 			)
 		)
 		(property "Tolerance" "±10%"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4489,7 +4986,7 @@
 			)
 		)
 		(property "Capacitance" "100nF"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4500,7 +4997,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
-			(at 127 67.31 0)
+			(at 125.73 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4519,7 +5016,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C13")
+					(reference "C101")
 					(unit 1)
 				)
 			)
@@ -4536,7 +5033,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "0d689fc7-850c-4685-bc99-ae117872560f")
-		(property "Reference" "#PWR0164"
+		(property "Reference" "#PWR0205"
 			(at 165.1 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -4597,7 +5094,274 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0164")
+					(reference "#PWR0205")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_JLCPCB-Resistors:0402,100kΩ")
+		(at 100.33 62.23 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0e5f471f-33b9-40a9-be4f-a871058f1f02")
+		(property "Reference" "R82"
+			(at 95.25 60.96 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100kΩ"
+			(at 100.33 62.23 90)
+			(show_name no)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+			)
+		)
+		(property "Footprint" "PCM_JLCPCB:R_0402"
+			(at 98.552 62.23 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.pdf"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 100kΩ 0402 Chip Resistor - Surface Mount ROHS"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25741"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Stock" "6969783"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "0.004USD"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Process" "SMT"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Minimum Qty" "20"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Attrition Qty" "10"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Class" "Basic Component"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Category" "Resistors,Chip Resistor - Surface Mount"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Part" "0402WGF1003TCE"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Resistance" "100kΩ"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power(Watts)" "62.5mW"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Type" "Thick Film Resistors"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Overload Voltage (Max)" "50V"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Operating Temperature Range" "-55°C~+155°C"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "±1%"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Temperature Coefficient" "±100ppm/°C"
+			(at 100.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8c664b1e-3eef-4783-b148-fd86dcb70006")
+		)
+		(pin "2"
+			(uuid "c74678dc-916a-4b40-8858-8e4c1ebb3e6f")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
+					(reference "R82")
 					(unit 1)
 				)
 			)
@@ -4605,8 +5369,7 @@
 	)
 	(symbol
 		(lib_id "UPduino_v3.0:power_GND")
-		(at 102.87 163.83 0)
-		(mirror y)
+		(at 111.76 163.83 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4615,8 +5378,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "1048424d-23d2-4a58-93ab-d44e22faf5cb")
-		(property "Reference" "#PWR0161"
-			(at 102.87 170.18 0)
+		(property "Reference" "#PWR0194"
+			(at 111.76 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4627,7 +5390,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 102.743 168.2242 0)
+			(at 111.887 168.2242 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4638,7 +5401,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 102.87 163.83 0)
+			(at 111.76 163.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4649,7 +5412,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 102.87 163.83 0)
+			(at 111.76 163.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4660,7 +5423,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 102.87 163.83 0)
+			(at 111.76 163.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4676,7 +5439,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0161")
+					(reference "#PWR0194")
 					(unit 1)
 				)
 			)
@@ -4684,8 +5447,7 @@
 	)
 	(symbol
 		(lib_id "power:VDDA")
-		(at 73.66 153.67 0)
-		(mirror y)
+		(at 140.97 153.67 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4695,8 +5457,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "11006e52-f9ae-43e6-a56e-d49ddff0ea1c")
-		(property "Reference" "#PWR0158"
-			(at 73.66 157.48 0)
+		(property "Reference" "#PWR0202"
+			(at 140.97 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4707,7 +5469,7 @@
 			)
 		)
 		(property "Value" "VDDA"
-			(at 73.66 148.59 0)
+			(at 140.97 148.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4717,7 +5479,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 73.66 153.67 0)
+			(at 140.97 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4728,7 +5490,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 153.67 0)
+			(at 140.97 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4739,7 +5501,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 73.66 153.67 0)
+			(at 140.97 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4755,7 +5517,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0158")
+					(reference "#PWR0202")
 					(unit 1)
 				)
 			)
@@ -4773,7 +5535,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "15599e5d-8846-4089-8acd-3740f6c82884")
-		(property "Reference" "#PWR015"
+		(property "Reference" "#PWR0190"
 			(at 69.215 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -4834,7 +5596,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR015")
+					(reference "#PWR0190")
 					(unit 1)
 				)
 			)
@@ -4853,7 +5615,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "15bd6691-fe31-4dba-b080-1ada06b5963e")
-		(property "Reference" "J2"
+		(property "Reference" "J12"
 			(at 116.84 87.63 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4921,7 +5683,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "J2")
+					(reference "J12")
 					(unit 1)
 				)
 			)
@@ -4938,7 +5700,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "1d79b4c9-14ad-47b4-a8d6-cd91915f21e4")
-		(property "Reference" "C105"
+		(property "Reference" "C104"
 			(at 203.2 58.42 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5102,7 +5864,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 205.2462 65.278 0)
+			(at 205.2462 65.278 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5154,7 +5916,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C105")
+					(reference "C104")
 					(unit 1)
 				)
 			)
@@ -5162,8 +5924,7 @@
 	)
 	(symbol
 		(lib_id "power:VDDA")
-		(at 123.19 152.4 0)
-		(mirror y)
+		(at 91.44 152.4 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5173,8 +5934,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1f98527e-1070-41a3-98d3-3af4a36e7bb9")
-		(property "Reference" "#PWR0162"
-			(at 123.19 156.21 0)
+		(property "Reference" "#PWR0192"
+			(at 91.44 156.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5185,7 +5946,7 @@
 			)
 		)
 		(property "Value" "VDDA"
-			(at 123.19 147.32 0)
+			(at 91.44 147.32 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5195,7 +5956,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 123.19 152.4 0)
+			(at 91.44 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5206,7 +5967,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 123.19 152.4 0)
+			(at 91.44 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5217,7 +5978,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 123.19 152.4 0)
+			(at 91.44 152.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5233,7 +5994,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0162")
+					(reference "#PWR0192")
 					(unit 1)
 				)
 			)
@@ -5252,7 +6013,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "26ef3be3-7821-4088-8c8c-9b7e260e7f23")
-		(property "Reference" "#PWR025"
+		(property "Reference" "#PWR0188"
 			(at 43.18 31.75 0)
 			(hide yes)
 			(show_name no)
@@ -5313,7 +6074,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR025")
+					(reference "#PWR0188")
 					(unit 1)
 				)
 			)
@@ -5321,7 +6082,8 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
-		(at 127 158.75 0)
+		(at 87.63 158.75 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5330,8 +6092,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "317816b6-d472-4677-91d2-8384b9d52f26")
-		(property "Reference" "C77"
-			(at 123.19 156.21 0)
+		(property "Reference" "C97"
+			(at 91.44 156.21 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5342,7 +6104,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 127.508 156.972 0)
+			(at 87.122 156.972 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5353,7 +6115,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 125.222 158.75 90)
+			(at 89.408 158.75 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5364,7 +6126,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5375,7 +6137,7 @@
 			)
 		)
 		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5386,7 +6148,7 @@
 			)
 		)
 		(property "LCSC" "C307331"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5397,7 +6159,7 @@
 			)
 		)
 		(property "Stock" "8389599"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5408,7 +6170,7 @@
 			)
 		)
 		(property "Price" "0.008USD"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5419,7 +6181,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5430,7 +6192,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5441,7 +6203,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5452,7 +6214,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5463,7 +6225,7 @@
 			)
 		)
 		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5474,7 +6236,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5485,7 +6247,7 @@
 			)
 		)
 		(property "Part" "CL05B104KB54PNC"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5496,7 +6258,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 129.032 160.7962 0)
+			(at 85.598 160.7962 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5507,7 +6269,7 @@
 			)
 		)
 		(property "Tolerance" "±10%"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5518,7 +6280,7 @@
 			)
 		)
 		(property "Capacitance" "100nF"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5529,7 +6291,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
-			(at 127 158.75 0)
+			(at 87.63 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5548,7 +6310,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C77")
+					(reference "C97")
 					(unit 1)
 				)
 			)
@@ -5567,7 +6329,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "328fa0cf-e8f8-42f8-8a4b-3e0eace4036f")
-		(property "Reference" "#PWR0191"
+		(property "Reference" "#PWR0195"
 			(at 114.3 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -5627,7 +6389,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0191")
+					(reference "#PWR0195")
 					(unit 1)
 				)
 			)
@@ -5635,8 +6397,7 @@
 	)
 	(symbol
 		(lib_id "power:VDDA")
-		(at 99.06 153.67 0)
-		(mirror y)
+		(at 115.57 153.67 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5646,8 +6407,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3606fb37-d364-4b2e-8fc6-14e4c28c2e75")
-		(property "Reference" "#PWR0160"
-			(at 99.06 157.48 0)
+		(property "Reference" "#PWR0197"
+			(at 115.57 157.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5658,7 +6419,7 @@
 			)
 		)
 		(property "Value" "VDDA"
-			(at 99.06 148.59 0)
+			(at 115.57 148.59 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5668,7 +6429,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 99.06 153.67 0)
+			(at 115.57 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5679,7 +6440,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 153.67 0)
+			(at 115.57 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5690,7 +6451,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 99.06 153.67 0)
+			(at 115.57 153.67 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5706,7 +6467,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0160")
+					(reference "#PWR0197")
 					(unit 1)
 				)
 			)
@@ -5714,7 +6475,7 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
-		(at 128.27 77.47 90)
+		(at 125.73 77.47 90)
 		(mirror x)
 		(unit 1)
 		(body_style 1)
@@ -5724,8 +6485,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "3666b3a7-3101-4377-8af9-2c58e834dd42")
-		(property "Reference" "C68"
-			(at 128.27 86.36 90)
+		(property "Reference" "C102"
+			(at 125.73 82.296 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5735,7 +6496,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 128.27 83.82 90)
+			(at 125.73 79.756 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5745,7 +6506,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 128.27 75.692 90)
+			(at 125.73 75.692 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5756,7 +6517,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5767,7 +6528,7 @@
 			)
 		)
 		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5778,7 +6539,7 @@
 			)
 		)
 		(property "LCSC" "C307331"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5789,7 +6550,7 @@
 			)
 		)
 		(property "Stock" "8389599"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5800,7 +6561,7 @@
 			)
 		)
 		(property "Price" "0.008USD"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5811,7 +6572,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5822,7 +6583,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5833,7 +6594,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5844,7 +6605,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5855,7 +6616,7 @@
 			)
 		)
 		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5866,7 +6627,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5877,7 +6638,7 @@
 			)
 		)
 		(property "Part" "CL05B104KB54PNC"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5888,7 +6649,8 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 130.3162 79.502 0)
+			(at 127.7762 79.502 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5899,7 +6661,7 @@
 			)
 		)
 		(property "Tolerance" "±10%"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5910,7 +6672,7 @@
 			)
 		)
 		(property "Capacitance" "100nF"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5921,7 +6683,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
-			(at 128.27 77.47 0)
+			(at 125.73 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5940,7 +6702,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C68")
+					(reference "C102")
 					(unit 1)
 				)
 			)
@@ -5958,7 +6720,7 @@
 		(in_pos_files yes)
 		(dnp yes)
 		(uuid "3b2f3cad-a2ad-440c-827d-2e061d8750e4")
-		(property "Reference" "J11"
+		(property "Reference" "J10"
 			(at 29.5274 66.04 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6031,7 +6793,275 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "J11")
+					(reference "J10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_JLCPCB-Resistors:0402,100kΩ")
+		(at 100.33 81.28 0)
+		(mirror x)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "3db58e57-5fd3-4d65-a628-e56a8ca3888e")
+		(property "Reference" "R83"
+			(at 95.25 82.55 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100kΩ"
+			(at 100.33 81.28 90)
+			(show_name no)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+			)
+		)
+		(property "Footprint" "PCM_JLCPCB:R_0402"
+			(at 98.552 81.28 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.pdf"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 100kΩ 0402 Chip Resistor - Surface Mount ROHS"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25741"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Stock" "6969783"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "0.004USD"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Process" "SMT"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Minimum Qty" "20"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Attrition Qty" "10"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Class" "Basic Component"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Category" "Resistors,Chip Resistor - Surface Mount"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Part" "0402WGF1003TCE"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Resistance" "100kΩ"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power(Watts)" "62.5mW"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Type" "Thick Film Resistors"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Overload Voltage (Max)" "50V"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Operating Temperature Range" "-55°C~+155°C"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "±1%"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Temperature Coefficient" "±100ppm/°C"
+			(at 100.33 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2c53e2f3-132e-4f3e-9c42-03d8fe36d2f2")
+		)
+		(pin "2"
+			(uuid "55f0de02-9a32-4cec-9570-4065e94bc08b")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
+					(reference "R83")
 					(unit 1)
 				)
 			)
@@ -6048,7 +7078,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "40f8d224-b2bb-4472-b01b-358ad8320930")
-		(property "Reference" "R77"
+		(property "Reference" "R87"
 			(at 160.02 76.2001 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6298,7 +7328,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "R77")
+					(reference "R87")
 					(unit 1)
 				)
 			)
@@ -6316,7 +7346,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "421938d6-7a6b-488f-a39d-3acfac368f2a")
-		(property "Reference" "C6"
+		(property "Reference" "C96"
 			(at 75.565 63.5 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6531,7 +7561,274 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C6")
+					(reference "C96")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_JLCPCB-Resistors:0402,100kΩ")
+		(at 129.54 81.28 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4b0a1266-8975-4d71-b921-eb711cb53245")
+		(property "Reference" "R86"
+			(at 134.874 80.518 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100kΩ"
+			(at 129.54 81.28 90)
+			(show_name no)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+			)
+		)
+		(property "Footprint" "PCM_JLCPCB:R_0402"
+			(at 131.318 81.28 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.pdf"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 100kΩ 0402 Chip Resistor - Surface Mount ROHS"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25741"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Stock" "6969783"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "0.004USD"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Process" "SMT"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Minimum Qty" "20"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Attrition Qty" "10"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Class" "Basic Component"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Category" "Resistors,Chip Resistor - Surface Mount"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Part" "0402WGF1003TCE"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Resistance" "100kΩ"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power(Watts)" "62.5mW"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Type" "Thick Film Resistors"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Overload Voltage (Max)" "50V"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Operating Temperature Range" "-55°C~+155°C"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "±1%"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Temperature Coefficient" "±100ppm/°C"
+			(at 129.54 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0c932546-d74c-4af8-821e-7c6f61a453da")
+		)
+		(pin "2"
+			(uuid "7a541b5e-271b-4c35-abdd-2ce40a9ee404")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
+					(reference "R86")
 					(unit 1)
 				)
 			)
@@ -6539,7 +7836,8 @@
 	)
 	(symbol
 		(lib_id "UPduino_v3.0:power_GND")
-		(at 123.19 185.42 0)
+		(at 91.44 185.42 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6548,8 +7846,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "4b9d5fc0-a039-49e2-81bd-1649d13ec62e")
-		(property "Reference" "#PWR0140"
-			(at 123.19 191.77 0)
+		(property "Reference" "#PWR0193"
+			(at 91.44 191.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6560,7 +7858,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 123.317 189.8142 0)
+			(at 91.313 189.8142 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6571,7 +7869,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 123.19 185.42 0)
+			(at 91.44 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6582,7 +7880,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 123.19 185.42 0)
+			(at 91.44 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6593,7 +7891,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 123.19 185.42 0)
+			(at 91.44 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6609,7 +7907,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0140")
+					(reference "#PWR0193")
 					(unit 1)
 				)
 			)
@@ -6617,7 +7915,8 @@
 	)
 	(symbol
 		(lib_id "74xGxx:74LVC1G3157")
-		(at 123.19 175.26 0)
+		(at 91.44 175.26 0)
+		(mirror y)
 		(unit 2)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6627,8 +7926,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4d0d6c28-a0f5-4644-87b6-d55524dcaa42")
-		(property "Reference" "U11"
-			(at 127 173.9899 0)
+		(property "Reference" "U22"
+			(at 87.63 173.9899 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6639,7 +7938,7 @@
 			)
 		)
 		(property "Value" "74LVC1G3157GW"
-			(at 127 176.5299 0)
+			(at 87.63 176.5299 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6650,7 +7949,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:SOT-363_SC-70-6"
-			(at 123.19 175.26 0)
+			(at 91.44 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6661,7 +7960,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/C52140494.pdf?spm=wm.sxq.inf.ggs&lcsc_vid=RlBYAwVTQlNeVFJRR1YPUVwHRAALBlwATwRWX1JXEQIxVlNeQ1dbX1VRQ1VcVTsOAxUeFF5JWBYZEEoBGA4JCwFIFA4DSA%3D%3D"
-			(at 123.19 175.26 0)
+			(at 91.44 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6672,7 +7971,7 @@
 			)
 		)
 		(property "Description" "SPDT Analog Switch, Low-Voltage CMOS"
-			(at 123.19 175.26 0)
+			(at 91.44 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6683,7 +7982,7 @@
 			)
 		)
 		(property "LCSC" "C52140494"
-			(at 123.19 175.26 0)
+			(at 91.44 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6694,7 +7993,7 @@
 			)
 		)
 		(property "Price" "$0.09"
-			(at 123.19 175.26 0)
+			(at 91.44 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6725,7 +8024,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "U11")
+					(reference "U22")
 					(unit 2)
 				)
 			)
@@ -6733,7 +8032,8 @@
 	)
 	(symbol
 		(lib_id "74xGxx:74LVC1G3157")
-		(at 73.66 176.53 0)
+		(at 140.97 176.53 0)
+		(mirror y)
 		(unit 2)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6743,8 +8043,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "618ae260-0e37-4e0b-bd54-208912f6ffff")
-		(property "Reference" "U18"
-			(at 77.47 175.2599 0)
+		(property "Reference" "U24"
+			(at 137.16 175.2599 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6755,7 +8055,7 @@
 			)
 		)
 		(property "Value" "74LVC1G3157GW"
-			(at 77.47 177.7999 0)
+			(at 137.16 177.7999 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6766,7 +8066,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:SOT-363_SC-70-6"
-			(at 73.66 176.53 0)
+			(at 140.97 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6777,7 +8077,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/C52140494.pdf?spm=wm.sxq.inf.ggs&lcsc_vid=RlBYAwVTQlNeVFJRR1YPUVwHRAALBlwATwRWX1JXEQIxVlNeQ1dbX1VRQ1VcVTsOAxUeFF5JWBYZEEoBGA4JCwFIFA4DSA%3D%3D"
-			(at 73.66 176.53 0)
+			(at 140.97 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6788,7 +8088,7 @@
 			)
 		)
 		(property "Description" "SPDT Analog Switch, Low-Voltage CMOS"
-			(at 73.66 176.53 0)
+			(at 140.97 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6799,7 +8099,7 @@
 			)
 		)
 		(property "LCSC" "C52140494"
-			(at 73.66 176.53 0)
+			(at 140.97 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6810,7 +8110,7 @@
 			)
 		)
 		(property "Price" "$0.09"
-			(at 73.66 176.53 0)
+			(at 140.97 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6841,7 +8141,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "U18")
+					(reference "U24")
 					(unit 2)
 				)
 			)
@@ -6857,10 +8157,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "625777ce-37fd-47bc-98de-df96abcdd378")
-		(property "Reference" "U11"
-			(at 90.17 59.69 0)
+		(property "Reference" "U22"
+			(at 91.44 81.534 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6870,7 +8169,7 @@
 			)
 		)
 		(property "Value" "74LVC1G3157GW"
-			(at 90.17 62.23 0)
+			(at 88.646 63.5 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6955,7 +8254,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "U11")
+					(reference "U22")
 					(unit 1)
 				)
 			)
@@ -6963,8 +8262,7 @@
 	)
 	(symbol
 		(lib_id "UPduino_v3.0:power_GND")
-		(at 127 162.56 0)
-		(mirror y)
+		(at 87.63 162.56 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6973,8 +8271,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "6439bc08-aa5b-402c-ab22-c34215eee74f")
-		(property "Reference" "#PWR0163"
-			(at 127 168.91 0)
+		(property "Reference" "#PWR0191"
+			(at 87.63 168.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6985,7 +8283,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 126.873 166.9542 0)
+			(at 87.757 166.9542 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6996,7 +8294,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 127 162.56 0)
+			(at 87.63 162.56 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7007,7 +8305,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 127 162.56 0)
+			(at 87.63 162.56 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7018,7 +8316,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 127 162.56 0)
+			(at 87.63 162.56 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7034,7 +8332,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0163")
+					(reference "#PWR0191")
 					(unit 1)
 				)
 			)
@@ -7042,7 +8340,8 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
-		(at 102.87 160.02 0)
+		(at 111.76 160.02 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7051,8 +8350,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "64f887bd-55f2-4ec7-bcf6-40e4d5c115f4")
-		(property "Reference" "C76"
-			(at 99.06 157.48 0)
+		(property "Reference" "C100"
+			(at 115.57 157.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7063,7 +8362,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 103.378 158.242 0)
+			(at 111.252 158.242 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7074,7 +8373,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 101.092 160.02 90)
+			(at 113.538 160.02 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7085,7 +8384,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7096,7 +8395,7 @@
 			)
 		)
 		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7107,7 +8406,7 @@
 			)
 		)
 		(property "LCSC" "C307331"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7118,7 +8417,7 @@
 			)
 		)
 		(property "Stock" "8389599"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7129,7 +8428,7 @@
 			)
 		)
 		(property "Price" "0.008USD"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7140,7 +8439,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7151,7 +8450,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7162,7 +8461,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7173,7 +8472,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7184,7 +8483,7 @@
 			)
 		)
 		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7195,7 +8494,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7206,7 +8505,7 @@
 			)
 		)
 		(property "Part" "CL05B104KB54PNC"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7217,7 +8516,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 104.902 162.0662 0)
+			(at 109.728 162.0662 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7228,7 +8527,7 @@
 			)
 		)
 		(property "Tolerance" "±10%"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7239,7 +8538,7 @@
 			)
 		)
 		(property "Capacitance" "100nF"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7250,7 +8549,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
-			(at 102.87 160.02 0)
+			(at 111.76 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7269,7 +8568,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C76")
+					(reference "C100")
 					(unit 1)
 				)
 			)
@@ -7287,7 +8586,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "70419e14-2eb6-47f3-8148-22b9817c04d2")
-		(property "Reference" "U18"
+		(property "Reference" "U24"
 			(at 184.15 85.09 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7383,7 +8682,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "U18")
+					(reference "U24")
 					(unit 1)
 				)
 			)
@@ -7391,7 +8690,8 @@
 	)
 	(symbol
 		(lib_id "UPduino_v3.0:power_GND")
-		(at 99.06 186.69 0)
+		(at 115.57 186.69 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7400,8 +8700,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "7143fd2c-cdbb-4b12-880b-66b86bdebaa3")
-		(property "Reference" "#PWR0139"
-			(at 99.06 193.04 0)
+		(property "Reference" "#PWR0198"
+			(at 115.57 193.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7412,7 +8712,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 99.187 191.0842 0)
+			(at 115.443 191.0842 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7423,7 +8723,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 99.06 186.69 0)
+			(at 115.57 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7434,7 +8734,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 186.69 0)
+			(at 115.57 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7445,7 +8745,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 99.06 186.69 0)
+			(at 115.57 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7461,7 +8761,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0139")
+					(reference "#PWR0198")
 					(unit 1)
 				)
 			)
@@ -7479,7 +8779,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "72b35276-962b-4063-bb41-ea8965c4ea7c")
-		(property "Reference" "J1"
+		(property "Reference" "J11"
 			(at 116.84 57.15 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7547,7 +8847,275 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "J1")
+					(reference "J11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "PCM_JLCPCB-Resistors:0402,100kΩ")
+		(at 129.54 62.23 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "745c3fc0-4386-4823-b72e-7d39e78d7e8d")
+		(property "Reference" "R85"
+			(at 134.62 64.262 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100kΩ"
+			(at 129.54 62.23 90)
+			(show_name no)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 0.8 0.8)
+				)
+			)
+		)
+		(property "Footprint" "PCM_JLCPCB:R_0402"
+			(at 131.318 62.23 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.pdf"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 100kΩ 0402 Chip Resistor - Surface Mount ROHS"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25741"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Stock" "6969783"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Price" "0.004USD"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Process" "SMT"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Minimum Qty" "20"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Attrition Qty" "10"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Class" "Basic Component"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Category" "Resistors,Chip Resistor - Surface Mount"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Part" "0402WGF1003TCE"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Resistance" "100kΩ"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power(Watts)" "62.5mW"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Type" "Thick Film Resistors"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Overload Voltage (Max)" "50V"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Operating Temperature Range" "-55°C~+155°C"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "±1%"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Temperature Coefficient" "±100ppm/°C"
+			(at 129.54 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "606e42ee-cbec-4649-b607-e25dc4892ff3")
+		)
+		(pin "2"
+			(uuid "64f3ca75-1ce4-4992-a6e6-85bd5e83b122")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
+					(reference "R85")
 					(unit 1)
 				)
 			)
@@ -7566,7 +9134,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "77ef76a8-e842-4224-93de-f9c7af799b1b")
-		(property "Reference" "U14"
+		(property "Reference" "U23"
 			(at 142.24 59.69 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7662,7 +9230,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "U14")
+					(reference "U23")
 					(unit 1)
 				)
 			)
@@ -7681,7 +9249,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "79c6b624-0455-4fce-9165-4df0236b790b")
-		(property "Reference" "#PWR0201"
+		(property "Reference" "#PWR0204"
 			(at 165.1 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -7741,7 +9309,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0201")
+					(reference "#PWR0204")
 					(unit 1)
 				)
 			)
@@ -7759,7 +9327,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "7e511671-c834-42e9-b832-1b1276b1eec1")
-		(property "Reference" "R42"
+		(property "Reference" "R88"
 			(at 162.56 52.0699 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8009,7 +9577,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "R42")
+					(reference "R88")
 					(unit 1)
 				)
 			)
@@ -8026,7 +9594,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "8f5eddde-2c98-4063-b28f-bce54c6caeea")
-		(property "Reference" "#PWR0165"
+		(property "Reference" "#PWR0196"
 			(at 114.3 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -8087,7 +9655,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0165")
+					(reference "#PWR0196")
 					(unit 1)
 				)
 			)
@@ -8105,7 +9673,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "90ed424e-8353-44a4-9ae1-bd64770e54af")
-		(property "Reference" "R43"
+		(property "Reference" "R84"
 			(at 111.76 104.1399 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8355,7 +9923,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "R43")
+					(reference "R84")
 					(unit 1)
 				)
 			)
@@ -8373,7 +9941,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "a220651c-e6bc-42c1-8236-09e0cf3920b4")
-		(property "Reference" "C104"
+		(property "Reference" "C105"
 			(at 203.2 86.36 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8537,7 +10105,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 205.2462 79.502 0)
+			(at 205.2462 79.502 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8589,7 +10157,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C104")
+					(reference "C105")
 					(unit 1)
 				)
 			)
@@ -8608,7 +10176,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a472cf40-2e73-4bb2-a98d-c06746fcbde2")
-		(property "Reference" "#PWR026"
+		(property "Reference" "#PWR0189"
 			(at 50.8 31.75 0)
 			(hide yes)
 			(show_name no)
@@ -8669,7 +10237,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR026")
+					(reference "#PWR0189")
 					(unit 1)
 				)
 			)
@@ -8687,7 +10255,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ab67156f-673b-4aea-bbdc-69ef493db653")
-		(property "Reference" "Q5"
+		(property "Reference" "Q8"
 			(at 118.11 111.7599 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8963,7 +10531,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "Q5")
+					(reference "Q8")
 					(unit 1)
 				)
 			)
@@ -8981,7 +10549,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b1c92d77-72bf-434f-9952-538cf4573cec")
-		(property "Reference" "C14"
+		(property "Reference" "C95"
 			(at 39.37 63.5 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9196,7 +10764,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C14")
+					(reference "C95")
 					(unit 1)
 				)
 			)
@@ -9204,7 +10772,8 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
-		(at 77.47 160.02 0)
+		(at 137.16 160.02 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9213,8 +10782,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "b8375bdf-7d10-45d0-8ecb-1befe8c7ce45")
-		(property "Reference" "C75"
-			(at 73.66 157.48 0)
+		(property "Reference" "C103"
+			(at 140.97 157.48 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9225,7 +10794,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 77.978 158.242 0)
+			(at 136.652 158.242 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9236,7 +10805,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 75.692 160.02 90)
+			(at 138.938 160.02 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9247,7 +10816,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9258,7 +10827,7 @@
 			)
 		)
 		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9269,7 +10838,7 @@
 			)
 		)
 		(property "LCSC" "C307331"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9280,7 +10849,7 @@
 			)
 		)
 		(property "Stock" "8389599"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9291,7 +10860,7 @@
 			)
 		)
 		(property "Price" "0.008USD"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9302,7 +10871,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9313,7 +10882,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9324,7 +10893,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9335,7 +10904,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9346,7 +10915,7 @@
 			)
 		)
 		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9357,7 +10926,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9368,7 +10937,7 @@
 			)
 		)
 		(property "Part" "CL05B104KB54PNC"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9379,7 +10948,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 79.502 162.0662 0)
+			(at 135.128 162.0662 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9390,7 +10959,7 @@
 			)
 		)
 		(property "Tolerance" "±10%"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9401,7 +10970,7 @@
 			)
 		)
 		(property "Capacitance" "100nF"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9412,7 +10981,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
-			(at 77.47 160.02 0)
+			(at 137.16 160.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9431,7 +11000,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C75")
+					(reference "C103")
 					(unit 1)
 				)
 			)
@@ -9448,7 +11017,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "bb30cf3a-afe8-46e0-a2ef-2b806a4f8f9f")
-		(property "Reference" "R78"
+		(property "Reference" "R81"
 			(at 76.835 76.2001 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9698,7 +11267,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "R78")
+					(reference "R81")
 					(unit 1)
 				)
 			)
@@ -9706,8 +11275,7 @@
 	)
 	(symbol
 		(lib_id "UPduino_v3.0:power_GND")
-		(at 77.47 163.83 0)
-		(mirror y)
+		(at 137.16 163.83 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9716,8 +11284,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "bf2b0191-a42e-4d6d-b300-962d28b06619")
-		(property "Reference" "#PWR0157"
-			(at 77.47 170.18 0)
+		(property "Reference" "#PWR0201"
+			(at 137.16 170.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9728,7 +11296,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 77.343 168.2242 0)
+			(at 137.287 168.2242 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9739,7 +11307,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 77.47 163.83 0)
+			(at 137.16 163.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9750,7 +11318,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 77.47 163.83 0)
+			(at 137.16 163.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9761,7 +11329,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 77.47 163.83 0)
+			(at 137.16 163.83 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9777,7 +11345,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0157")
+					(reference "#PWR0201")
 					(unit 1)
 				)
 			)
@@ -9794,7 +11362,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "c054feef-8b0b-4d99-ab30-4182f56ee9f2")
-		(property "Reference" "TP10"
+		(property "Reference" "TP12"
 			(at 40.64 19.05 0)
 			(hide yes)
 			(show_name no)
@@ -9868,7 +11436,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "TP10")
+					(reference "TP12")
 					(unit 1)
 				)
 			)
@@ -9887,7 +11455,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c2fceb70-9ec7-44f9-93f8-009f4ee75995")
-		(property "Reference" "#PWR06"
+		(property "Reference" "#PWR0200"
 			(at 119.38 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -9948,7 +11516,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR06")
+					(reference "#PWR0200")
 					(unit 1)
 				)
 			)
@@ -9964,10 +11532,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "c4a0bda0-587a-4813-b942-b68081e7f878")
-		(property "Reference" "C10"
-			(at 105.41 58.42 90)
+		(property "Reference" "C98"
+			(at 105.41 61.976 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9977,7 +11544,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 105.41 60.96 90)
+			(at 105.41 64.516 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10131,6 +11698,7 @@
 		)
 		(property "Voltage Rated" "50V"
 			(at 105.41 63.5 90)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10181,7 +11749,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C10")
+					(reference "C98")
 					(unit 1)
 				)
 			)
@@ -10189,7 +11757,8 @@
 	)
 	(symbol
 		(lib_id "74xGxx:74LVC1G3157")
-		(at 99.06 176.53 0)
+		(at 115.57 176.53 0)
+		(mirror y)
 		(unit 2)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10198,8 +11767,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "c97fe341-37e7-4c90-bc1a-3a0674057b1d")
-		(property "Reference" "U14"
-			(at 102.87 175.2599 0)
+		(property "Reference" "U23"
+			(at 111.76 175.2599 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10210,7 +11779,7 @@
 			)
 		)
 		(property "Value" "74LVC1G3157GW"
-			(at 102.87 177.7999 0)
+			(at 111.76 177.7999 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10221,7 +11790,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:SOT-363_SC-70-6"
-			(at 99.06 176.53 0)
+			(at 115.57 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10232,7 +11801,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/C52140494.pdf?spm=wm.sxq.inf.ggs&lcsc_vid=RlBYAwVTQlNeVFJRR1YPUVwHRAALBlwATwRWX1JXEQIxVlNeQ1dbX1VRQ1VcVTsOAxUeFF5JWBYZEEoBGA4JCwFIFA4DSA%3D%3D"
-			(at 99.06 176.53 0)
+			(at 115.57 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10243,7 +11812,7 @@
 			)
 		)
 		(property "Description" "SPDT Analog Switch, Low-Voltage CMOS"
-			(at 99.06 176.53 0)
+			(at 115.57 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10254,7 +11823,7 @@
 			)
 		)
 		(property "LCSC" "C52140494"
-			(at 99.06 176.53 0)
+			(at 115.57 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10265,7 +11834,7 @@
 			)
 		)
 		(property "Price" "$0.09"
-			(at 99.06 176.53 0)
+			(at 115.57 176.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10296,7 +11865,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "U14")
+					(reference "U23")
 					(unit 2)
 				)
 			)
@@ -10304,7 +11873,8 @@
 	)
 	(symbol
 		(lib_id "UPduino_v3.0:power_GND")
-		(at 73.66 186.69 0)
+		(at 140.97 186.69 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10313,8 +11883,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "ca82ebe5-8193-4daf-b2d9-8f36b0c10c4e")
-		(property "Reference" "#PWR0159"
-			(at 73.66 193.04 0)
+		(property "Reference" "#PWR0203"
+			(at 140.97 193.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10325,7 +11895,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 73.787 191.0842 0)
+			(at 140.843 191.0842 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10336,7 +11906,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 73.66 186.69 0)
+			(at 140.97 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10347,7 +11917,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 186.69 0)
+			(at 140.97 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10358,7 +11928,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 73.66 186.69 0)
+			(at 140.97 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10374,7 +11944,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR0159")
+					(reference "#PWR0203")
 					(unit 1)
 				)
 			)
@@ -10392,7 +11962,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ce27f9b0-2e36-4dca-a30e-8337da13e748")
-		(property "Reference" "Q4"
+		(property "Reference" "Q9"
 			(at 168.91 59.6899 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10668,7 +12238,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "Q4")
+					(reference "Q9")
 					(unit 1)
 				)
 			)
@@ -10686,7 +12256,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "d11d6bac-848d-46f9-ba7d-8da23b079741")
-		(property "Reference" "TR1"
+		(property "Reference" "TR4"
 			(at 59.309 79.502 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10706,7 +12276,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Intro_to_CAD:XFMR_H1102NLT"
+		(property "Footprint" "Transformer_SMD:Transformer_Ethernet_Wuerth_749013011A"
 			(at 59.055 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -10801,7 +12371,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "TR1")
+					(reference "TR4")
 					(unit 1)
 				)
 			)
@@ -10819,8 +12389,8 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "ebe68c41-350d-42f7-a278-662d59d3ab1f")
-		(property "Reference" "C11"
-			(at 105.41 86.36 90)
+		(property "Reference" "C99"
+			(at 105.664 82.55 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10830,7 +12400,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 105.41 83.82 90)
+			(at 105.664 80.01 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10984,6 +12554,7 @@
 		)
 		(property "Voltage Rated" "50V"
 			(at 107.4562 79.502 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11035,7 +12606,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "C11")
+					(reference "C99")
 					(unit 1)
 				)
 			)
@@ -11052,7 +12623,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "fb052b04-57c5-4a06-ba2c-ea2b8322360d")
-		(property "Reference" "TP12"
+		(property "Reference" "TP13"
 			(at 48.26 19.05 0)
 			(hide yes)
 			(show_name no)
@@ -11126,7 +12697,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "TP12")
+					(reference "TP13")
 					(unit 1)
 				)
 			)
@@ -11144,7 +12715,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fc4967b0-0160-42c8-8fdd-513fe18c86d1")
-		(property "Reference" "#PWR05"
+		(property "Reference" "#PWR0199"
 			(at 116.84 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -11205,7 +12776,7 @@
 		(instances
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "#PWR05")
+					(reference "#PWR0199")
 					(unit 1)
 				)
 			)
