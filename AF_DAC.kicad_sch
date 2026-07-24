@@ -9995,6 +9995,7 @@
 		)
 		(property "Voltage Rated" "50V"
 			(at 224.028 99.5538 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

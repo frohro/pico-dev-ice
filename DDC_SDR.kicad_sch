@@ -15490,6 +15490,17 @@
 		)
 		(uuid "e8ee3acf-6b5c-45eb-849a-6ae3db2d72b3")
 	)
+	(text "PMOD connector will work\nas with an extra Pico as a\nlogic analyzer using pins\n29-24."
+		(exclude_from_sim no)
+		(at 204.47 78.994 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f23c9442-27d7-4d10-ab2a-cb36bc6446b2")
+	)
 	(text "ADC"
 		(exclude_from_sim no)
 		(at 123.698 61.468 0)
@@ -25221,7 +25232,7 @@
 		(uuid "c312daa0-3bf2-40dc-a4b4-7f4782ad82eb")
 	)
 	(label "PMOD_2"
-		(at 160.02 68.58 0)
+		(at 160.02 78.74 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -25232,7 +25243,7 @@
 		(uuid "c6c3d328-e4b2-4ba8-a692-bc410801839f")
 	)
 	(label "PMOD_0"
-		(at 160.02 78.74 0)
+		(at 160.02 68.58 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -48796,7 +48807,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ca7fd35a-e3dc-4c09-8e72-251bf5b0a1eb")
 		(property "Reference" "J6"
@@ -49562,7 +49573,7 @@
 				)
 			)
 		)
-		(property "Value" "DUT"
+		(property "Value" "S11"
 			(at 47.9426 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -49572,7 +49583,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Intro_to_CAD:Conn_Coaxial_Frohne"
+		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132289_EdgeMount"
 			(at 48.26 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -49594,7 +49605,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "SMA Connector"
 			(at 48.26 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -49662,7 +49673,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Intro_to_CAD:Conn_Coaxial_Frohne"
+		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132289_EdgeMount"
 			(at 102.87 219.71 0)
 			(hide yes)
 			(show_name no)
