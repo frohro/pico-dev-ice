@@ -260,7 +260,24 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "pin_to_pin|2641600|1803400|887a1608-672c-4ae2-b2a6-1979c7eaf9ee|e17b9713-0c36-4807-b951-cbc72b451fed|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2",
+        ""
+      ],
+      [
+        "pin_to_pin|2641600|1879600|6c715488-0c82-4f23-b41e-8061333f4737|21112fd8-0eac-4b67-b495-142c93e2bb2f|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2",
+        ""
+      ],
+      [
+        "pin_to_pin|3416300|939800|e011d1a4-afd5-482a-9993-b724bead03ad|7b090328-d607-459d-ab5d-121828bbc2d6|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2",
+        ""
+      ],
+      [
+        "pin_to_pin|3644900|266700|df754b7f-7406-4613-ac45-c91cde43b05b|c1a7999a-07e6-42a2-a639-d0997f22e9e5|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2|/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2",
+        ""
+      ]
+    ],
     "meta": {
       "version": 0
     },
@@ -456,7 +473,7 @@
       "label_dangling": "error",
       "label_multiple_wires": "warning",
       "lib_symbol_issues": "warning",
-      "lib_symbol_mismatch": "warning",
+      "lib_symbol_mismatch": "ignore",
       "missing_bidi_pin": "warning",
       "missing_input_pin": "warning",
       "missing_power_pin": "error",
@@ -467,8 +484,8 @@
       "no_connect_dangling": "warning",
       "pin_not_connected": "error",
       "pin_not_driven": "error",
-      "pin_to_pin": "warning",
-      "power_pin_not_driven": "error",
+      "pin_to_pin": "error",
+      "power_pin_not_driven": "ignore",
       "same_local_global_label": "warning",
       "similar_label_and_power": "warning",
       "similar_labels": "warning",
@@ -496,7 +513,7 @@
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.2,
+        "clearance": 0.127,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -507,11 +524,49 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.127,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "clearance": 0.127,
+        "name": "1V1",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2,
+        "schematic_color": "rgb(255, 249, 87)",
+        "track_width": 0.3,
+        "tuning_profile": ""
+      },
+      {
+        "name": "5V",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "tuning_profile": "",
+        "wire_width": 24
+      },
+      {
+        "clearance": 0.127,
+        "name": "5V0",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 1,
+        "schematic_color": "rgb(255, 36, 61)",
+        "track_width": 0.6,
+        "tuning_profile": ""
+      },
+      {
+        "clearance": 0.127,
+        "diff_pair_gap": 0.1,
+        "diff_pair_width": 0.17,
+        "name": "USB",
+        "pcb_color": "rgb(126, 255, 137)",
+        "priority": 3,
+        "schematic_color": "rgb(140, 255, 77)",
+        "track_width": 0.17,
+        "tuning_profile": "",
+        "wire_width": 24
       }
     ],
     "meta": {
@@ -602,7 +657,20 @@
         "5V0"
       ]
     },
-    "netclass_patterns": []
+    "netclass_patterns": [
+      {
+        "netclass": "5V0",
+        "pattern": "+5*"
+      },
+      {
+        "netclass": "1V1",
+        "pattern": "+1V1"
+      },
+      {
+        "netclass": "1V1",
+        "pattern": "+3*"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
@@ -1180,7 +1248,7 @@
       "hop_over_size_choice": 0,
       "intersheets_ref_own_page": false,
       "intersheets_ref_prefix": "",
-      "intersheets_ref_short": false,
+      "intersheets_ref_short": true,
       "intersheets_ref_show": false,
       "intersheets_ref_suffix": "",
       "junction_size_choice": 3,
@@ -1218,7 +1286,7 @@
         "uuid": "7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
       }
     ],
-    "used_designators": "D1-8,U1-27,A1,C1-109,e1-4,#PWR1-225,R1-90,TP1-13,TP28-32,J1-14,J16,JP1-7,JP50-53,JP86,JP88-89,Je3,L1-3,FB1-7,SW1,X1,Q1-10,TR1-4,#FLG1-2,#FLG7,#FLG101,S1",
+    "used_designators": "L1-3,FB1-7,Je3,JP1-7,JP50-53,JP86,JP88-89,J1-14,J16,TP1-13,TP28-32,S1,#FLG1-2,#FLG7,#FLG101,TR1-4,Q1-10,X1,SW1,A1,U1-27,D1-8,C1-109,e1-4,#PWR1-225,R1-90",
     "variants": []
   },
   "sheets": [

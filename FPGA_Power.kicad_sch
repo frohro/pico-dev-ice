@@ -3047,16 +3047,6 @@
 		)
 		(uuid "000eddef-3b66-497f-a8ef-e809c374b796")
 	)
-	(label "+1.2V_CORE"
-		(at 170.18 92.71 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fec71c4d-d8ed-4a95-b79b-b48521421dc3")
-	)
 	(symbol
 		(lib_id "UPduino_v3.0:power_GND")
 		(at 185.42 83.82 0)

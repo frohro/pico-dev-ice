@@ -2714,6 +2714,7 @@
 		)
 		(property "Value" "GND"
 			(at 117.856 88.646 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

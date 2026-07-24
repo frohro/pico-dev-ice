@@ -730,515 +730,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "JLCPCB-Transistors:NMOS,2N7002"
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "Q"
-				(at 4.8514 0.834 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "2N7002"
-				(at 4.8514 -1.2122 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 0.8 0.8)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "PCM_JLCPCB:Q_SOT-23"
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "LCSC" "C8545"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Stock" "1078050"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Price" "0.019USD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Process" "SMT"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Minimum Qty" "10"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Attrition Qty" "5"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Class" "Basic Component"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Category" "Transistors,MOSFETs"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Part" "2N7002"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Continuous Drain Current (Id)" "115mA"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Input Capacitance (Ciss@Vds)" "50pF"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Operating Temperature" "-55°C~+150°C"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Type" "1 N-channel"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Drain Source Voltage (Vdss)" "60V"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Power Dissipation (Pd)" "225mW"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Gate Threshold Voltage (Vgs(th)@Id)" "2.5V@250uA"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Reverse Transfer Capacitance (Crss@Vds)" "5pF"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Drain Source On Resistance (RDS(on)@Vgs,Id)" "5Ω@10V"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "Q_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "NMOS,2N7002_0_1"
-				(polyline
-					(pts
-						(xy 0.254 1.905) (xy 0.254 -1.905)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.254 0) (xy -2.54 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 2.286) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 0.508) (xy 0.762 -0.508)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 -1.27) (xy 0.762 -2.286)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(circle
-					(center 1.651 0)
-					(radius 2.794)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 2.54) (xy 2.54 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.54 1.778)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(circle
-					(center 2.54 -1.778)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "NMOS,2N7002_1_1"
-				(pin input line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "G"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 -5.08 90)
-					(length 2.54)
-					(name "S"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 5.08 270)
-					(length 2.54)
-					(name "D"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "PCM_JLCPCB-Capacitors:0402,100nF,(2)"
 			(pin_numbers
 				(hide yes)
@@ -4380,6 +3871,416 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "PCM_JLCPCB-Transistors:NMOS,2N7002K"
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 4.8514 0.834 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "2N7002K"
+				(at 4.8514 -1.2122 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 0.8 0.8)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "PCM_JLCPCB:Q_SOT-23"
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C22379475"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Stock" "82639"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Price" "0.019USD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Process" "SMT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Minimum Qty" "10"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Attrition Qty" "4"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Class" "Preferred Component"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "hongjiacheng"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Part" "2N7002K"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Q_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "NMOS,2N7002K_0_1"
+				(polyline
+					(pts
+						(xy 0.254 1.905) (xy 0.254 -1.905)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 2.286) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.508) (xy 0.762 -0.508)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.27) (xy 0.762 -2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 1.651 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 2.54 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "NMOS,2N7002K_1_1"
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -9101,7 +9002,7 @@
 		)
 	)
 	(symbol
-		(lib_id "JLCPCB-Transistors:NMOS,2N7002")
+		(lib_id "PCM_JLCPCB-Transistors:NMOS,2N7002K")
 		(at 139.7 90.17 0)
 		(unit 1)
 		(body_style 1)
@@ -9145,7 +9046,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9156,7 +9057,7 @@
 				)
 			)
 		)
-		(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
+		(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9167,7 +9068,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C8545"
+		(property "LCSC" "C22379475"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9178,7 +9079,7 @@
 				)
 			)
 		)
-		(property "Stock" "1078050"
+		(property "Stock" "82639"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9222,7 +9123,7 @@
 				)
 			)
 		)
-		(property "Attrition Qty" "5"
+		(property "Attrition Qty" "4"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9233,7 +9134,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9244,7 +9145,7 @@
 				)
 			)
 		)
-		(property "Category" "Transistors,MOSFETs"
+		(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9255,7 +9156,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
+		(property "Manufacturer" "hongjiacheng"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -9266,7 +9167,7 @@
 				)
 			)
 		)
-		(property "Part" "2N7002"
+		(property "Part" "2N7002K"
 			(at 139.7 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -11522,7 +11423,7 @@
 		)
 	)
 	(symbol
-		(lib_id "JLCPCB-Transistors:NMOS,2N7002")
+		(lib_id "PCM_JLCPCB-Transistors:NMOS,2N7002K")
 		(at 198.12 95.25 0)
 		(unit 1)
 		(body_style 1)
@@ -11566,7 +11467,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11577,7 +11478,7 @@
 				)
 			)
 		)
-		(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
+		(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11588,7 +11489,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C8545"
+		(property "LCSC" "C22379475"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11599,7 +11500,7 @@
 				)
 			)
 		)
-		(property "Stock" "1078050"
+		(property "Stock" "82639"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11643,7 +11544,7 @@
 				)
 			)
 		)
-		(property "Attrition Qty" "5"
+		(property "Attrition Qty" "4"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11654,7 +11555,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11665,7 +11566,7 @@
 				)
 			)
 		)
-		(property "Category" "Transistors,MOSFETs"
+		(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11676,7 +11577,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
+		(property "Manufacturer" "hongjiacheng"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -11687,7 +11588,7 @@
 				)
 			)
 		)
-		(property "Part" "2N7002"
+		(property "Part" "2N7002K"
 			(at 198.12 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -15475,7 +15376,7 @@
 		)
 	)
 	(symbol
-		(lib_id "JLCPCB-Transistors:NMOS,2N7002")
+		(lib_id "PCM_JLCPCB-Transistors:NMOS,2N7002K")
 		(at 77.47 86.36 0)
 		(unit 1)
 		(body_style 1)
@@ -15519,7 +15420,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15530,7 +15431,7 @@
 				)
 			)
 		)
-		(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
+		(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15541,7 +15442,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C8545"
+		(property "LCSC" "C22379475"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15552,7 +15453,7 @@
 				)
 			)
 		)
-		(property "Stock" "1078050"
+		(property "Stock" "82639"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15596,7 +15497,7 @@
 				)
 			)
 		)
-		(property "Attrition Qty" "5"
+		(property "Attrition Qty" "4"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15607,7 +15508,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15618,7 +15519,7 @@
 				)
 			)
 		)
-		(property "Category" "Transistors,MOSFETs"
+		(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15629,7 +15530,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
+		(property "Manufacturer" "hongjiacheng"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -15640,7 +15541,7 @@
 				)
 			)
 		)
-		(property "Part" "2N7002"
+		(property "Part" "2N7002K"
 			(at 77.47 86.36 0)
 			(hide yes)
 			(show_name no)
@@ -21481,7 +21382,7 @@
 		)
 	)
 	(symbol
-		(lib_id "JLCPCB-Transistors:NMOS,2N7002")
+		(lib_id "PCM_JLCPCB-Transistors:NMOS,2N7002K")
 		(at 19.05 96.52 0)
 		(unit 1)
 		(body_style 1)
@@ -21525,7 +21426,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21536,7 +21437,7 @@
 				)
 			)
 		)
-		(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
+		(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21547,7 +21448,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C8545"
+		(property "LCSC" "C22379475"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21558,7 +21459,7 @@
 				)
 			)
 		)
-		(property "Stock" "1078050"
+		(property "Stock" "82639"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21602,7 +21503,7 @@
 				)
 			)
 		)
-		(property "Attrition Qty" "5"
+		(property "Attrition Qty" "4"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21613,7 +21514,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21624,7 +21525,7 @@
 				)
 			)
 		)
-		(property "Category" "Transistors,MOSFETs"
+		(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21635,7 +21536,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
+		(property "Manufacturer" "hongjiacheng"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -21646,7 +21547,7 @@
 				)
 			)
 		)
-		(property "Part" "2N7002"
+		(property "Part" "2N7002K"
 			(at 19.05 96.52 0)
 			(hide yes)
 			(show_name no)

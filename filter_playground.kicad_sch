@@ -1100,515 +1100,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "JLCPCB-Transistors:NMOS,2N7002"
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "Q"
-				(at 4.8514 0.834 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "2N7002"
-				(at 4.8514 -1.2122 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 0.8 0.8)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "PCM_JLCPCB:Q_SOT-23"
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "LCSC" "C8545"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Stock" "1078050"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Price" "0.019USD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Process" "SMT"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Minimum Qty" "10"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Attrition Qty" "5"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Class" "Basic Component"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Category" "Transistors,MOSFETs"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Part" "2N7002"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Continuous Drain Current (Id)" "115mA"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Input Capacitance (Ciss@Vds)" "50pF"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Operating Temperature" "-55°C~+150°C"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Type" "1 N-channel"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Drain Source Voltage (Vdss)" "60V"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Power Dissipation (Pd)" "225mW"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Gate Threshold Voltage (Vgs(th)@Id)" "2.5V@250uA"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Reverse Transfer Capacitance (Crss@Vds)" "5pF"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Drain Source On Resistance (RDS(on)@Vgs,Id)" "5Ω@10V"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "Q_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "NMOS,2N7002_0_1"
-				(polyline
-					(pts
-						(xy 0.254 1.905) (xy 0.254 -1.905)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.254 0) (xy -2.54 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 2.286) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 0.508) (xy 0.762 -0.508)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 -1.27) (xy 0.762 -2.286)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(circle
-					(center 1.651 0)
-					(radius 2.794)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 2.54) (xy 2.54 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.54 1.778)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(circle
-					(center 2.54 -1.778)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "NMOS,2N7002_1_1"
-				(pin input line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "G"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 -5.08 90)
-					(length 2.54)
-					(name "S"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 5.08 270)
-					(length 2.54)
-					(name "D"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "PCM_JLCPCB-Capacitors:0402,100nF,(2)"
 			(pin_numbers
 				(hide yes)
@@ -2531,6 +2022,416 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "PCM_JLCPCB-Transistors:NMOS,2N7002K"
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 4.8514 0.834 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "2N7002K"
+				(at 4.8514 -1.2122 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 0.8 0.8)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "PCM_JLCPCB:Q_SOT-23"
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C22379475"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Stock" "82639"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Price" "0.019USD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Process" "SMT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Minimum Qty" "10"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Attrition Qty" "4"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Class" "Preferred Component"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "hongjiacheng"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Part" "2N7002K"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Q_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "NMOS,2N7002K_0_1"
+				(polyline
+					(pts
+						(xy 0.254 1.905) (xy 0.254 -1.905)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 2.286) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.508) (xy 0.762 -0.508)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.27) (xy 0.762 -2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 1.651 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 2.54 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "NMOS,2N7002K_1_1"
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4008,7 +3909,7 @@
 	)
 	(text "Filters"
 		(exclude_from_sim no)
-		(at 117.602 90.678 0)
+		(at 118.11 90.17 0)
 		(effects
 			(font
 				(size 1.905 1.905)
@@ -4020,7 +3921,7 @@
 	)
 	(text "T/R Switch"
 		(exclude_from_sim no)
-		(at 185.928 90.678 0)
+		(at 185.42 90.17 0)
 		(effects
 			(font
 				(size 1.905 1.905)
@@ -4032,7 +3933,7 @@
 	)
 	(text "Scope \nGND\nconnections"
 		(exclude_from_sim no)
-		(at 28.702 27.178 0)
+		(at 29.21 26.67 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4084,7 +3985,7 @@
 		(uuid "582bbd52-a0ee-45e1-a1d2-fd057898d4f0")
 	)
 	(junction
-		(at 79.375 72.39)
+		(at 80.01 72.39)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5a3e0345-950a-48b7-85b6-a1c0b040e7ee")
@@ -4120,46 +4021,36 @@
 		(uuid "e41e4bee-d10b-4a94-a95c-ccf56735306f")
 	)
 	(no_connect
-		(at 69.215 82.55)
+		(at 69.85 82.55)
 		(uuid "5c672474-cc8a-47d4-b771-57b7fff032c8")
 	)
 	(no_connect
-		(at 69.215 87.63)
+		(at 69.85 87.63)
 		(uuid "8a50ce1e-49ef-4b69-919d-a139f14e8a6d")
 	)
 	(no_connect
-		(at 48.895 87.63)
+		(at 49.53 87.63)
 		(uuid "911b869c-a949-4136-8389-840f376d9294")
 	)
 	(no_connect
-		(at 48.895 74.93)
+		(at 49.53 74.93)
 		(uuid "9238dc8c-4a0c-45a6-a103-d48f6d8dec39")
 	)
 	(no_connect
-		(at 69.215 74.93)
+		(at 69.85 74.93)
 		(uuid "92c03c3f-5b59-45d0-952f-a20acab0039d")
 	)
 	(no_connect
-		(at 48.895 85.09)
+		(at 49.53 85.09)
 		(uuid "b41c42c7-79fd-4722-91c0-4e5ee6744554")
 	)
 	(no_connect
-		(at 48.895 82.55)
+		(at 49.53 82.55)
 		(uuid "ea1237f2-bc14-42c8-8e38-da03bb5b8aef")
 	)
 	(no_connect
-		(at 69.215 85.09)
+		(at 69.85 85.09)
 		(uuid "ec4e8f96-c91c-4a04-9f24-5c36f9076bc0")
-	)
-	(wire
-		(pts
-			(xy 80.645 82.55) (xy 81.28 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "055b77f6-160d-4084-806c-4a969ed0a247")
 	)
 	(wire
 		(pts
@@ -4193,7 +4084,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 77.47) (xy 48.895 77.47)
+			(xy 29.21 77.47) (xy 49.53 77.47)
 		)
 		(stroke
 			(width 0)
@@ -4243,7 +4134,7 @@
 	)
 	(wire
 		(pts
-			(xy 79.375 81.28) (xy 79.375 80.01)
+			(xy 80.01 81.28) (xy 80.01 80.01)
 		)
 		(stroke
 			(width 0)
@@ -4343,7 +4234,7 @@
 	)
 	(wire
 		(pts
-			(xy 69.215 72.39) (xy 71.755 72.39)
+			(xy 69.85 72.39) (xy 72.39 72.39)
 		)
 		(stroke
 			(width 0)
@@ -4413,7 +4304,7 @@
 	)
 	(wire
 		(pts
-			(xy 79.375 72.39) (xy 81.28 72.39)
+			(xy 80.01 72.39) (xy 81.28 72.39)
 		)
 		(stroke
 			(width 0)
@@ -4473,7 +4364,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.895 72.39) (xy 43.18 72.39)
+			(xy 49.53 72.39) (xy 43.18 72.39)
 		)
 		(stroke
 			(width 0)
@@ -4523,7 +4414,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.645 82.55) (xy 80.645 107.95)
+			(xy 81.28 82.55) (xy 81.28 107.95)
 		)
 		(stroke
 			(width 0)
@@ -4533,7 +4424,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.645 107.95) (xy 151.13 107.95)
+			(xy 81.28 107.95) (xy 151.13 107.95)
 		)
 		(stroke
 			(width 0)
@@ -4603,7 +4494,7 @@
 	)
 	(global_label "VA{slash}2"
 		(shape input)
-		(at 79.375 81.28 180)
+		(at 80.01 81.28 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4613,7 +4504,7 @@
 		)
 		(uuid "30b0ce1d-3973-4a85-903b-5400f4980d48")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 71.6726 81.28 0)
+			(at 72.3076 81.28 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5525,7 +5416,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 69.215 77.47 0)
+		(at 69.85 77.47 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5536,7 +5427,7 @@
 		(fields_autoplaced yes)
 		(uuid "15599e5d-8846-4089-8acd-3740f6c82884")
 		(property "Reference" "#PWR0190"
-			(at 69.215 83.82 0)
+			(at 69.85 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5547,7 +5438,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 69.215 82.55 0)
+			(at 69.85 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5558,7 +5449,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 69.215 77.47 0)
+			(at 69.85 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5569,7 +5460,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 69.215 77.47 0)
+			(at 69.85 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5580,7 +5471,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 69.215 77.47 0)
+			(at 69.85 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7336,7 +7227,7 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
-		(at 75.565 72.39 90)
+		(at 76.2 72.39 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7347,7 +7238,7 @@
 		(fields_autoplaced yes)
 		(uuid "421938d6-7a6b-488f-a39d-3acfac368f2a")
 		(property "Reference" "C96"
-			(at 75.565 63.5 90)
+			(at 76.2 63.5 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7357,7 +7248,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 75.565 66.04 90)
+			(at 76.2 66.04 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7367,7 +7258,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 75.565 74.168 90)
+			(at 76.2 74.168 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7378,7 +7269,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KB54PNC_C307331.pdf"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7389,7 +7280,7 @@
 			)
 		)
 		(property "Description" "50V 100nF X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7400,7 +7291,7 @@
 			)
 		)
 		(property "LCSC" "C307331"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7411,7 +7302,7 @@
 			)
 		)
 		(property "Stock" "8389599"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7422,7 +7313,7 @@
 			)
 		)
 		(property "Price" "0.008USD"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7433,7 +7324,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7444,7 +7335,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7455,7 +7346,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7466,7 +7357,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7477,7 +7368,7 @@
 			)
 		)
 		(property "Category" "Capacitors,Multilayer Ceramic Capacitors MLCC - SMD/SMT"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7488,7 +7379,7 @@
 			)
 		)
 		(property "Manufacturer" "Samsung Electro-Mechanics"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7499,7 +7390,7 @@
 			)
 		)
 		(property "Part" "CL05B104KB54PNC"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7510,7 +7401,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 75.565 68.58 90)
+			(at 76.2 68.58 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7520,7 +7411,7 @@
 			)
 		)
 		(property "Tolerance" "±10%"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7531,7 +7422,7 @@
 			)
 		)
 		(property "Capacitance" "100nF"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7542,7 +7433,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "X7R"
-			(at 75.565 72.39 0)
+			(at 76.2 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10244,7 +10135,7 @@
 		)
 	)
 	(symbol
-		(lib_id "JLCPCB-Transistors:NMOS,2N7002")
+		(lib_id "PCM_JLCPCB-Transistors:NMOS,2N7002K")
 		(at 111.76 113.03 0)
 		(unit 1)
 		(body_style 1)
@@ -10288,7 +10179,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10299,7 +10190,7 @@
 				)
 			)
 		)
-		(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
+		(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10310,7 +10201,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C8545"
+		(property "LCSC" "C22379475"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10321,7 +10212,7 @@
 				)
 			)
 		)
-		(property "Stock" "1078050"
+		(property "Stock" "82639"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10365,7 +10256,7 @@
 				)
 			)
 		)
-		(property "Attrition Qty" "5"
+		(property "Attrition Qty" "4"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10376,7 +10267,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10387,7 +10278,7 @@
 				)
 			)
 		)
-		(property "Category" "Transistors,MOSFETs"
+		(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10398,7 +10289,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
+		(property "Manufacturer" "hongjiacheng"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -10409,7 +10300,7 @@
 				)
 			)
 		)
-		(property "Part" "2N7002"
+		(property "Part" "2N7002K"
 			(at 111.76 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -11008,7 +10899,7 @@
 	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Resistors:0402,10kΩ")
-		(at 79.375 76.2 180)
+		(at 80.01 76.2 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11018,7 +10909,7 @@
 		(dnp no)
 		(uuid "bb30cf3a-afe8-46e0-a2ef-2b806a4f8f9f")
 		(property "Reference" "R81"
-			(at 76.835 76.2001 0)
+			(at 77.47 76.2001 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11029,7 +10920,7 @@
 			)
 		)
 		(property "Value" "10kΩ"
-			(at 79.375 76.2 90)
+			(at 80.01 76.2 90)
 			(show_name no)
 			(do_not_autoplace yes)
 			(effects
@@ -11039,7 +10930,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:R_0402"
-			(at 81.153 76.2 90)
+			(at 81.788 76.2 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11050,7 +10941,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2411221126_UNI-ROYAL-Uniroyal-Elec-0402WGF1002TCE_C25744.pdf"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11061,7 +10952,7 @@
 			)
 		)
 		(property "Description" "62.5mW Thick Film Resistors 50V ±100ppm/°C ±1% 10kΩ 0402 Chip Resistor - Surface Mount ROHS"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11072,7 +10963,7 @@
 			)
 		)
 		(property "LCSC" "C25744"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11083,7 +10974,7 @@
 			)
 		)
 		(property "Stock" "24372091"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11094,7 +10985,7 @@
 			)
 		)
 		(property "Price" "0.004USD"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11105,7 +10996,7 @@
 			)
 		)
 		(property "Process" "SMT"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11116,7 +11007,7 @@
 			)
 		)
 		(property "Minimum Qty" "20"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11127,7 +11018,7 @@
 			)
 		)
 		(property "Attrition Qty" "10"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11138,7 +11029,7 @@
 			)
 		)
 		(property "Class" "Basic Component"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11149,7 +11040,7 @@
 			)
 		)
 		(property "Category" "Resistors,Chip Resistor - Surface Mount"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11160,7 +11051,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11171,7 +11062,7 @@
 			)
 		)
 		(property "Part" "0402WGF1002TCE"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11182,7 +11073,7 @@
 			)
 		)
 		(property "Resistance" "10kΩ"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11193,7 +11084,7 @@
 			)
 		)
 		(property "Power(Watts)" "62.5mW"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11204,7 +11095,7 @@
 			)
 		)
 		(property "Type" "Thick Film Resistors"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11215,7 +11106,7 @@
 			)
 		)
 		(property "Overload Voltage (Max)" "50V"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11226,7 +11117,7 @@
 			)
 		)
 		(property "Operating Temperature Range" "-55°C~+155°C"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11237,7 +11128,7 @@
 			)
 		)
 		(property "Tolerance" "±1%"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11248,7 +11139,7 @@
 			)
 		)
 		(property "Temperature Coefficient" "±100ppm/°C"
-			(at 79.375 76.2 0)
+			(at 80.01 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11951,7 +11842,7 @@
 		)
 	)
 	(symbol
-		(lib_id "JLCPCB-Transistors:NMOS,2N7002")
+		(lib_id "PCM_JLCPCB-Transistors:NMOS,2N7002K")
 		(at 162.56 60.96 0)
 		(unit 1)
 		(body_style 1)
@@ -11995,7 +11886,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--2N7002_C8545.pdf"
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404091613_hongjiacheng-2N7002K_C22379475.pdf"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12006,7 +11897,7 @@
 				)
 			)
 		)
-		(property "Description" "60V 115mA 200mW 7.5Ω@10V,500mA 2.5V@250uA 1 N-Channel SOT-23 MOSFETs ROHS"
+		(property "Description" "60V 340mA 350mW 900mΩ@10V,500mA 2.5V@1mA 1PCSNChannel SOT-23 MOSFETs ROHS"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12017,7 +11908,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C8545"
+		(property "LCSC" "C22379475"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12028,7 +11919,7 @@
 				)
 			)
 		)
-		(property "Stock" "1078050"
+		(property "Stock" "82639"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12072,7 +11963,7 @@
 				)
 			)
 		)
-		(property "Attrition Qty" "5"
+		(property "Attrition Qty" "4"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12083,7 +11974,7 @@
 				)
 			)
 		)
-		(property "Class" "Basic Component"
+		(property "Class" "Preferred Component"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12094,7 +11985,7 @@
 				)
 			)
 		)
-		(property "Category" "Transistors,MOSFETs"
+		(property "Category" "Triode/MOS Tube/Transistor,MOSFETs"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12105,7 +11996,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Changjiang Electronics Tech (CJ)"
+		(property "Manufacturer" "hongjiacheng"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12116,7 +12007,7 @@
 				)
 			)
 		)
-		(property "Part" "2N7002"
+		(property "Part" "2N7002K"
 			(at 162.56 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -12246,7 +12137,7 @@
 	)
 	(symbol
 		(lib_id "Transformer:PT61017PEL")
-		(at 59.055 80.01 0)
+		(at 59.69 80.01 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -12257,7 +12148,7 @@
 		(dnp no)
 		(uuid "d11d6bac-848d-46f9-ba7d-8da23b079741")
 		(property "Reference" "TR4"
-			(at 59.309 79.502 0)
+			(at 59.944 79.502 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12267,7 +12158,7 @@
 			)
 		)
 		(property "Value" "H1102NLT"
-			(at 59.055 67.31 0)
+			(at 59.69 67.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12277,7 +12168,7 @@
 			)
 		)
 		(property "Footprint" "Transformer_SMD:Transformer_Ethernet_Wuerth_749013011A"
-			(at 59.055 92.71 0)
+			(at 59.69 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12288,7 +12179,7 @@
 			)
 		)
 		(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8590909348199538688"
-			(at 59.055 95.25 0)
+			(at 59.69 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12299,7 +12190,7 @@
 			)
 		)
 		(property "Description" "Ethernet LAN 10/100 Base-Tx Transformer with Center Taps"
-			(at 59.055 80.01 0)
+			(at 59.69 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12310,7 +12201,7 @@
 			)
 		)
 		(property "LCSC" "C20623173"
-			(at 59.055 80.01 0)
+			(at 59.69 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
