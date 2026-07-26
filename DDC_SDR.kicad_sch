@@ -26566,7 +26566,7 @@
 		(uuid "4ab55b2e-91fe-4488-8fd2-c8edb32686ee")
 	)
 	(label "RX_DATA"
-		(at 160.02 60.96 0)
+		(at 160.02 63.5 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -26749,7 +26749,7 @@
 		(uuid "65bedd62-4927-47a9-a153-d46c6fda2d87")
 	)
 	(label "WS"
-		(at 160.02 66.04 0)
+		(at 160.02 58.42 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -27256,7 +27256,7 @@
 		(uuid "c9bda9e3-db7b-4168-9050-955a79d34304")
 	)
 	(label "TX_DATA"
-		(at 160.02 58.42 0)
+		(at 160.02 60.96 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -27398,7 +27398,7 @@
 		(uuid "fa00fccd-a95c-402c-aea4-2c1fd60955f8")
 	)
 	(label "BCK"
-		(at 160.02 63.5 0)
+		(at 160.02 66.04 0)
 		(effects
 			(font
 				(size 1.27 1.27)

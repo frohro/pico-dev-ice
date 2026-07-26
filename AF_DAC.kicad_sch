@@ -5256,16 +5256,6 @@
 	)
 	(wire
 		(pts
-			(xy 224.79 96.52) (xy 224.79 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "014028ab-f6df-4ed9-bb03-901d7f70ce1e")
-	)
-	(wire
-		(pts
 			(xy 163.83 109.22) (xy 166.37 109.22)
 		)
 		(stroke
@@ -5283,16 +5273,6 @@
 			(type default)
 		)
 		(uuid "03a200d8-b3e5-40d0-9d5f-4dfebdff307e")
-	)
-	(wire
-		(pts
-			(xy 151.13 93.98) (xy 135.89 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "051ad2ad-4e53-4dc6-a0ac-e7716f6de7a0")
 	)
 	(wire
 		(pts
@@ -5386,6 +5366,16 @@
 	)
 	(wire
 		(pts
+			(xy 151.13 97.79) (xy 151.13 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1c4afd0d-ecfe-4c9b-9236-94251bc1527a")
+	)
+	(wire
+		(pts
 			(xy 226.06 105.41) (xy 226.06 106.68)
 		)
 		(stroke
@@ -5393,16 +5383,6 @@
 			(type default)
 		)
 		(uuid "20ef09dd-05cb-47d2-9a14-005651b98a8b")
-	)
-	(wire
-		(pts
-			(xy 132.08 83.82) (xy 132.08 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "27acbe66-1164-4080-ba11-fa81d0298429")
 	)
 	(wire
 		(pts
@@ -5516,17 +5496,7 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 93.98) (xy 135.89 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6a8011f9-a4f6-4105-ba22-254bb7ebd285")
-	)
-	(wire
-		(pts
-			(xy 115.57 97.79) (xy 132.08 97.79)
+			(xy 115.57 97.79) (xy 151.13 97.79)
 		)
 		(stroke
 			(width 0)
@@ -5566,7 +5536,7 @@
 	)
 	(wire
 		(pts
-			(xy 135.89 80.01) (xy 115.57 80.01)
+			(xy 115.57 80.01) (xy 151.13 80.01)
 		)
 		(stroke
 			(width 0)
@@ -5583,16 +5553,6 @@
 			(type default)
 		)
 		(uuid "87b300b6-6080-42f4-a59d-686bf38c01ce")
-	)
-	(wire
-		(pts
-			(xy 151.13 83.82) (xy 132.08 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8936b0c6-a82f-4478-94ee-31c8454737f5")
 	)
 	(wire
 		(pts
@@ -5626,6 +5586,16 @@
 	)
 	(wire
 		(pts
+			(xy 224.79 91.44) (xy 224.79 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9fd0da42-6f19-4939-8b60-44f6af74d383")
+	)
+	(wire
+		(pts
 			(xy 151.13 76.2) (xy 151.13 78.74)
 		)
 		(stroke
@@ -5653,6 +5623,16 @@
 			(type default)
 		)
 		(uuid "b2fbdad0-128c-4c50-a0c6-37c5c158f9ec")
+	)
+	(wire
+		(pts
+			(xy 151.13 80.01) (xy 151.13 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4ad10db-88ab-4cc0-9488-5126a6d3ac7d")
 	)
 	(wire
 		(pts
@@ -8180,8 +8160,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Audio:AudioJack2_Ground")
-		(at 229.87 91.44 0)
-		(mirror y)
+		(at 229.87 88.9 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8191,7 +8170,7 @@
 		(dnp no)
 		(uuid "5e99426b-611c-4f0b-9693-6f3a6bf634d1")
 		(property "Reference" "J9"
-			(at 234.95 92.075 0)
+			(at 234.95 88.265 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8202,7 +8181,7 @@
 			)
 		)
 		(property "Value" "3.5mm_Jack"
-			(at 224.79 83.82 0)
+			(at 224.79 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8214,7 +8193,7 @@
 			)
 		)
 		(property "Footprint" "Intro_to_CAD:Jack_3.5mm_CUI_SJ-3523-SMT_Horizontal"
-			(at 229.87 91.44 0)
+			(at 229.87 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8225,7 +8204,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1811132022_BOOMELE-Boom-Precision-Elec-PJ-320B_C18594.pdf"
-			(at 229.87 91.44 0)
+			(at 229.87 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8236,7 +8215,7 @@
 			)
 		)
 		(property "Description" "DAC OUT"
-			(at 230.632 85.344 0)
+			(at 230.632 94.996 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8246,7 +8225,7 @@
 			)
 		)
 		(property "LCSC" "C18594"
-			(at 229.87 91.44 0)
+			(at 229.87 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8257,7 +8236,7 @@
 			)
 		)
 		(property "JLCPCB #" ""
-			(at 229.87 91.44 0)
+			(at 229.87 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
