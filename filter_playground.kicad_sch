@@ -6700,7 +6700,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "3b2f3cad-a2ad-440c-827d-2e061d8750e4")
 		(property "Reference" "J10"
 			(at 29.5274 66.04 0)
