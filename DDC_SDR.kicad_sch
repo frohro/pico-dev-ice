@@ -15598,7 +15598,7 @@
 	)
 	(text "If you are using a real\nPico, this jumper bridges\na Schottky diode\nfrom USB in to Vsys\n(4.7v with it open,\n5.0v from USB port\nwith it soldered)"
 		(exclude_from_sim no)
-		(at 389.382 27.432 0)
+		(at 387.604 32.258 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -15646,7 +15646,7 @@
 	)
 	(text "For the YD-RP2040\nwe want the USB\nOnly jumper shorted."
 		(exclude_from_sim no)
-		(at 335.788 26.162 0)
+		(at 387.35 20.32 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -16029,6 +16029,12 @@
 		(uuid "e810efa3-6d35-4dbc-91b3-cea0d0c6fae2")
 	)
 	(junction
+		(at 59.69 234.95)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "eff0c6d1-f8e2-403b-baec-7f6fa8f8742d")
+	)
+	(junction
 		(at 127 203.2)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -16051,6 +16057,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fc6da7d8-e763-4d0c-bdd0-d5de359023fd")
+	)
+	(junction
+		(at 92.71 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fe8688cd-14f3-4de2-863c-78435b5ca162")
 	)
 	(no_connect
 		(at 341.63 78.74)
@@ -16175,6 +16187,16 @@
 			(type default)
 		)
 		(uuid "008c237c-3439-4446-ada4-16eb818ae1a4")
+	)
+	(wire
+		(pts
+			(xy 359.41 21.59) (xy 359.41 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "031a1d27-e866-41f4-bc80-3cd364694eb7")
 	)
 	(wire
 		(pts
@@ -17528,6 +17550,16 @@
 	)
 	(wire
 		(pts
+			(xy 59.69 234.95) (xy 72.39 234.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8a904c03-1a58-4baa-beae-7fc8fa3830da")
+	)
+	(wire
+		(pts
 			(xy 229.87 93.98) (xy 233.68 93.98)
 		)
 		(stroke
@@ -17555,6 +17587,16 @@
 			(type default)
 		)
 		(uuid "90dcd4b3-a252-4320-8530-1621916a4974")
+	)
+	(wire
+		(pts
+			(xy 92.71 38.1) (xy 109.22 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "90e0ec28-3f04-4dc9-956b-0b63cab125a6")
 	)
 	(wire
 		(pts
@@ -18038,7 +18080,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 38.1) (xy 109.22 38.1)
+			(xy 74.93 38.1) (xy 92.71 38.1)
 		)
 		(stroke
 			(width 0)
@@ -18298,7 +18340,7 @@
 	)
 	(wire
 		(pts
-			(xy 43.18 234.95) (xy 72.39 234.95)
+			(xy 43.18 234.95) (xy 59.69 234.95)
 		)
 		(stroke
 			(width 0)
@@ -27977,6 +28019,42 @@
 			)
 		)
 	)
+	(netclass_flag ""
+		(length 2.54)
+		(shape round)
+		(at 359.41 33.02 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8376d015-aac0-40d8-9d47-7a3febcfcf44")
+		(property "Netclass" "1V1"
+			(at 356.87 32.3215 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Component Class" ""
+			(at 173.99 -38.1 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+			)
+		)
+	)
 	(symbol
 		(lib_id "PCM_JLCPCB-Resistors:0805,100Ω")
 		(at 68.58 240.03 90)
@@ -30772,7 +30850,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 359.41 33.02 0)
+		(at 359.41 21.59 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -30783,7 +30861,7 @@
 		(dnp no)
 		(uuid "1221d716-65de-4c4b-878e-9eab54b3827f")
 		(property "Reference" "#PWR072"
-			(at 359.41 36.83 0)
+			(at 359.41 25.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30794,7 +30872,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 359.029 28.6258 0)
+			(at 359.029 17.1958 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -30804,7 +30882,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 359.41 33.02 0)
+			(at 359.41 21.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30815,7 +30893,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 359.41 33.02 0)
+			(at 359.41 21.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -30826,7 +30904,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 359.41 33.02 0)
+			(at 359.41 21.59 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -39550,6 +39628,96 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 92.71 38.1 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "789491cb-e0d0-4572-877d-87bacc7c913a")
+		(property "Reference" "TP15"
+			(at 92.71 31.75 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "U15"
+			(at 93.98 34.036 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+			(at 97.79 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 97.79 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 92.71 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB #" ""
+			(at 92.71 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fa84dfe5-2359-464d-a008-ed6396922f5b")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
+					(reference "TP15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
 		(at 33.02 71.12 0)
 		(unit 1)
@@ -41791,7 +41959,6 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "83caa42d-c957-473c-ae51-fa3a3f4e3a56")
 		(property "Reference" "#PWR073"
 			(at 364.49 26.67 0)
@@ -41805,7 +41972,7 @@
 			)
 		)
 		(property "Value" "+4.7V"
-			(at 361.95 21.5899 0)
+			(at 370.84 19.812 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -51958,6 +52125,96 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 59.69 234.95 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "cfdfdb11-8486-4d7c-9de1-1641674fa703")
+		(property "Reference" "TP14"
+			(at 59.69 228.6 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "U15"
+			(at 60.96 230.886 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+			(at 64.77 234.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 64.77 234.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 59.69 234.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB #" ""
+			(at 59.69 234.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5f2162a1-4fde-43af-a4f5-f0e1abd3f25b")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
+					(reference "TP14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_name "GND_1")
 		(lib_id "power:GND")
 		(at 215.9 255.27 0)
@@ -55441,6 +55698,97 @@
 			(project "DDC_SDR"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
 					(reference "#PWR027")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:Jumper_2_Bridged")
+		(at 359.41 27.94 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim yes)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f0de5bb3-7f1d-4dd3-9596-c2d0ccf8a415")
+		(property "Reference" "JP8"
+			(at 356.87 27.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 355.346 27.94 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged2Bar_RoundedPad1.0x1.5mm"
+			(at 359.41 27.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 359.41 27.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, closed/bridged"
+			(at 359.41 27.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB #" ""
+			(at 359.41 27.94 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "e0a495ee-d689-4536-bcc8-2037de49f294")
+		)
+		(pin "1"
+			(uuid "aa5d0257-8d63-4af9-81d9-679fc6338416")
+		)
+		(instances
+			(project "DDC_SDR"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
+					(reference "JP8")
 					(unit 1)
 				)
 			)

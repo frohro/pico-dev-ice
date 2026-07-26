@@ -597,6 +597,9 @@
       "/AF DAC/VAA": [
         "5V0"
       ],
+      "Net-(A1-3V3)": [
+        "1V1"
+      ],
       "Net-(C35-Pad1)": [
         "5V0"
       ],
@@ -637,6 +640,9 @@
         "5V0"
       ],
       "Net-(JP5-A)": [
+        "5V0"
+      ],
+      "Net-(JP7-A)": [
         "5V0"
       ],
       "Net-(Q1-G)": [
@@ -1302,7 +1308,7 @@
         "uuid": "7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
       }
     ],
-    "used_designators": "L1-3,FB1-7,Je3,JP1-7,JP50-53,JP86,JP88-89,J1-14,J16,S1,TR1-4,Q1-10,U1-27,D1-8,A1,X1,SW1,#PWR1-225,C1-109,e1-4,TP1-13,TP28-32,R1-90,#FLG1-2,#FLG7,#FLG101",
+    "used_designators": "L1-3,FB1-7,Je3,JP1-8,JP50-53,JP86,JP88-89,J1-14,J16,S1,TR1-4,Q1-10,U1-27,D1-8,A1,X1,SW1,#PWR1-225,C1-109,e1-4,TP1-18,TP28-32,R1-90,#FLG1-2,#FLG7,#FLG101",
     "variants": []
   },
   "sheets": [
