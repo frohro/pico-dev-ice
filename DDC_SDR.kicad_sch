@@ -39661,7 +39661,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 97.79 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -43611,7 +43611,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 92.71 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -52158,7 +52158,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 64.77 234.95 0)
 			(hide yes)
 			(show_name no)
@@ -53202,7 +53202,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 193.04 242.57 0)
 			(hide yes)
 			(show_name no)
@@ -54347,7 +54347,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 83.82 198.12 0)
 			(hide yes)
 			(show_name no)

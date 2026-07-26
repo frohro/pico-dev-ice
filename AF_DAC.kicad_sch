@@ -7036,7 +7036,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 212.09 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -12286,7 +12286,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_THTPad_D2.5mm_Drill1.2mm"
+		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
 			(at 222.25 86.36 0)
 			(hide yes)
 			(show_name no)
