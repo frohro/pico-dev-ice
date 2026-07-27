@@ -6337,6 +6337,12 @@
 		(uuid "3aaf462f-c88e-4255-a992-be23d72dd239")
 	)
 	(junction
+		(at 208.28 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3edf6855-abd8-495e-b61f-0f71b323badf")
+	)
+	(junction
 		(at 189.23 135.89)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6473,12 +6479,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d38f0aff-4427-439e-b682-f6f737e05044")
-	)
-	(junction
-		(at 228.6 100.33)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d9bce1bf-6b78-4c7c-a5f9-14302cef2185")
 	)
 	(junction
 		(at 119.38 100.33)
@@ -6837,16 +6837,6 @@
 			(type default)
 		)
 		(uuid "769a088f-5de3-4173-86c3-70f6f8d69579")
-	)
-	(wire
-		(pts
-			(xy 228.6 100.33) (xy 248.92 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7889f83e-4164-4d90-ac8c-cd97f0e1acab")
 	)
 	(wire
 		(pts
@@ -9449,7 +9439,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 248.92 100.33 270)
+		(at 208.28 86.36 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9459,7 +9449,7 @@
 		(dnp no)
 		(uuid "1dd1342a-1cf1-4398-ab7e-c56d293f5076")
 		(property "Reference" "TP5"
-			(at 255.27 100.33 90)
+			(at 214.63 86.36 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9471,7 +9461,7 @@
 			)
 		)
 		(property "Value" "VDDA"
-			(at 251.46 97.79 90)
+			(at 210.82 83.82 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9482,7 +9472,7 @@
 			)
 		)
 		(property "Footprint" "RP2040_minimal:TestPoint_THTPad_D2.5mm_Drill1.2mm"
-			(at 248.92 105.41 0)
+			(at 208.28 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9493,7 +9483,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 248.92 105.41 0)
+			(at 208.28 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9504,7 +9494,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 248.92 100.33 0)
+			(at 208.28 86.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9515,7 +9505,7 @@
 			)
 		)
 		(property "JLCPCB #" ""
-			(at 248.92 100.33 0)
+			(at 208.28 86.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19154,7 +19144,7 @@
 			)
 		)
 		(property "Value" "VDDA"
-			(at 215.138 89.154 90)
+			(at 211.836 90.678 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
