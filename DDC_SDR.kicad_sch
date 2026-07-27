@@ -33605,7 +33605,6 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "48db4dca-a22e-41ad-b328-c89c8c12c6a1")
 		(property "Reference" "A1"
 			(at 362.3467 105.41 0)
@@ -49312,7 +49311,6 @@
 	(symbol
 		(lib_id "PCM_JLCPCB-Capacitors:0402,100nF,(2)")
 		(at 127 26.67 0)
-		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -49322,7 +49320,7 @@
 		(dnp no)
 		(uuid "b748a8f3-2d38-49e6-ba86-e9d62329e4cf")
 		(property "Reference" "C22"
-			(at 132.334 24.892 0)
+			(at 121.666 24.892 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -49333,7 +49331,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 126.492 24.892 0)
+			(at 127.508 24.892 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -49344,7 +49342,7 @@
 			)
 		)
 		(property "Footprint" "PCM_JLCPCB:C_0402"
-			(at 128.778 26.67 90)
+			(at 125.222 26.67 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -49487,7 +49485,7 @@
 			)
 		)
 		(property "Voltage Rated" "50V"
-			(at 124.968 28.7162 0)
+			(at 129.032 28.7162 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
