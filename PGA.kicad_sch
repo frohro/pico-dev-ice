@@ -11855,7 +11855,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "U17"
+		(property "Value" "U20"
 			(at 241.046 50.292 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13686,7 +13686,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "U16"
+		(property "Value" "U13"
 			(at 58.928 39.878 90)
 			(show_name no)
 			(do_not_autoplace no)

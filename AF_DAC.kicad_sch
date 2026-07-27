@@ -6757,7 +6757,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "V_DAC_L"
+		(property "Value" "DAC_R"
 			(at 217.17 102.108 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12086,7 +12086,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "V_DAC_R"
+		(property "Value" "DAC_L"
 			(at 214.122 81.026 0)
 			(show_name no)
 			(do_not_autoplace no)

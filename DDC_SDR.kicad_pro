@@ -250,6 +250,22 @@
           ""
         ],
         [
+          "lib_footprint_mismatch|121292500|118590000|bbea6822-3f86-41a9-bc9e-1f54b0ce863d|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|135482500|116997500|3f97f8da-6365-4931-8b6d-b3d4b2f9e08d|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|138677500|127857500|19b5fe86-5e19-4b48-9de9-48992dfe5b69|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|184162500|100000000|77b8b3d3-8140-4d63-a2d8-2fe79894e046|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
           "pth_inside_courtyard|180110000|101800000|8720ed0a-5df3-4d94-ba35-704c5848fcc8|77b8b3d3-8140-4d63-a2d8-2fe79894e046",
           ""
         ],
@@ -283,6 +299,30 @@
         ],
         [
           "pth_inside_courtyard|184110000|99800000|d0d5868b-67f6-45f7-a1ad-7e919166eb49|77b8b3d3-8140-4d63-a2d8-2fe79894e046",
+          ""
+        ],
+        [
+          "silk_edge_clearance|199950000|121210000|e5dc5bd3-fddc-4017-a7e2-faff8811bf14|e06b1a7f-41d3-49c2-9719-87231af2f127",
+          ""
+        ],
+        [
+          "silk_edge_clearance|199950000|121210000|e5dc5bd3-fddc-4017-a7e2-faff8811bf14|e6deda17-dca9-44c4-a563-d2e1dfc0e404",
+          ""
+        ],
+        [
+          "silk_edge_clearance|199950000|126410000|e5dc5bd3-fddc-4017-a7e2-faff8811bf14|5bb19795-3351-449e-b393-b34e86ec201d",
+          ""
+        ],
+        [
+          "silk_edge_clearance|200000000|104110000|e5dc5bd3-fddc-4017-a7e2-faff8811bf14|ea0dd289-5e51-4033-baa1-cc89b369ed04",
+          ""
+        ],
+        [
+          "silk_edge_clearance|200000000|95890000|e5dc5bd3-fddc-4017-a7e2-faff8811bf14|cf642c6b-8d38-4c26-a341-1410cb43901d",
+          ""
+        ],
+        [
+          "silk_overlap|164356591|92490000|04d7ca72-4307-4d73-aa45-424c25e08b14|4be9802c-6299-45c7-a5f2-b00b0ad7ab54",
           ""
         ]
       ],
@@ -1518,7 +1558,7 @@
         "uuid": "7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
       }
     ],
-    "used_designators": "H1,SW1,X1,A1,D1-8,U1-27,Q1-10,#FLG1-2,#FLG7,#FLG101,R1-90,TP1-18,TP28-32,#PWR1-225,e1-4,C1-109,FB1-7,L1-3,JP1-8,JP50-53,JP86,JP88-89,Je3,J1-14,J16,S1,TR1-4",
+    "used_designators": "e1-4,C1-109,#PWR1-225,TP1-18,TP28-32,R1-90,#FLG1-2,#FLG7,#FLG101,Q1-10,TR1-4,S1,J1-14,J16,Je3,JP1-8,JP50-53,JP86,JP88-89,L1-3,FB1-7,H1,X1,SW1,A1,U1-27,D1-8",
     "variants": []
   },
   "sheets": [

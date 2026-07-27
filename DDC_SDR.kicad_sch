@@ -39824,7 +39824,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "U15"
+		(property "Value" "A+"
 			(at 93.98 34.036 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -43774,7 +43774,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "U25"
+		(property "Value" "U3"
 			(at 88.9 234.442 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -52320,7 +52320,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "U15"
+		(property "Value" "O+"
 			(at 60.96 230.886 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -52577,7 +52577,7 @@
 				)
 			)
 		)
-		(property "Value" "S21_OUT"
+		(property "Value" "S21"
 			(at 102.5526 215.9 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -54509,7 +54509,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "U15"
+		(property "Value" "U2"
 			(at 80.01 194.056 0)
 			(show_name no)
 			(do_not_autoplace no)
