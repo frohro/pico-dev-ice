@@ -1,15 +1,13 @@
-
-
-# Educational Mixed-Signal SDR & DSP Laboratory
-**A unified DDC/DUC Software Defined Radio, Vector Network Analyzer, and Arbitrary Waveform Generator designed for university-level Digital Design and DSP classes.**
+# <span style="text-transform: none;">The Pico Dev-iCE 📡</span>
+**DSP Educational Vehicle & iCE40 Mixed-Signal Laboratory**
 
 ## 📌 Overview
-This board is a low-cost, high-performance "Lab-in-a-Box." It combines the high-speed programmable logic of a **Lattice iCE40UP5K FPGA** with the flexible C/MicroPython ecosystem of a **Raspberry Pi Pico (YD-RP2040 with 16MB Flash)**. 
+The **Pico Dev-iCE** is a low-cost, high-performance "Lab-in-a-Box." It combines the high-speed programmable logic of a **Lattice iCE40UP5K FPGA** with the flexible C/MicroPython ecosystem of a **Raspberry Pi Pico (YD-RP2040 with 16MB Flash)**. 
 
 Designed specifically as an educational platform, it abandons "black box" RF chips in favor of discrete, observable analog blocks. Students can physically probe the RF signal path, design their own LC filters on pluggable sandboxes, and write Verilog to perform Direct Digital Conversion (DDC), digital decimation, and hardware I2S audio routing.
 
 ## 🚀 Key Capabilities
-* **HF Software Defined Radio (RX/TX):** DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30 MHz.
+* **HF Software Defined Radio (RX/TX):** Full-duplex DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30+ MHz.
 * **Vector Network Analyzer (VNA):** Built-in Return Loss Bridge (RLB) for S11 (reflection) antenna tuning, and Port-to-Port S21 (transmission) filter characterization.
 * **Arbitrary Waveform Generator (AWG):** Dedicated DC-coupled and AC-coupled SMA outputs for 30 MSPS generic signal generation.
 * **Real-Time Spectrum Analyzer:** Visualize the entire 15 MHz HF spectrum simultaneously via FPGA-accelerated FFTs.
@@ -30,9 +28,9 @@ Designed specifically as an educational platform, it abandons "black box" RF chi
 * **Process Gain:** The 640x decimation provides ~ 28 dB of digital processing gain, turning the raw 8-bit ADC into a highly sensitive 12.6-bit effective receiver!
 
 ### The Receive (RX) Path
-* **Topology:** `SMA` ➔ `Ethernet Isolation/CMC` ➔ `Band Sandbox` ➔ `T/R Switch` ➔ `LNA 1` ➔ `PGA (5/10/20dB)` ➔ `LNA 2` ➔ `ADC`.
+* **Topology:** `SMA` ➔ `Ethernet Isolation/CMC` ➔ `Band Sandbox` ➔ `T/R Switch` ➔ `LNA 1` ➔ `PGA (5/10dB)` ➔ `LNA 2` ➔ `ADC`.
 * **Amplifiers:** Uses discrete high-speed op-amps wired as AC-coupled inverting amplifiers. 
-* **Programmable Gain:** A 4-bit Digital Step Attenuator (DSA) built from CMOS switches and precision T-networks, providing 0 to 55 dB of gain control in 5 dB steps. LNA 1 and LNA 2 are both bypassable to prevent clipping on massive signals.
+* **Programmable Gain:** A Digital Step Attenuator (DSA) built from CMOS switches and precision T-networks, providing 0 to 55 dB of gain control in 5 dB steps. LNA 1 and LNA 2 are both bypassable to prevent clipping on massive signals.
 * **ADC (MS9280):** 8-bit, 32 MSPS. Driven by an RF balun into True Differential Mode with a 4.5V analog supply, yielding a massive 4.0V peak-to-peak input span for maximum dynamic range.
 
 ### The Transmit (TX) Path
@@ -50,7 +48,7 @@ To achieve commercial-grade noise floors, the noisy Switch-Mode Power Supply (SM
 
 ## 🎛️ Port & Jumper Reference
 
-### BNC/SMA Connectors
+### Coaxial Connectors
 1. **`SDR_ANT`(BNC):** Main Transceiver Port (Transformer isolated, AC-Coupled).
 2. **`SII` (SMA):** Device Under Test port for S11/VSWR Antenna measurements. Connects to the internal Return Loss Bridge.
 3. **`AWG_OUT` (BNC):** Direct DC-coupled output (0V to +4V) from the DAC. Perfect for baseband signal generation.
@@ -67,7 +65,7 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
 
 * **Level Shifters (Logic Inversion):** The 4.5V analog switches are controlled by 3.3V GPIOs via 2N7002 N-Channel MOSFETs. **Note:** This results in a logic inversion. Writing `0` to the pin in MicroPython = Switch HIGH (Max Gain / Default Path). Writing `1` = Switch LOW (Attenuated / VNA / TX Path).
 * **FPGA Boot & SPI0 Bus:** 
-    *   The external FPGA Flash chip used on the pico2-ice was removed to simplify the architecture. The Pico boots the FPGA directly by blasting the bitstream into CRAM using its Hardware `SPI0` block. 
+    *   The external FPGA Flash chip was removed to simplify the architecture. The Pico boots the FPGA directly by blasting the bitstream into CRAM using its Hardware `SPI0` block. 
     *   Because the Pico drives the bus, the net names match the Pico's hardware roles: `SPI0_TX` (MOSI) is data entering the FPGA, and `SPI0_RX` (MISO) is data leaving the FPGA. 
     *   **Runtime:** Once booted, the Pico reuses the exact same `SPI0` bus and `ICE_SSN` Chip Select pin to send DSP commands to the user's Verilog.
 * **ADC OTR:** The MS9280 "Out of Range" (Clipping) pin pulses for only 32ns. The FPGA catches this, stretches the pulse, and triggers a hardware interrupt on the Pico to engage the AGC.
@@ -135,12 +133,12 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
 | **44** | `IOB_3b_G6` | `DB7` | DAC Data Bit 7 (MSB) |
 | **14** | `IOB_32a_SPI_SO` | `SPI0_RX` | SPI MISO (Data *to* Pico during runtime) |
 | **17** | `IOB_33b_SPI_SI` | `SPI0_TX` | SPI MOSI (Data *from* Pico during runtime) |
-| **15** | `IOB_34a_SPI_SCK` | `SPI0_CLK` | SPI Clock IN |
+| **15** | `IOB_34a_SPI_SCK`| `SPI0_CLK` | SPI Clock IN |
 | **16** | `IOB_35b_SPI_SS` | `ICE_SSN` | SPI Chip Select IN |
-| **12** | `IOB_22a` | `BCK` | I2S Bit Clock OUT (To Pico) |
-| **9** | `IOB_16a` | `WS` | I2S Word Select OUT (To Pico) |
-| **11** | `IOB_20a` | `RX_DATA` | I2S Data OUT (SDR audio to Pico) |
-| **10** | `IOB_18a` | `TX_DATA` | I2S Data IN (Transmit audio from Pico) |
+| **11** | `IOB_20a` | `BCK` | I2S Bit Clock OUT (To Pico) |
+| **12** | `IOB_22a` | `WS` | I2S Word Select OUT (To Pico) |
+| **10** | `IOB_18a` | `RX_DATA` | I2S Data OUT (SDR audio to Pico) |
+| **9** | `IOB_16a` | `TX_DATA` | I2S Data IN (Transmit audio from Pico) |
 | **13** | `IOB_24a` | `FPGA_INT` | Hardware Interrupt OUT (To Pico) |
 | **38** | `IOT_50b` | `ANG_0` | Rotary Encoder / Tuning Knob A |
 | **42** | `IOT_51a` | `ANG_1` | Rotary Encoder / Tuning Knob B |
