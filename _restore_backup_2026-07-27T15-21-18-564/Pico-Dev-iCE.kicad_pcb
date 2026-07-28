@@ -762,7 +762,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/a230dbf2-1812-4898-9e1e-9e14022ecf26")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -1599,7 +1599,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/76e8430d-1bc0-4726-bd51-c31b5ff391eb")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -2127,7 +2127,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/ec76a160-2c49-47a6-9833-706849f902a6")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -2647,7 +2647,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/48f36b72-70ac-486e-9998-ab544d128d0b")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -3539,7 +3539,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/9cadb244-0b79-448c-a4f8-a94cc179d347")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -5879,7 +5879,7 @@
 		(property ki_fp_filters "D_*")
 		(path "/7d62840c-f079-4cfa-9bf5-5faaf8e95d0d")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -6291,7 +6291,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/94ba9589-b73f-4b2b-b384-93eab6d0881a")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -7087,7 +7087,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/8cf2689d-6f3c-4aee-8ed8-98cd203c5d97")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -8032,7 +8032,7 @@
 		(property ki_fp_filters "Pin* Test*")
 		(path "/e3d21b20-83c1-4ddd-91d2-2ad03d8d6f9b")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -8379,7 +8379,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/4f51649e-71ac-4b5b-b5ec-d9d7de1ae8ed")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -9743,7 +9743,7 @@
 		)
 		(path "/93522d1c-6d12-4c35-82db-479f18dc4598")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -10551,7 +10551,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/001b6bc2-8f47-416c-94ab-f31e4a3bc88f")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -10753,7 +10753,7 @@
 		(property ki_fp_filters "Transformer*Ethernet*Bourns*PT61017PEL*")
 		(path "/8a6ab591-76a3-4fc5-a14b-fb2741cd40b7")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -11097,7 +11097,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -90 -0 -0)
+				(xyz -90 0 0)
 			)
 		)
 	)
@@ -13505,7 +13505,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/b7407123-1067-4c7b-861d-5cf304236b6d")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -14065,7 +14065,7 @@
 		(property ki_fp_filters "Pin* Test*")
 		(path "/cfdfdb11-8486-4d7c-9de1-1641674fa703")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -15501,7 +15501,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/83e3fba3-009f-4950-bf01-b886ab845f2c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -15926,7 +15926,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/07e38121-f815-4122-ab8c-7916d9dafc81")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -16087,7 +16087,7 @@
 		(property ki_fp_filters "Pin* Test*")
 		(path "/789491cb-e0d0-4572-877d-87bacc7c913a")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -16595,7 +16595,7 @@
 		(property ki_fp_filters "Pin* Test*")
 		(path "/8f1e037f-1e36-46a7-84c4-eedbdb21b123")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -17397,7 +17397,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/561a5867-74ec-4d1a-8487-8cbcc73eb334")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -19387,7 +19387,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/c5df4d8e-ffa2-4ee7-a838-10e9015bf52e")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -21789,7 +21789,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/fc25d5b2-d25e-4286-99cd-b63db8282377")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -22173,7 +22173,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/6dc5e496-4019-4dd6-8db3-11b8c53c3f3d")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -22355,7 +22355,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/fddcfb55-2e96-4cbe-a31f-17cf3c27b344")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -23446,7 +23446,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/ccbd50a5-138a-4841-94ff-7de90e425096")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -23830,7 +23830,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/81e918e2-ec9b-4f0c-b07d-7ab43d1d904d")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -25638,7 +25638,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/3c2c004b-2f35-4c54-b06f-c82a2d9ac356")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -26010,7 +26010,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f9450fe0-86ed-4ec8-a1ee-3df81fa42da5")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -26681,7 +26681,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/7663ac95-b775-4eeb-a361-f0fad2037be5")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -27478,7 +27478,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/8020f96b-4539-4547-9613-27e8f1ffd102")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -27842,7 +27842,7 @@
 		(property ki_fp_filters "QFN*7x7mm*P0.5mm*EP5.6x5.6mm*")
 		(path "/ddbf97a3-9492-4277-9c69-860130767e7b")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -30213,7 +30213,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/b6b752bd-b937-482e-a251-45d8178914a9")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -31095,7 +31095,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f4ef8512-3320-419b-9dd4-3377c7a7696e")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -31904,7 +31904,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/4bf3eb32-911c-42b6-ac9b-7e5744998fb6")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -34308,7 +34308,7 @@
 		)
 		(path "/77e5bbfc-6191-45ad-bb6d-4ec0b4da86ad")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -35509,7 +35509,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/b534e023-8560-4f7d-8d75-a9a99af1d0b5")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -37223,7 +37223,7 @@
 		(property ki_fp_filters "Transformer*Ethernet*Bourns*PT61017PEL*")
 		(path "/5c140502-3271-4fe0-9baf-ae1e9a08533e")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -37811,7 +37811,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/78cdc6a7-0543-446e-a4cb-1b8f6e06ac1c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -38248,7 +38248,7 @@
 		(property ki_fp_filters "Q_*")
 		(path "/94e0e205-a7af-48a0-9287-527c8499238f")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -38693,7 +38693,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/959cf6ff-6333-41e2-a1ec-47627b8b4d43")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -39525,7 +39525,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/2b4833a3-8c4f-4eb8-a81a-8f905634063a")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -39856,7 +39856,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/124774d2-df57-418a-9b11-cca6354df242")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -40712,7 +40712,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/11d2d84e-9cff-46ab-90dc-fc37b6c7282f")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -42292,7 +42292,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/c914d819-a460-4f13-a293-5189f4f2bef4")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -45045,7 +45045,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/30a19865-10aa-4730-8d44-c54798051fef")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -45977,7 +45977,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/09cec13e-3906-4bfa-a4c9-513a32d200be")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -46526,7 +46526,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/905c1196-e684-484d-bebc-3b04a1a69638")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -47373,7 +47373,7 @@
 		(property ki_fp_filters "Q_*")
 		(path "/f379cc89-058a-41e0-9607-609e6dded7c2")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -49156,7 +49156,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -90 -0 90)
+				(xyz -90 0 90)
 			)
 		)
 	)
@@ -49777,7 +49777,7 @@
 		(property ki_fp_filters "D_*")
 		(path "/bb5c6e20-bf75-4057-bae1-f6d2fac91574")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -50516,7 +50516,7 @@
 		(property ki_fp_filters "RaspberryPi?Pico?Common* RaspberryPi?Pico?W?SMD*")
 		(path "/48db4dca-a22e-41ad-b328-c89c8c12c6a1")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -51873,7 +51873,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -0 -0 -0)
+				(xyz 0 0 0)
 			)
 		)
 		(model "${KICAD10_3DMODEL_DIR}/Module.3dshapes/RaspberryPi_Pico_AddedHeaders_H2.54mm.step"
@@ -51896,7 +51896,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -0 -0 -0)
+				(xyz 0 0 0)
 			)
 		)
 		(model "${KICAD10_3DMODEL_DIR}/Module.3dshapes/RaspberryPi_Pico_W_AddedHeaders_H2.54mm.step"
@@ -51920,7 +51920,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -0 -0 -0)
+				(xyz 0 0 0)
 			)
 		)
 	)
@@ -52471,7 +52471,7 @@
 		(property ki_fp_filters "D_*")
 		(path "/9d67238b-1be1-42ce-8c3b-6f7b1450c9bb")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -52936,7 +52936,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/e2f6c624-6cc2-4f77-8105-68be39bde3c5")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -54278,7 +54278,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/5ca58013-6a25-48b2-b8f2-66ae32fd2522")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -57458,7 +57458,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/39e842a8-f940-457b-8737-c86304c406f3")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -57842,7 +57842,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/9c4e8dd8-6be1-48a8-8d90-df06f7c067ad")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -58709,7 +58709,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/c4164d35-ab76-48a1-8965-a113cbdcde0d")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -59134,7 +59134,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/bd552c9c-6bdd-4d3e-ac60-c1436aaa7f67")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -60684,7 +60684,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/d9707223-7403-4789-8829-c96211f03b57")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -61068,7 +61068,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/7f95c9d8-f240-45dc-a8bc-ea9ed1778b8d")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -61399,7 +61399,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/65520caa-a271-4ae6-9c4c-7c29596fbf72")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -61732,7 +61732,7 @@
 		(property ki_fp_filters "D_*")
 		(path "/85354e9b-080b-41cd-87ab-11e8e7e3ef14")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -64025,7 +64025,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/ff94964d-53f9-4d99-9141-bd374b7894ed")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -64743,7 +64743,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/e53ffb2b-3b87-446a-bc20-200c2f37340c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -65781,7 +65781,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/e44c343e-17c1-4480-8ac8-72fe2d4830f9")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -68107,7 +68107,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/e5ba6786-ec0c-4d05-8d37-4b2431ededa1")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -68974,7 +68974,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/9f86b1ec-2312-481d-a195-f6992c440fa3")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -69346,7 +69346,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f6996dc1-d10c-4dbd-b369-45f8f66f3769")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -69771,7 +69771,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/9eb860f7-6a37-455a-9d80-45a7f7492089")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -71262,7 +71262,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/4ce36421-1605-4fce-a152-9c57f162015c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -71795,7 +71795,7 @@
 		(property ki_fp_filters "*BNC* *SMA* *SMB* *SMC* *Cinch* *LEMO* *UMRF* *MCX* *U.FL*")
 		(path "/61a938f6-844f-480b-b7ec-95babe5bd079")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -71985,7 +71985,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -180 -180 -0)
+				(xyz -180 -180 0)
 			)
 		)
 	)
@@ -72857,7 +72857,7 @@
 		(property ki_fp_filters "SOT* SC*")
 		(path "/82b7dcaa-bbca-4a80-815f-9bf1e2c23bca")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -74489,7 +74489,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/6f0e1ce3-80bc-442f-aeaf-827b1020007a")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -74940,7 +74940,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/7940d304-a2cb-4203-8165-cbc730718153")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -76254,7 +76254,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -90 -0 -0)
+				(xyz -90 0 0)
 			)
 		)
 	)
@@ -76460,7 +76460,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/51debcdb-2c10-49ff-8073-3f16fd71946a")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -77036,7 +77036,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/61188fa3-3e33-40ba-b0c7-b6cc51d2621e")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -77428,7 +77428,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -0 -0 -0)
+				(xyz 0 0 0)
 			)
 		)
 	)
@@ -78965,7 +78965,7 @@
 		)
 		(path "/09864abf-f116-4e9c-b0cb-ba0a6de3becf")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -80147,7 +80147,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/fa9d47e3-6357-486a-aa22-019d5b8b3c6c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -82533,7 +82533,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/609071d5-4d4d-4d06-a206-f396efd65ed4")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -83277,7 +83277,7 @@
 		(property ki_fp_filters "*BNC* *SMA* *SMB* *SMC* *Cinch* *LEMO* *UMRF* *MCX* *U.FL*")
 		(path "/d6935e54-d35f-4b01-a98c-0c4ee133e81f")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -84229,7 +84229,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/4ed2ed73-3826-4656-b739-38e7ae9c8756")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -85867,7 +85867,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/0aa1c1c9-425f-42c1-909b-ede04a57556a")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -87781,7 +87781,7 @@
 		(property ki_fp_filters "Transformer*Ethernet*Bourns*PT61017PEL*")
 		(path "/053d2254-e858-4d3e-8974-aaee664cd463")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -88125,7 +88125,7 @@
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz -90 -0 -0)
+				(xyz -90 0 0)
 			)
 		)
 	)
@@ -90188,7 +90188,7 @@
 		(property ki_fp_filters "*BNC* *SMA* *SMB* *SMC* *Cinch* *LEMO* *UMRF* *MCX* *U.FL*")
 		(path "/d725c114-15ef-4c26-8050-eb48a8812ea1")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -90809,7 +90809,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/c9e0124d-f6b5-44f9-ad77-dadb8fc3c19c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -90965,7 +90965,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/ca7fd35a-e3dc-4c09-8e72-251bf5b0a1eb")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -91825,7 +91825,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/6a5d5616-ad60-429e-b606-f92f0f96973c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -92607,7 +92607,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/47ceac87-2269-475c-8a78-bb4aff6bf436")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -92979,7 +92979,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/119956b3-5c5c-483a-a2fc-596d346f4d84")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -93837,7 +93837,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/d9b908ba-22cc-4122-9f57-59442776c1c7")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -94644,7 +94644,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/1136b8b5-4cb6-4623-812f-50afe20a8f6c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -95165,7 +95165,7 @@
 		(property ki_fp_filters "SOT* SC*")
 		(path "/a922aebd-8550-4b6b-b506-ab766861699c")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -98038,7 +98038,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/2f11359f-8852-42f4-898e-df8cb2d8f880")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -98408,7 +98408,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/a5ab0234-7ade-42e7-8089-f383d76e4cea")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -99958,7 +99958,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f9ae68eb-4578-437e-9c8e-0fc5d6d4bdef")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -100330,7 +100330,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/0ecd909e-9c96-4f93-9d40-d3d38e5cca1b")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -100826,7 +100826,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/8df1b60a-ff5e-4f9b-b0c4-e40bea55fca0")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -101503,7 +101503,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/b748a8f3-2d38-49e6-ba86-e9d62329e4cf")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -101875,7 +101875,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/574ae6bc-5aad-46f7-a0df-8a5d411376f4")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -102065,7 +102065,7 @@
 		(property ki_fp_filters "MountingHole*")
 		(path "/4fc77e0d-2005-4389-b525-05dd512d62b7")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -106569,7 +106569,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/5c94a782-86ce-4591-9746-bbadb8cffed9")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -107684,7 +107684,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/7c9ba8b2-2574-4b30-ab5a-75bc1fa79fb2")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -109849,7 +109849,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/dd675310-c20e-4075-a32a-997e25122e7d")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -110398,7 +110398,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/fe6357e6-8e2a-41a4-85a7-e783d81426b8")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -110559,7 +110559,7 @@
 		(property ki_fp_filters "Pin* Test*")
 		(path "/db2b4a43-ca2a-4e59-9b1c-fdbcb3a3a711")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -110688,7 +110688,7 @@
 		(property ki_fp_filters "Jumper* TestPoint*2Pads* TestPoint*Bridge*")
 		(path "/4f170e39-2bd5-47e6-8359-844fb0ab20bc")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -111301,7 +111301,7 @@
 		(property ki_fp_filters "Jumper* TestPoint*2Pads* TestPoint*Bridge*")
 		(path "/74bc45c9-892e-4fd3-890e-4b53e8583930")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -111914,7 +111914,7 @@
 		(property ki_fp_filters "Jumper* TestPoint*2Pads* TestPoint*Bridge*")
 		(path "/f0de5bb3-7f1d-4dd3-9596-c2d0ccf8a415")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")
@@ -112538,7 +112538,7 @@
 		(property ki_fp_filters "Jumper* TestPoint*2Pads* TestPoint*Bridge*")
 		(path "/9bd03987-2398-4151-8f19-c6608722001a")
 		(sheetname "/")
-		(sheetfile "DDC_SDR.kicad_sch")
+		(sheetfile "Pico-Dev-iCE.kicad_sch")
 		(units
 			(unit
 				(name "A")

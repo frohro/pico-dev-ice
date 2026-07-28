@@ -772,7 +772,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "DDC_SDR.kicad_pro",
+    "filename": "Pico-Dev-iCE.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -1553,8 +1553,8 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "DDC_SDR.kicad_sch",
-        "name": "DDC_SDR",
+        "filename": "Pico-Dev-iCE.kicad_sch",
+        "name": "Pico-Dev-iCE",
         "uuid": "7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
       }
     ],

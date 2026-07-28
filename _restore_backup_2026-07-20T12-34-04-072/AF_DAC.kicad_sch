@@ -5721,7 +5721,7 @@
 			(uuid "61342e12-74e7-4cf6-8cc6-71fa1ee86d78")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR0181")
 					(unit 1)
@@ -5799,7 +5799,7 @@
 			(uuid "815fac2c-f8ba-4c5b-9ef0-bf85968857c8")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR078")
 					(unit 1)
@@ -6024,7 +6024,7 @@
 			(uuid "d79870a4-8b0a-4bb3-8ac8-4c31634dbcec")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C53")
 					(unit 1)
@@ -6249,7 +6249,7 @@
 			(uuid "cf871036-e467-4caa-9cf8-585982d65ce7")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C58")
 					(unit 1)
@@ -6327,7 +6327,7 @@
 			(uuid "f0c00a7c-5065-423d-afac-5618542e2c1a")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR077")
 					(unit 1)
@@ -6406,7 +6406,7 @@
 			(uuid "8ea0d275-5945-4057-88b8-de80af496d17")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR089")
 					(unit 1)
@@ -6661,7 +6661,7 @@
 			(uuid "a2a5e6bc-f854-4eed-aba3-b9b3eae13806")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "R22")
 					(unit 1)
@@ -6916,7 +6916,7 @@
 			(uuid "80267304-a540-4a2a-85a3-38935ee55a4e")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "R33")
 					(unit 1)
@@ -6994,7 +6994,7 @@
 			(uuid "28de3ff3-7a29-4ffe-80b1-af9c3a38094a")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR079")
 					(unit 1)
@@ -7084,7 +7084,7 @@
 			(uuid "f72ed017-387b-4af1-9834-8417a0b22ebb")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "TP9")
 					(unit 1)
@@ -7320,7 +7320,7 @@
 			(uuid "22bbf8d0-925a-49f5-8af9-c327ba7c8802")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C25")
 					(unit 1)
@@ -7545,7 +7545,7 @@
 			(uuid "7103403b-aa9c-4994-a19b-2ab6a7514b0e")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "FB7")
 					(unit 1)
@@ -7686,7 +7686,7 @@
 			(uuid "74aaa784-6f3d-426c-b6bf-7a947308d6af")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "U12")
 					(unit 1)
@@ -7919,7 +7919,7 @@
 			(uuid "d39ceead-c51f-4baa-ae83-ea283a9e9ebc")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C47")
 					(unit 1)
@@ -8002,7 +8002,7 @@
 			(uuid "650654c7-34e1-4b93-8df6-5a8b66ed12bf")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "e2")
 					(unit 1)
@@ -8080,7 +8080,7 @@
 			(uuid "11571223-49a2-4391-9e0d-5d0fa099d8ad")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR08")
 					(unit 1)
@@ -8158,7 +8158,7 @@
 			(uuid "f67150de-8a47-42d0-893a-abe6d5746f2c")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR0180")
 					(unit 1)
@@ -8265,7 +8265,7 @@
 			(uuid "c5c25eb0-90e8-4a08-a668-07c67bd6051a")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "J9")
 					(unit 1)
@@ -8343,7 +8343,7 @@
 			(uuid "bbfbc635-174c-4049-9d77-c9beb2f30a5e")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR073")
 					(unit 1)
@@ -8599,7 +8599,7 @@
 			(uuid "8cc97168-9b82-40fd-96b4-28f4fbeb6608")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "R19")
 					(unit 1)
@@ -8678,7 +8678,7 @@
 			(uuid "27afb0d8-c3e6-4a9d-8904-4fa3e1ec39c3")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR096")
 					(unit 1)
@@ -8756,7 +8756,7 @@
 			(uuid "4b3459ed-a963-4c0a-ba62-9f17eee25113")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR074")
 					(unit 1)
@@ -8989,7 +8989,7 @@
 			(uuid "d3516f23-965e-4852-b97b-9d6840d3d9a3")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C46")
 					(unit 1)
@@ -9225,7 +9225,7 @@
 			(uuid "8fd259b2-dbc6-4822-9cc3-33ffe020c7f1")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C57")
 					(unit 1)
@@ -9461,7 +9461,7 @@
 			(uuid "5444fb07-ad2f-44da-9194-0b4d45c96024")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C26")
 					(unit 1)
@@ -9717,7 +9717,7 @@
 			(uuid "e642adba-d356-4c6c-9679-9ecee743ef95")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "R31")
 					(unit 1)
@@ -9973,7 +9973,7 @@
 			(uuid "8b00627b-b10d-42f8-931e-3b4152c215fc")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "R32")
 					(unit 1)
@@ -10197,7 +10197,7 @@
 			(uuid "946eb112-f2d7-4312-8fc7-9d6d6a9176b7")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C50")
 					(unit 1)
@@ -10433,7 +10433,7 @@
 			(uuid "1d6063d3-108c-4291-96a8-3955c1329c0a")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C24")
 					(unit 1)
@@ -10658,7 +10658,7 @@
 			(uuid "0dd251bc-ebf3-4618-9334-c794f5d178b9")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C12")
 					(unit 1)
@@ -10737,7 +10737,7 @@
 			(uuid "4386e43b-f9d7-4ba0-8102-01a967806881")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR095")
 					(unit 1)
@@ -10829,7 +10829,7 @@
 			(uuid "68fc2114-245b-49ba-8f34-cded9954e794")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "JP3")
 					(unit 1)
@@ -11054,7 +11054,7 @@
 			(uuid "acff6cc0-69e3-4191-9023-19946821398c")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C49")
 					(unit 1)
@@ -11132,7 +11132,7 @@
 			(uuid "e6a5c79e-9b1e-422d-a8f7-1428c91a2aab")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR071")
 					(unit 1)
@@ -11211,7 +11211,7 @@
 			(uuid "9bbf35bb-8699-4a2b-bc81-91a109c33b09")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR0178")
 					(unit 1)
@@ -11436,7 +11436,7 @@
 			(uuid "985254ff-097a-40b0-8d24-daaa289f6452")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C59")
 					(unit 1)
@@ -11526,7 +11526,7 @@
 			(uuid "3f20de78-149d-407c-929d-4afe258d4741")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "TP8")
 					(unit 1)
@@ -11636,7 +11636,7 @@
 			(uuid "385327a2-07aa-4971-bda9-3be371f5556c")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "U4")
 					(unit 1)
@@ -11714,7 +11714,7 @@
 			(uuid "f89731d9-c5c1-4083-aa93-cdeea3670d82")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR088")
 					(unit 1)
@@ -11792,7 +11792,7 @@
 			(uuid "45af6d36-30ac-4772-8090-27c2db39c74d")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR094")
 					(unit 1)
@@ -11875,7 +11875,7 @@
 			(uuid "7a247577-24f9-4e44-ac33-858640fef9d6")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "e3")
 					(unit 1)
@@ -11955,7 +11955,7 @@
 			(uuid "9e4ffced-9c8a-4ede-8a54-50fa820745f6")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR072")
 					(unit 1)
@@ -12033,7 +12033,7 @@
 			(uuid "26e46071-de2e-487a-a254-3befa2747eb7")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "#PWR045")
 					(unit 1)
@@ -12265,7 +12265,7 @@
 			(uuid "ad9e6e15-164b-4db3-8b31-d593fceece98")
 		)
 		(instances
-			(project "DDC_SDR"
+			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/41fc8a82-80f7-4b0c-8115-38fd99a62892"
 					(reference "C45")
 					(unit 1)
