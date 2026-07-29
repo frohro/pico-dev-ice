@@ -3389,7 +3389,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "PCM_JLCPCB-Resistors:0402,1Ω"
+		(symbol "PCM_JLCPCB-Resistors:0603,1Ω"
 			(pin_numbers
 				(hide yes)
 			)
@@ -3422,7 +3422,7 @@
 					)
 				)
 			)
-			(property "Footprint" "PCM_JLCPCB:R_0402"
+			(property "Footprint" "PCM_JLCPCB:R_0603"
 				(at -1.778 0 90)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3433,7 +3433,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
+			(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF100KT5E_C22936.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3444,7 +3444,7 @@
 					)
 				)
 			)
-			(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
+			(property "Description" "100mW Thick Film Resistors 75V ±1% ±400ppm/°C 1Ω 0603 Chip Resistor - Surface Mount ROHS"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3455,7 +3455,7 @@
 					)
 				)
 			)
-			(property "LCSC" "C25086"
+			(property "LCSC" "C22936"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3466,7 +3466,7 @@
 					)
 				)
 			)
-			(property "Stock" "305976"
+			(property "Stock" "632912"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3477,7 +3477,7 @@
 					)
 				)
 			)
-			(property "Price" "0.004USD"
+			(property "Price" "0.005USD"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3521,7 +3521,7 @@
 					)
 				)
 			)
-			(property "Class" "Preferred Component"
+			(property "Class" "Basic Component"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3554,7 +3554,7 @@
 					)
 				)
 			)
-			(property "Part" "0402WGF100KTCE"
+			(property "Part" "0603WAF100KT5E"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3576,7 +3576,7 @@
 					)
 				)
 			)
-			(property "Power(Watts)" "62.5mW"
+			(property "Power(Watts)" "100mW"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3598,7 +3598,7 @@
 					)
 				)
 			)
-			(property "Overload Voltage (Max)" "50V"
+			(property "Overload Voltage (Max)" "75V"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3631,7 +3631,7 @@
 					)
 				)
 			)
-			(property "Temperature Coefficient" "±200ppm/°C"
+			(property "Temperature Coefficient" "±400ppm/°C"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3653,7 +3653,7 @@
 					)
 				)
 			)
-			(symbol "0402,1Ω_0_1"
+			(symbol "0603,1Ω_0_1"
 				(rectangle
 					(start -1.016 2.54)
 					(end 1.016 -2.54)
@@ -3666,7 +3666,7 @@
 					)
 				)
 			)
-			(symbol "0402,1Ω_1_1"
+			(symbol "0603,1Ω_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 1.27)
@@ -8937,7 +8937,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0603,1Ω")
 		(at 105.41 71.12 180)
 		(unit 1)
 		(body_style 1)
@@ -8969,7 +8969,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0402"
+		(property "Footprint" "PCM_JLCPCB:R_0603"
 			(at 107.188 71.12 90)
 			(hide yes)
 			(show_name no)
@@ -8980,7 +8980,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF100KT5E_C22936.pdf"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -8991,7 +8991,7 @@
 				)
 			)
 		)
-		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "100mW Thick Film Resistors 75V ±1% ±400ppm/°C 1Ω 0603 Chip Resistor - Surface Mount ROHS"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9002,7 +9002,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25086"
+		(property "LCSC" "C22936"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9013,7 +9013,7 @@
 				)
 			)
 		)
-		(property "Stock" "305976"
+		(property "Stock" "632912"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9024,7 +9024,7 @@
 				)
 			)
 		)
-		(property "Price" "0.004USD"
+		(property "Price" "0.005USD"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9068,7 +9068,7 @@
 				)
 			)
 		)
-		(property "Class" "Preferred Component"
+		(property "Class" "Basic Component"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9090,7 +9090,7 @@
 				)
 			)
 		)
-		(property "Part" "0402WGF100KTCE"
+		(property "Part" "0603WAF100KT5E"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9112,7 +9112,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "62.5mW"
+		(property "Power(Watts)" "100mW"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9134,7 +9134,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "50V"
+		(property "Overload Voltage (Max)" "75V"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9167,7 +9167,7 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±200ppm/°C"
+		(property "Temperature Coefficient" "±400ppm/°C"
 			(at 105.41 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -9844,7 +9844,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0603,1Ω")
 		(at 186.69 100.33 90)
 		(unit 1)
 		(body_style 1)
@@ -9875,7 +9875,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0402"
+		(property "Footprint" "PCM_JLCPCB:R_0603"
 			(at 186.69 102.108 90)
 			(hide yes)
 			(show_name no)
@@ -9886,7 +9886,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF100KT5E_C22936.pdf"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9897,7 +9897,7 @@
 				)
 			)
 		)
-		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "100mW Thick Film Resistors 75V ±1% ±400ppm/°C 1Ω 0603 Chip Resistor - Surface Mount ROHS"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9908,7 +9908,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25086"
+		(property "LCSC" "C22936"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9919,7 +9919,7 @@
 				)
 			)
 		)
-		(property "Stock" "305976"
+		(property "Stock" "632912"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9930,7 +9930,7 @@
 				)
 			)
 		)
-		(property "Price" "0.004USD"
+		(property "Price" "0.005USD"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9974,7 +9974,7 @@
 				)
 			)
 		)
-		(property "Class" "Preferred Component"
+		(property "Class" "Basic Component"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -9996,7 +9996,7 @@
 				)
 			)
 		)
-		(property "Part" "0402WGF100KTCE"
+		(property "Part" "0603WAF100KT5E"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -10018,7 +10018,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "62.5mW"
+		(property "Power(Watts)" "100mW"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -10040,7 +10040,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "50V"
+		(property "Overload Voltage (Max)" "75V"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -10073,7 +10073,7 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±200ppm/°C"
+		(property "Temperature Coefficient" "±400ppm/°C"
 			(at 186.69 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -10211,7 +10211,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0603,1Ω")
 		(at 193.04 138.43 90)
 		(mirror x)
 		(unit 1)
@@ -10242,7 +10242,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0402"
+		(property "Footprint" "PCM_JLCPCB:R_0603"
 			(at 193.04 136.652 90)
 			(hide yes)
 			(show_name no)
@@ -10253,7 +10253,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF100KT5E_C22936.pdf"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10264,7 +10264,7 @@
 				)
 			)
 		)
-		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "100mW Thick Film Resistors 75V ±1% ±400ppm/°C 1Ω 0603 Chip Resistor - Surface Mount ROHS"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10275,7 +10275,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25086"
+		(property "LCSC" "C22936"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10286,7 +10286,7 @@
 				)
 			)
 		)
-		(property "Stock" "305976"
+		(property "Stock" "632912"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10297,7 +10297,7 @@
 				)
 			)
 		)
-		(property "Price" "0.004USD"
+		(property "Price" "0.005USD"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10341,7 +10341,7 @@
 				)
 			)
 		)
-		(property "Class" "Preferred Component"
+		(property "Class" "Basic Component"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10363,7 +10363,7 @@
 				)
 			)
 		)
-		(property "Part" "0402WGF100KTCE"
+		(property "Part" "0603WAF100KT5E"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10385,7 +10385,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "62.5mW"
+		(property "Power(Watts)" "100mW"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10407,7 +10407,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "50V"
+		(property "Overload Voltage (Max)" "75V"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -10440,7 +10440,7 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±200ppm/°C"
+		(property "Temperature Coefficient" "±400ppm/°C"
 			(at 193.04 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -14620,7 +14620,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0603,1Ω")
 		(at 193.04 135.89 90)
 		(unit 1)
 		(body_style 1)
@@ -14651,7 +14651,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0402"
+		(property "Footprint" "PCM_JLCPCB:R_0603"
 			(at 193.04 137.668 90)
 			(hide yes)
 			(show_name no)
@@ -14662,7 +14662,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF100KT5E_C22936.pdf"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14673,7 +14673,7 @@
 				)
 			)
 		)
-		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "100mW Thick Film Resistors 75V ±1% ±400ppm/°C 1Ω 0603 Chip Resistor - Surface Mount ROHS"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14684,7 +14684,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25086"
+		(property "LCSC" "C22936"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14695,7 +14695,7 @@
 				)
 			)
 		)
-		(property "Stock" "305976"
+		(property "Stock" "632912"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14706,7 +14706,7 @@
 				)
 			)
 		)
-		(property "Price" "0.004USD"
+		(property "Price" "0.005USD"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14750,7 +14750,7 @@
 				)
 			)
 		)
-		(property "Class" "Preferred Component"
+		(property "Class" "Basic Component"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14772,7 +14772,7 @@
 				)
 			)
 		)
-		(property "Part" "0402WGF100KTCE"
+		(property "Part" "0603WAF100KT5E"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14794,7 +14794,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "62.5mW"
+		(property "Power(Watts)" "100mW"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14816,7 +14816,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "50V"
+		(property "Overload Voltage (Max)" "75V"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -14849,7 +14849,7 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±200ppm/°C"
+		(property "Temperature Coefficient" "±400ppm/°C"
 			(at 193.04 135.89 0)
 			(hide yes)
 			(show_name no)
@@ -15990,7 +15990,7 @@
 		)
 	)
 	(symbol
-		(lib_id "PCM_JLCPCB-Resistors:0402,1Ω")
+		(lib_id "PCM_JLCPCB-Resistors:0603,1Ω")
 		(at 186.69 102.87 90)
 		(mirror x)
 		(unit 1)
@@ -16021,7 +16021,7 @@
 				)
 			)
 		)
-		(property "Footprint" "PCM_JLCPCB:R_0402"
+		(property "Footprint" "PCM_JLCPCB:R_0603"
 			(at 186.69 101.092 90)
 			(hide yes)
 			(show_name no)
@@ -16032,7 +16032,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF100KTCE_C25086.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF100KT5E_C22936.pdf"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16043,7 +16043,7 @@
 				)
 			)
 		)
-		(property "Description" "62.5mW Thick Film Resistors 50V ±1% ±200ppm/°C 1Ω 0402 Chip Resistor - Surface Mount ROHS"
+		(property "Description" "100mW Thick Film Resistors 75V ±1% ±400ppm/°C 1Ω 0603 Chip Resistor - Surface Mount ROHS"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16054,7 +16054,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25086"
+		(property "LCSC" "C22936"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16065,7 +16065,7 @@
 				)
 			)
 		)
-		(property "Stock" "305976"
+		(property "Stock" "632912"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16076,7 +16076,7 @@
 				)
 			)
 		)
-		(property "Price" "0.004USD"
+		(property "Price" "0.005USD"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16120,7 +16120,7 @@
 				)
 			)
 		)
-		(property "Class" "Preferred Component"
+		(property "Class" "Basic Component"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16142,7 +16142,7 @@
 				)
 			)
 		)
-		(property "Part" "0402WGF100KTCE"
+		(property "Part" "0603WAF100KT5E"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16164,7 +16164,7 @@
 				)
 			)
 		)
-		(property "Power(Watts)" "62.5mW"
+		(property "Power(Watts)" "100mW"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16186,7 +16186,7 @@
 				)
 			)
 		)
-		(property "Overload Voltage (Max)" "50V"
+		(property "Overload Voltage (Max)" "75V"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -16219,7 +16219,7 @@
 				)
 			)
 		)
-		(property "Temperature Coefficient" "±200ppm/°C"
+		(property "Temperature Coefficient" "±400ppm/°C"
 			(at 186.69 102.87 0)
 			(hide yes)
 			(show_name no)

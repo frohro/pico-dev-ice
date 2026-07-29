@@ -5595,19 +5595,8 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "15bd6691-fe31-4dba-b080-1ada06b5963e")
-		(property "Reference" "J12"
-			(at 116.84 87.63 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Filter"
+		(uuid "173b98e7-c934-49e4-8ac8-f6da6d62cd4d")
+		(property "Reference" "Je6"
 			(at 116.84 85.09 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5617,7 +5606,19 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+		(property "Value" "Filter"
+			(at 118.1099 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
 			(at 115.57 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -5628,7 +5629,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt433/links/files/2022-student-howtos/RCWL-1601UltrasonicDistanceSensor.pdf"
 			(at 115.57 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -5650,22 +5651,44 @@
 				)
 			)
 		)
-		(pin "1"
-			(uuid "800ac94f-9153-472f-9a45-fa38a81f68d0")
+		(property "LCSC" "C2718488"
+			(at 115.57 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
 		)
-		(pin "3"
-			(uuid "5ed0f8fd-15d8-4058-bb05-2003730667ee")
-		)
-		(pin "2"
-			(uuid "34f19d86-48bd-402c-913a-8922ceebf1b5")
+		(property "JLCPCB #" ""
+			(at 115.57 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
 		)
 		(pin "4"
-			(uuid "643e2264-da8b-4fcb-a29c-a0178b70fced")
+			(uuid "7c140812-1035-4235-b771-2208966a370c")
+		)
+		(pin "3"
+			(uuid "9723dc73-0477-4883-bcba-4d4bedf65fe3")
+		)
+		(pin "2"
+			(uuid "7a1c9b1d-5893-400d-a20c-06da4fda22c0")
+		)
+		(pin "1"
+			(uuid "93e0cfec-c9a6-4501-b114-9c2e21513212")
 		)
 		(instances
 			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "J12")
+					(reference "Je6")
 					(unit 1)
 				)
 			)
@@ -6700,7 +6723,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "3b2f3cad-a2ad-440c-827d-2e061d8750e4")
 		(property "Reference" "J10"
 			(at 29.5274 66.04 0)
@@ -8995,92 +9018,6 @@
 			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
 					(reference "#PWR0198")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:Conn_01x04_Socket")
-		(at 115.57 62.23 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "72b35276-962b-4063-bb41-ea8965c4ea7c")
-		(property "Reference" "J11"
-			(at 116.84 57.15 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Filter"
-			(at 116.84 59.69 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
-			(at 115.57 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 115.57 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x04, script generated"
-			(at 115.57 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "94a66d1d-8481-462d-86ca-dc47154b7216")
-		)
-		(pin "3"
-			(uuid "08fad7cc-6402-4a47-b6d9-d922b744224d")
-		)
-		(pin "2"
-			(uuid "f01aa68b-1092-4296-ad45-d9c897ea58f6")
-		)
-		(pin "4"
-			(uuid "478af89b-1a54-4470-a4e2-ccc466d2b737")
-		)
-		(instances
-			(project "Pico-Dev-iCE"
-				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
-					(reference "J11")
 					(unit 1)
 				)
 			)
@@ -12605,6 +12542,116 @@
 			(project "Pico-Dev-iCE"
 				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
 					(reference "TR4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x04_Socket")
+		(at 115.57 62.23 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e93fa8eb-7606-42f1-93bc-31f4468f42f8")
+		(property "Reference" "Je5"
+			(at 116.84 59.69 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Filter"
+			(at 118.1099 60.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+			(at 115.57 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt433/links/files/2022-student-howtos/RCWL-1601UltrasonicDistanceSensor.pdf"
+			(at 115.57 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 115.57 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C2718488"
+			(at 115.57 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "JLCPCB #" ""
+			(at 115.57 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "4"
+			(uuid "0c00da09-410d-40d2-964c-790e76cafc74")
+		)
+		(pin "3"
+			(uuid "f1e30b02-c6bf-41a8-a5ef-ec2fb7e954e8")
+		)
+		(pin "2"
+			(uuid "7d1114f0-c11c-46dd-9066-3b8394fa3e68")
+		)
+		(pin "1"
+			(uuid "2023675c-b9eb-4bbb-b2e3-83c6a37ffc93")
+		)
+		(instances
+			(project "Pico-Dev-iCE"
+				(path "/7dfef218-ca21-47b0-a8d3-67c7d55cb9d2/f9b16197-b3dc-4fb5-b1fb-8795d3ad6137"
+					(reference "Je5")
 					(unit 1)
 				)
 			)
