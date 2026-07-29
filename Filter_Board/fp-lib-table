@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "Intro_to_CAD") (type "KiCad") (uri "/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Intro_to_CAD.pretty") (options "") (descr ""))
+)
