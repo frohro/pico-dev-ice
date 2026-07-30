@@ -7077,7 +7077,7 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
+		(property "JLCPCB Rotation Offset" "-90"
 			(at 212.09 106.68 90)
 			(hide yes)
 			(show_name no)

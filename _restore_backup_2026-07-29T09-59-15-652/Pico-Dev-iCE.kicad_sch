@@ -17859,12 +17859,6 @@
 		(uuid "6c2775ba-6eef-4074-b9ff-5dd8386b78d5")
 	)
 	(junction
-		(at 322.58 223.52)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6e3cc8a9-5c9b-4a56-aff7-0d3c7d8f4141")
-	)
-	(junction
 		(at 208.28 232.41)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -18003,12 +17997,6 @@
 		(uuid "d719068e-5457-4ecf-bfe6-4477a98aac57")
 	)
 	(junction
-		(at 322.58 210.82)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d92dc525-64cd-4443-a90a-1a8500713bbc")
-	)
-	(junction
 		(at 35.56 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -18127,10 +18115,6 @@
 		(uuid "6d805ae8-938c-4b07-93e6-4d64070559ae")
 	)
 	(no_connect
-		(at 330.2 205.74)
-		(uuid "70a61a9e-f07f-41fc-b6f4-1f6875fb8293")
-	)
-	(no_connect
 		(at 48.26 213.36)
 		(uuid "7293d9fc-21ff-4358-b1fb-aede0e3f1376")
 	)
@@ -18185,6 +18169,10 @@
 	(no_connect
 		(at 387.35 48.26)
 		(uuid "f764eefb-eb29-459f-a056-23d9ae518657")
+	)
+	(no_connect
+		(at 330.2 198.12)
+		(uuid "fa4cf5e4-3639-42b2-8580-b9572dd16438")
 	)
 	(no_connect
 		(at 40.64 213.36)
@@ -18362,7 +18350,7 @@
 	)
 	(wire
 		(pts
-			(xy 314.96 210.82) (xy 322.58 210.82)
+			(xy 314.96 210.82) (xy 330.2 210.82)
 		)
 		(stroke
 			(width 0)
@@ -18579,16 +18567,6 @@
 			(type default)
 		)
 		(uuid "2a7fa7f1-d9e1-4f66-8151-4950d3e1d131")
-	)
-	(wire
-		(pts
-			(xy 322.58 210.82) (xy 322.58 223.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2c188cda-f4e6-479c-993d-3c72987b4142")
 	)
 	(wire
 		(pts
@@ -18869,16 +18847,6 @@
 			(type default)
 		)
 		(uuid "443637d1-ebb1-490d-bf27-c699c1fc2bb3")
-	)
-	(wire
-		(pts
-			(xy 322.58 198.12) (xy 330.2 198.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "44641e5b-1b19-45d0-adf3-d7d9603a586f")
 	)
 	(wire
 		(pts
@@ -19532,16 +19500,6 @@
 	)
 	(wire
 		(pts
-			(xy 322.58 223.52) (xy 330.2 223.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8102512b-46a6-46d7-861a-eece44f8c881")
-	)
-	(wire
-		(pts
 			(xy 280.67 95.25) (xy 264.16 95.25)
 		)
 		(stroke
@@ -19612,16 +19570,6 @@
 	)
 	(wire
 		(pts
-			(xy 322.58 210.82) (xy 330.2 210.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "88220d03-a217-4171-b959-5766f2119f4d")
-	)
-	(wire
-		(pts
 			(xy 74.93 55.88) (xy 74.93 60.96)
 		)
 		(stroke
@@ -19652,7 +19600,7 @@
 	)
 	(wire
 		(pts
-			(xy 314.96 223.52) (xy 322.58 223.52)
+			(xy 314.96 223.52) (xy 330.2 223.52)
 		)
 		(stroke
 			(width 0)
@@ -20022,16 +19970,6 @@
 	)
 	(wire
 		(pts
-			(xy 322.58 223.52) (xy 322.58 229.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c2d7c768-7e37-4ef5-b958-721266f292ba")
-	)
-	(wire
-		(pts
 			(xy 215.9 242.57) (xy 208.28 242.57)
 		)
 		(stroke
@@ -20332,7 +20270,7 @@
 	)
 	(wire
 		(pts
-			(xy 322.58 198.12) (xy 322.58 210.82)
+			(xy 322.58 198.12) (xy 322.58 229.87)
 		)
 		(stroke
 			(width 0)
@@ -28727,7 +28665,7 @@
 		(uuid "0d562817-bedc-43b6-ac26-e93cfc729d95")
 	)
 	(label "GP27"
-		(at 330.2 200.66 0)
+		(at 330.2 203.2 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -28755,6 +28693,17 @@
 			(justify left bottom)
 		)
 		(uuid "12c5b815-44dc-473e-8e8d-b831b7f83c71")
+	)
+	(label "REF"
+		(at 341.63 83.82 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.1588)
+			)
+			(justify right bottom)
+		)
+		(uuid "1928c3e8-3fee-454c-b476-bbdb13a76579")
 	)
 	(label "PGA3"
 		(at 388.62 138.43 0)
@@ -28855,16 +28804,6 @@
 			(justify left bottom)
 		)
 		(uuid "22e91845-26d6-44a8-b656-c7efbb1b796b")
-	)
-	(label "REF"
-		(at 341.63 83.82 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "2327726d-6522-4cdb-8ab8-7d8c784979b4")
 	)
 	(label "WS"
 		(at 330.2 228.6 0)
@@ -29025,6 +28964,16 @@
 			(justify left bottom)
 		)
 		(uuid "331a564b-f8f4-48f3-8e30-d0038a3733fb")
+	)
+	(label "BCK"
+		(at 363.22 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "35ab8126-4a08-4412-8ffb-8b5c374a39f6")
 	)
 	(label "~{T}{slash}R"
 		(at 330.2 195.58 0)
@@ -29923,7 +29872,7 @@
 		(uuid "b9ef3508-be68-4723-aea8-16e12999b1d6")
 	)
 	(label "REF"
-		(at 330.2 203.2 0)
+		(at 330.2 200.66 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -30097,6 +30046,16 @@
 			(justify left bottom)
 		)
 		(uuid "d799970f-4590-474a-ba4b-5b90e18e7dbb")
+	)
+	(label "RX_DATA"
+		(at 363.22 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "daec73f4-9552-4f14-8af9-68408e8ca807")
 	)
 	(label "SCL"
 		(at 388.62 215.9 0)
@@ -31205,17 +31164,6 @@
 		)
 		(property "LCSC" "C20623173"
 			(at 45.72 223.52 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "JLCPCB Rotation Offset" ""
-			(at 45.72 223.52 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -33819,17 +33767,6 @@
 			)
 		)
 		(property "LCSC" "C2905423"
-			(at 320.04 203.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "JLCPCB Rotation Offset" ""
 			(at 320.04 203.2 0)
 			(hide yes)
 			(show_name no)
@@ -39017,17 +38954,6 @@
 			)
 		)
 		(property "Price" "$0.21"
-			(at 40.64 87.63 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "JLCPCB Rotation Offset" ""
 			(at 40.64 87.63 90)
 			(hide yes)
 			(show_name no)
@@ -45571,17 +45497,6 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
-			(at 59.69 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(pin "2"
 			(uuid "0571b509-4b54-4d03-a05e-14494bf6c8f9")
 		)
@@ -46383,7 +46298,7 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
+		(property "JLCPCB Rotation Offset" "-90"
 			(at 189.23 66.04 90)
 			(hide yes)
 			(show_name no)
@@ -54153,7 +54068,7 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
+		(property "JLCPCB Rotation Offset" "90"
 			(at 238.76 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -56083,17 +55998,6 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
-			(at 41.91 190.5 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(pin "4"
 			(uuid "1bab988a-86c4-4053-af0c-205ff906e5f5")
 		)
@@ -56760,7 +56664,7 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
+		(property "JLCPCB Rotation Offset" "-90"
 			(at 238.76 59.69 90)
 			(hide yes)
 			(show_name no)
@@ -58492,7 +58396,7 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
+		(property "JLCPCB Rotation Offset" "-90"
 			(at 290.83 69.85 90)
 			(hide yes)
 			(show_name no)
@@ -58739,17 +58643,6 @@
 		)
 		(property "JLCPCB #" ""
 			(at 97.79 193.04 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "JLCPCB Rotation Offset" ""
-			(at 97.79 193.04 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

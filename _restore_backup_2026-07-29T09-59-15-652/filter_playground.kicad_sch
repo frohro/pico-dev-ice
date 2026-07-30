@@ -5673,17 +5673,6 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
-			(at 115.57 82.55 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(pin "4"
 			(uuid "7c140812-1035-4235-b771-2208966a370c")
 		)
@@ -6790,17 +6779,6 @@
 			)
 		)
 		(property "JLCPCB #" ""
-			(at 29.21 72.39 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "JLCPCB Rotation Offset" ""
 			(at 29.21 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -12512,7 +12490,7 @@
 				)
 			)
 		)
-		(property "JLCPCB Rotation Offset" ""
+		(property "JLCPCB Rotation Offset" "180"
 			(at 59.69 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -12660,17 +12638,6 @@
 		)
 		(property "JLCPCB #" ""
 			(at 115.57 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "JLCPCB Rotation Offset" ""
-			(at 115.57 62.23 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
