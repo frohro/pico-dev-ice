@@ -6,6 +6,7 @@ The **Pico Dev-iCE** is a low-cost, high-performance "Lab-in-a-Box." It combines
 
 Designed specifically as an educational platform, it abandons "black box" RF chips in favor of discrete, observable analog blocks. Students can physically probe the RF signal path, design their own LC filters on pluggable sandboxes, and write Verilog to perform Direct Digital Conversion (DDC), digital decimation, and hardware I2S audio routing.
 
+![](README_20260730193606897.png)
 ## 🚀 Key Capabilities
 * **HF Software Defined Radio (RX/TX):** Full-duplex DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30+ MHz.
 * **Vector Network Analyzer (VNA):** Built-in Return Loss Bridge (RLB) for S11 (reflection) antenna tuning, and Port-to-Port S21 (transmission) filter characterization.
