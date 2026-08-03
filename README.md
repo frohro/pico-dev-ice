@@ -153,3 +153,18 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
 | **41** | `RGB2` | `GREEN` | Open-Drain LED Driver (Green) |
 | **7** | `CDONE` | `ICE_DONE` | *Hardware Boot / Status Out* |
 | **8** | `~CRESET` | `~ICE_RST` | *Hardware Boot / Reset In* |
+
+## Pico SDK Bring-Up
+
+The SDK port is under `Software/pico-ice-sdk`. It targets Pico SDK 2.3.0 and uses the TinyUSB revision bundled by that SDK. Do not set `PICO_TINYUSB_PATH` to an incomplete external checkout when building the USB examples.
+
+The smallest board-specific firmware example programs the FPGA's volatile CRAM directly from the RP2040:
+
+```sh
+cmake -S Software/pico-ice-sdk/examples/rp2_dev_ice_blinky \
+    -B Software/pico-ice-sdk/examples/rp2_dev_ice_blinky/build \
+    -DPICO_BOARD=pico_dev_ice -DPICO_NO_PICOTOOL=1
+cmake --build Software/pico-ice-sdk/examples/rp2_dev_ice_blinky/build
+```
+
+The generated UF2 is RP2040 firmware that contains the FPGA bitstream. The Dev-iCE has no external FPGA configuration flash, so the board port excludes the external-flash and TinyUF2 FPGA-storage paths. SPI0 GPIO 6 is the CRAM transfer clock and GPIO 7 carries configuration data; normal FPGA operation uses the separate external 30.720 MHz oscillator, not a Pico-generated clock on GPIO 27.

@@ -1,0 +1,85 @@
+;
+; i2s_rx.pio — I2S slave receive for PCM1808 audio ADC
+;
+; -----------------------------------------------------------------------
+; Hardware context
+;   PCM1808 is in Master mode (MD0=LOW via jumper, MD1 selects 48/96 kHz).
+;   SCKI = 24.576 MHz (from Si5351a CLK0).
+;   BCK = 64fs (3.072 MHz at 48 kHz, 6.144 MHz at 96 kHz).
+;   PCM1808 drives BCK and LRCK as outputs.
+;   RP2040 PIO is the I2S slave: it only receives, never drives clocks.
+;
+; Pin assignment — three consecutive GPIO inputs starting at base (GPIO 9):
+;   base + 0 = GPIO  9 = DATA  (SDOUT from PCM1808)
+;   base + 1 = GPIO 10 = BCK   (bit clock from PCM1808)
+;   base + 2 = GPIO 11 = WS    (LRCK / word-select from PCM1808)
+;
+; I2S format (24-bit I2S standard):
+;   · MSB first, 24 valid bits per channel
+;   · Data is delayed exactly 1 BCK from the WS edge
+;   · 64fs BCK → 32 BCK clocks per channel half-period
+;     (24 data bits + 8 trailing zeros from PCM1808)
+;   · WS transitions on BCK falling edge; DATA stable on BCK rising edge
+;
+; State machine configuration — SET IN C DRIVER:
+;   sm_config_set_in_pins(&c, PCM_DATA_PIN);  // base = GPIO 9
+;   sm_config_set_in_shift(&c, false,         // shift LEFT (MSB first)
+;                              true,          // autopush enabled
+;                              32);           // push threshold = 32 bits
+;
+; RX FIFO word format (one 32-bit word per channel per frame):
+;   bit 31 = dummy (catch first edge), bit 30..7 = 24 data bits, 6..0 = 0
+;   The main.c code compensates for the 1-bit I2S delay using (w << 1).
+;
+; Two words pushed per stereo frame: LEFT channel first, then RIGHT.
+; -----------------------------------------------------------------------
+
+.program i2s_rx
+
+; On every frame (and at startup) synchronise to the LEFT channel start:
+;   1. Make sure LRCK is HIGH first  (avoids catching mid-frame LOW)
+;   2. Then wait for LRCK to fall   (= start of left channel in I2S)
+; In I2S master mode WS falls at the same BCK falling edge, so BCK is
+; already LOW when we enter the receive loop, and the very next BCK
+; rising edge carries D23, the MSB.
+
+.wrap_target
+    wait 1 pin 2            ; wait for WS/LRCK = HIGH  (sync anchor)
+    wait 0 pin 2            ; wait for WS/LRCK falling edge → left channel start
+                            ; BCK also fell here (I2S master timing)
+
+    ; ── LEFT channel: 32 bits (24 valid + 8 zeros), MSB first ──────────
+    set x, 31               ; loop counter: 32 iterations  (31 → 0)
+
+left_loop:
+    wait 0 pin 1            ; wait for BCK LOW  — guarantees a fresh edge next
+    wait 1 pin 1            ; wait for BCK HIGH  (rising edge: DATA valid)
+    in   pins, 1            ; shift DATA bit into ISR; autopush fires on 32nd bit
+    jmp  x-- left_loop      ; decrement x, loop while x was non-zero
+
+    ; Left-channel word is now in the RX FIFO.
+
+    ; ── RIGHT channel: wait for WS rising edge, then 32 bits ───────────
+    wait 1 pin 2            ; wait for WS/LRCK = HIGH → right channel start
+                            ; BCK also fell here (I2S master timing)
+
+    set x, 31               ; reset loop counter
+
+right_loop:
+    wait 0 pin 1            ; wait for BCK LOW
+    wait 1 pin 1            ; wait for BCK HIGH (rising edge: DATA valid)
+    in   pins, 1            ; shift DATA bit into ISR; autopush fires on 32nd bit
+    jmp  x-- right_loop
+
+    ; Right-channel word is now in the RX FIFO.
+.wrap                       ; back to wait_1_pin_2 for next frame
+
+; -----------------------------------------------------------------------
+; Instruction budget per channel:
+;   Each bit takes:  wait-0(1) + wait-1(1) + in(1) + jmp(1) = 4 cycles
+;   At PIO 250 MHz: 4 / 250e6 = 16 ns per bit instruction set
+;   BCK half-period at 48 kHz: 1/(2*3.072 MHz) ≈ 163 ns → well above 16 ns.
+;   BCK half-period at 96 kHz: 1/(2*6.144 MHz) ≈  81 ns → still above 16 ns.
+;
+; Total PIO instructions: 14  (well within the 32-instruction limit).
+; -----------------------------------------------------------------------
