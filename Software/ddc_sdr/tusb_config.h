@@ -1,0 +1,44 @@
+#ifndef DDC_SDR_TUSB_CONFIG_H_
+#define DDC_SDR_TUSB_CONFIG_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define BOARD_DEVICE_RHPORT_NUM 0
+#define CFG_TUSB_RHPORT0_MODE OPT_MODE_DEVICE
+#define BOARD_DEVICE_RHPORT_SPEED OPT_MODE_FULL_SPEED
+#define CFG_TUD_ENABLED 1
+#define CFG_TUD_MAX_SPEED OPT_MODE_FULL_SPEED
+
+#define CFG_TUD_CDC 1
+#define CFG_TUD_MSC 0
+#define CFG_TUD_HID 0
+#define CFG_TUD_MIDI 0
+#define CFG_TUD_AUDIO 1
+#define CFG_TUD_VENDOR 0
+#define CFG_TUD_DFU 1
+#define CFG_TUD_DFU_ALT 1
+
+/* CDC (66) + UAC1 audio (155) + DFU (18) + configuration (9). */
+#define CONFIG_TOTAL_LEN 248
+
+#define CFG_TUD_AUDIO_FUNC_1_N_AS_INT 1
+#define CFG_TUD_AUDIO_FUNC_1_CTRL_BUF_SZ 64
+#define CFG_TUD_AUDIO_ENABLE_EP_IN 1
+#define CFG_TUD_AUDIO_FUNC_1_EP_IN_SZ_MAX 582
+#define CFG_TUD_AUDIO_FUNC_1_EP_IN_SW_BUF_SZ 4656
+
+#define CFG_TUD_CDC_RX_BUFSIZE 128
+#define CFG_TUD_CDC_TX_BUFSIZE 256
+#define CFG_TUD_CDC_EP_BUFSIZE 64
+#define CFG_TUD_DFU_XFER_BUFSIZE 256
+
+#define USB_MANUFACTURER "WWU CPTR 480"
+#define USB_PRODUCT "DDC SDR 2026"
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

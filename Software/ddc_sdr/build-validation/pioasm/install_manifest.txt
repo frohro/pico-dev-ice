@@ -1,0 +1,5 @@
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-validation/pioasm-install/pioasm/pioasm
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-validation/pioasm-install/pioasm/pioasmTargets.cmake
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-validation/pioasm-install/pioasm/pioasmTargets-release.cmake
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-validation/pioasm-install/pioasm/pioasmConfig.cmake
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-validation/pioasm-install/pioasm/pioasmConfigVersion.cmake

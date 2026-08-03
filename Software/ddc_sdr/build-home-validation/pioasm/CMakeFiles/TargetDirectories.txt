@@ -1,0 +1,7 @@
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-home-validation/pioasm/CMakeFiles/pioasm.dir
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-home-validation/pioasm/CMakeFiles/edit_cache.dir
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-home-validation/pioasm/CMakeFiles/rebuild_cache.dir
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-home-validation/pioasm/CMakeFiles/list_install_components.dir
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-home-validation/pioasm/CMakeFiles/install.dir
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-home-validation/pioasm/CMakeFiles/install/local.dir
+/home/frohro/Classes/Digital_Design/Pico-Dev-iCE/Software/ddc_sdr/build-home-validation/pioasm/CMakeFiles/install/strip.dir

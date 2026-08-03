@@ -1,0 +1,18 @@
+# Hashes of file build rules.
+062dca35799cdd38d77a7072df018b4a CMakeFiles/ddc_fpga_bitstream_header
+062dca35799cdd38d77a7072df018b4a CMakeFiles/ddc_sdr_i2s_rx_pio_h
+f57a2edf9b1bbd4f77121b48bd184296 fpga_bitstream.h
+e02b51e5f64177af8dbebff52ec5c847 i2s_rx.pio.h
+8535fd4fef556db76610795f7f180288 pico-ice-sdk/CMakeFiles/pico_ice_sdk_ice_cram_pio_h
+99cdcb68cb1eaa970f5fd89ce0fbf19f pico-ice-sdk/ice_cram.pio.h
+b65af792bb0a24d30c9e2b5a36f6893d pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default_bin
+af104f17c7fbf6947a4054bd2a26c175 pico-sdk/src/rp2040/boot_stage2/bs2_default.bin
+f88d5f3dc43c81a3e2bd885006967516 pico-sdk/src/rp2040/boot_stage2/bs2_default_padded_checksummed.S
+e207a7d53ccc42915170d2aabaeaf33b pico-sdk/src/rp2_common/pico_status_led/CMakeFiles/pico_status_led_ws2812_pio_h
+f98eb5a5843eefd5d727a5a65ff8d524 pico-sdk/src/rp2_common/pico_status_led/CMakeFiles/pioasmBuild-complete
+e052a528abb4d45d5254c73514d23347 pico-sdk/src/rp2_common/pico_status_led/pioasm/src/pioasmBuild-stamp/pioasmBuild-configure
+097e0f8f4cee85cf92c069f7f4a1b925 pico-sdk/src/rp2_common/pico_status_led/pioasm/src/pioasmBuild-stamp/pioasmBuild-download
+1fd28cc9d69fbb54bffbe35f07fee9dd pico-sdk/src/rp2_common/pico_status_led/pioasm/src/pioasmBuild-stamp/pioasmBuild-mkdir
+083abc8a31329f734b2785151e0f1cd4 pico-sdk/src/rp2_common/pico_status_led/pioasm/src/pioasmBuild-stamp/pioasmBuild-patch
+05317fbb52667b1f19d1ee7d0a872c03 pico-sdk/src/rp2_common/pico_status_led/pioasm/src/pioasmBuild-stamp/pioasmBuild-update
+b2a309926f1882d6250fa0ce4613b992 pico-sdk/src/rp2_common/pico_status_led/ws2812.pio.h
