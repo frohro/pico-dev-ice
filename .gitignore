@@ -83,4 +83,9 @@ backups/
 *.gbrjob
 *.plt
 .history/
-Software/
+_restore_backup_*/
+*.bak
+diff.txt
+DDC_SDR-backups/
+Hardware/DDC_SDR-backups/
+Hardware/Filter_Board/_restore_backup_*/

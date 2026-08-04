@@ -1,5 +1,0 @@
-(sym_lib_table
-	(version 7)
-	(lib (name "UPduino_v3.0") (type "Legacy") (uri "${KIPRJMOD}/UPduino_v3.0.lib") (options "") (descr ""))
-	(lib (name "CJC5340") (type "KiCad") (uri "${KIPRJMOD}/CJC5340.kicad_sym") (options "") (descr ""))
-)

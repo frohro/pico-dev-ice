@@ -1,0 +1,6 @@
+[submodule "Software/pico-ice-sdk"]
+	path = Software/pico-ice-sdk
+	url = https://github.com/frohro/pico-ice-sdk.git
+[submodule "Software/Pico Dev-iCE MicroPython"]
+	path = Software/Pico Dev-iCE MicroPython
+	url = git@github.com:frohro/pico-ice-micropython.git
