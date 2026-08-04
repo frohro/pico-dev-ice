@@ -1,0 +1,3943 @@
+Sample &
+Buy
+
+Product
+Folder
+
+Support &
+Community
+
+Tools &
+Software
+
+Technical
+Documents
+
+Reference
+Design
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+PCM1808 Single-Ended, Analog-Input 24-Bit, 96-kHz Stereo ADC
+1 Features
+
+2 Applications
+
+•
+•
+•
+
+•
+•
+•
+•
+•
+•
+•
+
+1
+
+•
+
+•
+
+•
+•
+•
+•
+•
+•
+
+•
+
+24-Bit Delta-Sigma Stereo A/D Converter (ADC)
+Single-Ended Voltage Input: 3 Vp-p
+High Performance:
+– THD+N: –93 dB (Typical)
+– SNR: 99 dB (Typical)
+– Dynamic Range: 99 dB (Typical)
+Oversampling Decimation Filter:
+– Oversampling Frequency: ×64
+– Pass-Band Ripple: ±0.05 dB
+– Stop-Band Attenuation: –65 dB
+– On-Chip High-Pass Filter: 0.91 Hz (48 kHz)
+Flexible PCM Audio Interface
+– Master- or Slave-Mode Selectable
+– Data Formats: 24-Bit I2S, 24-Bit Left-Justified
+Power Down and Reset by Halting System Clock
+Analog Antialias LPF Included
+Sampling Rate: 8 kHz–96 kHz
+System Clock: 256 fS, 384 fS, 512 fS
+Resolution: 24 Bits
+Dual Power Supplies:
+– 5-V for Analog
+– 3.3-V for Digital
+Package: 14-Pin TSSOP
+
+DVD Recorder
+Digital TV
+AV Amplifier or Receiver
+MD Player
+CD Recorder
+Multitrack Receiver
+Electric Musical Instrument
+
+3 Description
+The PCM1808 device is a high-performance, lowcost, single-chip, stereo analog-to-digital converter
+with single-ended analog voltage input. The
+PCM1808 device uses a delta-sigma modulator with
+64-times oversampling and includes a digital
+decimation filter and high-pass filter that removes the
+dc component of the input signal. For various
+applications, the PCM1808 device supports master
+and slave mode and two data formats in serial audio
+interface.
+The PCM1808 device supports the power-down and
+reset functions by means of halting the system clock.
+The PCM1808 device is suitable for wide variety of
+cost-sensitive consumer applications requiring good
+performance and operation with a 5-V analog supply
+and 3.3-V digital supply. Fabrication of the PCM1808
+device uses a highly advanced CMOS process. The
+device is available in a small, 14-pin TSSOP
+package.
+Device Information(1)
+PART NUMBER
+PCM1808
+
+PACKAGE
+TSSOP (14)
+
+BODY SIZE (NOM)
+4.40 mm × 5.00 mm
+
+(1) For all available packages, see the orderable addendum at
+the end of the datasheet.
+
+PCM1808 Block Diagram
+
+VINL
+
+VREF
+
+VINR
+
+Antialias
+LPF
+
+Delta-Sigma
+Modulator
+1 / 64
+Decimation
+Filter
+With
+High-Pass
+Filter
+
+Reference
+
+Antialias
+LPF
+
+Delta-Sigma
+Modulator
+1
+
+Power Supply
+
+1
+
+VCC
+
+AGND
+
+DGND
+
+Serial
+Interface
+
+BCK
+LRCK
+DOUT
+
+Mode/
+Format
+Control
+
+FMT
+MD1
+MD0
+
+Clock and Timing Control
+
+SCKI
+
+VDD
+
+An IMPORTANT NOTICE at the end of this data sheet addresses availability, warranty, changes, use in safety-critical applications,
+intellectual property matters and other important disclaimers. PRODUCTION DATA.
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+Table of Contents
+1
+2
+3
+4
+5
+6
+
+Features .................................................................. 1
+Applications ........................................................... 1
+Description ............................................................. 1
+Revision History..................................................... 2
+Pin Configuration and Functions ......................... 3
+Specifications......................................................... 4
+6.1
+6.2
+6.3
+6.4
+6.5
+6.6
+6.7
+
+7
+
+Absolute Maximum Ratings ...................................... 4
+ESD Ratings ............................................................ 4
+Recommended Operating Conditions....................... 4
+Thermal Information ................................................. 5
+Electrical Characteristics........................................... 5
+Timing Requirements ................................................ 7
+Typical Characteristics ............................................ 11
+
+Detailed Description ............................................ 14
+7.1 Overview ................................................................. 14
+7.2 Functional Block Diagram ....................................... 14
+
+7.3 Feature Description................................................. 14
+7.4 Device Functional Modes........................................ 17
+
+8
+
+Application and Implementation ........................ 19
+8.1 Application Information............................................ 19
+8.2 Typical Application ................................................. 19
+
+9 Power Supply Recommendations...................... 21
+10 Layout................................................................... 21
+10.1 Layout Guidelines ................................................. 21
+10.2 Layout Example .................................................... 22
+
+11 Device and Documentation Support ................. 23
+11.1
+11.2
+11.3
+11.4
+
+Community Resources.......................................... 23
+Trademarks ........................................................... 23
+Electrostatic Discharge Caution ............................ 23
+Glossary ................................................................ 23
+
+12 Mechanical, Packaging, and Orderable
+Information ........................................................... 23
+
+4 Revision History
+Changes from Revision A (August 2006) to Revision B
+•
+
+2
+
+Page
+
+Added ESD Ratings table, Feature Description section, Device Functional Modes, Application and Implementation
+section, Power Supply Recommendations section, Layout section, Device and Documentation Support section, and
+Mechanical, Packaging, and Orderable Information section. ................................................................................................. 1
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+5 Pin Configuration and Functions
+14-Pin TSSOP
+PW Package
+Top View
+
+VREF
+AGND
+VCC
+VDD
+DGND
+SCKI
+LRCK
+
+1
+2
+3
+4
+5
+6
+7
+
+14
+13
+12
+11
+10
+9
+8
+
+VINR
+VINL
+FMT
+MD1
+MD0
+DOUT
+BCK
+P0032-02
+
+Pin Functions
+PIN
+
+I/O
+
+DESCRIPTION
+
+NAME
+
+PIN
+
+AGND
+
+2
+
+—
+
+Analog GND
+
+BCK
+
+8
+
+I/O
+
+Audio-data bit-clock input or output (1)
+
+DGND
+
+5
+
+—
+
+Digital GND
+
+DOUT
+
+9
+
+O
+
+Audio-data digital output
+
+FMT
+
+12
+
+I
+
+Audio-interface format select (2)
+
+LRCK
+
+7
+
+I/O
+
+Audio-data latch-enable input or output (1)
+
+MD0
+
+10
+
+I
+
+Audio-interface mode select 0 (2)
+
+MD1
+
+11
+
+I
+
+Audio-interface mode select 1 (2)
+
+SCKI
+
+6
+
+I
+
+System clock input; 256 fS, 384 fS or 512 fS (3)
+
+VCC
+
+3
+
+—
+
+Analog power supply, 5-V
+
+VDD
+
+4
+
+—
+
+Digital power supply, 3.3-V
+
+VINL
+
+13
+
+I
+
+Analog input, L-channel
+
+VINR
+
+14
+
+I
+
+Analog input, R-channel
+
+VREF
+
+1
+
+—
+
+Reference-voltage decoupling (= 0.5 VCC)
+
+(1)
+(2)
+(3)
+
+Schmitt-trigger input with internal pulldown (50-kΩ, typical)
+Schmitt-trigger input with internal pulldown (50-kΩ, typical), 5-V tolerant
+Schmitt-trigger input, 5-V tolerant
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+3
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+6 Specifications
+6.1 Absolute Maximum Ratings
+over operating ambient temperature range (unless otherwise noted) (1)
+VCC
+
+Analog supply voltage
+
+VDD
+
+Digital supply voltage
+
+MAX
+
+UNIT
+
+6.5
+
+V
+
+–0.3
+
+Ground voltage differences
+Digital input voltage
+VINL, VINR,
+VREF
+
+MIN
+–0.3
+AGND, DGND
+
+4
+
+V
+
+±0.1
+
+V
+
+LRCK, BCK, DOUT
+
+–0.3
+
+(VDD + 0.3 V) < 4
+
+V
+
+SCKI, MD0, MD1, FMT
+
+–0.3
+
+6.5
+
+V
+
+–0.3 (VCC + 0.3 V) < 6.5
+
+V
+
+Analog input voltage
+Input current (any pins except supplies)
+
+±10
+
+mA
+
+TJ
+
+Junction temperature
+
+150
+
+°C
+
+Tstg
+
+Storage temperature
+
+150
+
+°C
+
+(1)
+
+–55
+
+Stresses beyond those listed under Absolute Maximum Ratings may cause permanent damage to the device. These are stress ratings
+only, which do not imply functional operation of the device at these or any other conditions beyond those indicated under Recommended
+Operating Conditions. Exposure to absolute-maximum-rated conditions for extended periods may affect device reliability.
+
+6.2 ESD Ratings
+VALUE
+V(ESD)
+(1)
+(2)
+
+Electrostatic discharge
+
+Human-body model (HBM), per ANSI/ESDA/JEDEC JS-001, all pins (1)
+
+±4000
+
+Charged-device model (CDM), per JEDEC specification JESD22-C101,
+all pins (2)
+
+±1500
+
+UNIT
+V
+
+JEDEC document JEP155 states that 500-V HBM allows safe manufacturing with a standard ESD control process.
+JEDEC document JEP157 states that 250-V CDM allows safe manufacturing with a standard ESD control process.
+
+6.3 Recommended Operating Conditions
+over operating ambient temperature range (unless otherwise noted)
+MAX
+
+UNIT
+
+VCC
+
+Analog supply voltage (see Power Supply Recommendations)
+
+MIN NOM
+4.5
+
+5
+
+5.5
+
+V
+
+VDD
+
+Digital supply voltage
+
+2.7
+
+3.3
+
+3.6
+
+V
+
+3
+
+Vp-p
+
+VIH (1)
+
+Analog input voltage, full scale (–0 dB)
+High input logic level
+
+2
+
+VDD
+
+VDC
+
+VIL (1)
+
+Low input logic level
+
+0
+
+0.8
+
+VDC
+
+(2) (3)
+
+High input logic level
+
+2
+
+5.5
+
+VDC
+
+VIL (2) (3)
+
+Low input logic level
+
+0
+
+0.8
+
+VDC
+
+VIH
+
+VCC = 5 V
+
+Digital input logic family
+
+TTL compatible
+
+Digital input clock frequency, system clock
+
+2.048
+
+49.152
+
+MHz
+
+8
+
+96
+
+kHz
+
+20
+
+pF
+
+85
+
+°C
+
+150
+
+°C
+
+Digital input clock frequency, sampling clock
+Digital output load capacitance
+TA
+
+Operating ambient temperature range
+
+TJ
+
+Junction temperature
+
+(1)
+(2)
+(3)
+
+4
+
+–40
+
+Pins 7, 8: LRCK, BCK (Schmitt-trigger input, with 50-kΩ typical pulldown resistor, in slave mode)
+Pin 6: SCKI (Schmitt-trigger input, 5-V tolerant)
+Pins 10–12: MD0, MD1, FMT (Schmitt-trigger input, with 50-kΩ typical pulldown resistor, 5-V tolerant)
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+6.4 Thermal Information
+PCM1808
+THERMAL METRIC (1)
+
+PW (TSSOP)
+
+UNIT
+
+14 PINS
+RθJA
+
+Junction-to-ambient thermal resistance
+
+89.4
+
+°C/W
+
+RθJC(top)
+
+Junction-to-case (top) thermal resistance
+
+25.6
+
+°C/W
+
+RθJB
+
+Junction-to-board thermal resistance
+
+30.3
+
+°C/W
+
+ψJT
+
+Junction-to-top characterization parameter
+
+1.4
+
+°C/W
+
+ψJB
+
+Junction-to-board characterization parameter
+
+29.8
+
+°C/W
+
+RθJC(bot)
+
+Junction-to-case (bottom) thermal resistance
+
+N/A
+
+°C/W
+
+(1)
+
+For more information about traditional and new thermal metrics, see the Semiconductor and IC Package Thermal Metrics application
+report, SPRA953.
+
+6.5 Electrical Characteristics
+All specifications at TA = 25°C, VCC = 5 V, VDD = 3.3 V, master mode, fS = 48 kHz, system clock = 512 fS, 24-bit data, unless
+otherwise noted
+PARAMETER
+
+TEST CONDITIONS
+
+MIN
+
+Resolution
+
+TYP
+
+MAX
+
+24
+
+UNIT
+Bits
+
+DATA FORMAT
+I2S, left-justified
+
+Audio data interface format
+Audio data bit length
+
+24
+
+Audio data format
+fS
+
+Sampling frequency
+System clock frequency
+
+Bits
+
+MSB-first, 2s complement
+8
+
+48
+
+96
+
+256 fS
+
+2.048
+
+12.288
+
+24.576
+
+384 fS
+
+3.072
+
+18.432
+
+36.864
+
+512 fS
+
+4.096
+
+24.576
+
+49.152
+
+kHz
+MHz
+
+INPUT LOGIC
+VIH (1)
+
+High input logic level
+
+2
+
+VDD
+
+VDC
+
+VIL (1)
+
+Low input logic level
+
+0
+
+0.8
+
+VDC
+
+(2) (3)
+
+High input logic level
+
+2
+
+5.5
+
+VDC
+
+VIL (2) (3)
+
+Low input logic level
+
+0
+
+0.8
+
+VDC
+
+IIH (2)
+
+High input logic current
+
+VIN = VDD
+
+±10
+
+µA
+
+(2)
+
+Low input logic current
+
+VIN = 0 V
+
+IIH (1) (3)
+
+High input logic current
+
+VIN = VDD
+
+IIL (1) (3)
+
+Low input logic current
+
+VIN = 0 V
+
+VIH
+
+IIL
+
+65
+
+±10
+
+µA
+
+100
+
+µA
+
+±10
+
+µA
+
+OUTPUT LOGIC
+VOH (4)
+
+High output logic level
+
+IOUT = –4 mA
+
+VOL (4)
+
+Low output logic level
+
+IOUT = 4 mA
+
+2.8
+
+VDC
+0.5
+
+VDC
+
+DC ACCURACY
+
+(1)
+(2)
+(3)
+(4)
+
+Gain mismatch, channel-to-channel
+
+±1
+
+±3
+
+% of
+FSR
+
+Gain error
+
+±3
+
+±6
+
+% of
+FSR
+
+Pins 7, 8: LRCK, BCK (Schmitt-trigger input, with 50-kΩ typical pulldown resistor, in slave mode)
+Pin 6: SCKI (Schmitt-trigger input, 5-V tolerant)
+Pins 10–12: MD0, MD1, FMT (Schmitt-trigger input, with 50-kΩ typical pulldown resistor, 5-V tolerant)
+Pins 7–9: LRCK, BCK (in master mode), DOUT
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+5
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+Electrical Characteristics (continued)
+All specifications at TA = 25°C, VCC = 5 V, VDD = 3.3 V, master mode, fS = 48 kHz, system clock = 512 fS, 24-bit data, unless
+otherwise noted
+PARAMETER
+
+TEST CONDITIONS
+
+MIN
+
+TYP
+
+MAX
+
+VIN = –0.5 dB, fS = 48 kHz
+
+–93
+
+–87
+
+VIN = –0.5 dB, fS = 96 kHz (6)
+
+–87
+
+VIN = –60 dB, fS = 48 kHz
+
+–37
+
+UNIT
+
+DYNAMIC PERFORMANCE (5)
+
+THD+N
+
+Total harmonic distortion + noise
+
+VIN = –60 dB, fS = 96 kHz (6)
+Dynamic range
+S/N
+
+Signal-to-noise ratio
+Channel separation
+
+fS = 48 kHz, A-weighted
+
+–39
+95
+
+fS = 96 kHz, A-weighted (6)
+fS = 48 kHz, A-weighted
+fS = 96 kHz, A-weighted
+
+99
+
+dBVDC
+
+101
+95
+
+(6)
+
+fS = 48 kHz
+
+dB
+
+99
+
+dB
+
+101
+93
+
+fS = 96 kHz (6)
+
+97
+
+dB
+
+91
+
+ANALOG INPUT
+Input voltage
+
+0.6 VCC
+
+Vp-p
+
+Center voltage (VREF)
+
+0.5 VCC
+
+V
+
+Input impedance
+Antialiasing filter frequency response
+
+–3 dB
+
+60
+
+kΩ
+
+1.3
+
+MHz
+
+DIGITAL FILTER PERFORMANCE
+Pass band
+
+0.454 fS
+
+Stop band
+
+0.583 fS
+
+Hz
+
+Pass-band ripple
+
+±0.05
+
+Stop-band attenuation
+
+–65
+
+dB
+dB
+
+Delay time
+
+17.4 / fS
+
+HPF frequency response
+
+0.019 fS /
+1000
+
+–3 dB
+
+Hz
+
+POWER SUPPLY REQUIREMENTS
+ICC
+
+IDD
+
+Analog supply current (7)
+
+Digital supply current (7)
+
+Power dissipation (7)
+
+(5)
+(6)
+(7)
+(8)
+
+6
+
+fS = 48 kHz, 96 kHz (6)
+Powered down (8)
+
+8.6
+
+11
+
+mA
+
+8
+
+mA
+
+μA
+
+1
+
+fS = 48 kHz
+
+5.9
+
+fS = 96 kHz (6)
+
+10.2
+
+Powered down (8)
+
+150
+
+fS = 48 kHz
+
+62
+
+fS = 96 kHz (6)
+
+77
+
+Powered down (8)
+
+500
+
+mA
+µA
+81
+
+mW
+µW
+
+Testing of analog performance specifications uses an audio measurement system by Audio Precision™ with 400-Hz HPF and 20-kHz
+LPF in RMS mode.
+fS = 96 kHz, system clock = 256 fS.
+Minimum load on LRCK (pin 7), BCK (pin 8), DOUT (pin 9)
+Power-down and reset functions enabled by halting SCKI, BCK, LRCK.
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+6.6 Timing Requirements
+MIN
+
+NOM
+
+MAX
+
+UNIT
+
+SYSTEM CLOCK TIMING
+tw(SCKH)
+
+System clock pulse duration, HIGH
+
+8
+
+ns
+
+tw(SCKL)
+
+System clock pulse duration, LOW
+
+8
+
+ns
+
+System clock duty cycle
+
+40%
+
+60%
+
+CLOCK-HALT POWER-DOWN AND RESET TIMING
+t(CKR)
+
+Delay time from SCKI halt to internal reset
+
+4
+
+µs
+
+t(RST)
+
+Delay time from SCKI resume to reset release
+
+1024 SCKI
+
+µs
+
+t(REL)
+
+Delay time from reset release to DOUT output
+
+8960 / fS
+
+µs
+
+AUDIO DATA INTERFACE TIMING (Slave Mode: LRCK and BCK Work as Inputs) (1)
+t(BCKP)
+
+BCK period
+
+1 / (64 fS)
+
+ns
+
+t(BCKH)
+
+BCK pulse duration, HIGH
+
+1.5 × t(SCKI)
+
+ns
+
+t(BCKL)
+
+BCK pulse duration, LOW
+
+1.5 × t(SCKI)
+
+ns
+
+t(LRSU)
+
+LRCK setup time to BCK rising edge
+
+50
+
+ns
+
+t(LRHD)
+
+LRCK hold time to BCK rising edge
+
+10
+
+ns
+
+t(LRCP)
+
+LRCH period
+
+10
+
+t(CKDO)
+
+Delay time, BCK falling edge to DOUT valid
+
+–10
+
+40
+
+ns
+
+t(LRDO)
+
+Delay time, LRCK edge to DOUT valid
+
+–10
+
+40
+
+ns
+
+tr
+
+Rise time of all signals
+
+20
+
+ns
+
+tf
+
+Fall time of all signals
+
+20
+
+ns
+
+AUDIO DATA INTERFACE TIMING (Master Mode: LRCK and BCK Work as Outputs)
+
+µs
+
+(2)
+
+t(BCKP)
+
+BCK period
+
+150
+
+2000
+
+ns
+
+t(BCKH)
+
+BCK pulse duration, HIGH
+
+65
+
+1200
+
+ns
+
+t(BCKL)
+
+BCK pulse duration, LOW
+
+65
+
+1200
+
+ns
+
+t(CKLR)
+
+Delay time, BCK falling edge to LRCK valid
+
+–10
+
+t(LRCP)
+
+LRCK period
+
+10
+
+t(CKDO)
+
+Delay time, BCK falling edge to DOUT valid
+
+t(LRDO)
+
+Delay time, LRCK edge to DOUT valid
+
+tr
+
+Rise time of all signals
+
+tf
+
+Fall time of all signals
+
+AUDIO CLOCK INTERFACE TIMING (Master Mode: BCK Work as Outputs)
+t(SCKBCK)
+(1)
+(2)
+(3)
+
+1 / (64 fS)
+
+20
+
+ns
+
+125
+
+ns
+
+–10
+
+20
+
+ns
+
+–10
+
+20
+
+ns
+
+20
+
+ns
+
+20
+
+ns
+
+30
+
+ns
+
+1 / fS
+
+(3)
+
+Delay time, SCKI rising edge to BCK edge
+
+5
+
+Timing measurement reference level is 1.4 V for input and 0.5 VDD for output. Rise and fall times are from 10% to 90% of the inputoutput signal swing. Load capacitance of DOUT is 20 pF. t(SCKI) is the SCKI period.
+Timing measurement reference level is 0.5 VDD. Rise and fall times are from 10% to 90% of the input-output signal swing. Load
+capacitance of all signals is 20 pF.
+Timing measurement reference level is 1.4 V for input and 0.5 VDD for output. Load capacitance of BCK is 20 pF. This timing applies
+when SCKI frequency is less than 25 MHz.
+t w(SCKH)
+
+t w(SCKL)
+SCKI
+2V
+
+SCKI
+0.8 V
+
+Figure 1. System Clock Timing
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+7
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+VDD
+
+www.ti.com
+
+2.6 V
+2.2 V
+1.8 V
+
+Reset
+
+Reset Release
+
+Internal
+Reset
+
+Operation
+
+1024 System Clocks
+
+8960/fS
+
+System
+Clock
+
+DOUT
+
+Zero Data
+
+Normal Data
+Fade-In Complete
+Fade-In Start
+
+DOUT
+BPZ
+(Contents)
+
+48/fIN or 48/fS
+
+Figure 2. Power-On Timing
+
+8
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+SCKI Halt
+
+SCKI Resume
+
+Fixed to Low or High
+
+SCKI
+
+Reset: t(RST)
+
+t(CKR)
+
+Clock-Halt Reset
+Internal
+Reset
+
+Operation
+
+DOUT
+
+Normal Data
+
+Reset Release: t(REL)
+
+Operation
+
+Normal Data
+
+Zero Data
+
+Fade-In Complete
+Fade-In Start
+DOUT
+BPZ
+(Contents)
+
+Normal Data
+
+48/fIN or 48/fS
+
+Figure 3. Clock-Halt Power-Down and Reset Timing
+t (LRCP)
+1.4 V
+
+LRCK
+
+t (BCKL)
+t (BCKH)
+
+t (LRSU)
+t (LRHD)
+
+1.4 V
+
+BCK
+t (BCKP)
+
+t (CKDO)
+
+t (LRDO)
+
+DOUT
+
+Figure 4. Audio Data Interface Timing (Slave Mode: LRCK and BCK Work as Inputs)
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+9
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+t (LRCP)
+LRCK
+
+0.5 VDD
+t (BCKL)
+t (BCKH)
+
+t (CKLR)
+
+0.5 VDD
+
+BCK
+
+t (CKDO)
+
+t (BCKP)
+
+t ( LRDO)
+
+10
+DOUT
+
+0.5 VDD
+
+Figure 5. Audio Data Interface Timing (Master Mode: LRCK and BCK Work as Outputs)
+
+1.4 V
+
+SCKI
+
+t (SCKBCK)
+
+t (SCKBCK)
+
+0.5 V DD
+
+BCK
+
+Figure 6. Audio Clock Interface Timing (Master Mode: BCK Works as Output)
+
+10
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+6.7 Typical Characteristics
+All specifications at TA = 25°C, VCC = 5 V, VDD = 3.3 V, master mode, fS = 48 kHz, system clock = 512 fS, 24-bit data, unless
+otherwise noted.
+0
+
+50
+
+−10
+−20
+
+Amplitude − dB
+
+Amplitude − dB
+
+0
+
+−50
+
+−100
+
+−30
+−40
+−50
+−60
+−70
+
+−150
+
+−80
+
+−200
+
+−100
+0.00
+
+−90
+
+0
+
+8
+
+16
+
+24
+
+32
+
+Normalized Frequency [×fS ]
+
+0.25
+
+0.50
+
+0.75
+
+1.00
+
+Frequency [ ×fS ]
+
+G001
+
+G002
+
+Figure 8. Decimation-Filter Frequency Response
+Stop-Band Attenuation Characteristics
+
+Figure 7. Decimation-Filter Frequency Response
+Overall Characteristics
+0.2
+
+0
+−1
+−2
+
+−0.2
+
+Amplitude − dB
+
+Amplitude − dB
+
+0.0
+
+−0.4
+−0.6
+
+−3
+
+–4.13 dB at 0.5 fS
+
+−4
+−5
+−6
+−7
+−8
+
+−0.8
+
+−9
+
+−1.0
+0.0
+
+−10
+
+0.1
+
+0.2
+0.3
+0.4
+0.5
+Normalized Frequency [× f S]
+
+0.45 0.46 0.47 0.48 0.49 0.50 0.51 0.52 0.53 0.54 0.55
+
+0.6
+
+Normalized Frequency [× fS ]
+
+G003
+
+G004
+
+Figure 10. Decimation-Filter Frequency Response
+Transition-Band Characteristics
+
+Figure 9. Decimation-Filter Frequency Response
+Pass-Band Ripple Characteristics
+0
+
+0.2
+
+−10
+0.0
+
+−30
+
+Amplitude − dB
+
+Amplitude − dB
+
+−20
+
+−40
+−50
+−60
+−70
+−80
+
+−0.2
+−0.4
+−0.6
+−0.8
+
+−90
+−100
+0.0
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+Normalized Frequency [× fS /1000]
+
+G005
+
+Figure 11. High-Pass Filter Frequency Response
+HPF Stop-Band Characteristics
+
+−1.0
+0
+
+1
+
+2
+
+3
+
+Normalized Frequency [× fS /1000]
+
+4
+G006
+
+Figure 12. High-Pass Filter Frequency Response
+HPF Stop-Band Characteristics
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+11
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+Typical Characteristics (continued)
+
+−87
+
+105
+
+−88
+
+104
+
+Dynamic Range and SNR − dB
+
+THD + N − Total Harmonic Distortion + Noise − dB
+
+All specifications at TA = 25°C, VCC = 5 V, VDD = 3.3 V, master mode, fS = 48 kHz, system clock = 512 fS, 24-bit data, unless
+otherwise noted.
+
+−89
+−90
+−91
+−92
+−93
+−94
+−95
+−96
+−97
+−50
+
+−25
+
+0
+
+25
+
+50
+
+75
+
+TA – Free-Air Temperature – °C
+
+99
+98
+97
+96
+
+0
+
+25
+
+50
+
+75
+
+100
+G008
+
+104
+
+−89
+−90
+−91
+−92
+−93
+−94
+−95
+−96
+4.50
+
+4.75
+
+5.00
+
+5.25
+
+5.50
+
+103
+102
+101
+Dynamic Range
+
+100
+
+SNR
+
+99
+98
+97
+96
+95
+4.25
+
+5.75
+
+4.50
+
+4.75
+5.00
+5.25
+VCC – Supply Voltage – V
+
+G009
+
+5.50
+
+5.75
+G010
+
+Figure 16. Dynamic Range and SNR vs Supply Voltage
+
+Figure 15. THD+N vs Supply Voltage
+
+105
+
+−88
+
+104
+
+Dynamic Range and SNR − dB
+
+−87
+
+−89
+−90
+−91
+−92
+−93
+−94
+
+−96
+
+−25
+
+Figure 14. Dynamic Range and SNR vs Temperature
+
+−88
+
+−95
+
+Dynamic Range
+SNR
+
+105
+
+Dynamic Range and SNR − dB
+
+THD + N − Total Harmonic Distortion + Noise − dB
+
+100
+
+G007
+
+VCC – Supply Voltage – V
+
+THD + N − Total Harmonic Distortion + Noise − dB
+
+101
+
+TA – Free-Air Temperature – °C
+
+Figure 13. THD+N vs Temperature
+
+(1) System Clock = 384 f
+S
+(2) System Clock = 512 f
+S
+(3) System Clock = 256 f
+S
+
+Dynamic Range
+▲ SNR
+
+103
+102
+101
+100
+99
+
+▲
+
+▲
+
+98
+97
+96
+
+(1) System Clock = 384 f
+S
+(2) System Clock = 512 f
+S
+(3) System Clock = 256 f
+S
+
+95
+
+−97
+44.1 (1)
+96 (3)
+48 (2)
+f SAMPLE Condition − kHz
+
+44.1 (1)
+96 (3)
+48 (2)
+f SAMPLE Condition − kHz
+
+G011
+
+Figure 17. THD+N vs fSAMPLE Condition
+
+12
+
+102
+
+95
+−50
+
+100
+
+−87
+
+−97
+4.25
+
+103
+
+G012
+
+Figure 18. Dynamic Range and SNR vs fSAMPLE Condition
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+Typical Characteristics (continued)
+All specifications at TA = 25°C, VCC = 5 V, VDD = 3.3 V, master mode, fS = 48 kHz, system clock = 512 fS, 24-bit data, unless
+otherwise noted.
+0
+
+0
+Input Level = −0.5 dB
+Data Points = 8192
+
+−20
+
+−40
+
+Amplitude − dB
+
+Amplitude − dB
+
+−40
+−60
+−80
+−100
+−120
+
+−60
+−80
+−100
+−120
+
+−140
+
+−140
+0
+
+5
+
+10
+
+15
+
+20
+
+f − Frequency − kHz
+
+0
+
+5
+
+10
+
+15
+
+20
+
+f − Frequency − kHz
+
+G013
+
+Figure 19. Output Spectrum (–0.5 dB, N = 8192)
+
+G014
+
+Figure 20. Output Spectrum (–60 dB, N = 8192)
+15
+
+0
+I CC and I DD − Supply Current − mA
+
+THD + N − Total Harmonic Distortion + Noise − dB
+
+Input Level = −60 dB
+Data Points = 8192
+
+−20
+
+−10
+−20
+−30
+−40
+−50
+−60
+−70
+−80
+−90
+−100
+−100 −90 −80 −70 −60 −50 −40 −30 −20 −10
+Signal Level − dB
+
+Figure 21. Output Spectrum
+THD+N vs Signal Level
+
+ICC
+IDD
+10
+
+5
+(1) System Clock = 384 f
+S
+(2) System Clock = 512 f
+S
+(3) System Clock = 256 f
+S
+0
+44.1 (1)
+
+0
+
+48 (2)
+
+f SAMPLE Condition − kHz
+
+G015
+
+96 (3)
+G016
+
+Figure 22. Supply Current vs fSAMPLE Condition
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+13
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+7 Detailed Description
+7.1 Overview
+The PCM1808 is high-performance, low-cost, single-chip, stereo analog-to-digital converter with single-ended
+analog voltage input. The PCM1808 uses a delta-sigma modulator with 64-times oversampling and includes a
+digital decimation filter and high-pass filter that removes the dc component of the input signal. For various
+applications, the PCM1808 supports master and slave mode and two data formats in serial audio interface up to
+96-kHz sampling. These features are controlled through hardware by pulling pins high or low with resistors or a
+controller GPIO. The PCM1808 also supports a power-down and reset function by means of halting the system
+clock.
+
+7.2 Functional Block Diagram
+
+Antialias
+LPF
+
+VINL
+
+VREF
+
+Delta-Sigma
+Modulator
+1 / 64
+Decimation
+Filter
+With
+High-Pass
+Filter
+
+Reference
+
+Antialias
+LPF
+
+VINR
+
+Delta-Sigma
+Modulator
+1
+
+AGND
+
+DGND
+
+BCK
+LRCK
+DOUT
+
+Mode/
+Format
+Control
+
+FMT
+MD1
+MD0
+
+Power Supply
+
+VCC
+
+Serial
+Interface
+
+Clock and Timing Control
+
+SCKI
+
+VDD
+
+7.3 Feature Description
+7.3.1 Hardware Control
+Pins FMT, MD0, and MD1 allow the device to be controlled by either pullup or pulldown resistors as well as
+GPIO from a digital IC. These controls allow the option of switching between I2S or left-justified, and in which
+interface mode the device operates.
+7.3.2 System Clock
+The PCM1808 device supports 256 fS, 384 fS, and 512 fS as system clock, where fS is the audio sampling
+frequency. The system clock input must be on SCKI (pin 6).
+The PCM1808 device has a system-clock detection circuit which automatically senses if the system-clock
+operation is at 256 fS, 384 fS, or 512 fS in slave mode. In master mode, control of the system clock frequency
+must be through the serial control port, which uses MD1 (pin 11) and MD0 (pin 10). An internal circuit
+automatically divides down the system clock to generate frequencies of 128 fS and 64 fS, which operate the
+digital filter and the delta-sigma modulator, respectively.
+Table 1 shows some typical relationships between sampling frequency and system clock frequency, and Figure 1
+shows system clock timing.
+Table 1. Sampling Frequency and System Clock Frequency
+SAMPLING FREQUENCY (kHz)
+
+14
+
+SYSTEM CLOCK FREQUENCY (fSCLK) (MHz)
+256 fS
+
+384 fS
+
+512 fS
+
+8
+
+2.048
+
+3.072
+
+4.096
+
+16
+
+4.096
+
+6.144
+
+8.192
+
+32
+
+8.192
+
+12.288
+
+16.384
+
+44.1
+
+11.2896
+
+16.9344
+
+22.5792
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+Feature Description (continued)
+Table 1. Sampling Frequency and System Clock Frequency (continued)
+SAMPLING FREQUENCY (kHz)
+
+SYSTEM CLOCK FREQUENCY (fSCLK) (MHz)
+256 fS
+
+384 fS
+
+512 fS
+
+48
+
+12.288
+
+18.432
+
+24.576
+
+64
+
+16.384
+
+24.576
+
+32.768
+
+88.2
+
+22.5792
+
+33.8688
+
+45.1584
+
+96
+
+24.576
+
+36.864
+
+49.152
+
+7.3.3 Synchronization With Digital Audio System
+In slave mode, the PCM1808 device operates under LRCK (pin 7), synchronized with system clock SCKI (pin 6).
+The PCM1808 device does not require a specific phase relationship between LRCK and SCKI, but does require
+the synchronization of LRCK and SCKI.
+If the relationship between LRCK and SCKI changes more than ±6 BCKs for 64 BCK/frame (±5 BCKs for 48
+BCK/frame) during one sample period due to LRCK or SCKI jitter, internal operation of the ADC halts within 1 / fS
+and digital output goes to zero data (BPZ code) until resynchronization between LRCK and SCKI occurs.
+In the case of changes less than ±5 BCKs for 64 BCK/frame (±4 BCKs for 48 BCK/frame), resynchronization
+does not occur, and the previously described digital output control and discontinuity do not occur.
+Figure 23 illustrates the digital output response for loss of synchronization and resynchronization. During
+undefined data, the PCM1808 device can generate some noise in the audio signal. Also, the transition of normal
+data to undefined data creates a discontinuity in the digital output data, which can generate some noise in the
+audio signal. The digital output is valid after resynchronization completes and the time of 32 / fS has elapsed.
+Because the fade-in operation is performed, it takes additional time of 48 / fin or 48 / fS to obtain the level
+corresponding to the analog input signal. In the case of loss of synchronization during the fade-in or fade-out
+operation, the operation stops and DOUT (pin 9) goes to zero data immediately. The fade-in operation resumes
+from mute after the time of 32 / fS following resynchronization.
+Resynchronization
+
+Resynchronization
+Synchronization Lost
+
+Synchronization Lost
+
+State of
+Synchronization
+
+Synchronous
+
+Asynchronous
+
+1/fS
+
+DOUT
+
+Normal Data
+
+Synchronous
+
+Asynchronous
+
+Synchronous
+
+Zero Data
+
+Normal Data
+
+32/fS
+
+Undefined
+Data
+
+Zero Data
+
+Normal Data
+
+Fade-In Complete
+Fade-In Start
+DOUT
+BPZ
+(Contents)
+
+Fade-In Restart
+
+Normal Data
+
+32/fS
+48/fin or 48/fS
+
+48/fin or 48/fS
+
+Figure 23. ADC Digital Output for Loss of Synchronization and Resynchronization
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+15
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+7.3.4 Power On
+The PCM1808 device has an internal power-on-reset circuit, and initialization (reset) occurs automatically when
+the power supply (VDD) exceeds 2.2 V (typical). While VDD < 2.2 V (typical), and for 1024 system-clock counts
+after VDD > 2.2 V (typical), the PCM1808 device stays in the reset state and the digital output remains zero. After
+release of the reset state, 8960 / fS seconds must pass before the digital output becomes valid. Because of the
+performing of the fade-in operation, it takes additional time of 48 / fin or 48 / fS to obtain the data corresponding to
+the analog input signal. Figure 2 illustrates the power-on timing and the digital output.
+7.3.5 Serial Audio Data Interface
+The PCM1808 device interfaces the audio system through LRCK (pin 7), BCK (pin 8), and DOUT (pin 9).
+7.3.5.1 Interface Mode
+MD1 (pin 11) and MD0 (pin 10) select master mode and slave mode as interface modes, both of which the
+PCM1808 device supports.Table 2 shows the interface-mode selections. It is necessary to set MD1 and MD0
+prior to power on.
+In master mode, the PCM1808 device provides the timing of serial audio data communications between the
+PCM1808 device and the digital audio processor or external circuit. While in slave mode, the PCM1808 device
+receives the timing for data transfer from an external controller.
+Table 2. Interface Modes
+MD1 (PIN 11)
+
+MD0 (PIN 10)
+
+Low
+
+Low
+
+Slave mode (256 fS, 384 fS, 512 fS autodetection)
+
+INTERFACE MODE
+
+Low
+
+High
+
+Master mode (512 fS)
+
+High
+
+Low
+
+Master mode (384 fS)
+
+High
+
+High
+
+Master mode (256 fS)
+
+7.3.5.1.1 Master Mode
+
+In master mode, BCK and LRCK work as output pins, timing which from the clock circuit of the PCM1808 device
+controls these pins. The frequency of BCK is constant at 64 BCK/frame.
+7.3.5.1.2 Slave Mode
+
+In slave mode, BCK and LRCK work as input pins. The PCM1808 device accepts 64-BCK/frame or 48BCK/frame format (only for a 384-fS system clock), not 32-BCK/frame format.
+7.3.5.2 Data Format
+Table 3. Data Format
+
+16
+
+FORMAT NO.
+
+FMT (Pin 12)
+
+0
+
+Low
+
+I2S, 24-bit
+
+FORMAT
+
+1
+
+High
+
+Left-justified, 24-bit
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+Format 0: FMT = LOW
+2
+
+24-Bit, MSB-First, I S
+Left-Channel
+
+LRCK
+
+Right-Channel
+
+BCK
+DOUT
+
+1
+
+2
+
+3
+
+22 23 24
+
+MSB
+
+1
+
+LSB
+
+2
+
+3
+
+22 23 24
+
+MSB
+
+LSB
+
+Format 1: FMT = HIGH
+24-Bit, MSB-First, Left-Justified
+Left-Channel
+
+LRCK
+
+Right-Channel
+
+BCK
+DOUT
+
+1
+
+2
+
+3
+
+22 23 24
+
+MSB
+
+LSB
+
+1
+
+2
+
+3
+
+1
+
+22 23 24
+
+MSB
+
+LSB
+
+Figure 24. Audio Data Format (LRCK and BCK Work as Inputs in Slave Mode
+and as Outputs in Master Mode)
+7.3.5.3 Interface Timing
+Figure 4 and Figure 5 illustrate the interface timing in slave mode and master mode, respectively.
+
+7.4 Device Functional Modes
+7.4.1 Fade-In and Fade-Out Functions
+The PCM1808 device has fade-in and fade-out functions on DOUT (pin 9) to avoid pop noise, and the functions
+come into operation in some cases as described in several following sections. Performance of the level changes
+from 0 dB to mute or mute to 0 dB employs calculated pseudo S-shaped characteristics with zero-cross
+detection. Because of the zero-cross detection, the time needed for the fade-in and fade-out depends on the
+analog input frequency (fin). It takes 48 / fin to complete the processing. If there is no zero-cross during 8192 / fS,
+a forced DOUT fade-in or fade-out occurs during 48 / fS (TIME OUT). Figure 25 illustrates the fade-in and fadeout operation processing.
+Fade-Out Start
+
+Fade-In Complete
+Fade-In Start
+
+Fade-Out Complete
+
+DOUT
+(Contents)
+
+BPZ
+
+48/fin or 48/fS
+
+48/fin or 48/fS
+
+Figure 25. Fade-In and Fade-Out Operations
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+17
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+Device Functional Modes (continued)
+7.4.2 Clock-Halt Power-Down and Reset Function
+The PCM1808 device has a power-down and reset function. Halting SCKI (pin 6) in both master and slave
+modes triggers this function. The function is available any time after power on. Reset and power down occur
+automatically 4 μs (minimum) after the halt of SCKI. During assertion of the clock-halt reset, the PCM1808
+device stays in the reset and power-down mode, with DOUT (pin 9) forced to zero. Release the reset and powerdown mode requires the supply of SCKI. The digital output is valid after release of the reset state and elapse of
+the time of 1024 SCKI + 8960 / fS. Performing the fade-in operation takes additional time of 48 / fin or 48 / fS to
+attain the level corresponding to the analog input signal. Figure 3 illustrates the clock-halt reset timing.
+To avoid ADC performance degradation, BCK (pin 8) and LRCK (pin 7) must synchronize with SCKI within 4480
+/ fS after the resumption of SCKI. If it takes more than 4480 / fS for BCK and LRCK to synchronize with SCKI,
+mask SCKI until it again achieves synchronization, taking care of glitch and jitter. See the typical circuit
+connection diagram, Figure 26.
+To avoid ADC performance degradation, assertion of the clock-halt reset is necessary when changing system
+clock SCKI or the audio interface clocks BCK and LRCK (sampling rate fS) on the fly.
+
+18
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+8 Application and Implementation
+NOTE
+Information in the following applications sections is not part of the TI component
+specification, and TI does not warrant its accuracy or completeness. TI’s customers are
+responsible for determining suitability of components for their purposes. Customers should
+validate and test their design implementation to confirm system functionality.
+
+8.1 Application Information
+The PCM1808 device is suitable for wide variety of cost-sensitive consumer applications requiring good
+performance and operation with a 5-V analog supply and 3.3-V digital supply.
+
+8.2 Typical Application
+PCM1808
+C (3)
+5
+
+C4
+4 µs (min)
+
+1
+
+(2)
+
+5V
+3.3 V
+
+(5)
+
++
+
++
+
+C3(2) +
+
+Mask
+
+PLL170x
+
+X1
+
+(4)
+
+VREF
+
+VINR
+
+14
+
+2
+
+AGND
+
+VINL
+
+13
+
+3
+
+VCC
+
+FMT
+
+12
+
+4
+
+VDD
+
+MD1
+
+11
+
+5
+
+DGND
+
+MD0
+
+10
+
+6
+
+SCKI
+
+DOUT
+
+9
+
+7
+
+LRCK
+
+BCK
+
+8
+
+(1)
+
++
+
+C1
+
++
+
+C2
+
+R-ch IN
+(1)
+
+L-ch IN
+
+High/Low
+Pin
+Setting
+
+DSP
+or
+Audio
+Processor
+
+(1)
+
+C1, C2: A 1-μF electrolytic capacitor gives 2.7 Hz (τ = 1 μF × 60 kΩ) cutoff frequency for the input HPF in normal
+operation and requires a power-on settling time with a 60-ms time constant in the power-on initialization period.
+
+(2)
+
+C3, C4: Bypass capacitors, 0.1-μF ceramic and 10-μF electrolytic, depending on layout and power supply
+
+(3)
+
+C5: Recommended capacitors are 0.1-μF ceramic and 10-μF electrolytic.
+
+(4)
+
+X1: X1 masks the system clock input when using the clock-halt reset function with external control.
+
+(5)
+
+Optional external antialiasing filter could be required, depending on the application.
+
+Figure 26. Typical Circuit Connection Diagram
+8.2.1 Design Requirements
+For this design example, use the parameters listed in Table 4 as the input parameters.
+Table 4. Design Parameters
+DESIGN PARAMETER
+
+EXAMPLE VALUE
+
+Analog input voltage range
+
+0 Vp-p to 3 Vp-p
+
+Output
+
+PCM audio data
+
+System clock input frequency
+
+2.048 MHz to 49.152 MHz
+
+Output sampling frequency
+
+8 kHz to 96 kHz
+
+Power supply
+
+3.3 V and 5 V
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+19
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+8.2.2 Detailed Design Procedure
+8.2.2.1 Control Pins
+The control pins FMT, MD0, and MD1 should be controlled either by biasing with a 10 kΩ resister to VDD or
+GND, or by driving with GPIO from the DSP or audio processor.
+8.2.2.2 Master Clock
+In this application of the PCM1808 device, a PLL170X series device is used as the master clock source to drive
+both the PCM1808 and the DSP or audio processor synchronously. With the addition of the AND gate, the
+operation of the PCM1808 device can be halted by control of the MASK bit. A crystal that operates at the
+standard audio multiples can also be used.
+8.2.2.3 DSP or Audio Processor
+In this application, the DSP or audio processor is acting as the audio master, and the PCM1808 is acting as the
+audio slave. This means the DSP or audio processor must be able to output audio clocks that the PCM1808 can
+use to process audio signals.
+8.2.2.4 Input Filters
+For the analog input circuit, an ac coupling capacitor should be placed in series with the input. This will remove
+the dc component of the input signal. An RC filter can also be implemented to filter out-of-band noise to reduce
+aliasing. The equation below can be used to calculate the cutoff frequency of the optional RC filter for the input.
+1
+fC =
+2pRC
+(1)
+8.2.3 Application Curve
+0
+Input Level = −0.5 dB
+Data Points = 8192
+
+−20
+
+Amplitude − dB
+
+−40
+−60
+−80
+−100
+−120
+−140
+0
+
+5
+
+10
+
+15
+
+f − Frequency − kHz
+
+20
+G013
+
+Figure 27. Output Spectrum
+
+20
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+9 Power Supply Recommendations
+The PCM1808 device requires a 5-V nominal supply and a 3.3-V nominal supply. The 5-V supply is for the
+analog circuitry powered by the VCC pin. The 3.3-V supply is for the digital circuitry powered by the VDD pin. The
+decoupling capacitors for the power supplies should be placed close to the device terminals.
+A VCC that varies from the nominal 5 V affects the reference voltage for the input. This has a slight impact on the
+data conversion of the device.
+
+10 Layout
+10.1 Layout Guidelines
+10.1.1 VCC, VDD Pins
+Bypass the digital and analog power supply lines to the PCM1808 device to the corresponding ground pins with
+both 0.1-μF ceramic and 10-μF electrolytic capacitors as close to the pins as possible to maximize the dynamic
+performance of the ADC.
+10.1.2 AGND, DGND Pins
+To maximize the dynamic performance of the PCM1808 device, there are no internal connections to the analog
+and digital grounds. These grounds should have low impedance to avoid digital noise feedback into the analog
+ground. They should be connected directly to each other under the PCM1808 device package to reduce potential
+noise problems.
+10.1.3 VINL, VINR Pins
+VINL and VINR are single-ended inputs. These inputs have integrated antialias low-pass filters to remove the
+high-frequency noise outside the audio band. If the performance of these filters is not adequate for an
+application, the application requires appropriate external antialiasing filters. An appropriate choice would typically
+be a passive RC filter in the range of 100 Ω and 0.01 μF to 1 kΩ and 1000 pF.
+10.1.4 VREF Pin
+To ensure low source impedance of the ADC references, the recommended capacitors between VREF and AGND
+are 0.1-μF ceramic and 10-μF electrolytic. These capacitors should be located as close as possible to the VREF
+pin to reduce dynamic errors on the ADC references.
+10.1.5 DOUT Pin
+The DOUT pin has a large load-drive capability, but if the DOUT line is long, a recommended practice is to locate
+a buffer near the PCM1808 device and minimize load capacitance to minimize the digital-analog crosstalk and
+maximize the dynamic performance of the ADC.
+10.1.6 System Clock
+The quality of the system clock can influence dynamic performance, as the PCM1808 device operates based on
+a system clock. Therefore, it may be necessary to consider the system clock duty, jitter, and the time difference
+between system clock transition and BCK or LRCK transition in slave mode.
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+21
+
+PCM1808
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+www.ti.com
+
+10.2 Layout Example
+It is recommended to place a top layer ground pour for
+shielding around PCM1808 and connect to lower main PCB
+ground plane by multiple vias
+
+Optional External RC
+Antialiasing Circuit
+1 μF
+0.1 μF
+
++
+
+1
+
+VREF
+
+VinR
+
+14
+
+2
+
+AGND
+
+VinL
+
+13
+
+5V
+
+3
+
+VCC
+
+FMT
+
+12
+
+3.3 V
+
+4
+
+VDD
+
+MD1
+
+11
+
+5
+
+DGND
+
+MD0
+
+10
+
+6
+
+SCK
+
+DOUT
+
+9
+
+7
+
+LRCK
+
+BCK
+
+8
+
+0.1 μF
+
++
+
++
+10 μF
+
+L-ch IN
+
++
+
+10 μF
+
+R-ch IN
+
++
+
+10 μF
+
+0.1 μF
+
+Clock Signals to
+DSP or Audio
+Processor
+
+PCM1808
+
+1 μF
+Make sure to have
+ground pour separating
+the left- and rightchannel traces to help
+prevent crosstalk.
+
+Part configuration
+pullups or pulldowns
+
+Make sure to have
+ground pour separating
+the clock signals from
+the surrounding traces.
+
+Top Layer Ground Pour
+
+Via to Bottom Ground Plane
+
+Top Layer Signal Traces
+
+Pad to Top Layer Ground Pour
+
+Figure 28. PCM1808 Layout Example
+
+22
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+PCM1808
+www.ti.com
+
+SLES177B – APRIL 2006 – REVISED AUGUST 2015
+
+11 Device and Documentation Support
+11.1 Community Resources
+The following links connect to TI community resources. Linked contents are provided "AS IS" by the respective
+contributors. They do not constitute TI specifications and do not necessarily reflect TI's views; see TI's Terms of
+Use.
+TI E2E™ Online Community TI's Engineer-to-Engineer (E2E) Community. Created to foster collaboration
+among engineers. At e2e.ti.com, you can ask questions, share knowledge, explore ideas and help
+solve problems with fellow engineers.
+Design Support TI's Design Support Quickly find helpful E2E forums along with design support tools and
+contact information for technical support.
+
+11.2 Trademarks
+E2E is a trademark of Texas Instruments.
+Audio Precision is a trademark of Audio Precision, Inc.
+All other trademarks are the property of their respective owners.
+
+11.3 Electrostatic Discharge Caution
+These devices have limited built-in ESD protection. The leads should be shorted together or the device placed in conductive foam
+during storage or handling to prevent electrostatic damage to the MOS gates.
+
+11.4 Glossary
+SLYZ022 — TI Glossary.
+This glossary lists and explains terms, acronyms, and definitions.
+
+12 Mechanical, Packaging, and Orderable Information
+The following pages include mechanical, packaging, and orderable information. This information is the mostcurrent data available for the designated device. This data is subject to change without notice and without
+revision of this document. For browser-based versions of this data sheet, see the left-hand navigation pane.
+
+Submit Documentation Feedback
+
+Copyright © 2006–2015, Texas Instruments Incorporated
+
+Product Folder Links: PCM1808
+
+23
+
+PACKAGE OPTION ADDENDUM
+www.ti.com
+
+23-May-2025
+
+PACKAGING INFORMATION
+Orderable part number
+
+(1)
+
+Status
+
+Material type
+
+(1)
+
+(2)
+
+Package | Pins
+
+Package qty | Carrier
+
+RoHS
+(3)
+
+Lead finish/
+Ball material
+
+MSL rating/
+Peak reflow
+
+(4)
+
+(5)
+
+Op temp (°C)
+
+Part marking
+(6)
+
+PCM1808PW
+
+Active
+
+Production
+
+TSSOP (PW) | 14
+
+90 | TUBE
+
+Yes
+
+NIPDAU | NIPDAU
+
+Level-1-260C-UNLIM
+
+-40 to 85
+
+PCM1808
+
+PCM1808PW.B
+
+Active
+
+Production
+
+TSSOP (PW) | 14
+
+90 | TUBE
+
+Yes
+
+NIPDAU
+
+Level-1-260C-UNLIM
+
+-40 to 85
+
+PCM1808
+
+PCM1808PWG4
+
+Active
+
+Production
+
+TSSOP (PW) | 14
+
+90 | TUBE
+
+Yes
+
+NIPDAU
+
+Level-1-260C-UNLIM
+
+-40 to 85
+
+PCM1808
+
+PCM1808PWR
+
+Active
+
+Production
+
+TSSOP (PW) | 14
+
+2000 | LARGE T&R
+
+Yes
+
+NIPDAU | NIPDAU
+
+Level-1-260C-UNLIM
+
+-40 to 85
+
+PCM1808
+
+PCM1808PWR.B
+
+Active
+
+Production
+
+TSSOP (PW) | 14
+
+2000 | LARGE T&R
+
+Yes
+
+NIPDAU
+
+Level-1-260C-UNLIM
+
+-40 to 85
+
+PCM1808
+
+PCM1808PWRG4
+
+Active
+
+Production
+
+TSSOP (PW) | 14
+
+2000 | LARGE T&R
+
+Yes
+
+NIPDAU
+
+Level-1-260C-UNLIM
+
+-40 to 85
+
+PCM1808
+
+Status: For more details on status, see our product life cycle.
+
+(2)
+
+Material type: When designated, preproduction parts are prototypes/experimental devices, and are not yet approved or released for full production. Testing and final process, including without limitation quality assurance,
+reliability performance testing, and/or process qualification, may not yet be complete, and this item is subject to further changes or possible discontinuation. If available for ordering, purchases will be subject to an additional
+waiver at checkout, and are intended for early internal evaluation purposes only. These items are sold without warranties of any kind.
+(3)
+
+RoHS values: Yes, No, RoHS Exempt. See the TI RoHS Statement for additional information and value definition.
+
+(4)
+
+Lead finish/Ball material: Parts may have multiple material finish options. Finish options are separated by a vertical ruled line. Lead finish/Ball material values may wrap to two lines if the finish value exceeds the maximum
+column width.
+(5)
+
+MSL rating/Peak reflow: The moisture sensitivity level ratings and peak solder (reflow) temperatures. In the event that a part has multiple moisture sensitivity ratings, only the lowest level per JEDEC standards is shown.
+Refer to the shipping label for the actual reflow temperature that will be used to mount the part to the printed circuit board.
+(6)
+
+Part marking: There may be an additional marking, which relates to the logo, the lot trace code information, or the environmental category of the part.
+
+Multiple part markings will be inside parentheses. Only one part marking contained in parentheses and separated by a "~" will appear on a part. If a line is indented then it is a continuation of the previous line and the two
+combined represent the entire part marking for that device.
+Important Information and Disclaimer:The information provided on this page represents TI's knowledge and belief as of the date that it is provided. TI bases its knowledge and belief on information provided by third parties, and
+makes no representation or warranty as to the accuracy of such information. Efforts are underway to better integrate information from third parties. TI has taken and continues to take reasonable steps to provide representative
+and accurate information but may not have conducted destructive testing or chemical analysis on incoming materials and chemicals. TI and TI suppliers consider certain information to be proprietary, and thus CAS numbers
+and other limited information may not be available for release.
+In no event shall TI's liability arising out of such information exceed the total purchase price of the TI part(s) at issue in this document sold by TI to Customer on an annual basis.
+
+Addendum-Page 1
+
+PACKAGE OPTION ADDENDUM
+www.ti.com
+
+23-May-2025
+
+OTHER QUALIFIED VERSIONS OF PCM1808 :
+
+• Automotive : PCM1808-Q1
+NOTE: Qualified Version Definitions:
+
+• Automotive - Q100 devices qualified for high-reliability automotive applications targeting zero defects
+
+Addendum-Page 2
+
+PACKAGE MATERIALS INFORMATION
+www.ti.com
+
+24-Jul-2025
+
+TAPE AND REEL INFORMATION
+REEL DIMENSIONS
+
+TAPE DIMENSIONS
+K0
+
+P1
+
+B0 W
+Reel
+Diameter
+Cavity
+A0
+B0
+K0
+W
+P1
+
+A0
+
+Dimension designed to accommodate the component width
+Dimension designed to accommodate the component length
+Dimension designed to accommodate the component thickness
+Overall width of the carrier tape
+Pitch between successive cavity centers
+
+Reel Width (W1)
+QUADRANT ASSIGNMENTS FOR PIN 1 ORIENTATION IN TAPE
+Sprocket Holes
+
+Q1
+
+Q2
+
+Q1
+
+Q2
+
+Q3
+
+Q4
+
+Q3
+
+Q4
+
+User Direction of Feed
+
+Pocket Quadrants
+
+*All dimensions are nominal
+
+Device
+
+PCM1808PWR
+
+Package Package Pins
+Type Drawing
+
+SPQ
+
+TSSOP
+
+2000
+
+PW
+
+14
+
+Reel
+Reel
+A0
+Diameter Width (mm)
+(mm) W1 (mm)
+330.0
+
+12.4
+
+Pack Materials-Page 1
+
+6.9
+
+B0
+(mm)
+
+K0
+(mm)
+
+P1
+(mm)
+
+W
+Pin1
+(mm) Quadrant
+
+5.6
+
+1.6
+
+8.0
+
+12.0
+
+Q1
+
+PACKAGE MATERIALS INFORMATION
+www.ti.com
+
+24-Jul-2025
+
+TAPE AND REEL BOX DIMENSIONS
+
+Width (mm)
+
+W
+
+L
+
+H
+
+*All dimensions are nominal
+
+Device
+
+Package Type
+
+Package Drawing
+
+Pins
+
+SPQ
+
+Length (mm)
+
+Width (mm)
+
+Height (mm)
+
+PCM1808PWR
+
+TSSOP
+
+PW
+
+14
+
+2000
+
+353.0
+
+353.0
+
+32.0
+
+Pack Materials-Page 2
+
+PACKAGE MATERIALS INFORMATION
+www.ti.com
+
+24-Jul-2025
+
+TUBE
+T - Tube
+height
+
+L - Tube length
+
+W - Tube
+width
+
+B - Alignment groove width
+*All dimensions are nominal
+
+Device
+
+Package Name
+
+Package Type
+
+Pins
+
+SPQ
+
+L (mm)
+
+W (mm)
+
+T (µm)
+
+B (mm)
+
+PCM1808PW
+
+PW
+
+TSSOP
+
+14
+
+90
+
+530
+
+10.2
+
+3600
+
+3.5
+
+PCM1808PW
+
+PW
+
+TSSOP
+
+14
+
+90
+
+530
+
+10.2
+
+3600
+
+3.5
+
+PCM1808PW.B
+
+PW
+
+TSSOP
+
+14
+
+90
+
+530
+
+10.2
+
+3600
+
+3.5
+
+PCM1808PW.B
+
+PW
+
+TSSOP
+
+14
+
+90
+
+530
+
+10.2
+
+3600
+
+3.5
+
+PCM1808PWG4
+
+PW
+
+TSSOP
+
+14
+
+90
+
+530
+
+10.2
+
+3600
+
+3.5
+
+PCM1808PWG4
+
+PW
+
+TSSOP
+
+14
+
+90
+
+530
+
+10.2
+
+3600
+
+3.5
+
+Pack Materials-Page 3
+
+PACKAGE OUTLINE
+
+PW0014A
+
+TSSOP - 1.2 mm max height
+SCALE 2.500
+
+SMALL OUTLINE PACKAGE
+
+SEATING
+PLANE
+C
+
+6.6
+TYP
+6.2
+
+A
+
+0.1 C
+
+PIN 1 INDEX AREA
+12X 0.65
+14
+
+1
+
+2X
+5.1
+4.9
+NOTE 3
+
+3.9
+
+4X (0 -12 )
+7
+8
+14X
+B
+
+4.5
+4.3
+NOTE 4
+
+0.30
+0.17
+
+0.1
+
+C A B
+
+1.2 MAX
+
+(0.15) TYP
+SEE DETAIL A
+0.25
+GAGE PLANE
+0.15
+0.05
+
+0 -8
+
+0.75
+0.50
+
+DETAIL A
+A 20
+
+TYPICAL
+4220202/B 12/2023
+
+NOTES:
+1. All linear dimensions are in millimeters. Any dimensions in parenthesis are for reference only. Dimensioning and tolerancing
+per ASME Y14.5M.
+2. This drawing is subject to change without notice.
+3. This dimension does not include mold flash, protrusions, or gate burrs. Mold flash, protrusions, or gate burrs shall not
+exceed 0.15 mm per side.
+4. This dimension does not include interlead flash. Interlead flash shall not exceed 0.25 mm per side.
+5. Reference JEDEC registration MO-153.
+
+www.ti.com
+
+EXAMPLE BOARD LAYOUT
+
+PW0014A
+
+TSSOP - 1.2 mm max height
+SMALL OUTLINE PACKAGE
+
+SYMM
+
+14X (1.5)
+
+(R0.05) TYP
+
+1
+14
+
+14X (0.45)
+
+SYMM
+
+12X (0.65)
+
+8
+
+7
+
+(5.8)
+
+LAND PATTERN EXAMPLE
+EXPOSED METAL SHOWN
+SCALE: 10X
+
+SOLDER MASK
+OPENING
+
+METAL UNDER
+SOLDER MASK
+
+METAL
+
+SOLDER MASK
+OPENING
+
+EXPOSED METAL
+
+EXPOSED METAL
+0.05 MAX
+ALL AROUND
+NON-SOLDER MASK
+DEFINED
+(PREFERRED)
+
+0.05 MIN
+ALL AROUND
+SOLDER MASK
+DEFINED
+
+SOLDER MASK DETAILS
+15.000
+
+4220202/B 12/2023
+
+NOTES: (continued)
+6. Publication IPC-7351 may have alternate designs.
+7. Solder mask tolerances between and around signal pads can vary based on board fabrication site.
+
+www.ti.com
+
+EXAMPLE STENCIL DESIGN
+
+PW0014A
+
+TSSOP - 1.2 mm max height
+SMALL OUTLINE PACKAGE
+
+14X (1.5)
+
+SYMM
+(R0.05) TYP
+
+1
+14X (0.45)
+
+14
+
+SYMM
+
+12X (0.65)
+
+8
+
+7
+
+(5.8)
+
+SOLDER PASTE EXAMPLE
+BASED ON 0.125 mm THICK STENCIL
+SCALE: 10X
+
+4220202/B 12/2023
+
+NOTES: (continued)
+8. Laser cutting apertures with trapezoidal walls and rounded corners may offer better paste release. IPC-7525 may have alternate
+design recommendations.
+9. Board assembly site may have different recommendations for stencil design.
+
+www.ti.com
+
+IMPORTANT NOTICE AND DISCLAIMER
+TI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATA SHEETS), DESIGN RESOURCES (INCLUDING REFERENCE
+DESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS”
+AND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY
+IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD
+PARTY INTELLECTUAL PROPERTY RIGHTS.
+These resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate
+TI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable
+standards, and any other safety, security, regulatory or other requirements.
+These resources are subject to change without notice. TI grants you permission to use these resources only for development of an
+application that uses the TI products described in the resource. Other reproduction and display of these resources is prohibited. No license
+is granted to any other TI intellectual property right or to any third party intellectual property right. TI disclaims responsibility for, and you
+will fully indemnify TI and its representatives against, any claims, damages, costs, losses, and liabilities arising out of your use of these
+resources.
+TI’s products are provided subject to TI’s Terms of Sale or other applicable terms available either on ti.com or provided in conjunction with
+such TI products. TI’s provision of these resources does not expand or otherwise alter TI’s applicable warranties or warranty disclaimers for
+TI products.
+TI objects to and rejects any additional or different terms you may have proposed. IMPORTANT NOTICE
+Mailing Address: Texas Instruments, Post Office Box 655303, Dallas, Texas 75265
+Copyright © 2025, Texas Instruments Incorporated
+
+

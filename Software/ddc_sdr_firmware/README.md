@@ -16,7 +16,8 @@ UAC1 stereo 24-bit capture format to SDR++ or Quisk.
 | FPGA I2S RX_DATA | 14 | Pico input |
 | FPGA I2S BCK | 15 | Pico input |
 | FPGA I2S WS | 16 | Pico input |
-| FPGA interrupt | 0 | Pico input, reserved |
+| FPGA interrupt | 0 | Pico input, active-high OTR notification |
+| PGA control mask | 8..11 | Pico outputs, PGA0..PGA3 |
 | FPGA CDONE | 21 | Pico input |
 | FPGA CRESET | 22 | Pico output |
 | 30.720 MHz clock | FPGA pin 37 | External oscillator |
@@ -42,6 +43,29 @@ Commands are:
 | `01` | Set center frequency in Hz |
 | `02` | Set output sample rate, 48000 or 96000 |
 | `03` | Reserved for status reads |
+| `04` | Clear the FPGA's sticky OTR event when value bit 0 is set |
+
+The four PGA GPIOs form a hardware control mask: `PGA0` is the least-
+significant bit and `PGA3` is the most-significant bit. This is not a linear
+attenuation number. The verified gain states are:
+
+| Mask | Hardware action | Nominal gain |
+| ---: | --- | ---: |
+| `0x0` | All MOSFETs off; straight path | `+40 dB` |
+| `0x1` | 5 dB pad engaged | `+35 dB` |
+| `0x3` | 5 dB and 10 dB pads engaged | `+25 dB` |
+| `0xF` | All pads engaged; both LNAs bypassed | `-15 dB` |
+
+The automatic overload path uses only the monotonic, verified sequence
+`0x0 -> 0x1 -> 0x3 -> 0xF`. It starts at `0x0`, advances after each FPGA
+OTR interrupt, and remains at `0xF` after the final step. Other masks remain
+available for manual calibration, but are not selected automatically until
+their gain has been measured.
+
+The FPGA should latch an OTR event, hold `fpga_int` high, and keep it high
+until it receives the `DDC_FPGA_CMD_CLEAR_OTR` command. Repeated OTR events
+may be coalesced while the interrupt is high; a future status response can
+add an event counter without changing this interrupt contract.
 
 The protocol is intentionally small and versioned so it can be implemented in
 the FPGA alongside the first DDC datapath. The FPGA should latch a complete

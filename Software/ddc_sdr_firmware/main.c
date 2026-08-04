@@ -32,6 +32,10 @@
 #define DDC_I2S_DATA_PIN 14
 #define DDC_I2S_BCK_PIN 15
 #define DDC_I2S_WS_PIN 16
+#define DDC_FPGA_INT_PIN 0
+#define DDC_PGA_GPIO_BASE 8
+#define DDC_PGA_GPIO_COUNT 4
+#define DDC_DEFAULT_PGA_CODE 0u
 #define DDC_DEFAULT_SAMPLE_RATE 48000u
 #define DDC_MAX_WORDS_PER_BUFFER 192u
 #define DDC_LINE_BUFFER_SIZE 80u
@@ -48,6 +52,8 @@ static bool runtime_spi_ready;
 static bool fpga_ready;
 static bool update_prepared;
 static uint32_t sample_rate = DDC_DEFAULT_SAMPLE_RATE;
+static volatile bool fpga_interrupt_pending;
+static uint8_t pga_code = DDC_DEFAULT_PGA_CODE;
 
 static uint8_t audio_alt;
 static uint32_t audio_requested_rate = DDC_DEFAULT_SAMPLE_RATE;
@@ -57,6 +63,37 @@ static char line_buffer[DDC_LINE_BUFFER_SIZE];
 static uint8_t line_length;
 static bool ready_message_sent;
 static uint32_t last_frequency_hz;
+
+static bool fpga_write_command(uint8_t command, uint32_t value);
+
+static void pga_set_code(uint8_t code)
+{
+    code &= DDC_PGA_MAX_CODE;
+    pga_code = code;
+    for (uint gpio = DDC_PGA_GPIO_BASE;
+         gpio < DDC_PGA_GPIO_BASE + DDC_PGA_GPIO_COUNT;
+         gpio++) {
+        gpio_put(gpio, (code >> (gpio - DDC_PGA_GPIO_BASE)) & 1u);
+    }
+}
+
+static void fpga_interrupt_handler(uint gpio, uint32_t events)
+{
+    (void)gpio;
+    (void)events;
+    fpga_interrupt_pending = true;
+}
+
+static void handle_fpga_interrupt(void)
+{
+    if (!fpga_interrupt_pending || !fpga_ready || !runtime_spi_ready) {
+        return;
+    }
+
+    fpga_interrupt_pending = false;
+    pga_set_code(ddc_pga_next_otr_code(pga_code));
+    fpga_write_command(DDC_FPGA_CMD_CLEAR_OTR, 1u);
+}
 
 static void cdc_write(const char *text)
 {
@@ -184,6 +221,28 @@ static bool fpga_set_frequency(uint32_t frequency_hz)
         return false;
     }
     return fpga_write_command(DDC_FPGA_CMD_SET_FREQUENCY, frequency_hz);
+}
+
+static void pga_configure(void)
+{
+    for (uint gpio = DDC_PGA_GPIO_BASE;
+         gpio < DDC_PGA_GPIO_BASE + DDC_PGA_GPIO_COUNT;
+         gpio++) {
+        gpio_init(gpio);
+        gpio_set_dir(gpio, GPIO_OUT);
+    }
+    pga_set_code(DDC_DEFAULT_PGA_CODE);
+}
+
+static void fpga_interrupt_configure(void)
+{
+    gpio_init(DDC_FPGA_INT_PIN);
+    gpio_set_dir(DDC_FPGA_INT_PIN, GPIO_IN);
+    gpio_pull_down(DDC_FPGA_INT_PIN);
+    gpio_set_irq_enabled_with_callback(DDC_FPGA_INT_PIN,
+                                        GPIO_IRQ_EDGE_RISE,
+                                        true,
+                                        fpga_interrupt_handler);
 }
 
 static bool configure_embedded_fpga(void)
@@ -542,6 +601,8 @@ int main(void)
     set_sys_clock_khz(250000, true);
 
     g_pio_offset = pio_add_program(pio0, &i2s_rx_program);
+    pga_configure();
+    fpga_interrupt_configure();
     dma_channel_a = dma_claim_unused_channel(true);
     dma_channel_b = dma_claim_unused_channel(true);
 
@@ -580,6 +641,7 @@ int main(void)
     while (true) {
         tud_task();
         cdc_task();
+        handle_fpga_interrupt();
         audio_task();
     }
 }

@@ -8,12 +8,29 @@
 #define DDC_FPGA_PROTOCOL_VERSION 1u
 #define DDC_FPGA_FRAME_HEADER_LEN 4u
 #define DDC_FPGA_MAX_FREQUENCY_HZ 30000000u
+#define DDC_PGA_MAX_CODE 0x0fu
 
 enum ddc_fpga_command {
     DDC_FPGA_CMD_SET_FREQUENCY = 0x01,
     DDC_FPGA_CMD_SET_SAMPLE_RATE = 0x02,
-    DDC_FPGA_CMD_GET_STATUS = 0x03
+    DDC_FPGA_CMD_GET_STATUS = 0x03,
+    DDC_FPGA_CMD_CLEAR_OTR = 0x04
 };
+
+/* The automatic overload path uses only verified gain states. */
+static inline uint8_t ddc_pga_next_otr_code(uint8_t pga_code)
+{
+    switch (pga_code & DDC_PGA_MAX_CODE) {
+    case 0x0u:
+        return 0x1u;
+    case 0x1u:
+        return 0x3u;
+    case 0x3u:
+        return 0xfu;
+    default:
+        return 0xfu;
+    }
+}
 
 static inline void ddc_put_le32(uint8_t *dst, uint32_t value)
 {
