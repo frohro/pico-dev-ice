@@ -21,25 +21,85 @@ pico_sdk_init()
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk pico-ice-sdk)
 
 set(FPGA_BITSTREAM_BIN "" CACHE FILEPATH
-    "Packed iCE40 bitstream (.bin) to embed in the RP2040 firmware")
+    "Legacy packed iCE40 bitstream (.bin), used as the stored RX image")
+set(FPGA_RX_BITSTREAM_BIN "" CACHE FILEPATH
+    "Packed iCE40 RX bitstream (.bin) to embed in the RP2040 firmware")
+set(FPGA_TX_BITSTREAM_BIN "" CACHE FILEPATH
+    "Packed iCE40 TX bitstream (.bin) to embed in the RP2040 firmware")
+set(_fpga_boot_mode_default "DFU")
+if(FPGA_BITSTREAM_BIN OR FPGA_RX_BITSTREAM_BIN OR FPGA_TX_BITSTREAM_BIN)
+    set(_fpga_boot_mode_default "STORED")
+endif()
+set(FPGA_BOOT_MODE "${_fpga_boot_mode_default}" CACHE STRING
+    "FPGA boot source: STORED loads an embedded image, DFU waits for dfu-util")
+set_property(CACHE FPGA_BOOT_MODE PROPERTY STRINGS STORED DFU)
+if(NOT FPGA_BOOT_MODE STREQUAL "STORED" AND NOT FPGA_BOOT_MODE STREQUAL "DFU")
+    message(FATAL_ERROR "FPGA_BOOT_MODE must be STORED or DFU")
+endif()
+set(FPGA_DEFAULT_IMAGE "RX" CACHE STRING
+    "Stored FPGA image selected at boot: RX or TX")
+set_property(CACHE FPGA_DEFAULT_IMAGE PROPERTY STRINGS RX TX)
+if(NOT FPGA_DEFAULT_IMAGE STREQUAL "RX" AND NOT FPGA_DEFAULT_IMAGE STREQUAL "TX")
+    message(FATAL_ERROR "FPGA_DEFAULT_IMAGE must be RX or TX")
+endif()
+
+if(FPGA_BITSTREAM_BIN AND FPGA_RX_BITSTREAM_BIN)
+    message(FATAL_ERROR
+        "Use FPGA_RX_BITSTREAM_BIN instead of the legacy FPGA_BITSTREAM_BIN")
+endif()
+if(FPGA_BITSTREAM_BIN)
+    set(FPGA_RX_BITSTREAM_BIN "${FPGA_BITSTREAM_BIN}")
+endif()
 
 set(DDC_GENERATED_INCLUDES)
-if(FPGA_BITSTREAM_BIN)
+set(DDC_BITSTREAM_HEADERS)
+function(ddc_add_bitstream_header input_file output_file symbol definition)
     find_package(Python3 COMPONENTS Interpreter REQUIRED)
-    set(FPGA_BITSTREAM_HEADER ${CMAKE_CURRENT_BINARY_DIR}/fpga_bitstream.h)
+    set(header_path ${CMAKE_CURRENT_BINARY_DIR}/${output_file})
     add_custom_command(
-        OUTPUT ${FPGA_BITSTREAM_HEADER}
+        OUTPUT ${header_path}
         COMMAND ${Python3_EXECUTABLE}
                 ${CMAKE_CURRENT_SOURCE_DIR}/tools/bin2header.py
-                ${FPGA_BITSTREAM_BIN}
-                ${FPGA_BITSTREAM_HEADER}
-        DEPENDS ${FPGA_BITSTREAM_BIN}
+                ${input_file}
+                ${header_path}
+                ${symbol}
+        DEPENDS ${input_file}
                 ${CMAKE_CURRENT_SOURCE_DIR}/tools/bin2header.py
         VERBATIM
         )
-    add_custom_target(ddc_fpga_bitstream_header DEPENDS ${FPGA_BITSTREAM_HEADER})
+    list(APPEND DDC_BITSTREAM_HEADERS ${header_path})
+    set(DDC_BITSTREAM_HEADERS ${DDC_BITSTREAM_HEADERS} PARENT_SCOPE)
+    set(${definition} 1 PARENT_SCOPE)
+endfunction()
+
+if(FPGA_RX_BITSTREAM_BIN)
+    ddc_add_bitstream_header(${FPGA_RX_BITSTREAM_BIN}
+        fpga_bitstream_rx.h ddc_fpga_rx_bitstream DDC_HAS_STORED_RX)
+endif()
+if(FPGA_TX_BITSTREAM_BIN)
+    ddc_add_bitstream_header(${FPGA_TX_BITSTREAM_BIN}
+        fpga_bitstream_tx.h ddc_fpga_tx_bitstream DDC_HAS_STORED_TX)
+endif()
+if(DDC_BITSTREAM_HEADERS)
+    add_custom_target(ddc_fpga_bitstream_headers DEPENDS ${DDC_BITSTREAM_HEADERS})
     set(DDC_GENERATED_INCLUDES ${CMAKE_CURRENT_BINARY_DIR})
-else()
+endif()
+
+if(FPGA_BOOT_MODE STREQUAL "STORED" AND NOT DDC_BITSTREAM_HEADERS)
+    message(FATAL_ERROR
+        "FPGA_BOOT_MODE=STORED requires FPGA_RX_BITSTREAM_BIN or FPGA_TX_BITSTREAM_BIN")
+endif()
+if(FPGA_BOOT_MODE STREQUAL "STORED" AND FPGA_DEFAULT_IMAGE STREQUAL "RX"
+   AND NOT FPGA_RX_BITSTREAM_BIN)
+    message(FATAL_ERROR
+        "FPGA_DEFAULT_IMAGE=RX requires FPGA_RX_BITSTREAM_BIN in STORED mode")
+endif()
+if(FPGA_BOOT_MODE STREQUAL "STORED" AND FPGA_DEFAULT_IMAGE STREQUAL "TX"
+   AND NOT FPGA_TX_BITSTREAM_BIN)
+    message(FATAL_ERROR
+        "FPGA_DEFAULT_IMAGE=TX requires FPGA_TX_BITSTREAM_BIN in STORED mode")
+endif()
+if(NOT DDC_BITSTREAM_HEADERS)
     message(STATUS
         "FPGA_BITSTREAM_BIN is not set; firmware will wait for a DFU-loaded FPGA")
 endif()
@@ -51,9 +111,23 @@ add_executable(${CMAKE_PROJECT_NAME}
 pico_generate_pio_header(${CMAKE_PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/i2s_rx.pio
     )
-if(FPGA_BITSTREAM_BIN)
-    add_dependencies(${CMAKE_PROJECT_NAME} ddc_fpga_bitstream_header)
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE DDC_HAS_EMBEDDED_FPGA=1)
+pico_generate_pio_header(${CMAKE_PROJECT_NAME}
+    ${CMAKE_CURRENT_SOURCE_DIR}/i2s_tx.pio
+    )
+if(DDC_BITSTREAM_HEADERS)
+    add_dependencies(${CMAKE_PROJECT_NAME} ddc_fpga_bitstream_headers)
+endif()
+if(DDC_HAS_STORED_RX)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE DDC_HAS_STORED_RX=1)
+endif()
+if(DDC_HAS_STORED_TX)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE DDC_HAS_STORED_TX=1)
+endif()
+if(FPGA_BOOT_MODE STREQUAL "STORED")
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE DDC_FPGA_BOOT_FROM_STORED=1)
+endif()
+if(FPGA_DEFAULT_IMAGE STREQUAL "TX")
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE DDC_DEFAULT_FPGA_TX=1)
 endif()
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

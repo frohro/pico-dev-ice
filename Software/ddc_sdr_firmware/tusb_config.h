@@ -20,14 +20,16 @@ extern "C" {
 #define CFG_TUD_DFU 1
 #define CFG_TUD_DFU_ALT 1
 
-/* CDC (66) + UAC1 audio (155) + DFU (18) + configuration (9). */
-#define CONFIG_TOTAL_LEN 248
+/* CDC (66) + UAC1 headset audio (272) + DFU (18) + configuration (9). */
+#define CONFIG_TOTAL_LEN 365
 
-#define CFG_TUD_AUDIO_FUNC_1_N_AS_INT 1
 #define CFG_TUD_AUDIO_FUNC_1_CTRL_BUF_SZ 64
 #define CFG_TUD_AUDIO_ENABLE_EP_IN 1
 #define CFG_TUD_AUDIO_FUNC_1_EP_IN_SZ_MAX 582
 #define CFG_TUD_AUDIO_FUNC_1_EP_IN_SW_BUF_SZ 4656
+#define CFG_TUD_AUDIO_ENABLE_EP_OUT 1
+#define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SZ_MAX 582
+#define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SW_BUF_SZ 4656
 
 #define CFG_TUD_CDC_RX_BUFSIZE 128
 #define CFG_TUD_CDC_TX_BUFSIZE 256

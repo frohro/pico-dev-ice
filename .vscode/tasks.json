@@ -1,0 +1,709 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build TX PIO firmware slice",
+			"type": "shell",
+			"command": "cmake --build Software/ddc_sdr_firmware/build-current-validation -j2",
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "inspect TinyUSB audio macros",
+			"type": "shell",
+			"command": "printf '#include \"tusb.h\"\\n' | gcc -dM -E -x c -I Software/ddc_sdr_firmware -I /home/frohro/tinyusb/src -I /home/frohro/tinyusb/hw | grep -E 'TUD_AUDIO10_DESC_(INPUT_TERM|OUTPUT_TERM|STD_AS_ISO_EP|CS_AS_ISO_EP|CS_AC)|TUD_AUDIO_ENABLE_EP'",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "inspect TinyUSB audio macros retry",
+			"type": "shell",
+			"command": "printf '#include \"tusb.h\"\\n' | gcc -dM -E -x c - -I Software/ddc_sdr_firmware -I /home/frohro/tinyusb/src -I /home/frohro/tinyusb/hw | grep -E 'TUD_AUDIO10_DESC_(INPUT_TERM|OUTPUT_TERM|STD_AS_ISO_EP|CS_AS_ISO_EP|CS_AC)|TUD_AUDIO_ENABLE_EP'",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "inspect TinyUSB descriptor macros",
+			"type": "shell",
+			"command": "printf '#include \"tusb.h\"\\n' | gcc -dM -E -x c - -I Software/ddc_sdr_firmware -I /home/frohro/tinyusb/src -I /home/frohro/tinyusb/hw | grep -E 'TUD_AUDIO10_DESC_(STD_AS_INT|CS_AS_INT|TYPE_I_FORMAT|FEATURE_UNIT|INPUT_TERM|OUTPUT_TERM)|AUDIO_TERM_TYPE|AUDIO10_CHANNEL_CONFIG'",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "calculate UAC1 descriptor size",
+			"type": "shell",
+			"command": "printf '#include \"tusb.h\"\\n#include \"usb_descriptors.c\"\\n#include <stdio.h>\\nint main(void){printf(\"%u %u %u %u %u\\\\n\", (unsigned)TUD_CONFIG_DESC_LEN, (unsigned)TUD_CDC_DESC_LEN, (unsigned)TUD_DFU_DESC_LEN(CFG_TUD_DFU_ALT), (unsigned)AUDIO_BLOCK_LEN, (unsigned)DDC_CONFIGURATION_LEN);}\\n' | gcc -x c - -I Software/ddc_sdr_firmware -I /home/frohro/tinyusb/src -I /home/frohro/tinyusb/hw -o /tmp/desc_sizes && /tmp/desc_sizes",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "calculate UAC1 descriptor size retry",
+			"type": "shell",
+			"command": "printf '#include \"tusb.h\"\\n#include \"ice_usb.h\"\\n#include \"usb_descriptors.c\"\\n#include <stdio.h>\\nint main(void){printf(\"%u %u %u %u %u\\\\n\", (unsigned)TUD_CONFIG_DESC_LEN, (unsigned)TUD_CDC_DESC_LEN, (unsigned)TUD_DFU_DESC_LEN(CFG_TUD_DFU_ALT), (unsigned)AUDIO_BLOCK_LEN, (unsigned)DDC_CONFIGURATION_LEN);}\\n' | gcc -x c - -I Software/ddc_sdr_firmware -I Software/pico-ice-sdk/include -I /home/frohro/tinyusb/src -I /home/frohro/tinyusb/hw -o /tmp/desc_sizes && /tmp/desc_sizes",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "calculate UAC1 descriptor size final",
+			"type": "shell",
+			"command": "printf '#include \"tusb.h\"\\n#include \"usb_descriptors.c\"\\n#include <stdio.h>\\nint main(void){printf(\"%u %u %u %u %u\\\\n\", (unsigned)TUD_CONFIG_DESC_LEN, (unsigned)TUD_CDC_DESC_LEN, (unsigned)TUD_DFU_DESC_LEN(CFG_TUD_DFU_ALT), (unsigned)AUDIO_BLOCK_LEN, (unsigned)DDC_CONFIGURATION_LEN);}\\n' | gcc -x c - -I Software/ddc_sdr_firmware -I Software/pico-ice-sdk/include -I Software/pico-ice-sdk/lib/pico-sdk/src/common/pico_base_headers/include -I /home/frohro/tinyusb/src -I /home/frohro/tinyusb/hw -o /tmp/desc_sizes && /tmp/desc_sizes",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "validate ddc firmware",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"Software/ddc_sdr_firmware/build-current-validation",
+				"-j2"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "validate ddc firmware retry",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"Software/ddc_sdr_firmware/build-current-validation",
+				"-j2"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "validate ddc firmware descriptor final",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"Software/ddc_sdr_firmware/build-current-validation",
+				"-j2"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "validate ddc firmware tx",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"Software/ddc_sdr_firmware/build-current-validation",
+				"-j2"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "validate ddc firmware tx dma",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"Software/ddc_sdr_firmware/build-current-validation",
+				"-j2"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "validate lab10 tx rtl",
+			"type": "shell",
+			"command": "iverilog",
+			"args": [
+				"-g2012",
+				"-o",
+				"/tmp/lab10_i2s_receiver.vvp",
+				"Solutions/Lab_10/i2s_receiver.sv",
+				"Solutions/Lab_10/i2s_receiver_tb.sv"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "run lab10 i2s receiver test",
+			"type": "shell",
+			"command": "vvp",
+			"args": [
+				"/tmp/lab10_i2s_receiver.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "validate lab10 duc rtl",
+			"type": "shell",
+			"command": "iverilog",
+			"args": [
+				"-g2012",
+				"-o",
+				"/tmp/lab10_duc.vvp",
+				"Solutions/Lab_10/duc_modulator.sv",
+				"Solutions/Lab_10/duc_modulator_tb.sv"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "run lab10 duc test",
+			"type": "shell",
+			"command": "vvp",
+			"args": [
+				"/tmp/lab10_duc.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "rerun lab10 duc rtl",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"iverilog -g2012 -o /tmp/lab10_duc.vvp Solutions/Lab_10/duc_modulator.sv Solutions/Lab_10/duc_modulator_tb.sv && vvp /tmp/lab10_duc.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "validate lab10 tx top",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"iverilog -g2012 -o /tmp/lab10_tx_top.vvp Solutions/Lab_10/lab10_tx_top.sv Solutions/Lab_10/i2s_clock_master.sv Solutions/Lab_10/i2s_receiver.sv Solutions/Lab_10/i2s_serializer.sv Solutions/Lab_10/duc_modulator.sv Solutions/Lab_10/lab10_tx_top_tb.sv Solutions/Lab_04/spi_cmd_parser.sv Solutions/Lab_05/adc_capture_otr.sv Solutions/Lab_06/nco.sv Solutions/Lab_07/mixer.sv Solutions/Lab_08/cic_decimator.sv && vvp /tmp/lab10_tx_top.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "rerun lab10 tx top from lab06",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"cd Solutions/Lab_06 && iverilog -g2012 -o /tmp/lab10_tx_top.vvp ../Lab_10/lab10_tx_top.sv ../Lab_10/i2s_clock_master.sv ../Lab_10/i2s_receiver.sv ../Lab_10/i2s_serializer.sv ../Lab_10/duc_modulator.sv ../Lab_10/lab10_tx_top_tb.sv ../Lab_04/spi_cmd_parser.sv ../Lab_05/adc_capture_otr.sv nco.sv ../Lab_07/mixer.sv ../Lab_08/cic_decimator.sv && vvp /tmp/lab10_tx_top.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "synthesize lab10 tx fpga",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"cd Solutions/Lab_06 && yosys -p 'read_verilog -sv ../Lab_10/lab10_tx_top.sv ../Lab_10/i2s_clock_master.sv ../Lab_10/i2s_receiver.sv ../Lab_10/i2s_serializer.sv ../Lab_10/duc_modulator.sv ../Lab_04/spi_cmd_parser.sv ../Lab_05/adc_capture_otr.sv nco.sv ../Lab_07/mixer.sv ../Lab_08/cic_decimator.sv; synth_ice40 -top lab10_tx_top -json /tmp/lab10_tx_top.json; stat' > /tmp/lab10_synthesis.log && nextpnr-ice40 --up5k --package sg48 --freq 30.72 --top lab10_tx_top --pcf ../Lab_10/lab10.pcf --json /tmp/lab10_tx_top.json --asc /tmp/lab10_tx_top.asc && icepack /tmp/lab10_tx_top.asc /tmp/lab10_tx_top.bin"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "synthesize lab10 tx direct",
+			"type": "shell",
+			"command": "yosys",
+			"args": [
+				"-p",
+				"read_verilog -sv Solutions/Lab_10/lab10_tx_top.sv Solutions/Lab_10/i2s_clock_master.sv Solutions/Lab_10/i2s_receiver.sv Solutions/Lab_10/i2s_serializer.sv Solutions/Lab_10/duc_modulator.sv Solutions/Lab_04/spi_cmd_parser.sv Solutions/Lab_05/adc_capture_otr.sv Solutions/Lab_06/nco.sv Solutions/Lab_07/mixer.sv Solutions/Lab_08/cic_decimator.sv; synth_ice40 -top lab10_tx_top -json /tmp/lab10_tx_top.json; stat"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "place route lab10 tx fpga",
+			"type": "shell",
+			"command": "nextpnr-ice40",
+			"args": [
+				"--up5k",
+				"--package",
+				"sg48",
+				"--freq",
+				"30.72",
+				"--top",
+				"lab10_tx_top",
+				"--pcf",
+				"Solutions/Lab_10/lab10.pcf",
+				"--json",
+				"/tmp/lab10_tx_top.json",
+				"--asc",
+				"/tmp/lab10_tx_top.asc"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "resynthesize lab10 tx clock fix",
+			"type": "shell",
+			"command": "yosys",
+			"args": [
+				"-p",
+				"read_verilog -sv Solutions/Lab_10/lab10_tx_top.sv Solutions/Lab_10/i2s_clock_master.sv Solutions/Lab_10/i2s_receiver.sv Solutions/Lab_10/i2s_serializer.sv Solutions/Lab_10/duc_modulator.sv Solutions/Lab_04/spi_cmd_parser.sv Solutions/Lab_05/adc_capture_otr.sv Solutions/Lab_06/nco.sv Solutions/Lab_07/mixer.sv Solutions/Lab_08/cic_decimator.sv; synth_ice40 -top lab10_tx_top -json /tmp/lab10_tx_top.json; stat"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "rerun lab10 tx place route",
+			"type": "shell",
+			"command": "nextpnr-ice40",
+			"args": [
+				"--up5k",
+				"--package",
+				"sg48",
+				"--freq",
+				"30.72",
+				"--top",
+				"lab10_tx_top",
+				"--pcf",
+				"Solutions/Lab_10/lab10.pcf",
+				"--json",
+				"/tmp/lab10_tx_top.json",
+				"--asc",
+				"/tmp/lab10_tx_top.asc"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "synthesize pipelined lab10 tx",
+			"type": "shell",
+			"command": "yosys",
+			"args": [
+				"-p",
+				"read_verilog -sv Solutions/Lab_10/lab10_tx_top.sv Solutions/Lab_10/i2s_clock_master.sv Solutions/Lab_10/i2s_receiver.sv Solutions/Lab_10/i2s_serializer.sv Solutions/Lab_10/duc_modulator.sv Solutions/Lab_04/spi_cmd_parser.sv Solutions/Lab_05/adc_capture_otr.sv Solutions/Lab_06/nco.sv Solutions/Lab_07/mixer.sv Solutions/Lab_08/cic_decimator.sv; synth_ice40 -top lab10_tx_top -json /tmp/lab10_tx_top.json; stat"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "time pipelined lab10 tx",
+			"type": "shell",
+			"command": "nextpnr-ice40",
+			"args": [
+				"--up5k",
+				"--package",
+				"sg48",
+				"--freq",
+				"30.72",
+				"--top",
+				"lab10_tx_top",
+				"--pcf",
+				"Solutions/Lab_10/lab10.pcf",
+				"--json",
+				"/tmp/lab10_tx_top.json",
+				"--asc",
+				"/tmp/lab10_tx_top.asc"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "validate pipelined lab10 duc",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"iverilog -g2012 -o /tmp/lab10_duc.vvp Solutions/Lab_10/duc_modulator.sv Solutions/Lab_10/duc_modulator_tb.sv && vvp /tmp/lab10_duc.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "rerun pipelined lab10 duc",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"iverilog -g2012 -o /tmp/lab10_duc.vvp Solutions/Lab_10/duc_modulator.sv Solutions/Lab_10/duc_modulator_tb.sv && vvp /tmp/lab10_duc.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "validate pipelined lab10 tx top",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"cd Solutions/Lab_06 && iverilog -g2012 -o /tmp/lab10_tx_top.vvp ../Lab_10/lab10_tx_top.sv ../Lab_10/i2s_clock_master.sv ../Lab_10/i2s_receiver.sv ../Lab_10/i2s_serializer.sv ../Lab_10/duc_modulator.sv ../Lab_10/lab10_tx_top_tb.sv ../Lab_04/spi_cmd_parser.sv ../Lab_05/adc_capture_otr.sv nco.sv ../Lab_07/mixer.sv ../Lab_08/cic_decimator.sv && vvp /tmp/lab10_tx_top.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "rerun pipelined lab10 tx top",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"cd Solutions/Lab_06 && iverilog -g2012 -o /tmp/lab10_tx_top.vvp ../Lab_10/lab10_tx_top.sv ../Lab_10/i2s_clock_master.sv ../Lab_10/i2s_receiver.sv ../Lab_10/i2s_serializer.sv ../Lab_10/duc_modulator.sv ../Lab_10/lab10_tx_top_tb.sv ../Lab_04/spi_cmd_parser.sv ../Lab_05/adc_capture_otr.sv nco.sv ../Lab_07/mixer.sv ../Lab_08/cic_decimator.sv && vvp /tmp/lab10_tx_top.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "resynthesize pipelined lab10 tx",
+			"type": "shell",
+			"command": "yosys",
+			"args": [
+				"-p",
+				"read_verilog -sv Solutions/Lab_10/lab10_tx_top.sv Solutions/Lab_10/i2s_clock_master.sv Solutions/Lab_10/i2s_receiver.sv Solutions/Lab_10/i2s_serializer.sv Solutions/Lab_10/duc_modulator.sv Solutions/Lab_04/spi_cmd_parser.sv Solutions/Lab_05/adc_capture_otr.sv Solutions/Lab_06/nco.sv Solutions/Lab_07/mixer.sv Solutions/Lab_08/cic_decimator.sv; synth_ice40 -top lab10_tx_top -json /tmp/lab10_tx_top.json; stat"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "time pipelined lab10 tx final",
+			"type": "shell",
+			"command": "nextpnr-ice40",
+			"args": [
+				"--up5k",
+				"--package",
+				"sg48",
+				"--freq",
+				"30.72",
+				"--top",
+				"lab10_tx_top",
+				"--pcf",
+				"Solutions/Lab_10/lab10.pcf",
+				"--json",
+				"/tmp/lab10_tx_top.json",
+				"--asc",
+				"/tmp/lab10_tx_top.asc"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "inspect lab10 timing summary",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"nextpnr-ice40 --up5k --package sg48 --freq 30.72 --top lab10_tx_top --pcf Solutions/Lab_10/lab10.pcf --json /tmp/lab10_tx_top.json --asc /tmp/lab10_tx_top.asc > /tmp/lab10_nextpnr.log 2>&1 || true; grep -E \"Critical path report|Max frequency|ERROR: Max frequency|Source .*|Sink .*\" /tmp/lab10_nextpnr.log | tail -80"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "inspect lab10 timing summary from root",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"cd /home/frohro/Classes/Digital_Design/Pico-Dev-iCE && nextpnr-ice40 --up5k --package sg48 --freq 30.72 --top lab10_tx_top --pcf Solutions/Lab_10/lab10.pcf --json /tmp/lab10_tx_top.json --asc /tmp/lab10_tx_top.asc > /tmp/lab10_nextpnr.log 2>&1 || true; grep -E \"Critical path report|Max frequency|ERROR: Max frequency|Source .*|Sink .*\" /tmp/lab10_nextpnr.log | tail -80"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "check lab10 task directory",
+			"type": "shell",
+			"command": "pwd",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "check lab10 timing files",
+			"type": "shell",
+			"command": "ls",
+			"args": [
+				"Solutions/Lab_10/lab10.pcf"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "inspect lab10 locations",
+			"type": "shell",
+			"command": "find",
+			"args": [
+				".",
+				"-maxdepth",
+				"3",
+				"-type",
+				"f",
+				"-name",
+				"lab10_tx_top.sv",
+				"-print"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "inspect live lab10 git state",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"status",
+				"--short",
+				"--",
+				"ENGR433-Solutions/Lab_10"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "validate live lab10 tx top",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"cd ENGR433-Solutions/Lab_06 && iverilog -g2012 -o /tmp/live_lab10_tx_top.vvp ../Lab_10/lab10_tx_top.sv ../Lab_10/i2s_clock_master.sv ../Lab_10/i2s_receiver.sv ../Lab_10/i2s_serializer.sv ../Lab_10/duc_modulator.sv ../Lab_10/lab10_tx_top_tb.sv ../Lab_04/spi_cmd_parser.sv ../Lab_05/adc_capture_otr.sv nco.sv ../Lab_07/mixer.sv ../Lab_08/cic_decimator.sv && vvp /tmp/live_lab10_tx_top.vvp"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "synthesize live lab10 tx",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"cd ENGR433-Solutions/Lab_06 && yosys -p 'read_verilog -sv ../Lab_10/lab10_tx_top.sv ../Lab_10/i2s_clock_master.sv ../Lab_10/i2s_receiver.sv ../Lab_10/i2s_serializer.sv ../Lab_10/duc_modulator.sv ../Lab_04/spi_cmd_parser.sv ../Lab_05/adc_capture_otr.sv nco.sv ../Lab_07/mixer.sv ../Lab_08/cic_decimator.sv; synth_ice40 -top lab10_tx_top -json /tmp/live_lab10_tx_top.json; stat'"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "synthesize live lab10 tx direct",
+			"type": "shell",
+			"command": "yosys",
+			"args": [
+				"-p",
+				"read_verilog -sv ENGR433-Solutions/Lab_10/lab10_tx_top.sv ENGR433-Solutions/Lab_10/i2s_clock_master.sv ENGR433-Solutions/Lab_10/i2s_receiver.sv ENGR433-Solutions/Lab_10/i2s_serializer.sv ENGR433-Solutions/Lab_10/duc_modulator.sv ENGR433-Solutions/Lab_04/spi_cmd_parser.sv ENGR433-Solutions/Lab_05/adc_capture_otr.sv ENGR433-Solutions/Lab_06/nco.sv ENGR433-Solutions/Lab_07/mixer.sv ENGR433-Solutions/Lab_08/cic_decimator.sv; synth_ice40 -top lab10_tx_top -json /tmp/live_lab10_tx_top.json; stat"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "place route live lab10 tx",
+			"type": "shell",
+			"command": "nextpnr-ice40",
+			"args": [
+				"--up5k",
+				"--package",
+				"sg48",
+				"--freq",
+				"30.72",
+				"--top",
+				"lab10_tx_top",
+				"--pcf",
+				"ENGR433-Solutions/Lab_10/lab10.pcf",
+				"--json",
+				"/tmp/live_lab10_tx_top.json",
+				"--asc",
+				"/tmp/live_lab10_tx_top.asc"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "extract live timing paths",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"nextpnr-ice40 --up5k --package sg48 --freq 30.72 --top lab10_tx_top --pcf ENGR433-Solutions/Lab_10/lab10.pcf --json /tmp/live_lab10_tx_top.json --asc /tmp/live_lab10_tx_top.asc > /tmp/live_lab10_nextpnr.log 2>&1 || true; awk '/Critical path report|Max frequency|ERROR: Max frequency/{print; show=1; next} show && /type curr|Source |Sink |logic /{print; if (++count % 2 == 0) show=0}' /tmp/live_lab10_nextpnr.log"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "try live lab10 timing seed1",
+			"type": "shell",
+			"command": "nextpnr-ice40",
+			"args": [
+				"--up5k",
+				"--package",
+				"sg48",
+				"--freq",
+				"30.72",
+				"--top",
+				"lab10_tx_top",
+				"--pcf",
+				"ENGR433-Solutions/Lab_10/lab10.pcf",
+				"--json",
+				"/tmp/live_lab10_tx_top.json",
+				"--asc",
+				"/tmp/live_lab10_tx_top.asc",
+				"--seed",
+				"1"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "capture live lab10 timing report",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-c",
+				"nextpnr-ice40 --up5k --package sg48 --freq 30.72 --top lab10_tx_top --pcf ENGR433-Solutions/Lab_10/lab10.pcf --json /tmp/live_lab10_tx_top.json --asc /tmp/live_lab10_tx_top.asc > /tmp/live_lab10_nextpnr.log 2>&1 || true"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "test"
+		},
+		{
+			"label": "synthesize live lab10 with abc9",
+			"type": "shell",
+			"command": "yosys",
+			"args": [
+				"-p",
+				"read_verilog -sv ENGR433-Solutions/Lab_10/lab10_tx_top.sv ENGR433-Solutions/Lab_10/i2s_clock_master.sv ENGR433-Solutions/Lab_10/i2s_receiver.sv ENGR433-Solutions/Lab_10/i2s_serializer.sv ENGR433-Solutions/Lab_10/duc_modulator.sv ENGR433-Solutions/Lab_04/spi_cmd_parser.sv ENGR433-Solutions/Lab_05/adc_capture_otr.sv ENGR433-Solutions/Lab_06/nco.sv ENGR433-Solutions/Lab_07/mixer.sv ENGR433-Solutions/Lab_08/cic_decimator.sv; synth_ice40 -abc9 -top lab10_tx_top -json /tmp/live_lab10_tx_top_abc9.json; stat"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "place route live lab10 abc9",
+			"type": "shell",
+			"command": "nextpnr-ice40",
+			"args": [
+				"--up5k",
+				"--package",
+				"sg48",
+				"--freq",
+				"30.72",
+				"--top",
+				"lab10_tx_top",
+				"--pcf",
+				"ENGR433-Solutions/Lab_10/lab10.pcf",
+				"--json",
+				"/tmp/live_lab10_tx_top_abc9.json",
+				"--asc",
+				"/tmp/live_lab10_tx_top_abc9.asc"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		}
+	]
+}

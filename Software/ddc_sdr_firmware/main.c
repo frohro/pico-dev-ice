@@ -13,11 +13,13 @@
 #include "hardware/gpio.h"
 #include "hardware/irq.h"
 #include "hardware/pio.h"
+#include "hardware/spi.h"
 #include "hardware/sync.h"
 #include "hardware/vreg.h"
 #include "pico/stdlib.h"
 
 #include "boards.h"
+#include "agc_control.h"
 #include "ddc_protocol.h"
 #include "ice_cram.h"
 #include "ice_fpga.h"
@@ -25,39 +27,73 @@
 #include "ice_spi.h"
 #include "ice_usb.h"
 #include "i2s_rx.pio.h"
-#ifdef DDC_HAS_EMBEDDED_FPGA
-#include "fpga_bitstream.h"
+#include "i2s_tx.pio.h"
+#ifdef DDC_HAS_STORED_RX
+#include "fpga_bitstream_rx.h"
+#endif
+#ifdef DDC_HAS_STORED_TX
+#include "fpga_bitstream_tx.h"
 #endif
 
 #define DDC_I2S_DATA_PIN 14
+#define DDC_I2S_TX_PIN 13
 #define DDC_I2S_BCK_PIN 15
 #define DDC_I2S_WS_PIN 16
+#define DDC_TR_PIN 28
 #define DDC_FPGA_INT_PIN 0
 #define DDC_PGA_GPIO_BASE 8
 #define DDC_PGA_GPIO_COUNT 4
-#define DDC_DEFAULT_PGA_CODE 0u
 #define DDC_DEFAULT_SAMPLE_RATE 48000u
+#define DDC_RUNTIME_SPI_BAUD_HZ 10000000u
 #define DDC_MAX_WORDS_PER_BUFFER 192u
+#define DDC_TX_BUFFER_COUNT 4u
+#define DDC_AUDIO_CAPTURE_INTERFACE 3u
+#define DDC_AUDIO_PLAYBACK_INTERFACE 4u
 #define DDC_LINE_BUFFER_SIZE 80u
+
+typedef enum {
+    DDC_FPGA_IMAGE_RX,
+    DDC_FPGA_IMAGE_TX,
+    DDC_FPGA_IMAGE_DFU,
+} ddc_fpga_image_t;
+
+typedef struct {
+    const uint8_t *data;
+    size_t size;
+} ddc_fpga_bitstream_t;
 
 static uint32_t audio_buffer_a[DDC_MAX_WORDS_PER_BUFFER];
 static uint32_t audio_buffer_b[DDC_MAX_WORDS_PER_BUFFER];
+static uint32_t tx_audio_buffers[DDC_TX_BUFFER_COUNT][DDC_MAX_WORDS_PER_BUFFER];
+static uint32_t tx_silence_buffer[DDC_MAX_WORDS_PER_BUFFER];
 static uint g_pio_offset;
+static uint g_tx_pio_offset;
 static int dma_channel_a = -1;
 static int dma_channel_b = -1;
+static int tx_dma_channel = -1;
+static dma_channel_config_t tx_dma_config;
 static volatile uint32_t words_per_buffer = 96u;
 static volatile uint32_t ready_buffers;
+static volatile uint32_t tx_ready_mask;
+static volatile bool tx_dma_active;
+static volatile bool tx_dma_silence;
+static volatile uint8_t tx_dma_buffer;
 static bool i2s_running;
+static bool tx_running;
 static bool runtime_spi_ready;
 static bool fpga_ready;
 static bool update_prepared;
+static ddc_fpga_image_t active_fpga_image = DDC_FPGA_IMAGE_DFU;
 static uint32_t sample_rate = DDC_DEFAULT_SAMPLE_RATE;
 static volatile bool fpga_interrupt_pending;
-static uint8_t pga_code = DDC_DEFAULT_PGA_CODE;
+static ddc_agc_state_t agc_state;
 
-static uint8_t audio_alt;
+static uint8_t capture_alt;
+static uint8_t playback_alt;
 static uint32_t audio_requested_rate = DDC_DEFAULT_SAMPLE_RATE;
 static uint8_t audio_mute[3];
+static uint8_t tx_fill_buffer;
+static uint32_t tx_fill_words;
 
 static char line_buffer[DDC_LINE_BUFFER_SIZE];
 static uint8_t line_length;
@@ -66,10 +102,55 @@ static uint32_t last_frequency_hz;
 
 static bool fpga_write_command(uint8_t command, uint32_t value);
 
+static bool fpga_get_stored_image(ddc_fpga_image_t image,
+                                  ddc_fpga_bitstream_t *bitstream)
+{
+    if (bitstream == NULL) {
+        return false;
+    }
+
+    switch (image) {
+    case DDC_FPGA_IMAGE_RX:
+#ifdef DDC_HAS_STORED_RX
+        bitstream->data = ddc_fpga_rx_bitstream;
+        bitstream->size = DDC_FPGA_RX_BITSTREAM_SIZE;
+        return true;
+#else
+        return false;
+#endif
+    case DDC_FPGA_IMAGE_TX:
+#ifdef DDC_HAS_STORED_TX
+        bitstream->data = ddc_fpga_tx_bitstream;
+        bitstream->size = DDC_FPGA_TX_BITSTREAM_SIZE;
+        return true;
+#else
+        return false;
+#endif
+    default:
+        return false;
+    }
+}
+
+static const char *fpga_image_name(ddc_fpga_image_t image)
+{
+    switch (image) {
+    case DDC_FPGA_IMAGE_RX:
+        return "RX";
+    case DDC_FPGA_IMAGE_TX:
+        return "TX";
+    default:
+        return "DFU";
+    }
+}
+
+static void tr_set_receive(bool receive)
+{
+    gpio_put(DDC_TR_PIN, receive ? 1u : 0u);
+}
+
 static void pga_set_code(uint8_t code)
 {
     code &= DDC_PGA_MAX_CODE;
-    pga_code = code;
     for (uint gpio = DDC_PGA_GPIO_BASE;
          gpio < DDC_PGA_GPIO_BASE + DDC_PGA_GPIO_COUNT;
          gpio++) {
@@ -91,8 +172,23 @@ static void handle_fpga_interrupt(void)
     }
 
     fpga_interrupt_pending = false;
-    pga_set_code(ddc_pga_next_otr_code(pga_code));
+    if (ddc_agc_on_otr(&agc_state))
+        pga_set_code(agc_state.pga_code);
     fpga_write_command(DDC_FPGA_CMD_CLEAR_OTR, 1u);
+}
+
+static void agc_task(void)
+{
+    bool fpga_int_high;
+    uint64_t now_ms;
+
+    if (!fpga_ready || update_prepared)
+        return;
+
+    fpga_int_high = gpio_get(DDC_FPGA_INT_PIN);
+    now_ms = time_us_64() / 1000u;
+    if (ddc_agc_tick(&agc_state, fpga_int_high, now_ms))
+        pga_set_code(agc_state.pga_code);
 }
 
 static void cdc_write(const char *text)
@@ -116,6 +212,17 @@ static void dma_handler(void)
         dma_channel_set_write_addr(dma_channel_b, audio_buffer_b, false);
         dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
         ready_buffers |= 2u;
+    }
+    if (tx_dma_channel >= 0 && (status & (1u << tx_dma_channel))) {
+        uint32_t buffer_bit;
+
+        dma_hw->ints0 = 1u << tx_dma_channel;
+        buffer_bit = tx_dma_silence ? 0u : 1u << tx_dma_buffer;
+        tx_dma_active = false;
+        if (buffer_bit != 0u) {
+            tx_ready_mask &= ~buffer_bit;
+        }
+        tx_dma_silence = false;
     }
 }
 
@@ -142,7 +249,6 @@ static void i2s_stop(void)
         return;
     }
 
-    irq_set_enabled(DMA_IRQ_0, false);
     dma_channel_abort(dma_channel_a);
     dma_channel_abort(dma_channel_b);
     dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
@@ -150,11 +256,14 @@ static void i2s_stop(void)
     pio_sm_clear_fifos(pio0, 0);
     ready_buffers = 0;
     i2s_running = false;
+    if (!tx_running) {
+        irq_set_enabled(DMA_IRQ_0, false);
+    }
 }
 
 static void i2s_start(void)
 {
-    if (i2s_running || !fpga_ready || audio_alt == 0) {
+    if (i2s_running || !fpga_ready || capture_alt == 0) {
         return;
     }
 
@@ -171,6 +280,184 @@ static void i2s_start(void)
     irq_set_enabled(DMA_IRQ_0, true);
     dma_channel_start(dma_channel_a);
     i2s_running = true;
+}
+
+static void tx_configure(void)
+{
+    pio_gpio_init(pio0, DDC_I2S_TX_PIN);
+    pio_gpio_init(pio0, DDC_I2S_DATA_PIN);
+    pio_gpio_init(pio0, DDC_I2S_BCK_PIN);
+    pio_gpio_init(pio0, DDC_I2S_WS_PIN);
+    gpio_pull_down(DDC_I2S_BCK_PIN);
+    gpio_pull_down(DDC_I2S_WS_PIN);
+    pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_DATA_PIN, 3, false);
+    pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_TX_PIN, 1, true);
+
+    pio_sm_config config = i2s_tx_program_get_default_config(g_tx_pio_offset);
+    sm_config_set_in_pins(&config, DDC_I2S_DATA_PIN);
+    sm_config_set_out_pins(&config, DDC_I2S_TX_PIN, 1);
+    sm_config_set_out_shift(&config, false, true, 32);
+    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_TX);
+    sm_config_set_clkdiv(&config, 1.0f);
+    pio_sm_init(pio0, 1, g_tx_pio_offset, &config);
+}
+
+static void tx_stop(void)
+{
+    uint32_t saved_interrupts = save_and_disable_interrupts();
+
+    if (tx_dma_channel >= 0) {
+        dma_channel_abort(tx_dma_channel);
+        dma_hw->ints0 = 1u << tx_dma_channel;
+    }
+    pio_sm_set_enabled(pio0, 1, false);
+    pio_sm_clear_fifos(pio0, 1);
+    tx_ready_mask = 0;
+    tx_dma_active = false;
+    tx_dma_silence = false;
+    tx_fill_buffer = 0;
+    tx_fill_words = 0;
+    tx_running = false;
+    tr_set_receive(true);
+    if (!i2s_running) {
+        irq_set_enabled(DMA_IRQ_0, false);
+    }
+    restore_interrupts(saved_interrupts);
+}
+
+static void tx_start_next_dma(void)
+{
+    uint32_t ready;
+    uint32_t saved_interrupts;
+    uint8_t index;
+
+    saved_interrupts = save_and_disable_interrupts();
+    if (!tx_running || tx_dma_active || tx_dma_channel < 0) {
+        restore_interrupts(saved_interrupts);
+        return;
+    }
+
+    ready = tx_ready_mask;
+    for (index = 0; index < DDC_TX_BUFFER_COUNT; index++) {
+        if (ready & (1u << index)) {
+            tx_dma_buffer = index;
+            tx_dma_silence = false;
+            tx_dma_active = true;
+            dma_channel_configure(tx_dma_channel, &tx_dma_config,
+                                  &pio0->txf[1],
+                                  tx_audio_buffers[index],
+                                  words_per_buffer,
+                                  true);
+            restore_interrupts(saved_interrupts);
+            return;
+        }
+    }
+
+    tx_dma_silence = true;
+    tx_dma_active = true;
+    dma_channel_configure(tx_dma_channel, &tx_dma_config,
+                          &pio0->txf[1], tx_silence_buffer,
+                          words_per_buffer, true);
+    restore_interrupts(saved_interrupts);
+}
+
+static void tx_start(void)
+{
+    if (tx_running || !fpga_ready || playback_alt == 0) {
+        return;
+    }
+
+    tx_configure();
+    tx_running = true;
+    irq_set_enabled(DMA_IRQ_0, true);
+    tx_start_next_dma();
+    pio_sm_restart(pio0, 1);
+    pio_sm_set_enabled(pio0, 1, true);
+    tr_set_receive(false);
+}
+
+static bool tx_select_fill_buffer(void)
+{
+    uint32_t occupied;
+    uint32_t saved_interrupts;
+    uint8_t offset;
+
+    if (tx_fill_words != 0) {
+        return true;
+    }
+
+    saved_interrupts = save_and_disable_interrupts();
+    occupied = tx_ready_mask;
+    if (tx_dma_active && !tx_dma_silence) {
+        occupied |= 1u << tx_dma_buffer;
+    }
+
+    for (offset = 0; offset < DDC_TX_BUFFER_COUNT; offset++) {
+        uint8_t index = (uint8_t)((tx_fill_buffer + offset) % DDC_TX_BUFFER_COUNT);
+        if ((occupied & (1u << index)) == 0) {
+            tx_fill_buffer = index;
+            restore_interrupts(saved_interrupts);
+            return true;
+        }
+    }
+    restore_interrupts(saved_interrupts);
+    return false;
+}
+
+static void tx_task(void)
+{
+    uint8_t packet[582];
+
+    if (!tx_running || !tud_audio_mounted()) {
+        return;
+    }
+
+    while (tud_audio_available() >= 6u && tx_select_fill_buffer()) {
+        uint32_t available_frames = tud_audio_available() / 6u;
+        uint32_t capacity_frames = (words_per_buffer - tx_fill_words) / 2u;
+        uint32_t frames = available_frames < capacity_frames
+                        ? available_frames : capacity_frames;
+        uint16_t bytes;
+        uint16_t received;
+
+        if (frames == 0) {
+            tx_ready_mask |= 1u << tx_fill_buffer;
+            tx_fill_words = 0;
+            tx_fill_buffer = (uint8_t)((tx_fill_buffer + 1u) % DDC_TX_BUFFER_COUNT);
+            continue;
+        }
+
+        bytes = (uint16_t)(frames * 6u);
+        received = tud_audio_read(packet, bytes);
+        received -= (uint16_t)(received % 6u);
+        if (received == 0) {
+            break;
+        }
+        for (uint32_t offset = 0; offset < received; offset += 6u) {
+            uint32_t left = (uint32_t)packet[offset]
+                          | ((uint32_t)packet[offset + 1u] << 8)
+                          | ((uint32_t)packet[offset + 2u] << 16);
+            uint32_t right = (uint32_t)packet[offset + 3u]
+                           | ((uint32_t)packet[offset + 4u] << 8)
+                           | ((uint32_t)packet[offset + 5u] << 16);
+            if (audio_mute[0]) {
+                left = 0;
+                right = 0;
+            }
+            tx_audio_buffers[tx_fill_buffer][tx_fill_words++] = left << 8;
+            tx_audio_buffers[tx_fill_buffer][tx_fill_words++] = right << 8;
+        }
+
+        if (tx_fill_words == words_per_buffer) {
+            uint32_t saved_interrupts = save_and_disable_interrupts();
+            tx_ready_mask |= 1u << tx_fill_buffer;
+            restore_interrupts(saved_interrupts);
+            tx_fill_words = 0;
+            tx_fill_buffer = (uint8_t)((tx_fill_buffer + 1u) % DDC_TX_BUFFER_COUNT);
+        }
+    }
+
+    tx_start_next_dma();
 }
 
 static void runtime_spi_stop(void)
@@ -192,6 +479,8 @@ static bool fpga_runtime_init(void)
 
     ice_spi_init_cs_pin(FPGA_DATA.bus.CS_cram, false);
     runtime_spi_ready = ice_spi_init(FPGA_DATA.bus);
+    if (runtime_spi_ready)
+        spi_set_baudrate(FPGA_DATA.bus.peripheral, DDC_RUNTIME_SPI_BAUD_HZ);
     return runtime_spi_ready;
 }
 
@@ -220,18 +509,20 @@ static bool fpga_set_frequency(uint32_t frequency_hz)
     if (frequency_hz == 0 || frequency_hz > DDC_FPGA_MAX_FREQUENCY_HZ) {
         return false;
     }
-    return fpga_write_command(DDC_FPGA_CMD_SET_FREQUENCY, frequency_hz);
+    return fpga_write_command(DDC_FPGA_CMD_SET_FREQUENCY,
+                              ddc_frequency_to_fcw(frequency_hz));
 }
 
 static void pga_configure(void)
 {
+    ddc_agc_init(&agc_state);
     for (uint gpio = DDC_PGA_GPIO_BASE;
          gpio < DDC_PGA_GPIO_BASE + DDC_PGA_GPIO_COUNT;
          gpio++) {
         gpio_init(gpio);
         gpio_set_dir(gpio, GPIO_OUT);
     }
-    pga_set_code(DDC_DEFAULT_PGA_CODE);
+    pga_set_code(agc_state.pga_code);
 }
 
 static void fpga_interrupt_configure(void)
@@ -245,28 +536,46 @@ static void fpga_interrupt_configure(void)
                                         fpga_interrupt_handler);
 }
 
-static bool configure_embedded_fpga(void)
+static bool configure_fpga_bitstream(const uint8_t *bitstream, size_t size)
 {
     ice_fpga_init(FPGA_DATA, 48);
-    ice_fpga_start(FPGA_DATA);
-#ifdef DDC_HAS_EMBEDDED_FPGA
     if (!ice_cram_open(FPGA_DATA)) {
         return false;
     }
-    if (ice_cram_write(ddc_fpga_bitstream, DDC_FPGA_BITSTREAM_SIZE) < 0) {
+    if (ice_cram_write(bitstream, size) < 0) {
         ice_cram_close();
         return false;
     }
     return ice_cram_close();
-#else
-    ice_fpga_stop(FPGA_DATA);
-    return false;
-#endif
+}
+
+static bool configure_stored_fpga(ddc_fpga_image_t image)
+{
+    ddc_fpga_bitstream_t bitstream;
+
+    if (!fpga_get_stored_image(image, &bitstream)) {
+        return false;
+    }
+    return configure_fpga_bitstream(bitstream.data, bitstream.size);
+}
+
+static bool restore_fpga_runtime(void)
+{
+    if (!fpga_runtime_init()) {
+        return false;
+    }
+
+    fpga_ready = true;
+    fpga_set_sample_rate(sample_rate);
+    i2s_start();
+    tx_start();
+    return true;
 }
 
 static bool apply_sample_rate(uint32_t rate)
 {
     bool was_running;
+    bool was_tx_running;
 
     if (rate != 48000u && rate != 96000u) {
         return false;
@@ -279,12 +588,19 @@ static bool apply_sample_rate(uint32_t rate)
     }
 
     was_running = i2s_running;
+    was_tx_running = tx_running;
     if (was_running) {
         i2s_stop();
+    }
+    if (was_tx_running) {
+        tx_stop();
     }
     if (!fpga_set_sample_rate(rate)) {
         if (was_running) {
             i2s_start();
+        }
+        if (was_tx_running) {
+            tx_start();
         }
         return false;
     }
@@ -293,6 +609,9 @@ static bool apply_sample_rate(uint32_t rate)
     words_per_buffer = rate == 96000u ? 192u : 96u;
     if (was_running) {
         i2s_start();
+    }
+    if (was_tx_running) {
+        tx_start();
     }
     return true;
 }
@@ -304,6 +623,7 @@ static bool prepare_fpga_update(void)
     }
 
     i2s_stop();
+    tx_stop();
     runtime_spi_stop();
     fpga_ready = false;
     update_prepared = true;
@@ -315,13 +635,11 @@ static void complete_fpga_update(bool success)
     update_prepared = false;
     fpga_ready = false;
 
-    if (!success || !fpga_runtime_init()) {
+    if (!success || !restore_fpga_runtime()) {
+        active_fpga_image = DDC_FPGA_IMAGE_DFU;
         return;
     }
-
-    fpga_ready = true;
-    fpga_set_sample_rate(sample_rate);
-    i2s_start();
+    active_fpga_image = DDC_FPGA_IMAGE_DFU;
 }
 
 static bool cancel_fpga_update(void)
@@ -331,15 +649,34 @@ static bool cancel_fpga_update(void)
     }
 
     update_prepared = false;
-    if (!fpga_runtime_init()) {
+    if (!restore_fpga_runtime()) {
         fpga_ready = false;
+        active_fpga_image = DDC_FPGA_IMAGE_DFU;
         return false;
     }
 
-    fpga_ready = true;
-    fpga_set_sample_rate(sample_rate);
-    i2s_start();
     return true;
+}
+
+static bool switch_stored_fpga(ddc_fpga_image_t image)
+{
+    bool success;
+    ddc_fpga_bitstream_t bitstream;
+
+    if (image == DDC_FPGA_IMAGE_DFU ||
+        !fpga_get_stored_image(image, &bitstream)) {
+        return false;
+    }
+    if (!prepare_fpga_update()) {
+        return false;
+    }
+
+    success = configure_stored_fpga(image);
+    complete_fpga_update(success);
+    if (success && fpga_ready) {
+        active_fpga_image = image;
+    }
+    return success && fpga_ready;
 }
 
 static void audio_task(void)
@@ -398,6 +735,24 @@ static void handle_line(const char *line, uint8_t length)
     }
     if (strcmp(line, "MODE") == 0) {
         cdc_write("MODE,DDC\r\nOK\r\n");
+        return;
+    }
+    if (strcmp(line, "FPGA,STATUS") == 0) {
+        snprintf(reply, sizeof(reply), "FPGA,%s\r\nOK\r\n",
+                 fpga_image_name(active_fpga_image));
+        cdc_write(reply);
+        return;
+    }
+    if (strcmp(line, "FPGA,LOAD,RX") == 0) {
+        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_RX)
+                      ? "FPGA,RX\r\nOK\r\n"
+                      : "ERROR,RX image unavailable\r\n");
+        return;
+    }
+    if (strcmp(line, "FPGA,LOAD,TX") == 0) {
+        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_TX)
+                      ? "FPGA,TX\r\nOK\r\n"
+                      : "ERROR,TX image unavailable\r\n");
         return;
     }
     if (strcmp(line, "FREQ,") == 0) {
@@ -503,29 +858,47 @@ bool tud_audio_set_itf_cb(uint8_t rhport,
 {
     static const uint32_t rates[] = {0u, 48000u, 96000u};
     uint8_t alt = (uint8_t)(request->wValue & 0xffu);
+    uint8_t interface = (uint8_t)(request->wIndex & 0xffu);
 
     (void)rhport;
-    if (alt > 2u) {
+    if (alt > 2u || (interface != DDC_AUDIO_CAPTURE_INTERFACE &&
+                     interface != DDC_AUDIO_PLAYBACK_INTERFACE)) {
+        return false;
+    }
+    if (alt != 0u &&
+        ((interface == DDC_AUDIO_CAPTURE_INTERFACE && playback_alt != 0u) ||
+         (interface == DDC_AUDIO_PLAYBACK_INTERFACE && capture_alt != 0u)) &&
+        rates[alt] != sample_rate) {
         return false;
     }
 
-    if (alt == 0u) {
-        audio_alt = 0;
-        i2s_stop();
-        return true;
+    if (interface == DDC_AUDIO_CAPTURE_INTERFACE) {
+        capture_alt = alt;
+        if (alt == 0u) {
+            i2s_stop();
+            return true;
+        }
+        audio_requested_rate = rates[alt];
+        if (!apply_sample_rate(audio_requested_rate)) {
+            capture_alt = 0;
+            i2s_stop();
+            return false;
+        }
+        i2s_start();
+    } else {
+        playback_alt = alt;
+        if (alt == 0u) {
+            tx_stop();
+            return true;
+        }
+        audio_requested_rate = rates[alt];
+        if (!apply_sample_rate(audio_requested_rate)) {
+            playback_alt = 0;
+            tx_stop();
+            return false;
+        }
+        tx_start();
     }
-
-    audio_alt = alt;
-    audio_requested_rate = rates[alt];
-    if (!apply_sample_rate(audio_requested_rate)) {
-        audio_alt = 0;
-        i2s_stop();
-        return false;
-    }
-    i2s_start();
-
-    static const uint8_t silence[582] = {0};
-    tud_audio_write(silence, (uint16_t)(words_per_buffer * 3u));
     return true;
 }
 
@@ -533,8 +906,11 @@ bool tud_audio_set_itf_close_ep_cb(uint8_t rhport,
                                    tusb_control_request_t const *request)
 {
     (void)rhport;
-    (void)request;
-    i2s_stop();
+    if ((request->wIndex & 0xffu) == DDC_AUDIO_CAPTURE_INTERFACE) {
+        i2s_stop();
+    } else if ((request->wIndex & 0xffu) == DDC_AUDIO_PLAYBACK_INTERFACE) {
+        tx_stop();
+    }
     return true;
 }
 
@@ -597,10 +973,14 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport,
 int main(void)
 {
     board_init();
+    gpio_init(DDC_TR_PIN);
+    gpio_set_dir(DDC_TR_PIN, GPIO_OUT);
+    tr_set_receive(true);
     vreg_set_voltage(VREG_VOLTAGE_1_20);
     set_sys_clock_khz(250000, true);
 
     g_pio_offset = pio_add_program(pio0, &i2s_rx_program);
+    g_tx_pio_offset = pio_add_program(pio0, &i2s_tx_program);
     pga_configure();
     fpga_interrupt_configure();
     dma_channel_a = dma_claim_unused_channel(true);
@@ -626,14 +1006,34 @@ int main(void)
 
     dma_channel_set_irq0_enabled(dma_channel_a, true);
     dma_channel_set_irq0_enabled(dma_channel_b, true);
+    tx_dma_channel = dma_claim_unused_channel(true);
+    tx_dma_config = dma_channel_get_default_config(tx_dma_channel);
+    channel_config_set_transfer_data_size(&tx_dma_config, DMA_SIZE_32);
+    channel_config_set_read_increment(&tx_dma_config, true);
+    channel_config_set_write_increment(&tx_dma_config, false);
+    channel_config_set_dreq(&tx_dma_config, pio_get_dreq(pio0, 1, true));
+    dma_channel_configure(tx_dma_channel, &tx_dma_config, &pio0->txf[1],
+                          tx_audio_buffers[0], words_per_buffer, false);
+    dma_channel_set_irq0_enabled(tx_dma_channel, true);
     irq_set_exclusive_handler(DMA_IRQ_0, dma_handler);
 
-    fpga_ready = configure_embedded_fpga();
-    if (fpga_ready && fpga_runtime_init()) {
-        fpga_set_sample_rate(sample_rate);
-    } else {
+#ifdef DDC_FPGA_BOOT_FROM_STORED
+#ifdef DDC_DEFAULT_FPGA_TX
+    active_fpga_image = DDC_FPGA_IMAGE_TX;
+#else
+    active_fpga_image = DDC_FPGA_IMAGE_RX;
+#endif
+    fpga_ready = configure_stored_fpga(active_fpga_image);
+    if (fpga_ready && !restore_fpga_runtime()) {
         fpga_ready = false;
     }
+    if (!fpga_ready) {
+        active_fpga_image = DDC_FPGA_IMAGE_DFU;
+    }
+#else
+    fpga_ready = false;
+    active_fpga_image = DDC_FPGA_IMAGE_DFU;
+#endif
 
     ice_usb_set_dfu_callbacks(prepare_fpga_update, complete_fpga_update);
     ice_usb_init();
@@ -642,6 +1042,8 @@ int main(void)
         tud_task();
         cdc_task();
         handle_fpga_interrupt();
+        agc_task();
         audio_task();
+        tx_task();
     }
 }

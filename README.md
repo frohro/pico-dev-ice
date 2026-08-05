@@ -71,6 +71,9 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
     *   **Runtime:** Once booted, the Pico reuses the exact same `SPI0` bus and `ICE_SSN` Chip Select pin to send DSP commands to the user's Verilog.
 * **ADC OTR:** The MS9280 "Out of Range" (Clipping) pin pulses for only 32ns. The FPGA catches this, stretches the pulse, and triggers a hardware interrupt on the Pico to engage the AGC.
 
+The ten-week, verification-first HDL course sequence is documented in
+[`DDC_SDR_Lab_Plan.md`](DDC_SDR_Lab_Plan.md).
+
 ---
 
 ## 📍 Hardware Pinout Reference
@@ -174,9 +177,9 @@ The generated UF2 is RP2040 firmware that contains the FPGA bitstream. The Dev-i
 
 ## DDC SDR Firmware
 
-The first Dev-iCE SDR application is in [`Software/ddc_sdr`](Software/ddc_sdr).
-It replaces the Si5351a, Tayloe detector, and PCM1808 path from
-`Software/2026_v0.2` with FPGA-generated DDC I/Q data received as
+The first Dev-iCE SDR application is in
+[`Software/ddc_sdr_firmware`](Software/ddc_sdr_firmware). It replaces the
+earlier Si5351a, Tayloe detector, and PCM1808 path with FPGA-generated DDC I/Q data received as
 PCM1808-compatible I2S. The Pico firmware:
 
 * programs the FPGA's volatile CRAM over SPI0;
@@ -190,18 +193,33 @@ The DDC application requires a TinyUSB checkout with both `src/tusb.h` and
 automatically, or it can be selected explicitly:
 
 ```sh
-cmake -S Software/ddc_sdr -B Software/ddc_sdr/build \
+cmake -S Software/ddc_sdr_firmware -B Software/ddc_sdr_firmware/build \
         -DPICO_TINYUSB_PATH="$HOME/tinyusb" \
         -DPICO_BOARD=pico_dev_ice \
         -DPICO_NO_PICOTOOL=1
-cmake --build Software/ddc_sdr/build -j2
+cmake --build Software/ddc_sdr_firmware/build -j2
 ```
+
+The Pico firmware keeps FPGA deployment easy to choose: `FPGA_BOOT_MODE=DFU`
+waits for a development bitstream from `dfu-util`, while
+`FPGA_BOOT_MODE=STORED` loads an image embedded in the Pico firmware at boot.
+Two stored transceiver profiles can be included with
+`FPGA_RX_BITSTREAM_BIN` and `FPGA_TX_BITSTREAM_BIN`, with
+`FPGA_DEFAULT_IMAGE` selecting the boot profile and `FPGA,LOAD,RX` or
+`FPGA,LOAD,TX` selecting one between sessions. The full commands and build
+examples are in [`Software/ddc_sdr_firmware/README.md`](Software/ddc_sdr_firmware/README.md).
+
+These profile loads are not a VNA sweep mechanism. A VNA needs a single
+coherent FPGA design containing the stimulus, reference, receive, and
+measurement paths for the complete sweep. Select a persistent VNA-capable
+image before a measurement, or implement those paths in one integrated image;
+do not reconfigure between sweep points.
 
 For development, compile an FPGA bitstream with Yosys, nextpnr-ice40, and
 icepack, then load it without reflashing the Pico:
 
 ```sh
-python3 Software/ddc_sdr/tools/dfu_fpga.py /path/to/ddc_sdr.bin
+python3 Software/ddc_sdr_firmware/tools/dfu_fpga.py /path/to/ddc_sdr.bin
 ```
 
 Stop the SDR++ or Quisk audio stream before starting DFU. The helper prepares
@@ -210,4 +228,4 @@ Pico restore the runtime FPGA state afterward. Do not reset the Pico after a
 DFU-only update: FPGA CRAM is volatile and a reset clears the loaded design.
 
 For the complete pinout, SPI protocol, CDC commands, build options, and DFU
-sequence, see [`Software/ddc_sdr/README.md`](Software/ddc_sdr/README.md).
+sequence, see [`Software/ddc_sdr_firmware/README.md`](Software/ddc_sdr_firmware/README.md).
