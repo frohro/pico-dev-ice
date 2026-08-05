@@ -78,46 +78,6 @@
       ],
       "drc_exclusions": [
         [
-          "copper_edge_clearance|104770000|149947500|6106baad-e069-4c51-89cd-5cdc7bbfd86c|93a4703c-f2fc-4dab-81b9-fbc54b6609b1",
-          ""
-        ],
-        [
-          "copper_edge_clearance|104770000|149947500|6106baad-e069-4c51-89cd-5cdc7bbfd86c|debab280-bfc0-4ad8-9d2b-e5e2ce902101",
-          ""
-        ],
-        [
-          "copper_edge_clearance|109020000|149947500|6106baad-e069-4c51-89cd-5cdc7bbfd86c|a8543fe4-8ad5-4068-8335-9578fc2ae129",
-          ""
-        ],
-        [
-          "copper_edge_clearance|113270000|149947500|6106baad-e069-4c51-89cd-5cdc7bbfd86c|23228e7b-e5db-4a2c-a472-d05524d68bb6",
-          ""
-        ],
-        [
-          "copper_edge_clearance|113270000|149947500|6106baad-e069-4c51-89cd-5cdc7bbfd86c|ad473593-07da-4bb3-be9f-8f812aa1b140",
-          ""
-        ],
-        [
-          "copper_edge_clearance|173070000|149520000|6106baad-e069-4c51-89cd-5cdc7bbfd86c|0ed02df6-72a0-4e0c-9f98-e9e46b8e41da",
-          ""
-        ],
-        [
-          "copper_edge_clearance|173070000|149520000|6106baad-e069-4c51-89cd-5cdc7bbfd86c|2b884160-1021-4083-a9e8-39b1fb895218",
-          ""
-        ],
-        [
-          "copper_edge_clearance|177320000|149520000|6106baad-e069-4c51-89cd-5cdc7bbfd86c|a8cc0d57-a034-4ab1-b838-e93ca6d8073d",
-          ""
-        ],
-        [
-          "copper_edge_clearance|181570000|149520000|6106baad-e069-4c51-89cd-5cdc7bbfd86c|540a980c-83aa-4db7-87c0-c2d0c4fc9cf8",
-          ""
-        ],
-        [
-          "copper_edge_clearance|181570000|149520000|6106baad-e069-4c51-89cd-5cdc7bbfd86c|a4f8ce64-8f3a-4172-858b-0084c655b1b2",
-          ""
-        ],
-        [
           "courtyards_overlap|157145000|96105000|77b8b3d3-8140-4d63-a2d8-2fe79894e046|ada60874-1ada-4766-bea6-5abc01b6f9af",
           ""
         ],
@@ -262,10 +222,6 @@
           ""
         ],
         [
-          "lib_footprint_mismatch|121292500|118590000|bbea6822-3f86-41a9-bc9e-1f54b0ce863d|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
           "lib_footprint_mismatch|135482500|116997500|3f97f8da-6365-4931-8b6d-b3d4b2f9e08d|00000000-0000-0000-0000-000000000000",
           ""
         ],
@@ -275,18 +231,6 @@
         ],
         [
           "lib_footprint_mismatch|184162500|100000000|77b8b3d3-8140-4d63-a2d8-2fe79894e046|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
-          "shorting_items|172580000|108895000|37772a89-af8a-44f0-b165-4fe60de7b972|049f2786-1941-49e1-98b0-166b31a019ff",
-          ""
-        ],
-        [
-          "shorting_items|185280000|108895000|bb31f1a0-dfe0-472f-8e64-d41fcd54f44e|498bc23f-0c2d-4d97-859f-4c4d8b142668",
-          ""
-        ],
-        [
-          "shorting_items|190360000|108895000|bdf5bbf1-4fef-42a2-91b9-f389fde6693a|80b6f7b2-81fb-478e-87eb-c8c92512edcc",
           ""
         ],
         [
@@ -307,18 +251,6 @@
         ],
         [
           "silk_edge_clearance|200000000|95890000|e5dc5bd3-fddc-4017-a7e2-faff8811bf14|cf642c6b-8d38-4c26-a341-1410cb43901d",
-          ""
-        ],
-        [
-          "silk_overlap|164356591|92490000|04d7ca72-4307-4d73-aa45-424c25e08b14|4be9802c-6299-45c7-a5f2-b00b0ad7ab54",
-          ""
-        ],
-        [
-          "silk_overlap|199310000|92440000|2d7ac75b-6201-41c9-9f17-848f8eba45ba|4e98a7a8-ed4c-4633-9f50-ba2be165d561",
-          ""
-        ],
-        [
-          "silk_overlap|199310000|92490000|4e98a7a8-ed4c-4633-9f50-ba2be165d561|f4098bc2-af53-4a86-b77d-883a7213e931",
           ""
         ],
         [
@@ -1572,7 +1504,7 @@
         "uuid": "7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
       }
     ],
-    "used_designators": "L1-3,FB1-7,Je3-6,JP1-8,JP50-53,JP86,JP88-89,J1-14,J16,S1,TR1-4,Q1-10,U1-27,D1-8,A1,SW1,X1,H1,#PWR1-225,C1-109,e1-4,TP1-18,TP28-32,R1-90,#FLG1-2,#FLG7,#FLG101",
+    "used_designators": "X1,SW1,A1,D1-8,U1-27,Q1-10,TR1-4,#FLG1-2,#FLG7,#FLG101,R1-90,TP1-18,TP28-32,#PWR1-225,e1-4,C1-109,H1,FB1-7,L1-3,JP1-8,JP50-53,JP86,JP88-89,Je3-6,J1-14,J16,S1",
     "variants": []
   },
   "sheets": [

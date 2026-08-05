@@ -18075,10 +18075,6 @@
 		(uuid "fe8688cd-14f3-4de2-863c-78435b5ca162")
 	)
 	(no_connect
-		(at 341.63 78.74)
-		(uuid "06f21f86-a471-40df-9b28-13713d1cd0e5")
-	)
-	(no_connect
 		(at 43.18 97.79)
 		(uuid "0a8a5861-7029-4482-a280-9e8431460840")
 	)
@@ -18127,10 +18123,6 @@
 		(uuid "6d805ae8-938c-4b07-93e6-4d64070559ae")
 	)
 	(no_connect
-		(at 330.2 205.74)
-		(uuid "70a61a9e-f07f-41fc-b6f4-1f6875fb8293")
-	)
-	(no_connect
 		(at 48.26 213.36)
 		(uuid "7293d9fc-21ff-4358-b1fb-aede0e3f1376")
 	)
@@ -18145,10 +18137,6 @@
 	(no_connect
 		(at 49.53 63.5)
 		(uuid "863d0389-68a7-4638-82f0-bb63d438d54c")
-	)
-	(no_connect
-		(at 387.35 50.8)
-		(uuid "9b584d11-b10c-49a0-9475-32dba60f8fad")
 	)
 	(no_connect
 		(at 48.26 233.68)
@@ -18167,24 +18155,12 @@
 		(uuid "aefed82c-2381-4741-b2c2-8a922e67a10a")
 	)
 	(no_connect
-		(at 330.2 193.04)
-		(uuid "cc219873-41f2-40bc-9eab-5dd6f7ece39c")
-	)
-	(no_connect
 		(at 35.56 77.47)
 		(uuid "e04344cf-9002-4003-80f7-266ae891e429")
 	)
 	(no_connect
-		(at 330.2 187.96)
-		(uuid "e8704132-d1cc-44af-bd3c-4348f1812fe1")
-	)
-	(no_connect
 		(at 45.72 77.47)
 		(uuid "f66ce7e7-9b00-4865-be66-8ff529e2a97b")
-	)
-	(no_connect
-		(at 387.35 48.26)
-		(uuid "f764eefb-eb29-459f-a056-23d9ae518657")
 	)
 	(no_connect
 		(at 40.64 213.36)
@@ -28746,6 +28722,16 @@
 		)
 		(uuid "0f7d3a03-9686-465a-9306-9b80ac3fae15")
 	)
+	(label "30"
+		(at 387.35 48.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "10c6a7f8-0ea8-44ec-86df-6b77f38962a9")
+	)
 	(label "D0"
 		(at 264.16 54.61 0)
 		(effects
@@ -28975,6 +28961,16 @@
 			(justify left bottom)
 		)
 		(uuid "2963fbbd-827c-487e-b173-febc4c6fe391")
+	)
+	(label "35"
+		(at 330.2 193.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2a77b31b-1a22-41f1-b7bb-a327e7f19f3c")
 	)
 	(label "PMOD_3"
 		(at 233.68 91.44 180)
@@ -29461,6 +29457,16 @@
 		)
 		(uuid "71c3db97-2b2e-45c8-8b4d-38a04097b14f")
 	)
+	(label "37"
+		(at 330.2 187.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "75649891-45ca-4d34-a4f0-a381f0fbae49")
+	)
 	(label "D3"
 		(at 144.78 63.5 0)
 		(effects
@@ -29792,6 +29798,16 @@
 		)
 		(uuid "aaff8a47-7ed2-47ae-b9c9-fa5240d80c7a")
 	)
+	(label "30"
+		(at 330.2 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "ab7aedd1-2b89-4428-8996-a0e93d0055ae")
+	)
 	(label "RX_OUT"
 		(at 20.32 31.75 0)
 		(effects
@@ -29921,6 +29937,16 @@
 			(justify right bottom)
 		)
 		(uuid "b9ef3508-be68-4723-aea8-16e12999b1d6")
+	)
+	(label "35"
+		(at 341.63 78.74 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "baa629de-e326-46e8-b254-ede76384a08a")
 	)
 	(label "REF"
 		(at 330.2 203.2 0)
@@ -30077,6 +30103,16 @@
 			(justify left bottom)
 		)
 		(uuid "cff7c8d9-b5fd-4c40-918b-f748ade8a94f")
+	)
+	(label "37"
+		(at 387.35 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d3b42e1a-8ed6-4781-9a83-c32724566daf")
 	)
 	(label "ANG_2"
 		(at 364.49 157.48 180)
@@ -31661,7 +31697,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_SO:TSSOP-28-1EP_4.4x9.7mm_P0.65mm_EP3.4x9.7mm_Mask3.1x4.05mm_ThermalVias"
+		(property "Footprint" "Package_SO:SSOP-28_5.3x10.2mm_P0.65mm"
 			(at 127 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -55129,7 +55165,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132289_EdgeMount"
+		(property "Footprint" "Connector_Coaxial:SMA_Samtec_SMA-J-P-H-ST-EM1_EdgeMount"
 			(at 48.26 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -55230,7 +55266,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Coaxial:SMA_Amphenol_132289_EdgeMount"
+		(property "Footprint" "Connector_Coaxial:SMA_Samtec_SMA-J-P-H-ST-EM1_EdgeMount"
 			(at 102.87 219.71 0)
 			(hide yes)
 			(show_name no)
