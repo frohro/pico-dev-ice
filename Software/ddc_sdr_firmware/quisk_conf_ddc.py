@@ -10,7 +10,7 @@ import serial.tools.list_ports
 from quisk_hardware_model import Hardware as BaseHardware
 
 
-name_of_sound_capt = "alsa:DDC SDR 2026 (hw:DDC,0)"
+name_of_sound_capt = "alsa:DDC SDR 2026 (hw:D2026,0)"
 name_of_sound_play = "pulse"
 sample_rate = 48000
 openradio_lower = 0

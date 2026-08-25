@@ -82,6 +82,15 @@ For this week's hardware proof, your simulation is your primary deliverable.
 2.  Open that text file, `mixer_plot.csv`, or the generated `mixer_plot.png` in Python or Excel and plot it.
 3.  For equal-frequency sine inputs, `mixer_i` contains the DC difference component plus the 14 MHz sum component. `mixer_q` contains the corresponding 14 MHz product component.
 
+> [!TIP]
+> **Real-World SDR Insight: ADC Resting DC Offset & NCO Spur Cancellation**
+> In real hardware, physical ADC comparator offsets and op-amp bias voltages cause the ADC's resting code at idle to sit slightly off mid-scale (e.g. Code `129` $\implies +1\text{ LSB}$ DC bias).
+> Multiplying a static $+1$ DC offset by the NCO directly feeds the raw NCO waveform and its discrete phase-truncation spurs into the baseband channel ($0\text{ Hz}$ LO feedthrough).
+> In production DDC SDRs, this is eliminated by adding a digital **DC auto-zero tracking loop** (a simple 24-bit leaky integrator with $f_c \approx 1\text{ kHz}$) before the multiplier:
+> $$\text{dc\_acc} \leftarrow \text{dc\_acc} + \text{adc\_signed} - (\text{dc\_acc} \gg 12)$$
+> $$\text{adc\_clean} = \text{adc\_signed} - \text{dc\_acc}[23:12]$$
+> This wipes out static DC offset down to $0.000$ without attenuating high-frequency RF signals ($> 500\text{ kHz}$).
+
 
 ## 📝 Deliverables & Oral Defense
 At your weekly 15-minute team meeting, you must provide:

@@ -106,9 +106,9 @@ The ten-week, verification-first HDL course sequence is documented in
 | **GPIO 20** | `AF_DAC_LRCK` | Audio DAC L/R | Output | I2S out to standalone headphone amp |
 | **GPIO 21** | `ICE_DONE` | FPGA Boot Status | Input | Goes HIGH when FPGA is running and lights White LED |
 | **GPIO 22** | `~ICE_RST` | FPGA Reset | Output | Pull LOW to hold FPGA in reset |
-| **GPIO 26** | `REF` | VNA Reflection Sw | Output | Toggles paths to form the closed-loop VNA |
+| **GPIO 26** | `REF` | Front-End RF Mux | Output | **0 = SDR RF Antenna RX**, 1 = VNA Input |
 | **GPIO 27** | *(Optional)* | PMOD / GPIO Jump | I/O | Jumper JP3 maps to PMOD_2 |
-| **GPIO 28** | `~T/R` | Transmit/Receive Sw | Output | Toggles main antenna between ADC and DAC |
+| **GPIO 28** | `~T/R` | Transmit/Receive Sw | Output | **1 = RX Mode** (Antenna -> LNA), 0 = TX Mode |
 
 ### 2. FPGA (Lattice iCE40UP5K-SG48) Pinout
 *This map defines the interface for the digital design team writing Verilog and the `.pcf` constraints file.*
@@ -137,13 +137,13 @@ The ten-week, verification-first HDL course sequence is documented in
 | **44** | `IOB_3b_G6` | `DB7` | DAC Data Bit 7 (MSB) |
 | **14** | `IOB_32a_SPI_SO` | `SPI0_RX` | SPI MISO (Data *to* Pico during runtime) |
 | **17** | `IOB_33b_SPI_SI` | `SPI0_TX` | SPI MOSI (Data *from* Pico during runtime) |
-| **15** | `IOB_34a_SPI_SCK`| `SPI0_CLK` | SPI Clock IN |
-| **16** | `IOB_35b_SPI_SS` | `ICE_SSN` | SPI Chip Select IN |
-| **11** | `IOB_20a` | `BCK` | I2S Bit Clock OUT (To Pico) |
-| **12** | `IOB_22a` | `WS` | I2S Word Select OUT (To Pico) |
-| **10** | `IOB_18a` | `RX_DATA` | I2S Data OUT (SDR audio to Pico) |
-| **9** | `IOB_16a` | `TX_DATA` | I2S Data IN (Transmit audio from Pico) |
-| **13** | `IOB_24a` | `FPGA_INT` | Hardware Interrupt OUT (To Pico) |
+| **15** | `IOB_34a_SPI_SCK`| `SPI0_CLK` | SPI Clock IN (From Pico GPIO 6) |
+| **16** | `IOB_35b_SPI_SS` | `ICE_SSN` | SPI Chip Select IN (From Pico GPIO 5) |
+| **12** | `IOB_22a` | `BCK` | I2S Bit Clock OUT (To Pico GPIO 15) |
+| **9** | `IOB_16a` | `WS` | I2S Word Select OUT (To Pico GPIO 16) |
+| **11** | `IOB_20a` | `RX_DATA` | I2S Data OUT (SDR audio to Pico GPIO 14) |
+| **10** | `IOB_18a` | `TX_DATA` | I2S Data IN (Transmit audio from Pico GPIO 13) |
+| **13** | `IOB_24a` | `FPGA_INT` | Hardware Interrupt OUT (To Pico GPIO 0) |
 | **38** | `IOT_50b` | `ANG_0` | Rotary Encoder / Tuning Knob A |
 | **42** | `IOT_51a` | `ANG_1` | Rotary Encoder / Tuning Knob B |
 | **43** | `IOT_49a` | `ANG_2` | Rotary Encoder / Tuning Knob Switch |
@@ -151,9 +151,9 @@ The ten-week, verification-first HDL course sequence is documented in
 | **19** | `IOB_29b` | `PMOD_1` | PMOD Header Pin 2 |
 | **18** | `IOB_31b` | `PMOD_2` | PMOD Header Pin 3 |
 | **20** | `IOB_25b_G3` | `PMOD_3` | PMOD Header Pin 4 |
-| **39** | `RGB0` | `RED` | Open-Drain LED Driver (Red) |
-| **40** | `RGB1` | `YELLOW` | Open-Drain LED Driver (Yellow) |
-| **41** | `RGB2` | `GREEN` | Open-Drain LED Driver (Green) |
+| **39** | `RGB0` | `RED` | Open-Drain LED Driver (Active-Low: 0=ON, pulses on ADC OTR clipping) |
+| **40** | `RGB1` | `YELLOW` | Open-Drain LED Driver (Active-Low: 0=ON, pulses on SPI tuning activity) |
+| **41** | `RGB2` | `GREEN` | Open-Drain LED Driver (Active-Low: 0=ON, steady ON when un-reset) |
 | **7** | `CDONE` | `ICE_DONE` | *Hardware Boot / Status Out* |
 | **8** | `~CRESET` | `~ICE_RST` | *Hardware Boot / Reset In* |
 

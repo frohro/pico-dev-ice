@@ -17,6 +17,7 @@
 #include "hardware/sync.h"
 #include "hardware/vreg.h"
 #include "pico/stdlib.h"
+#include "pico/bootrom.h"
 
 #include "boards.h"
 #include "agc_control.h"
@@ -40,6 +41,7 @@
 #define DDC_I2S_BCK_PIN 15
 #define DDC_I2S_WS_PIN 16
 #define DDC_TR_PIN 28
+#define DDC_REF_PIN 26
 #define DDC_FPGA_INT_PIN 0
 #define DDC_PGA_GPIO_BASE 8
 #define DDC_PGA_GPIO_COUNT 4
@@ -99,6 +101,7 @@ static char line_buffer[DDC_LINE_BUFFER_SIZE];
 static uint8_t line_length;
 static bool ready_message_sent;
 static uint32_t last_frequency_hz;
+static uint32_t freq_cmd_count;
 
 static bool fpga_write_command(uint8_t command, uint32_t value);
 
@@ -539,6 +542,7 @@ static void fpga_interrupt_configure(void)
 static bool configure_fpga_bitstream(const uint8_t *bitstream, size_t size)
 {
     ice_fpga_init(FPGA_DATA, 48);
+    ice_fpga_stop(FPGA_DATA);
     if (!ice_cram_open(FPGA_DATA)) {
         return false;
     }
@@ -710,7 +714,7 @@ static void audio_task(void)
     }
 
     for (uint32_t index = 0; index < words; index++) {
-        uint32_t word = source[index] << 1;
+        uint32_t word = source[index];
         packed[3u * index] = (uint8_t)(word >> 8);
         packed[3u * index + 1u] = (uint8_t)(word >> 16);
         packed[3u * index + 2u] = (uint8_t)(word >> 24);
@@ -765,6 +769,8 @@ static void handle_line(const char *line, uint8_t length)
         uint32_t frequency_hz = (uint32_t)strtoul(line + 5, NULL, 10);
         if (fpga_ready && fpga_set_frequency(frequency_hz)) {
             last_frequency_hz = frequency_hz;
+            freq_cmd_count++;
+            gpio_put(25, !gpio_get(25));
             snprintf(reply, sizeof(reply), "%lu\r\nOK\r\n",
                      (unsigned long)frequency_hz);
             cdc_write(reply);
@@ -776,12 +782,13 @@ static void handle_line(const char *line, uint8_t length)
     if (strncmp(line, "RATE,", 5) == 0) {
         uint32_t rate = (uint32_t)strtoul(line + 5, NULL, 10);
         if (apply_sample_rate(rate)) {
-            audio_requested_rate = rate;
-            snprintf(reply, sizeof(reply), "RATE,%lu\r\nOK\r\n",
+            freq_cmd_count++;
+            gpio_put(25, !gpio_get(25));
+            snprintf(reply, sizeof(reply), "RATE,%lu OK\r\n",
                      (unsigned long)rate);
             cdc_write(reply);
         } else {
-            cdc_write("ERROR,unsupported rate\r\n");
+            cdc_write("ERROR,sample rate rejected\r\n");
         }
         return;
     }
@@ -804,30 +811,93 @@ static void handle_line(const char *line, uint8_t length)
                                                  : "DFU,WAITING\r\nOK\r\n"));
         return;
     }
+    if (strcmp(line, "DEBUG") == 0) {
+        uint32_t bck_toggles = 0, ws_toggles = 0;
+        bool last_bck = gpio_get(15), last_ws = gpio_get(16);
+        absolute_time_t end = make_timeout_time_ms(10);
+        while (absolute_time_diff_us(get_absolute_time(), end) > 0) {
+            bool cur_bck = gpio_get(15);
+            bool cur_ws = gpio_get(16);
+            if (cur_bck != last_bck) { bck_toggles++; last_bck = cur_bck; }
+            if (cur_ws != last_ws) { ws_toggles++; last_ws = cur_ws; }
+        }
+        snprintf(reply, sizeof(reply),
+                 "DEBUG: ready=%d, cap_alt=%d, bck_10ms=%lu, ws_10ms=%lu, freq_cnt=%lu, last_freq=%lu, g14=%d, g15=%d, g16=%d\r\nOK\r\n",
+                 fpga_ready, capture_alt, (unsigned long)bck_toggles, (unsigned long)ws_toggles,
+                 (unsigned long)freq_cmd_count, (unsigned long)last_frequency_hz,
+                 gpio_get(14), gpio_get(15), gpio_get(16));
+        cdc_write(reply);
+        return;
+    }
+    if (strcmp(line, "REF") == 0) {
+        snprintf(reply, sizeof(reply), "REF,%d\r\nOK\r\n", gpio_get(DDC_REF_PIN));
+        cdc_write(reply);
+        return;
+    }
+    if (strncmp(line, "REF,", 4) == 0) {
+        uint8_t ref_val = (uint8_t)strtoul(line + 4, NULL, 10);
+        gpio_put(DDC_REF_PIN, ref_val ? 1u : 0u);
+        snprintf(reply, sizeof(reply), "REF,%d\r\nOK\r\n", gpio_get(DDC_REF_PIN));
+        cdc_write(reply);
+        return;
+    }
+    if (strcmp(line, "PGA") == 0) {
+        snprintf(reply, sizeof(reply), "PGA,%u\r\nOK\r\n", agc_state.pga_code);
+        cdc_write(reply);
+        return;
+    }
+    if (strncmp(line, "PGA,", 4) == 0) {
+        uint8_t code = (uint8_t)strtoul(line + 4, NULL, 10);
+        agc_state.pga_code = code;
+        pga_set_code(code);
+        snprintf(reply, sizeof(reply), "PGA,%u\r\nOK\r\n", code);
+        cdc_write(reply);
+        return;
+    }
+    if (strcmp(line, "BOOTSEL") == 0 || strcmp(line, "RESET,BOOTSEL") == 0) {
+        cdc_write("REBOOTING_BOOTSEL\r\nOK\r\n");
+        reset_usb_boot(0, 0);
+        return;
+    }
+    if (strcmp(line, "HELP") == 0 || strcmp(line, "?") == 0) {
+        cdc_write("Commands:\r\n"
+                  "  VER          - Show firmware version\r\n"
+                  "  MODE         - Show SDR mode (DDC)\r\n"
+                  "  XTAL         - Show master clock (30.72 MHz)\r\n"
+                  "  FPGA,STATUS  - Show FPGA gateware status\r\n"
+                  "  FREQ,<hz>    - Set NCO tuning frequency in Hz\r\n"
+                  "  RATE,<hz>    - Set audio sample rate in Hz\r\n"
+                  "  REF,<0|1>    - Set REF mux (0=SDR RF RX, 1=VNA)\r\n"
+                  "  PGA,<0..15>  - Set attenuator code (0=max gain)\r\n"
+                  "  DEBUG        - Show DMA / clock / toggle diagnostics\r\n"
+                  "  BOOTSEL      - Reboot Pico to BOOTSEL flash mode\r\n"
+                  "OK\r\n");
+        return;
+    }
     cdc_write("ERR\r\n");
 }
 
 static void cdc_task(void)
 {
-    if (!tud_cdc_connected()) {
-        line_length = 0;
-        return;
-    }
-
     while (tud_cdc_available()) {
         uint8_t byte;
         tud_cdc_read(&byte, 1);
         if (byte == 0x03) {
             line_length = 0;
+            cdc_write("^C\r\n");
         } else if (byte == 0x04) {
             line_length = 0;
             cdc_write("SDR ready\r\n");
-        } else if (byte == '\r') {
-            continue;
-        } else if (byte == '\n') {
-            line_buffer[line_length] = '\0';
-            handle_line(line_buffer, line_length);
-            line_length = 0;
+        } else if (byte == '\r' || byte == '\n') {
+            if (line_length > 0) {
+                line_buffer[line_length] = '\0';
+                handle_line(line_buffer, line_length);
+                line_length = 0;
+            }
+        } else if (byte == 0x08 || byte == 0x7F) {
+            if (line_length > 0) {
+                line_length--;
+            }
         } else if (line_length < DDC_LINE_BUFFER_SIZE - 1u) {
             line_buffer[line_length++] = (char)byte;
         }
@@ -973,9 +1043,15 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport,
 int main(void)
 {
     board_init();
+    gpio_init(25);
+    gpio_set_dir(25, GPIO_OUT);
+    gpio_put(25, 1);
     gpio_init(DDC_TR_PIN);
     gpio_set_dir(DDC_TR_PIN, GPIO_OUT);
     tr_set_receive(true);
+    gpio_init(DDC_REF_PIN);
+    gpio_set_dir(DDC_REF_PIN, GPIO_OUT);
+    gpio_put(DDC_REF_PIN, 0);
     vreg_set_voltage(VREG_VOLTAGE_1_20);
     set_sys_clock_khz(250000, true);
 

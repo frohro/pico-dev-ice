@@ -21,10 +21,17 @@ AI is fantastic at typing out tedious structural port-maps, provided you give it
 > Act as a Senior Systems Integrator. Write a SystemVerilog top-level module named `ddc_sdr_top`. 
 > 
 > **External Ports:**
-> *   Match the ordinary top-level pin names defined in `Software/ddc_sdr_firmware/fpga/ddc_sdr.pcf`: `clk`, `spi_mosi`, `spi_miso`, `adc_data`, `i2s_bck`, and the other lowercase names in that file.
+> *   Match the ordinary top-level pin names defined in `ENGR433-Solutions/Lab_09/lab09.pcf`: `clk`, `adc_clk`, `dac_clk`, `adc_data`, `adc_otr`, `dac_data`, `spi_miso`, `spi_mosi`, `spi_sck`, `spi_cs`, `i2s_bck`, `i2s_ws`, `i2s_rx_data`, `i2s_tx_data`, `fpga_int`, `pmod`, `led_red`, `led_yellow`, `led_green`.
+> 
+> **Hardware Quirks & Output Indicators:**
+> *   **RGB LEDs (Pins 39, 40, 41):** Dedicated open-drain hard-IP drivers. They are **active-low** (`0 = LED ON`, `1 = LED OFF`).
+> *   **Pulse Stretching:** Single-cycle events (such as SPI commands or 32ns ADC OTR spikes) are invisible to human eyes. Implement a ~24-bit down-counter (~550 ms hold) so:
+>     *   `led_green`: Steady ON (`0`) when un-reset.
+>     *   `led_yellow`: Pulses ON for ~550 ms whenever a frequency or rate SPI command arrives.
+>     *   `led_red`: Pulses ON for ~550 ms whenever the ADC asserts Out-Of-Range clipping (`adc_otr`).
 > 
 > **Internal Wires:**
-> *   Declare all necessary internal wires to connect the sub-modules (e.g., `wire [31:0] tuning_word;`, `wire [23:0] cic_out_i;`).
+> *   Declare all necessary internal wires to connect the sub-modules (e.g., `wire [31:0] cmd_freq_val;`, `wire signed [23:0] cic_i, cic_q;`).
 > 
 > **Instantiations:**
 > *   Instantiate the following modules and connect their ports using named port mapping (`.port(wire)`):
@@ -53,14 +60,21 @@ This is the ultimate verification environment (`ddc_top_tb.v`). If this testbenc
 ## Part 4: Synthesis & Hardware Smoke Test
 It is time to put your radio onto the actual silicon.
 
-1.  Use Yosys/NextPNR to synthesize the entire `ddc_sdr_top.sv` against `Solutions/Lab_09/lab09.pcf`. The production PCF also names dedicated CDONE and CRESET configuration pins; those are intentionally omitted from the runtime Lab 09 PCF.
-2.  Check the synthesis logs. Make sure there are **no latch warnings** and **no timing violations** on the 30.72 MHz clock.
-3.  Flash your compiled `ddc_sdr.bin` bitstream into the FPGA.
-4.  **The Smoke Test:** 
-    *   Hook an oscilloscope or logic analyzer to the I2S pins. Are `BCK` and `WS` running at 3.072 MHz and 48 kHz?
-    *   Use the Pico serial terminal to send a frequency command. Does it successfully parse without crashing the board?
-
-If the clocks are running and the SPI bus accepts commands, your digital radio is alive!
+1.  **Physical Pin Constraints (`lab09.pcf`):**
+    *   `clk 37` (30.720 MHz Master Oscillator)
+    *   `i2s_bck 12` $\rightarrow$ Pico GPIO 15 (3.072 MHz Bit Clock)
+    *   `i2s_ws 9` $\rightarrow$ Pico GPIO 16 (48 kHz LRCLK / Word Select)
+    *   `i2s_rx_data 11` $\rightarrow$ Pico GPIO 14 (Baseband I/Q data to Pico)
+    *   `i2s_tx_data 10` $\rightarrow$ Pico GPIO 13 (Audio from Pico)
+    *   `led_red 39`, `led_yellow 40`, `led_green 41` (Active-Low RGB LEDs)
+2.  **Firmware Front-End Note (`REF` pin):**
+    *   The board's front-end RF multiplexer is controlled by Pico **GPIO 26 (`REF`)**. The Pico firmware must drive `GPIO 26` **LOW (`0`)** to connect the antenna SMA to the ADC. (Driving it HIGH connects the VNA test path instead).
+3.  Synthesize the design using Yosys/NextPNR. Check the logs for **no latch warnings** and verify timing closure ($F_{\text{MAX}} \ge 30.72\text{ MHz}$).
+4.  Flash your compiled `ddc_sdr.bin` bitstream into the FPGA.
+5.  **The Smoke Test:** 
+    *   **Visual LEDs:** Green LED should illuminate. Yellow LED should pulse whenever you change frequency in Quisk / SDR++ (or via CDC serial command `FREQ,7074000`).
+    *   **I2S Clocks:** Hook an oscilloscope to Pin 12 (`BCK`) and Pin 9 (`WS`). Are they running cleanly at 3.072 MHz and 48 kHz?
+    *   **Audio Spectrum:** Open Quisk or SDR++. You should see live RF spectrum and waterfall from the antenna!
 
 ---
 

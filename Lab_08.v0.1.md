@@ -63,7 +63,7 @@ AI coding models (like Claude or Gemini) will almost always mess up CIC filters.
 > 2.  **3 Integrator Stages:** Running continuously on `clk_30m`. Each stage is simply `acc = acc + previous_acc`. *Allow natural two's complement overflow. Do NOT use saturation logic.*
 > 3.  **The Decimator:** Use a counter from 0 to 639. When it rolls over, pulse a `decimation_strobe` signal HIGH for one clock cycle.
 > 4.  **3 Comb Stages:** The combs run on `clk_30m`, but they MUST use a **Clock Enable**. They only update their registers when `decimation_strobe` is HIGH. Each stage is `comb = current_val - delayed_val`. 
-> 5.  **Output Truncation:** Take the final 44-bit Comb output, drop the lower 20 bits, and output bits `[43:20]` as the signed 24-bit `data_out` value (to match our I2S requirement).
+> 5.  **Output Truncation & Scaling:** For a full-scale pure sine input, the maximum peak output is $128 \times 127 \times 640^3 \approx 4.26 \times 10^{12} < 2^{42}$, so bits `[43:42]` are redundant sign-extension bits. Output bits `[41:18]` (`comb_out[WIDTH-3 -: 24]`) as the signed 24-bit `data_out` value. This yields a **+12 dB (4×)** dynamic range boost over `[43:20]` while guaranteeing zero clipping on full-scale signals.
 
 ---
 

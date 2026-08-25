@@ -7,25 +7,28 @@ UAC1 stereo 24-bit capture format to SDR++ or Quisk.
 
 ## Dev-iCE Pico pins
 
-| Signal | GPIO | Direction |
-| --- | ---: | --- |
-| FPGA SPI0 MISO | 4 | Pico input |
-| FPGA SPI0 CS | 5 | Pico output |
-| FPGA SPI0 SCK | 6 | Pico output |
-| FPGA SPI0 MOSI | 7 | Pico output |
-| FPGA I2S RX_DATA | 14 | Pico input |
-| FPGA I2S BCK | 15 | Pico input |
-| FPGA I2S WS | 16 | Pico input |
-| FPGA interrupt | 0 | Pico input, active-high OTR notification |
-| PGA control mask | 8..11 | Pico outputs, PGA0..PGA3 |
-| FPGA CDONE | 21 | Pico input |
-| FPGA CRESET | 22 | Pico output |
-| 30.720 MHz clock | FPGA pin 37 | External oscillator |
+| Signal | GPIO | Direction | Notes |
+| --- | ---: | --- | --- |
+| FPGA SPI0 MISO | 4 | Pico input | Runtime telemetry / SPI readback |
+| FPGA SPI0 CS | 5 | Pico output | Shared CS for boot CRAM and runtime SPI |
+| FPGA SPI0 SCK | 6 | Pico output | 10 MHz runtime SPI clock |
+| FPGA SPI0 MOSI | 7 | Pico output | Runtime command frames to FPGA |
+| FPGA I2S RX_DATA | 14 | Pico input | Baseband SDR I/Q audio from FPGA (Pin 11) |
+| FPGA I2S BCK | 15 | Pico input | 3.072 MHz Bit Clock from FPGA (Pin 12) |
+| FPGA I2S WS | 16 | Pico input | 48 kHz Word Select / LRCLK from FPGA (Pin 9) |
+| FPGA I2S TX_DATA | 13 | Pico output | Transmit audio to FPGA (Pin 10) |
+| FPGA interrupt | 0 | Pico input | Active-high OTR clipping notification |
+| PGA control mask | 8..11 | Pico outputs | PGA0..PGA3 digital step attenuators |
+| FPGA CDONE | 21 | Pico input | HIGH when FPGA CRAM boot is complete |
+| FPGA CRESET | 22 | Pico output | Active-low FPGA hardware reset |
+| REF Multiplexer | 26 | Pico output | **0 = SDR RF Antenna RX**, 1 = VNA Input |
+| T/R Switch | 28 | Pico output | **1 = RX Mode**, 0 = TX Mode |
+| Onboard Pico LED | 25 | Pico output | Toggles on FREQ and RATE tuning activity |
+| 30.720 MHz clock | FPGA pin 37 | External oscillator | Master DSP clock reference |
 
-The FPGA is the I2S master. The initial firmware supports 48 kHz and 96 kHz
-UAC1 alternatives, with standard I2S, two channels, 24 valid bits, and
-little-endian three-byte USB samples. The FPGA gateware must implement the
-corresponding clocking and decimation modes.
+The FPGA is the I2S master. The firmware supports 48 kHz (and 96 kHz)
+UAC1 streaming, with standard Philips I2S framing, two channels (Left = I, Right = Q),
+24 valid bits, and little-endian three-byte (`S24_3LE`) USB samples.
 
 ## FPGA SPI protocol
 
@@ -62,35 +65,31 @@ OTR interrupt, and remains at `0xF` after the final step. Other masks remain
 available for manual calibration, but are not selected automatically until
 their gain has been measured.
 
-The FPGA should latch an OTR event, hold `fpga_int` high, and keep it high
-until it receives the `DDC_FPGA_CMD_CLEAR_OTR` command. Repeated OTR events
-may be coalesced while the interrupt is high; a future status response can
-add an event counter without changing this interrupt contract.
+The FPGA latches an OTR event, holds `fpga_int` high, and keeps it high
+until it receives the `DDC_FPGA_CMD_CLEAR_OTR` command.
 
-The checked-in AGC implementation is in `agc_control.h` and `main.c`. The
-interrupt callback only records a pending event. The foreground loop advances
-the PGA state, sends the exact clear frame `D5 01 04 04 01 00 00 00`, and uses
-a nonblocking 2-second timestamp for decay. Runtime FPGA SPI is configured to
-10 MHz after the shared SDK initializes the peripheral.
+## CDC Serial Command Reference
 
-The protocol is intentionally small and versioned so it can be implemented in
-the FPGA alongside the first DDC datapath. The FPGA should latch a complete
-frame only while CS is asserted and ignore malformed lengths or versions.
+The USB CDC interface (`/dev/ttyACM0`) supports interactive terminals (`picocom`, `minicom`, PuTTY)
+with support for both `\r` (CR) and `\n` (LF) line endings, backspace (`0x08` / `0x7F`), and Ctrl+C (`0x03`).
 
-CDC commands are:
-
-```text
-FREQ,<hz>
-RATE,<hz>
-DFU,PREPARE
-DFU,CANCEL
-DFU,STATUS
-```
-
-`FREQ,<hz>` replaces the old Si5351 parameter list. The Pico converts the
-requested Hz value to an FCW using the 30.720 MHz FPGA clock before sending
-command `01`. `XTAL` reports the FPGA clock reference as `30720000`, and
-`MODE` reports `DDC` for host discovery.
+| Command | Response | Description |
+| :--- | :--- | :--- |
+| `VER` | `VER,DDC SDR 0.1` / `OK` | Reports firmware version |
+| `MODE` | `MODE,DDC` / `OK` | Reports SDR architecture mode (`DDC`) |
+| `XTAL` | `XTAL,30720000` / `OK` | Reports master clock frequency in Hz |
+| `FPGA,STATUS` | `FPGA,RX` / `OK` | Reports currently active FPGA image (`RX`, `TX`, or `DFU`) |
+| `FPGA,LOAD,RX` | `FPGA,RX` / `OK` | Reconfigures FPGA CRAM with stored RX image |
+| `FPGA,LOAD,TX` | `FPGA,TX` / `OK` | Reconfigures FPGA CRAM with stored TX image |
+| `FREQ,<hz>` | `<hz>` / `OK` | Sets NCO tuning frequency in Hz (calculates 32-bit FCW) |
+| `RATE,<hz>` | `RATE,<hz> OK` | Sets baseband audio sample rate in Hz (e.g. 48000) |
+| `REF` | `REF,<0\|1>` / `OK` | Queries front-end RF multiplexer (`0` = SDR RF RX, `1` = VNA) |
+| `REF,<0\|1>` | `REF,<0\|1>` / `OK` | Sets front-end RF multiplexer (`0` = SDR RF RX, `1` = VNA) |
+| `PGA` | `PGA,<code>` / `OK` | Queries current PGA digital attenuator code (`0` = max $+40\text{ dB}$ gain) |
+| `PGA,<code>` | `PGA,<code>` / `OK` | Sets PGA digital attenuator code (`0..15`) |
+| `DEBUG` | `DEBUG: ready=...` / `OK` | Reports real-time DMA, I2S toggle counts, and GPIO states |
+| `BOOTSEL` | `REBOOTING_BOOTSEL` | Soft-reboots the RP2040 into USB BOOTSEL flash mode |
+| `HELP` / `?` | Command list / `OK` | Lists all available interactive CDC commands |
 
 ## Build
 
