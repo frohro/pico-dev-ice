@@ -1211,27 +1211,21 @@ int main(void)
 
 #if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
     // Initialize Wi-Fi on Pico W
+    bool wifi_ok = false;
     if (cyw43_arch_init() == 0) {
+        wifi_ok = true;
         cyw43_arch_enable_sta_mode();
         
-        // Connect to Primary AP ("Frohro-2.4GHz") or Secondary AP ("Frohro-Shop-2.4GHz")
-        int wifi_err = cyw43_arch_wifi_connect_timeout_ms(
-            DEFAULT_WIFI_SSID_PRIMARY, NULL, CYW43_AUTH_OPEN, 5000);
-        if (wifi_err != 0) {
-            // Try secondary AP
-            strncpy(s_wifi_ssid, DEFAULT_WIFI_SSID_SECONDARY, sizeof(s_wifi_ssid) - 1);
-            cyw43_arch_wifi_connect_timeout_ms(
-                DEFAULT_WIFI_SSID_SECONDARY, NULL, CYW43_AUTH_OPEN, 5000);
-        }
+        // Connect attempt async with auto-auth detection
+        uint32_t auth = (s_wifi_pass[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
+        const char *pass_param = (s_wifi_pass[0] == '\0') ? NULL : s_wifi_pass;
+        cyw43_arch_wifi_connect_async(s_wifi_ssid, pass_param, auth);
 
         // Initialize OpenHPSDR Protocol 1 UDP Server on Port 1024
         openhpsdr_init(on_hpsdr_freq_change, on_hpsdr_rate_change, on_hpsdr_gain_change);
 
         // Start TCP Control Server on Port 5000
         start_tcp_control_server();
-
-        // Turn on Pico W onboard LED when Wi-Fi is active
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
     }
 #endif
 
@@ -1240,13 +1234,52 @@ int main(void)
         i2s_start();
     }
 
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+    uint32_t last_led_poll = 0;
+    static uint32_t last_reconnect_ms = 0;
+    static uint8_t s_ssid_idx = 0;
+    static const char *s_candidate_ssids[] = {
+        "Frohro-2.4GHz",
+        "Frohne-2.4GHz",
+        "Frohro-Shop-2.4GHz",
+        "Frohne-Shop-2.4GHz"
+    };
+    static const uint8_t s_num_candidate_ssids = 4;
+#endif
+
     while (true) {
         tud_task();
         cdc_task();
 #if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
-        cyw43_arch_poll();
+        if (wifi_ok) {
+            cyw43_arch_poll();
+        }
         openhpsdr_task();
         service_hpsdr_pending_tuning();
+
+        uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+        if (wifi_ok && (now_ms - last_led_poll >= 250)) {
+            last_led_poll = now_ms;
+            int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
+            if (st == CYW43_LINK_UP) {
+                bool active = openhpsdr_is_active();
+                uint32_t period = active ? 125 : 500;
+                cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / period) % 2);
+            } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
+                cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 250) % 2);
+            } else {
+                cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 1000) % 2);
+                if (now_ms - last_reconnect_ms >= 8000) {
+                    last_reconnect_ms = now_ms;
+                    s_ssid_idx = (s_ssid_idx + 1) % s_num_candidate_ssids;
+                    strncpy(s_wifi_ssid, s_candidate_ssids[s_ssid_idx], sizeof(s_wifi_ssid) - 1);
+                    s_wifi_ssid[sizeof(s_wifi_ssid) - 1] = '\0';
+                    uint32_t auth = (s_wifi_pass[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
+                    const char *pass_param = (s_wifi_pass[0] == '\0') ? NULL : s_wifi_pass;
+                    cyw43_arch_wifi_connect_async(s_wifi_ssid, pass_param, auth);
+                }
+            }
+        }
 #endif
         handle_fpga_interrupt();
         agc_task();
