@@ -4,7 +4,11 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_DIR="${SCRIPT_DIR}/build-picow"
 
-echo "=== Building Pico-Dev-iCE OpenHPSDR Protocol 1 Firmware (Pico W) ==="
+if [ ! -f "${SCRIPT_DIR}/../pico-ice-sdk/CMakeLists.txt" ]; then
+    echo "[*] Initializing pico-ice-sdk submodule..."
+    git -C "${SCRIPT_DIR}/../.." submodule update --init Software/pico-ice-sdk
+fi
+
 mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
 
