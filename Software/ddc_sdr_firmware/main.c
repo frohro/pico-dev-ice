@@ -1138,6 +1138,21 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport,
     return tud_audio_buffer_and_schedule_control_xfer(rhport, request, &value, 1);
 }
 
+void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding)
+{
+    (void)itf;
+    if (p_line_coding->bit_rate == 1200) {
+        reset_usb_boot(0, 0);
+    }
+}
+
+void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
+{
+    (void)itf;
+    (void)dtr;
+    (void)rts;
+}
+
 int main(void)
 {
     board_init();
