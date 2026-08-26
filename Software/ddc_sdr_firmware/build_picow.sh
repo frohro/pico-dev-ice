@@ -18,12 +18,17 @@ fi
 mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
 
+BITSTREAM="${SCRIPT_DIR}/bitstreams/ddc_sdr_rx.bin"
+if [ ! -f "${BITSTREAM}" ] && [ -f "${SCRIPT_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin" ]; then
+    BITSTREAM="${SCRIPT_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin"
+fi
+
 cmake .. \
     -DPICO_BOARD=pico_w \
     -DPICO_DEV_ICE=1 \
     -DCMAKE_BUILD_TYPE=Release \
     -DFPGA_BOOT_MODE=STORED \
-    -DFPGA_RX_BITSTREAM_BIN="${SCRIPT_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin"
+    -DFPGA_RX_BITSTREAM_BIN="${BITSTREAM}"
 
 make -j$(nproc)
 

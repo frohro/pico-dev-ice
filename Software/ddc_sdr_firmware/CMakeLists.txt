@@ -32,9 +32,13 @@ set(FPGA_RX_BITSTREAM_BIN "" CACHE FILEPATH
 set(FPGA_TX_BITSTREAM_BIN "" CACHE FILEPATH
     "Packed iCE40 TX bitstream (.bin) to embed in the RP2040 firmware")
 
-# Auto-default to Lab 09 bitstream if available and none specified
-if(NOT FPGA_BITSTREAM_BIN AND NOT FPGA_RX_BITSTREAM_BIN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin")
-    set(FPGA_RX_BITSTREAM_BIN "${CMAKE_CURRENT_SOURCE_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin")
+# Auto-default to included DDC SDR RX bitstream if available and none specified
+if(NOT FPGA_BITSTREAM_BIN AND NOT FPGA_RX_BITSTREAM_BIN)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/bitstreams/ddc_sdr_rx.bin")
+        set(FPGA_RX_BITSTREAM_BIN "${CMAKE_CURRENT_SOURCE_DIR}/bitstreams/ddc_sdr_rx.bin")
+    elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin")
+        set(FPGA_RX_BITSTREAM_BIN "${CMAKE_CURRENT_SOURCE_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin")
+    endif()
 endif()
 
 set(_fpga_boot_mode_default "DFU")
