@@ -51,13 +51,15 @@ void Soapy2026SDR::_audioCallback(const void *input, unsigned int frameCount)
             _ringCount--;
             _ringOverflow = true;
         }
-        // Unpack two S24_3LE samples, sign-extend to 32-bit, normalize to [-1.0, +1.0]
+        // Unpack two S24_3LE samples and sign-extend
         const uint8_t *p = src + i * 6;
         int32_t rawI = (int32_t)((uint32_t)p[0] | ((uint32_t)p[1] << 8) | ((uint32_t)p[2] << 16));
         if (rawI & 0x800000) rawI |= 0xFF000000;  // sign-extend bit 23
         int32_t rawQ = (int32_t)((uint32_t)p[3] | ((uint32_t)p[4] << 8) | ((uint32_t)p[5] << 16));
         if (rawQ & 0x800000) rawQ |= 0xFF000000;
-        float I = static_cast<float>(rawI) / 8388608.0f;  // 2^23
+
+        // Normalize 24-bit ALSA S24_3LE sample to [-1.0, +1.0] by 8388608.0f (2^23)
+        float I = static_cast<float>(rawI) / 8388608.0f;
         float Q = static_cast<float>(rawQ) / 8388608.0f;
         _ring[_ringTail]     = I;
         _ring[_ringTail + 1] = Q;
@@ -204,8 +206,8 @@ std::vector<std::string> Soapy2026SDR::getStreamFormats(int, size_t) const
 std::string Soapy2026SDR::getNativeStreamFormat(int, size_t,
                                                   double &fullScale) const
 {
-    fullScale = 2147483648.0;
-    return SOAPY_SDR_CS32;
+    fullScale = 1.0;
+    return SOAPY_SDR_CF32;
 }
 
 SoapySDR::Stream *Soapy2026SDR::setupStream(int dir,
@@ -217,6 +219,8 @@ SoapySDR::Stream *Soapy2026SDR::setupStream(int dir,
         throw std::runtime_error("2026SDR: only RX streaming supported");
     if (format != SOAPY_SDR_CF32 && format != SOAPY_SDR_CS16)
         throw std::runtime_error("2026SDR: unsupported format " + format);
+
+    _streamFormat = format;
 
     // Reset ring buffer
     {
@@ -279,13 +283,25 @@ int Soapy2026SDR::readStream(SoapySDR::Stream *stream,
     }
 
     size_t toRead = std::min(numElems, _ringCount);
-    auto  *dst    = static_cast<float *>(buffs[0]);
 
-    for (size_t i = 0; i < toRead; i++) {
-        dst[i * 2 + 0] = _ring[_ringHead];          // I
-        dst[i * 2 + 1] = _ring[_ringHead + 1];      // Q
-        _ringHead = (_ringHead + 2) % _ring.size();
-        _ringCount--;
+    if (_streamFormat == SOAPY_SDR_CS16) {
+        auto *dst = static_cast<int16_t *>(buffs[0]);
+        for (size_t i = 0; i < toRead; i++) {
+            float I = _ring[_ringHead];
+            float Q = _ring[_ringHead + 1];
+            dst[i * 2 + 0] = static_cast<int16_t>(std::max(-32768.0f, std::min(32767.0f, I * 32767.0f)));
+            dst[i * 2 + 1] = static_cast<int16_t>(std::max(-32768.0f, std::min(32767.0f, Q * 32767.0f)));
+            _ringHead = (_ringHead + 2) % _ring.size();
+            _ringCount--;
+        }
+    } else {
+        auto *dst = static_cast<float *>(buffs[0]);
+        for (size_t i = 0; i < toRead; i++) {
+            dst[i * 2 + 0] = _ring[_ringHead];          // I
+            dst[i * 2 + 1] = _ring[_ringHead + 1];      // Q
+            _ringHead = (_ringHead + 2) % _ring.size();
+            _ringCount--;
+        }
     }
 
     return static_cast<int>(toRead);

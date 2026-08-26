@@ -70,15 +70,18 @@ static std::vector<SoapySDR::Kwargs> find2026SDR(const SoapySDR::Kwargs &args)
 
         // Send Ctrl-C / Ctrl-D to abort any partial command, then ask for VER.
         char reset[] = {0x03, 0x04, 0};
+        sp.flushInput();
         sp.writeLine(std::string(reset));
         sp.flushInput();
 
         sp.writeLine("VER");
         std::string reply;
         for (int attempt = 0; attempt < 6; attempt++) {
-            reply = sp.readLine(400);
-            if (reply.rfind("VER,", 0) == 0) break;
-            reply.clear();
+            std::string line = sp.readLine(400);
+            if (line.rfind("VER,", 0) == 0) {
+                reply = line;
+            }
+            if (line == "OK" && !reply.empty()) break;
         }
 
         if (reply.empty()) {
@@ -87,12 +90,15 @@ static std::vector<SoapySDR::Kwargs> find2026SDR(const SoapySDR::Kwargs &args)
         }
 
         // Query MODE
+        sp.flushInput();
         sp.writeLine("MODE");
         std::string modeReply;
         for (int attempt = 0; attempt < 6; attempt++) {
-            modeReply = sp.readLine(400);
-            if (modeReply.rfind("MODE,", 0) == 0) break;
-            modeReply.clear();
+            std::string line = sp.readLine(400);
+            if (line.rfind("MODE,", 0) == 0) {
+                modeReply = line;
+            }
+            if (line == "OK" && !modeReply.empty()) break;
         }
         sp.close();
 

@@ -193,16 +193,16 @@ void Soapy2026SDR::setGain(int dir, size_t ch, const std::string &name, double v
     if (!_isDDC || dir != SOAPY_SDR_RX || ch != 0) return;
 
     // Map nominal dB gain to PGA codes:
-    // +40 dB -> 0x0
-    // +35 dB -> 0x1
-    // +25 dB -> 0x3
-    // -15 dB -> 0xF
+    // +40 dB -> 0x0 (straight path, 0 dB attenuation)
+    // +35 dB -> 0x1 (5 dB attenuation)
+    // +25 dB -> 0x3 (15 dB attenuation)
+    // -15 dB -> 0xF (55 dB attenuation)
     uint8_t code = 0x0;
     if (value >= 37.5) {
         code = 0x0; // +40 dB
     } else if (value >= 30.0) {
         code = 0x1; // +35 dB
-    } else if (value >= 10.0) {
+    } else if (value >= 5.0) {
         code = 0x3; // +25 dB
     } else {
         code = 0xF; // -15 dB
@@ -239,10 +239,18 @@ double Soapy2026SDR::getGain(int dir, size_t ch) const
 // ─── Sample Rate ─────────────────────────────────────────────────────────────
 
 std::vector<double> Soapy2026SDR::listSampleRates(int, size_t) const
-{ return {48000.0, 96000.0}; }
+{
+    if (_isDDC) {
+        return {48000.0};
+    }
+    return {48000.0, 96000.0};
+}
 
 SoapySDR::RangeList Soapy2026SDR::getSampleRateRange(int, size_t) const
 {
+    if (_isDDC) {
+        return {SoapySDR::Range(48000.0, 48000.0)};
+    }
     return {
         SoapySDR::Range(48000.0, 48000.0),
         SoapySDR::Range(96000.0, 96000.0)
@@ -324,11 +332,11 @@ void Soapy2026SDR::_programFrequencyDDC(double rfHz)
 
     // Read responses (e.g. "<freqHz>\r\nOK\r\n")
     std::string ok;
-    for (int attempt = 0; attempt < 4; attempt++) {
+    for (int attempt = 0; attempt < 5; attempt++) {
         std::string line = _serialReadLine(300);
         if (line.empty()) continue;
         ok = line;
-        if (ok.find("OK") != std::string::npos) break;
+        if (ok.find("OK") != std::string::npos || ok.find("ERROR") != std::string::npos) break;
     }
 
     _pllStatus = ok;
@@ -395,6 +403,7 @@ void Soapy2026SDR::writeSetting(const std::string &key, const std::string &value
 
 void Soapy2026SDR::_serialWrite(const std::string &line)
 {
+    _serial.flushInput();
     _serial.writeLine(line);
 }
 
@@ -406,16 +415,26 @@ std::string Soapy2026SDR::_serialReadLine(int timeoutMs)
 std::string Soapy2026SDR::_getParam(const std::string &cmd)
 {
     _serialWrite(cmd);
-    // Read lines until we find "CMD,value" or a terminal "OK"/"ERR"
+    std::string result;
+    // Read lines until we find the value line and terminal "OK"/"ERR"
     for (int attempt = 0; attempt < 10; attempt++) {
         std::string line = _serialReadLine(500);
         if (line.empty()) continue;
-        if (line == "OK" || line == "ERR") return line;
+        if (line == "OK") {
+            if (!result.empty()) return result;
+            return "OK";
+        }
+        if (line == "ERR" || line.find("ERROR") != std::string::npos) {
+            return line;
+        }
         auto comma = line.find(',');
-        if (comma != std::string::npos)
-            return line.substr(comma + 1);
+        if (comma != std::string::npos) {
+            result = line.substr(comma + 1);
+        } else {
+            result = line;
+        }
     }
-    return "";
+    return result;
 }
 
 void Soapy2026SDR::_setParam(const std::string &cmd, const std::string &val)
@@ -425,7 +444,10 @@ void Soapy2026SDR::_setParam(const std::string &cmd, const std::string &val)
     for (int attempt = 0; attempt < 10; attempt++) {
         std::string line = _serialReadLine(500);
         if (line.empty()) continue;
-        if (line.find("OK") != std::string::npos || line.find("ERR") != std::string::npos) return;
+        if (line.find("OK") != std::string::npos ||
+            line.find("ERR") != std::string::npos ||
+            line.find("ERROR") != std::string::npos)
+            return;
     }
 }
 

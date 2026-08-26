@@ -134,6 +134,7 @@ private:
     void       *_audio;          // AudioImpl*; cast in Streaming.cpp
     double      _sampleRate;
     std::string _audioDeviceName; // e.g. "DDC SDR 2026", "WWU SDR"
+    std::string _streamFormat;
 
     /* ── Ring buffer (audio thread → readStream) ────────────────────────── */
     static constexpr size_t RING_FRAMES = 131072; // ~2.7 s at 48 kHz

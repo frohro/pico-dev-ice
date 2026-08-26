@@ -32,14 +32,24 @@ class Hardware(BaseHardware):
         while time.time() < deadline:
             if b"SDR ready" in self.or_serial.readline():
                 break
+        
+        # Flush any trailing prompt/banner data sent after "SDR ready"
+        time.sleep(0.05)
+        self.or_serial.reset_input_buffer()
         self.or_serial.timeout = 3
 
         version = self._get_parameter("VER")
-        self._crystal_freq = float(self._get_parameter("XTAL"))
+        xtal_val = self._get_parameter("XTAL")
+        try:
+            self._crystal_freq = float(xtal_val)
+        except ValueError:
+            # Fallback if XTAL is not reported or invalid
+            self._crystal_freq = 122880000.0
+
         mode = self._get_parameter("MODE")
         if str(mode).strip().upper() != "DDC":
             raise serial.serialutil.SerialException(
-                "Connected device is not a Dev-iCE DDC SDR")
+                f"Connected device is not a Dev-iCE DDC SDR (mode reported: {mode})")
 
         self._set_parameter("RATE", str(sample_rate))
         self._last_tune = None
@@ -83,6 +93,8 @@ class Hardware(BaseHardware):
             pass
 
     def _send(self, line):
+        # Clear any unread stale response bytes before sending a new command
+        self.or_serial.reset_input_buffer()
         self.or_serial.write((line + "\r\n").encode())
 
     def _readline(self):
@@ -90,7 +102,15 @@ class Hardware(BaseHardware):
 
     def _get_parameter(self, command):
         self._send(command)
-        return self._get_argument()
+        for _ in range(10):
+            line = self._readline().decode(errors='replace').strip()
+            if not line or line == "OK":
+                continue
+            if line.startswith(command + ","):
+                return line.split(",", 1)[1]
+            if "," in line:
+                return line.split(",", 1)[1]
+        return -1
 
     def _set_parameter(self, command, value):
         self._send("%s,%s" % (command, value))
