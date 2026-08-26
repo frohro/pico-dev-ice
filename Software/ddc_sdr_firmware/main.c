@@ -18,6 +18,14 @@
 #include "hardware/vreg.h"
 #include "pico/stdlib.h"
 #include "pico/bootrom.h"
+#include "pico/multicore.h"
+
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+#include "pico/cyw43_arch.h"
+#include "lwip/tcp.h"
+#include "openhpsdr.h"
+#include "wifi_config.h"
+#endif
 
 #include "boards.h"
 #include "agc_control.h"
@@ -51,7 +59,7 @@
 #define DDC_TX_BUFFER_COUNT 4u
 #define DDC_AUDIO_CAPTURE_INTERFACE 3u
 #define DDC_AUDIO_PLAYBACK_INTERFACE 4u
-#define DDC_LINE_BUFFER_SIZE 80u
+#define DDC_LINE_BUFFER_SIZE 128u
 
 typedef enum {
     DDC_FPGA_IMAGE_RX,
@@ -100,10 +108,26 @@ static uint32_t tx_fill_words;
 static char line_buffer[DDC_LINE_BUFFER_SIZE];
 static uint8_t line_length;
 static bool ready_message_sent;
-static uint32_t last_frequency_hz;
+static uint32_t last_frequency_hz = 7050000u;
 static uint32_t freq_cmd_count;
 
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+static char s_wifi_ssid[64] = DEFAULT_WIFI_SSID_PRIMARY;
+static char s_wifi_pass[64] = DEFAULT_WIFI_PASSWORD;
+static struct tcp_pcb *s_tcp_server_pcb = NULL;
+static struct tcp_pcb *s_active_tcp_client = NULL;
+static volatile uint32_t s_pending_hpsdr_freq = 0;
+static volatile uint32_t s_pending_hpsdr_rate = 0;
+static volatile uint8_t s_pending_hpsdr_gain = 0xFF;
+#endif
+
+/* Forward declarations */
 static bool fpga_write_command(uint8_t command, uint32_t value);
+static bool fpga_set_frequency(uint32_t frequency_hz);
+static bool apply_sample_rate(uint32_t rate);
+static void pga_set_code(uint8_t pga_code);
+static void cdc_write(const char *text);
+static void handle_line(const char *line, uint8_t length, void (*reply_fn)(const char *));
 
 static bool fpga_get_stored_image(ddc_fpga_image_t image,
                                   ddc_fpga_bitstream_t *bitstream)
@@ -151,16 +175,6 @@ static void tr_set_receive(bool receive)
     gpio_put(DDC_TR_PIN, receive ? 1u : 0u);
 }
 
-static void pga_set_code(uint8_t code)
-{
-    code &= DDC_PGA_MAX_CODE;
-    for (uint gpio = DDC_PGA_GPIO_BASE;
-         gpio < DDC_PGA_GPIO_BASE + DDC_PGA_GPIO_COUNT;
-         gpio++) {
-        gpio_put(gpio, (code >> (gpio - DDC_PGA_GPIO_BASE)) & 1u);
-    }
-}
-
 static void fpga_interrupt_handler(uint gpio, uint32_t events)
 {
     (void)gpio;
@@ -168,36 +182,109 @@ static void fpga_interrupt_handler(uint gpio, uint32_t events)
     fpga_interrupt_pending = true;
 }
 
-static void handle_fpga_interrupt(void)
+static void runtime_spi_init(void)
 {
-    if (!fpga_interrupt_pending || !fpga_ready || !runtime_spi_ready) {
+    if (runtime_spi_ready) {
         return;
     }
 
-    fpga_interrupt_pending = false;
-    if (ddc_agc_on_otr(&agc_state))
-        pga_set_code(agc_state.pga_code);
-    fpga_write_command(DDC_FPGA_CMD_CLEAR_OTR, 1u);
+    ice_spi_init_cs_pin(FPGA_DATA.bus.CS_cram, true);
+    ice_spi_init(FPGA_DATA.bus);
+    spi_set_baudrate(FPGA_DATA.bus.peripheral, DDC_RUNTIME_SPI_BAUD_HZ);
+    runtime_spi_ready = true;
 }
 
-static void agc_task(void)
+static void runtime_spi_deinit(void)
 {
-    bool fpga_int_high;
-    uint64_t now_ms;
-
-    if (!fpga_ready || update_prepared)
+    if (!runtime_spi_ready) {
         return;
+    }
 
-    fpga_int_high = gpio_get(DDC_FPGA_INT_PIN);
-    now_ms = time_us_64() / 1000u;
-    if (ddc_agc_tick(&agc_state, fpga_int_high, now_ms))
-        pga_set_code(agc_state.pga_code);
+    ice_spi_deinit();
+    runtime_spi_ready = false;
 }
 
-static void cdc_write(const char *text)
+static bool restore_fpga_runtime(void)
 {
-    tud_cdc_write_str(text);
-    tud_cdc_write_flush();
+    runtime_spi_init();
+    if (!fpga_set_frequency(last_frequency_hz)) {
+        return false;
+    }
+    if (!fpga_write_command(DDC_FPGA_CMD_SET_SAMPLE_RATE, sample_rate)) {
+        return false;
+    }
+    return true;
+}
+
+static bool configure_stored_fpga(ddc_fpga_image_t image)
+{
+    ddc_fpga_bitstream_t bitstream;
+
+    if (!fpga_get_stored_image(image, &bitstream)) {
+        return false;
+    }
+
+    runtime_spi_deinit();
+    fpga_ready = false;
+    ice_cram_open(FPGA_DATA);
+    ice_cram_write(bitstream.data, bitstream.size);
+    return ice_cram_close();
+}
+
+static bool prepare_fpga_update(void)
+{
+    if (update_prepared) {
+        return true;
+    }
+
+    tr_set_receive(true);
+    if (i2s_running) {
+        pio_sm_set_enabled(pio0, 0, false);
+    }
+    if (tx_running) {
+        pio_sm_set_enabled(pio0, 1, false);
+    }
+    runtime_spi_deinit();
+    fpga_ready = false;
+    update_prepared = true;
+    return true;
+}
+
+static void complete_fpga_update(bool success)
+{
+    (void)success;
+    update_prepared = false;
+    fpga_ready = true;
+    active_fpga_image = DDC_FPGA_IMAGE_DFU;
+
+    if (!restore_fpga_runtime()) {
+        fpga_ready = false;
+        return;
+    }
+
+    if (i2s_running) {
+        pio_sm_restart(pio0, 0);
+        pio_sm_set_enabled(pio0, 0, true);
+    }
+    if (tx_running) {
+        pio_sm_restart(pio0, 1);
+        pio_sm_set_enabled(pio0, 1, true);
+        tr_set_receive(false);
+    }
+}
+
+static bool cancel_fpga_update(void)
+{
+    if (!update_prepared) {
+        return true;
+    }
+
+    update_prepared = false;
+    if (active_fpga_image != DDC_FPGA_IMAGE_DFU && configure_stored_fpga(active_fpga_image)) {
+        complete_fpga_update(true);
+        return true;
+    }
+    return false;
 }
 
 static void dma_handler(void)
@@ -248,118 +335,98 @@ static void i2s_configure(void)
 
 static void i2s_stop(void)
 {
-    if (dma_channel_a < 0 || dma_channel_b < 0) {
+    if (!i2s_running) {
         return;
     }
 
     dma_channel_abort(dma_channel_a);
     dma_channel_abort(dma_channel_b);
-    dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
     pio_sm_set_enabled(pio0, 0, false);
     pio_sm_clear_fifos(pio0, 0);
     ready_buffers = 0;
     i2s_running = false;
-    if (!tx_running) {
-        irq_set_enabled(DMA_IRQ_0, false);
-    }
 }
 
 static void i2s_start(void)
 {
-    if (i2s_running || !fpga_ready || capture_alt == 0) {
+    if (i2s_running || !fpga_ready) {
         return;
     }
 
     i2s_configure();
+    ready_buffers = 0;
+    i2s_running = true;
     dma_channel_set_write_addr(dma_channel_a, audio_buffer_a, false);
     dma_channel_set_trans_count(dma_channel_a, words_per_buffer, false);
     dma_channel_set_write_addr(dma_channel_b, audio_buffer_b, false);
     dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
-    dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
-    pio_sm_restart(pio0, 0);
-    pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
-    pio_sm_set_enabled(pio0, 0, true);
-    ready_buffers = 0;
-    irq_set_enabled(DMA_IRQ_0, true);
     dma_channel_start(dma_channel_a);
-    i2s_running = true;
+    pio_sm_restart(pio0, 0);
+    pio_sm_set_enabled(pio0, 0, true);
 }
 
 static void tx_configure(void)
 {
     pio_gpio_init(pio0, DDC_I2S_TX_PIN);
-    pio_gpio_init(pio0, DDC_I2S_DATA_PIN);
-    pio_gpio_init(pio0, DDC_I2S_BCK_PIN);
-    pio_gpio_init(pio0, DDC_I2S_WS_PIN);
-    gpio_pull_down(DDC_I2S_BCK_PIN);
-    gpio_pull_down(DDC_I2S_WS_PIN);
-    pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_DATA_PIN, 3, false);
     pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_TX_PIN, 1, true);
 
     pio_sm_config config = i2s_tx_program_get_default_config(g_tx_pio_offset);
-    sm_config_set_in_pins(&config, DDC_I2S_DATA_PIN);
     sm_config_set_out_pins(&config, DDC_I2S_TX_PIN, 1);
     sm_config_set_out_shift(&config, false, true, 32);
-    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_TX);
     sm_config_set_clkdiv(&config, 1.0f);
     pio_sm_init(pio0, 1, g_tx_pio_offset, &config);
 }
 
 static void tx_stop(void)
 {
-    uint32_t saved_interrupts = save_and_disable_interrupts();
+    if (!tx_running) {
+        return;
+    }
 
     if (tx_dma_channel >= 0) {
         dma_channel_abort(tx_dma_channel);
-        dma_hw->ints0 = 1u << tx_dma_channel;
     }
     pio_sm_set_enabled(pio0, 1, false);
     pio_sm_clear_fifos(pio0, 1);
     tx_ready_mask = 0;
     tx_dma_active = false;
     tx_dma_silence = false;
-    tx_fill_buffer = 0;
-    tx_fill_words = 0;
     tx_running = false;
     tr_set_receive(true);
-    if (!i2s_running) {
-        irq_set_enabled(DMA_IRQ_0, false);
-    }
-    restore_interrupts(saved_interrupts);
 }
 
 static void tx_start_next_dma(void)
 {
-    uint32_t ready;
     uint32_t saved_interrupts;
-    uint8_t index;
+    uint32_t mask;
+    const uint32_t *source;
+    uint8_t buffer_index;
 
     saved_interrupts = save_and_disable_interrupts();
-    if (!tx_running || tx_dma_active || tx_dma_channel < 0) {
+    if (tx_dma_active || !tx_running) {
         restore_interrupts(saved_interrupts);
         return;
     }
 
-    ready = tx_ready_mask;
-    for (index = 0; index < DDC_TX_BUFFER_COUNT; index++) {
-        if (ready & (1u << index)) {
-            tx_dma_buffer = index;
-            tx_dma_silence = false;
-            tx_dma_active = true;
-            dma_channel_configure(tx_dma_channel, &tx_dma_config,
-                                  &pio0->txf[1],
-                                  tx_audio_buffers[index],
-                                  words_per_buffer,
-                                  true);
-            restore_interrupts(saved_interrupts);
-            return;
+    mask = tx_ready_mask;
+    if (mask != 0) {
+        for (buffer_index = 0; buffer_index < DDC_TX_BUFFER_COUNT; buffer_index++) {
+            if (mask & (1u << buffer_index)) {
+                break;
+            }
         }
+        source = tx_audio_buffers[buffer_index];
+        tx_dma_buffer = buffer_index;
+        tx_dma_silence = false;
+    } else {
+        memset(tx_silence_buffer, 0, words_per_buffer * sizeof(uint32_t));
+        source = tx_silence_buffer;
+        tx_dma_silence = true;
     }
 
-    tx_dma_silence = true;
     tx_dma_active = true;
     dma_channel_configure(tx_dma_channel, &tx_dma_config,
-                          &pio0->txf[1], tx_silence_buffer,
+                          &pio0->txf[1], source,
                           words_per_buffer, true);
     restore_interrupts(saved_interrupts);
 }
@@ -409,82 +476,68 @@ static bool tx_select_fill_buffer(void)
 
 static void tx_task(void)
 {
-    uint8_t packet[582];
+    uint8_t packet[DDC_MAX_WORDS_PER_BUFFER * 3u];
+    uint16_t bytes_read;
+    uint32_t words_read;
+    uint32_t index;
 
-    if (!tx_running || !tud_audio_mounted()) {
+    if (!tx_running || playback_alt == 0) {
         return;
-    }
-
-    while (tud_audio_available() >= 6u && tx_select_fill_buffer()) {
-        uint32_t available_frames = tud_audio_available() / 6u;
-        uint32_t capacity_frames = (words_per_buffer - tx_fill_words) / 2u;
-        uint32_t frames = available_frames < capacity_frames
-                        ? available_frames : capacity_frames;
-        uint16_t bytes;
-        uint16_t received;
-
-        if (frames == 0) {
-            tx_ready_mask |= 1u << tx_fill_buffer;
-            tx_fill_words = 0;
-            tx_fill_buffer = (uint8_t)((tx_fill_buffer + 1u) % DDC_TX_BUFFER_COUNT);
-            continue;
-        }
-
-        bytes = (uint16_t)(frames * 6u);
-        received = tud_audio_read(packet, bytes);
-        received -= (uint16_t)(received % 6u);
-        if (received == 0) {
-            break;
-        }
-        for (uint32_t offset = 0; offset < received; offset += 6u) {
-            uint32_t left = (uint32_t)packet[offset]
-                          | ((uint32_t)packet[offset + 1u] << 8)
-                          | ((uint32_t)packet[offset + 2u] << 16);
-            uint32_t right = (uint32_t)packet[offset + 3u]
-                           | ((uint32_t)packet[offset + 4u] << 8)
-                           | ((uint32_t)packet[offset + 5u] << 16);
-            if (audio_mute[0]) {
-                left = 0;
-                right = 0;
-            }
-            tx_audio_buffers[tx_fill_buffer][tx_fill_words++] = left << 8;
-            tx_audio_buffers[tx_fill_buffer][tx_fill_words++] = right << 8;
-        }
-
-        if (tx_fill_words == words_per_buffer) {
-            uint32_t saved_interrupts = save_and_disable_interrupts();
-            tx_ready_mask |= 1u << tx_fill_buffer;
-            restore_interrupts(saved_interrupts);
-            tx_fill_words = 0;
-            tx_fill_buffer = (uint8_t)((tx_fill_buffer + 1u) % DDC_TX_BUFFER_COUNT);
-        }
     }
 
     tx_start_next_dma();
+
+    while (tud_audio_available() >= 6u && tx_select_fill_buffer()) {
+        bytes_read = tud_audio_read(packet, sizeof(packet));
+        if (bytes_read == 0) {
+            break;
+        }
+
+        words_read = bytes_read / 3u;
+        for (index = 0; index < words_read && tx_fill_words < words_per_buffer; index++) {
+            uint32_t word = ((uint32_t)packet[3u * index])
+                          | ((uint32_t)packet[3u * index + 1u] << 8)
+                          | ((uint32_t)packet[3u * index + 2u] << 16);
+            tx_audio_buffers[tx_fill_buffer][tx_fill_words++] = word << 8;
+        }
+
+        if (tx_fill_words >= words_per_buffer) {
+            uint32_t saved_interrupts = save_and_disable_interrupts();
+            tx_ready_mask |= 1u << tx_fill_buffer;
+            tx_fill_buffer = (uint8_t)((tx_fill_buffer + 1u) % DDC_TX_BUFFER_COUNT);
+            tx_fill_words = 0;
+            restore_interrupts(saved_interrupts);
+            tx_start_next_dma();
+        }
+    }
 }
 
-static void runtime_spi_stop(void)
+static void pga_set_code(uint8_t pga_code)
 {
-    if (!runtime_spi_ready) {
+    for (uint offset = 0; offset < DDC_PGA_GPIO_COUNT; offset++) {
+        gpio_put(DDC_PGA_GPIO_BASE + offset, (pga_code >> offset) & 1u);
+    }
+}
+
+static void handle_fpga_interrupt(void)
+{
+    if (!fpga_interrupt_pending) {
         return;
     }
 
-    ice_spi_chip_deselect(FPGA_DATA.bus.CS_cram);
-    ice_spi_deinit();
-    runtime_spi_ready = false;
+    fpga_interrupt_pending = false;
+    if (ddc_agc_on_otr(&agc_state)) {
+        pga_set_code(agc_state.pga_code);
+    }
+    (void)fpga_write_command(DDC_FPGA_CMD_CLEAR_OTR, 1u);
 }
 
-static bool fpga_runtime_init(void)
+static void agc_task(void)
 {
-    if (runtime_spi_ready) {
-        return true;
+    uint64_t now_ms = to_ms_since_boot(get_absolute_time());
+    if (ddc_agc_tick(&agc_state, gpio_get(DDC_FPGA_INT_PIN), now_ms)) {
+        pga_set_code(agc_state.pga_code);
     }
-
-    ice_spi_init_cs_pin(FPGA_DATA.bus.CS_cram, false);
-    runtime_spi_ready = ice_spi_init(FPGA_DATA.bus);
-    if (runtime_spi_ready)
-        spi_set_baudrate(FPGA_DATA.bus.peripheral, DDC_RUNTIME_SPI_BAUD_HZ);
-    return runtime_spi_ready;
 }
 
 static bool fpga_write_command(uint8_t command, uint32_t value)
@@ -495,7 +548,7 @@ static bool fpga_write_command(uint8_t command, uint32_t value)
         return false;
     }
 
-    ddc_make_u32_command(frame, command, value);
+    (void)ddc_make_u32_command(frame, command, value);
     ice_spi_chip_select(FPGA_DATA.bus.CS_cram);
     ice_spi_write_blocking(frame, sizeof(frame));
     ice_spi_chip_deselect(FPGA_DATA.bus.CS_cram);
@@ -509,7 +562,7 @@ static bool fpga_set_sample_rate(uint32_t rate)
 
 static bool fpga_set_frequency(uint32_t frequency_hz)
 {
-    if (frequency_hz == 0 || frequency_hz > DDC_FPGA_MAX_FREQUENCY_HZ) {
+    if (frequency_hz > DDC_FPGA_MAX_FREQUENCY_HZ) {
         return false;
     }
     return fpga_write_command(DDC_FPGA_CMD_SET_FREQUENCY,
@@ -537,43 +590,6 @@ static void fpga_interrupt_configure(void)
                                         GPIO_IRQ_EDGE_RISE,
                                         true,
                                         fpga_interrupt_handler);
-}
-
-static bool configure_fpga_bitstream(const uint8_t *bitstream, size_t size)
-{
-    ice_fpga_init(FPGA_DATA, 48);
-    ice_fpga_stop(FPGA_DATA);
-    if (!ice_cram_open(FPGA_DATA)) {
-        return false;
-    }
-    if (ice_cram_write(bitstream, size) < 0) {
-        ice_cram_close();
-        return false;
-    }
-    return ice_cram_close();
-}
-
-static bool configure_stored_fpga(ddc_fpga_image_t image)
-{
-    ddc_fpga_bitstream_t bitstream;
-
-    if (!fpga_get_stored_image(image, &bitstream)) {
-        return false;
-    }
-    return configure_fpga_bitstream(bitstream.data, bitstream.size);
-}
-
-static bool restore_fpga_runtime(void)
-{
-    if (!fpga_runtime_init()) {
-        return false;
-    }
-
-    fpga_ready = true;
-    fpga_set_sample_rate(sample_rate);
-    i2s_start();
-    tx_start();
-    return true;
 }
 
 static bool apply_sample_rate(uint32_t rate)
@@ -620,63 +636,33 @@ static bool apply_sample_rate(uint32_t rate)
     return true;
 }
 
-static bool prepare_fpga_update(void)
+static bool switch_stored_fpga(ddc_fpga_image_t image)
 {
-    if (update_prepared) {
+    bool was_running = i2s_running;
+    bool was_tx_running = tx_running;
+    bool success;
+
+    if (image == active_fpga_image) {
         return true;
     }
 
     i2s_stop();
     tx_stop();
-    runtime_spi_stop();
-    fpga_ready = false;
-    update_prepared = true;
-    return true;
-}
-
-static void complete_fpga_update(bool success)
-{
-    update_prepared = false;
-    fpga_ready = false;
-
-    if (!success || !restore_fpga_runtime()) {
-        active_fpga_image = DDC_FPGA_IMAGE_DFU;
-        return;
-    }
-    active_fpga_image = DDC_FPGA_IMAGE_DFU;
-}
-
-static bool cancel_fpga_update(void)
-{
-    if (!update_prepared) {
-        return true;
-    }
-
-    update_prepared = false;
-    if (!restore_fpga_runtime()) {
-        fpga_ready = false;
-        active_fpga_image = DDC_FPGA_IMAGE_DFU;
-        return false;
-    }
-
-    return true;
-}
-
-static bool switch_stored_fpga(ddc_fpga_image_t image)
-{
-    bool success;
-    ddc_fpga_bitstream_t bitstream;
-
-    if (image == DDC_FPGA_IMAGE_DFU ||
-        !fpga_get_stored_image(image, &bitstream)) {
-        return false;
-    }
-    if (!prepare_fpga_update()) {
-        return false;
-    }
+    tr_set_receive(true);
 
     success = configure_stored_fpga(image);
-    complete_fpga_update(success);
+    if (success && restore_fpga_runtime()) {
+        fpga_ready = true;
+        if (was_running) {
+            i2s_start();
+        }
+        if (was_tx_running) {
+            tx_start();
+        }
+    } else {
+        fpga_ready = false;
+    }
+
     if (success && fpga_ready) {
         active_fpga_image = image;
     }
@@ -692,7 +678,7 @@ static void audio_task(void)
     tu_fifo_t *fifo;
     static uint8_t packed[DDC_MAX_WORDS_PER_BUFFER * 3u];
 
-    if (!i2s_running || !tud_audio_mounted()) {
+    if (!i2s_running) {
         return;
     }
 
@@ -708,61 +694,202 @@ static void audio_task(void)
 
     source = (mask & 1u) ? audio_buffer_a : audio_buffer_b;
     words = words_per_buffer;
-    fifo = tud_audio_get_ep_in_ff();
-    if (fifo == NULL || tu_fifo_remaining(fifo) < words * 3u) {
-        return;
-    }
 
-    for (uint32_t index = 0; index < words; index++) {
-        uint32_t word = source[index];
-        packed[3u * index] = (uint8_t)(word >> 8);
-        packed[3u * index + 1u] = (uint8_t)(word >> 16);
-        packed[3u * index + 2u] = (uint8_t)(word >> 24);
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+    // 1. Stream via OpenHPSDR Protocol 1 over Wi-Fi
+    if (openhpsdr_is_active()) {
+        openhpsdr_push_samples(source, words);
     }
-    tud_audio_write(packed, (uint16_t)(words * 3u));
+#endif
+
+    // 2. Stream via USB Audio Class 1.0 if USB host is listening
+    if (tud_audio_mounted() && capture_alt > 0) {
+        fifo = tud_audio_get_ep_in_ff();
+        if (fifo != NULL && tu_fifo_remaining(fifo) >= words * 3u) {
+            for (uint32_t index = 0; index < words; index++) {
+                uint32_t word = source[index];
+                packed[3u * index] = (uint8_t)(word >> 8);
+                packed[3u * index + 1u] = (uint8_t)(word >> 16);
+                packed[3u * index + 2u] = (uint8_t)(word >> 24);
+            }
+            tud_audio_write(packed, (uint16_t)(words * 3u));
+        }
+    }
 }
 
-static void handle_line(const char *line, uint8_t length)
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+static void on_hpsdr_freq_change(uint32_t freq_hz) {
+    s_pending_hpsdr_freq = freq_hz;
+}
+
+static void on_hpsdr_rate_change(uint32_t rate_hz) {
+    s_pending_hpsdr_rate = rate_hz;
+}
+
+static void on_hpsdr_gain_change(uint8_t pga_code) {
+    s_pending_hpsdr_gain = pga_code;
+}
+
+static void service_hpsdr_pending_tuning(void) {
+    if (s_pending_hpsdr_rate != 0) {
+        uint32_t r = s_pending_hpsdr_rate;
+        s_pending_hpsdr_rate = 0;
+        apply_sample_rate(r);
+    }
+    if (s_pending_hpsdr_freq != 0) {
+        uint32_t f = s_pending_hpsdr_freq;
+        s_pending_hpsdr_freq = 0;
+        if (fpga_ready && fpga_set_frequency(f)) {
+            last_frequency_hz = f;
+            freq_cmd_count++;
+        }
+    }
+    if (s_pending_hpsdr_gain != 0xFF) {
+        uint8_t g = s_pending_hpsdr_gain;
+        s_pending_hpsdr_gain = 0xFF;
+        agc_state.pga_code = g;
+        pga_set_code(g);
+    }
+}
+
+static void tcp_write_str(const char *s) {
+    if (s_active_tcp_client) {
+        tcp_write(s_active_tcp_client, s, (u16_t)strlen(s), TCP_WRITE_FLAG_COPY);
+        tcp_output(s_active_tcp_client);
+    }
+}
+
+static err_t tcp_client_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
+    (void)arg;
+    if (!p) {
+        tcp_close(tpcb);
+        s_active_tcp_client = NULL;
+        return ERR_OK;
+    }
+    s_active_tcp_client = tpcb;
+    char line_buf[DDC_LINE_BUFFER_SIZE];
+    u16_t len = (p->len < DDC_LINE_BUFFER_SIZE - 1) ? p->len : DDC_LINE_BUFFER_SIZE - 1;
+    pbuf_copy_partial(p, line_buf, len, 0);
+    line_buf[len] = '\0';
+
+    while (len > 0 && (line_buf[len-1] == '\r' || line_buf[len-1] == '\n')) {
+        line_buf[--len] = '\0';
+    }
+
+    handle_line(line_buf, (uint8_t)len, tcp_write_str);
+    tcp_recved(tpcb, p->tot_len);
+    pbuf_free(p);
+    return ERR_OK;
+}
+
+static err_t tcp_server_accept(void *arg, struct tcp_pcb *client_pcb, err_t err) {
+    (void)arg; (void)err;
+    s_active_tcp_client = client_pcb;
+    tcp_recv(client_pcb, tcp_client_recv);
+    tcp_write_str("SDR ready (WiFi TCP)\r\n");
+    return ERR_OK;
+}
+
+static void start_tcp_control_server(void) {
+    s_tcp_server_pcb = tcp_new();
+    if (s_tcp_server_pcb) {
+        tcp_bind(s_tcp_server_pcb, IP_ADDR_ANY, TCP_CONTROL_PORT);
+        s_tcp_server_pcb = tcp_listen(s_tcp_server_pcb);
+        tcp_accept(s_tcp_server_pcb, tcp_server_accept);
+    }
+}
+#endif
+
+static void cdc_write(const char *text)
 {
-    char reply[96];
+    tud_cdc_write_str(text);
+    tud_cdc_write_flush();
+}
+
+static void handle_line(const char *line, uint8_t length, void (*reply_fn)(const char *))
+{
+    char reply[128];
 
     if (length == 0) {
         return;
     }
     if (strcmp(line, "VER") == 0) {
-        cdc_write("VER,DDC SDR 0.1\r\nOK\r\n");
+        reply_fn("VER,DDC SDR 0.2\r\nOK\r\n");
         return;
     }
     if (strcmp(line, "XTAL") == 0) {
-        cdc_write("XTAL,30720000\r\nOK\r\n");
+        reply_fn("XTAL,30720000\r\nOK\r\n");
         return;
     }
     if (strcmp(line, "MODE") == 0) {
-        cdc_write("MODE,DDC\r\nOK\r\n");
+        reply_fn("MODE,DDC\r\nOK\r\n");
         return;
     }
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+    if (strcmp(line, "WIFI?") == 0 || strcmp(line, "WIFI") == 0) {
+        int status = cyw43_wifi_link_status(&cyw43_state, CYW43_ITF_STA);
+        const char *st_str = "DOWN";
+        if (status == CYW43_LINK_JOIN) st_str = "JOINING";
+        else if (status == CYW43_LINK_NOIP) st_str = "NO_IP";
+        else if (status == CYW43_LINK_UP) st_str = "CONNECTED";
+        else if (status == CYW43_LINK_FAIL) st_str = "AUTH_FAILED";
+        else if (status == CYW43_LINK_NONET) st_str = "NO_NETWORK";
+        else if (status == CYW43_LINK_BADAUTH) st_str = "BAD_AUTH";
+
+        uint8_t *ip = (uint8_t*)&(cyw43_state.netif[CYW43_ITF_STA].ip_addr.addr);
+        snprintf(reply, sizeof(reply), "WIFI,%s,IP:%u.%u.%u.%u,SSID:%s\r\nOK\r\n",
+                 st_str, ip[0], ip[1], ip[2], ip[3], s_wifi_ssid);
+        reply_fn(reply);
+        return;
+    }
+    if (strncmp(line, "WIFI,", 5) == 0) {
+        char buf[DDC_LINE_BUFFER_SIZE];
+        strncpy(buf, line + 5, sizeof(buf) - 1);
+        buf[sizeof(buf) - 1] = '\0';
+        char *ssid = strtok(buf, ",");
+        char *pass = strtok(NULL, ",");
+        if (ssid) {
+            strncpy(s_wifi_ssid, ssid, sizeof(s_wifi_ssid) - 1);
+            s_wifi_ssid[sizeof(s_wifi_ssid) - 1] = '\0';
+            if (pass) {
+                strncpy(s_wifi_pass, pass, sizeof(s_wifi_pass) - 1);
+                s_wifi_pass[sizeof(s_wifi_pass) - 1] = '\0';
+            } else {
+                s_wifi_pass[0] = '\0';
+            }
+            uint32_t auth = (s_wifi_pass[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
+            const char *pass_param = (s_wifi_pass[0] == '\0') ? NULL : s_wifi_pass;
+            cyw43_arch_wifi_connect_async(s_wifi_ssid, pass_param, auth);
+            snprintf(reply, sizeof(reply), "WIFI,CONNECTING,%s\r\nOK\r\n", s_wifi_ssid);
+            reply_fn(reply);
+        } else {
+            reply_fn("ERROR,invalid wifi format\r\n");
+        }
+        return;
+    }
+#endif
     if (strcmp(line, "FPGA,STATUS") == 0) {
         snprintf(reply, sizeof(reply), "FPGA,%s\r\nOK\r\n",
                  fpga_image_name(active_fpga_image));
-        cdc_write(reply);
+        reply_fn(reply);
         return;
     }
     if (strcmp(line, "FPGA,LOAD,RX") == 0) {
-        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_RX)
+        reply_fn(switch_stored_fpga(DDC_FPGA_IMAGE_RX)
                       ? "FPGA,RX\r\nOK\r\n"
                       : "ERROR,RX image unavailable\r\n");
         return;
     }
     if (strcmp(line, "FPGA,LOAD,TX") == 0) {
-        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_TX)
+        reply_fn(switch_stored_fpga(DDC_FPGA_IMAGE_TX)
                       ? "FPGA,TX\r\nOK\r\n"
                       : "ERROR,TX image unavailable\r\n");
         return;
     }
-    if (strcmp(line, "FREQ,") == 0) {
+    if (strcmp(line, "FREQ,") == 0 || strcmp(line, "FREQ") == 0) {
         snprintf(reply, sizeof(reply), "%lu\r\nOK\r\n",
                  (unsigned long)last_frequency_hz);
-        cdc_write(reply);
+        reply_fn(reply);
         return;
     }
     if (strncmp(line, "FREQ,", 5) == 0) {
@@ -770,12 +897,11 @@ static void handle_line(const char *line, uint8_t length)
         if (fpga_ready && fpga_set_frequency(frequency_hz)) {
             last_frequency_hz = frequency_hz;
             freq_cmd_count++;
-            gpio_put(25, !gpio_get(25));
             snprintf(reply, sizeof(reply), "%lu\r\nOK\r\n",
                      (unsigned long)frequency_hz);
-            cdc_write(reply);
+            reply_fn(reply);
         } else {
-            cdc_write("ERROR,frequency rejected\r\n");
+            reply_fn("ERROR,frequency rejected\r\n");
         }
         return;
     }
@@ -783,41 +909,40 @@ static void handle_line(const char *line, uint8_t length)
         uint32_t rate = (uint32_t)strtoul(line + 5, NULL, 10);
         if (apply_sample_rate(rate)) {
             freq_cmd_count++;
-            gpio_put(25, !gpio_get(25));
             snprintf(reply, sizeof(reply), "RATE,%lu OK\r\n",
                      (unsigned long)rate);
-            cdc_write(reply);
+            reply_fn(reply);
         } else {
-            cdc_write("ERROR,sample rate rejected\r\n");
+            reply_fn("ERROR,sample rate rejected\r\n");
         }
         return;
     }
     if (strcmp(line, "DFU,PREPARE") == 0) {
         if (prepare_fpga_update()) {
-            cdc_write("DFU,READY\r\nOK\r\n");
+            reply_fn("DFU,READY\r\nOK\r\n");
         } else {
-            cdc_write("ERROR,DFU busy\r\n");
+            reply_fn("ERROR,DFU busy\r\n");
         }
         return;
     }
     if (strcmp(line, "DFU,CANCEL") == 0) {
-        cdc_write(cancel_fpga_update() ? "DFU,CANCELLED\r\nOK\r\n"
+        reply_fn(cancel_fpga_update() ? "DFU,CANCELLED\r\nOK\r\n"
                                        : "ERROR,FPGA unavailable\r\n");
         return;
     }
     if (strcmp(line, "DFU,STATUS") == 0) {
-        cdc_write(update_prepared ? "DFU,READY\r\nOK\r\n"
+        reply_fn(update_prepared ? "DFU,READY\r\nOK\r\n"
                                    : (fpga_ready ? "DFU,RUNNING\r\nOK\r\n"
                                                  : "DFU,WAITING\r\nOK\r\n"));
         return;
     }
     if (strcmp(line, "DEBUG") == 0) {
         uint32_t bck_toggles = 0, ws_toggles = 0;
-        bool last_bck = gpio_get(15), last_ws = gpio_get(16);
+        bool last_bck = gpio_get(DDC_I2S_BCK_PIN), last_ws = gpio_get(DDC_I2S_WS_PIN);
         absolute_time_t end = make_timeout_time_ms(10);
         while (absolute_time_diff_us(get_absolute_time(), end) > 0) {
-            bool cur_bck = gpio_get(15);
-            bool cur_ws = gpio_get(16);
+            bool cur_bck = gpio_get(DDC_I2S_BCK_PIN);
+            bool cur_ws = gpio_get(DDC_I2S_WS_PIN);
             if (cur_bck != last_bck) { bck_toggles++; last_bck = cur_bck; }
             if (cur_ws != last_ws) { ws_toggles++; last_ws = cur_ws; }
         }
@@ -826,24 +951,24 @@ static void handle_line(const char *line, uint8_t length)
                  fpga_ready, capture_alt, (unsigned long)bck_toggles, (unsigned long)ws_toggles,
                  (unsigned long)freq_cmd_count, (unsigned long)last_frequency_hz,
                  gpio_get(14), gpio_get(15), gpio_get(16));
-        cdc_write(reply);
+        reply_fn(reply);
         return;
     }
     if (strcmp(line, "REF") == 0) {
         snprintf(reply, sizeof(reply), "REF,%d\r\nOK\r\n", gpio_get(DDC_REF_PIN));
-        cdc_write(reply);
+        reply_fn(reply);
         return;
     }
     if (strncmp(line, "REF,", 4) == 0) {
         uint8_t ref_val = (uint8_t)strtoul(line + 4, NULL, 10);
         gpio_put(DDC_REF_PIN, ref_val ? 1u : 0u);
         snprintf(reply, sizeof(reply), "REF,%d\r\nOK\r\n", gpio_get(DDC_REF_PIN));
-        cdc_write(reply);
+        reply_fn(reply);
         return;
     }
     if (strcmp(line, "PGA") == 0) {
         snprintf(reply, sizeof(reply), "PGA,%u\r\nOK\r\n", agc_state.pga_code);
-        cdc_write(reply);
+        reply_fn(reply);
         return;
     }
     if (strncmp(line, "PGA,", 4) == 0) {
@@ -851,123 +976,96 @@ static void handle_line(const char *line, uint8_t length)
         agc_state.pga_code = code;
         pga_set_code(code);
         snprintf(reply, sizeof(reply), "PGA,%u\r\nOK\r\n", code);
-        cdc_write(reply);
+        reply_fn(reply);
         return;
     }
     if (strcmp(line, "BOOTSEL") == 0 || strcmp(line, "RESET,BOOTSEL") == 0) {
-        cdc_write("REBOOTING_BOOTSEL\r\nOK\r\n");
+        reply_fn("REBOOTING_BOOTSEL\r\nOK\r\n");
         reset_usb_boot(0, 0);
         return;
     }
     if (strcmp(line, "HELP") == 0 || strcmp(line, "?") == 0) {
-        cdc_write("Commands:\r\n"
+        reply_fn("Commands:\r\n"
                   "  VER          - Show firmware version\r\n"
                   "  MODE         - Show SDR mode (DDC)\r\n"
                   "  XTAL         - Show master clock (30.72 MHz)\r\n"
+                  "  WIFI?        - Show Wi-Fi status & IP\r\n"
+                  "  WIFI,SSID,PW - Connect to Wi-Fi AP\r\n"
                   "  FPGA,STATUS  - Show FPGA gateware status\r\n"
                   "  FREQ,<hz>    - Set NCO tuning frequency in Hz\r\n"
                   "  RATE,<hz>    - Set audio sample rate in Hz\r\n"
                   "  REF,<0|1>    - Set REF mux (0=SDR RF RX, 1=VNA)\r\n"
-                  "  PGA,<0..15>  - Set attenuator code (0=max gain)\r\n"
-                  "  DEBUG        - Show DMA / clock / toggle diagnostics\r\n"
-                  "  BOOTSEL      - Reboot Pico to BOOTSEL flash mode\r\n"
+                  "  PGA,<0..15>  - Set digital step attenuator code\r\n"
+                  "  DEBUG        - Show hardware toggle rates\r\n"
+                  "  BOOTSEL      - Reboot to USB BOOTSEL mode\r\n"
                   "OK\r\n");
         return;
     }
-    cdc_write("ERR\r\n");
+    reply_fn("ERR\r\n");
 }
 
 static void cdc_task(void)
 {
     while (tud_cdc_available()) {
         uint8_t byte;
+
         tud_cdc_read(&byte, 1);
         if (byte == 0x03) {
             line_length = 0;
-            cdc_write("^C\r\n");
-        } else if (byte == 0x04) {
+            continue;
+        }
+        if (byte == 0x04) {
             line_length = 0;
-            cdc_write("SDR ready\r\n");
-        } else if (byte == '\r' || byte == '\n') {
+            if (!ready_message_sent) {
+                cdc_write("SDR ready\r\n");
+                ready_message_sent = true;
+            }
+            continue;
+        }
+        if (byte == '\r' || byte == '\n') {
             if (line_length > 0) {
                 line_buffer[line_length] = '\0';
-                handle_line(line_buffer, line_length);
+                handle_line(line_buffer, line_length, cdc_write);
                 line_length = 0;
             }
-        } else if (byte == 0x08 || byte == 0x7F) {
+            continue;
+        }
+        if (byte == '\b' || byte == 0x7f) {
             if (line_length > 0) {
                 line_length--;
             }
-        } else if (line_length < DDC_LINE_BUFFER_SIZE - 1u) {
-            line_buffer[line_length++] = (char)byte;
+            continue;
+        }
+        if (byte >= 32 && byte <= 126) {
+            if (line_length < sizeof(line_buffer) - 1u) {
+                line_buffer[line_length++] = (char)byte;
+            }
         }
     }
 }
 
-void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
+bool tud_audio_set_itf_cb(uint8_t rhport, tusb_control_request_t const *request)
 {
-    (void)itf;
-    (void)rts;
-    if (dtr && !ready_message_sent) {
-        cdc_write("SDR ready\r\n");
-        ready_message_sent = true;
-    }
-    if (!dtr) {
-        ready_message_sent = false;
-        line_length = 0;
-    }
-}
-
-void tud_cdc_rx_cb(uint8_t itf)
-{
-    (void)itf;
-}
-
-bool tud_audio_set_itf_cb(uint8_t rhport,
-                          tusb_control_request_t const *request)
-{
-    static const uint32_t rates[] = {0u, 48000u, 96000u};
-    uint8_t alt = (uint8_t)(request->wValue & 0xffu);
-    uint8_t interface = (uint8_t)(request->wIndex & 0xffu);
+    uint8_t interface_number = (uint8_t)(request->wIndex & 0xffu);
+    uint8_t alt_setting = (uint8_t)(request->wValue & 0xffu);
 
     (void)rhport;
-    if (alt > 2u || (interface != DDC_AUDIO_CAPTURE_INTERFACE &&
-                     interface != DDC_AUDIO_PLAYBACK_INTERFACE)) {
-        return false;
-    }
-    if (alt != 0u &&
-        ((interface == DDC_AUDIO_CAPTURE_INTERFACE && playback_alt != 0u) ||
-         (interface == DDC_AUDIO_PLAYBACK_INTERFACE && capture_alt != 0u)) &&
-        rates[alt] != sample_rate) {
-        return false;
-    }
-
-    if (interface == DDC_AUDIO_CAPTURE_INTERFACE) {
-        capture_alt = alt;
-        if (alt == 0u) {
+    if (interface_number == DDC_AUDIO_CAPTURE_INTERFACE) {
+        capture_alt = alt_setting;
+        if (capture_alt > 0) {
+            apply_sample_rate(capture_alt == 2 ? 96000u : 48000u);
+            i2s_start();
+        } else {
             i2s_stop();
-            return true;
         }
-        audio_requested_rate = rates[alt];
-        if (!apply_sample_rate(audio_requested_rate)) {
-            capture_alt = 0;
-            i2s_stop();
-            return false;
-        }
-        i2s_start();
-    } else {
-        playback_alt = alt;
-        if (alt == 0u) {
+    } else if (interface_number == DDC_AUDIO_PLAYBACK_INTERFACE) {
+        playback_alt = alt_setting;
+        if (playback_alt > 0) {
+            apply_sample_rate(playback_alt == 2 ? 96000u : 48000u);
+            tx_start();
+        } else {
             tx_stop();
-            return true;
         }
-        audio_requested_rate = rates[alt];
-        if (!apply_sample_rate(audio_requested_rate)) {
-            playback_alt = 0;
-            tx_stop();
-            return false;
-        }
-        tx_start();
     }
     return true;
 }
@@ -1043,9 +1141,6 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport,
 int main(void)
 {
     board_init();
-    gpio_init(25);
-    gpio_set_dir(25, GPIO_OUT);
-    gpio_put(25, 1);
     gpio_init(DDC_TR_PIN);
     gpio_set_dir(DDC_TR_PIN, GPIO_OUT);
     tr_set_receive(true);
@@ -1114,9 +1209,45 @@ int main(void)
     ice_usb_set_dfu_callbacks(prepare_fpga_update, complete_fpga_update);
     ice_usb_init();
 
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+    // Initialize Wi-Fi on Pico W
+    if (cyw43_arch_init() == 0) {
+        cyw43_arch_enable_sta_mode();
+        
+        // Connect to Primary AP ("Frohro-2.4GHz") or Secondary AP ("Frohro-Shop-2.4GHz")
+        int wifi_err = cyw43_arch_wifi_connect_timeout_ms(
+            DEFAULT_WIFI_SSID_PRIMARY, NULL, CYW43_AUTH_OPEN, 5000);
+        if (wifi_err != 0) {
+            // Try secondary AP
+            strncpy(s_wifi_ssid, DEFAULT_WIFI_SSID_SECONDARY, sizeof(s_wifi_ssid) - 1);
+            cyw43_arch_wifi_connect_timeout_ms(
+                DEFAULT_WIFI_SSID_SECONDARY, NULL, CYW43_AUTH_OPEN, 5000);
+        }
+
+        // Initialize OpenHPSDR Protocol 1 UDP Server on Port 1024
+        openhpsdr_init(on_hpsdr_freq_change, on_hpsdr_rate_change, on_hpsdr_gain_change);
+
+        // Start TCP Control Server on Port 5000
+        start_tcp_control_server();
+
+        // Turn on Pico W onboard LED when Wi-Fi is active
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+    }
+#endif
+
+    // Start I2S streaming if FPGA is ready
+    if (fpga_ready) {
+        i2s_start();
+    }
+
     while (true) {
         tud_task();
         cdc_task();
+#if defined(PICO_CYW43_SUPPORTED) && (PICO_CYW43_SUPPORTED != 0)
+        cyw43_arch_poll();
+        openhpsdr_task();
+        service_hpsdr_pending_tuning();
+#endif
         handle_fpga_interrupt();
         agc_task();
         audio_task();

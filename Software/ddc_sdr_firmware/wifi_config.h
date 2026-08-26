@@ -1,0 +1,14 @@
+#ifndef WIFI_CONFIG_H
+#define WIFI_CONFIG_H
+
+#define DEFAULT_WIFI_SSID_PRIMARY   "Frohro-2.4GHz"
+#define DEFAULT_WIFI_SSID_SECONDARY "Frohro-Shop-2.4GHz"
+#define DEFAULT_WIFI_PASSWORD       ""
+
+#define STATIC_FALLBACK_IP          "192.168.1.186"
+#define STATIC_FALLBACK_NETMASK     "255.255.255.0"
+#define STATIC_FALLBACK_GATEWAY     "192.168.1.1"
+
+#define TCP_CONTROL_PORT            5000
+
+#endif // WIFI_CONFIG_H

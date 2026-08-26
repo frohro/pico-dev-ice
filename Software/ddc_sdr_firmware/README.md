@@ -193,6 +193,69 @@ The SDK also prepares automatically when the first DFU block arrives, so
 python3 Software/ddc_sdr_firmware/tools/dfu_fpga.py --skip-prepare /path/to/ddc_sdr.bin
 ```
 
+## Raspberry Pi Pico W & OpenHPSDR Protocol 1 over Wi-Fi
+
+When running on a **Raspberry Pi Pico W**, the firmware operates simultaneously over:
+1. **Wi-Fi OpenHPSDR Protocol 1 (UDP Port 1024)**: Compatible with **SDR++**, **Quisk**, **PowerSDR**, **Thetis**, and **SparkSDR** using the Hermes board identity.
+2. **Wi-Fi TCP Control Server (TCP Port 5000)**: Interactive command port for frequency/PGA control, Wi-Fi status, and debugging.
+3. **USB Audio Class 1.0 (UAC1)**: 24-bit stereo I/Q streaming over USB.
+4. **USB CDC Serial Port (`/dev/ttyACM0`)**: Full interactive command prompt.
+
+### Building for Pico W
+
+Run the dedicated build script:
+
+```bash
+cd Software/ddc_sdr_firmware
+bash build_picow.sh
+```
+
+This compiles the firmware and automatically embeds the Lab 09 DDC FPGA bitstream (`ddc_sdr_top.bin`). The resulting file is generated at:
+```text
+Software/ddc_sdr_firmware/build-picow/ddc_sdr.uf2
+```
+
+### Flashing
+
+1. Put the Raspberry Pi Pico W in BOOTSEL mode (hold BOOTSEL button while plugging into USB).
+2. Copy `build-picow/ddc_sdr.uf2` to the `RPI-RP2` drive:
+   ```bash
+   cp Software/ddc_sdr_firmware/build-picow/ddc_sdr.uf2 /media/$USER/RPI-RP2/
+   ```
+3. The board will reboot, automatically boot the FPGA CRAM from the embedded bitstream, connect to Wi-Fi, and turn on the onboard Wi-Fi LED.
+
+### Wi-Fi Configuration
+
+The firmware is pre-configured to connect to:
+- Primary AP: `Frohro-2.4GHz` (bench)
+- Fallback AP: `Frohro-Shop-2.4GHz` (shop with antenna)
+- Default IP: `192.168.1.186` (via DHCP or static fallback)
+
+To query or dynamically connect to a different AP over USB CDC or TCP port 5000:
+```text
+WIFI?
+WIFI,MyNetworkSSID,MyPassword
+```
+
+### Using with SDR Software
+
+#### 1. SDR++ (OpenHPSDR Source)
+* **Source**: Choose **OpenHPSDR** (or Metis / Hermes).
+* **Sample Rate**: `48000` (or `96000`).
+* Press **Play (▶)** and tune across 0 – 30 MHz.
+
+#### 2. Quisk (OpenHPSDR Wi-Fi)
+Launch Quisk with the provided configuration:
+```bash
+quisk -c Software/ddc_sdr_firmware/quisk_conf_openhpsdr.py
+```
+
+#### 3. Command-Line Test & Validation
+To test discovery, TCP control, and verify active UDP packet streaming:
+```bash
+python3 Software/ddc_sdr_firmware/test_picow_hpsdr.py --ip 192.168.1.186
+```
+
 ## Current gateware dependency
 
 This directory defines the Pico-side contract but does not invent the DDC HDL
