@@ -5,8 +5,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_DIR="${SCRIPT_DIR}/build-picow"
 
 if [ ! -f "${SCRIPT_DIR}/../pico-ice-sdk/CMakeLists.txt" ]; then
-    echo "[*] Initializing pico-ice-sdk submodule..."
-    git -C "${SCRIPT_DIR}/../.." submodule update --init Software/pico-ice-sdk
+    echo "[*] Initializing pico-ice-sdk..."
+    git -C "${SCRIPT_DIR}/../.." submodule sync Software/pico-ice-sdk || true
+    git -C "${SCRIPT_DIR}/../.." submodule update --init --recursive Software/pico-ice-sdk || true
+    if [ ! -f "${SCRIPT_DIR}/../pico-ice-sdk/CMakeLists.txt" ]; then
+        echo "[*] Cloning pico-ice-sdk directly from GitHub..."
+        rm -rf "${SCRIPT_DIR}/../pico-ice-sdk"
+        git clone https://github.com/frohro/pico-ice-sdk.git "${SCRIPT_DIR}/../pico-ice-sdk"
+    fi
 fi
 
 mkdir -p "${BUILD_DIR}"
