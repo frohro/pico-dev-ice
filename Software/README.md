@@ -30,7 +30,7 @@ This document provides a comprehensive technical reference for the **Pico Dev-iC
 ## 1. System Architecture & Block Diagram
 
 The Pico Dev-iCE SDR partitions signal processing between a high-speed **Lattice iCE40UP5K FPGA** (performing real-time Digital Down-Conversion, filtering, and decimation at 30.72 MHz) and a **Raspberry Pi RP2040 / Pico W MCU** (handling DMA sample acquisition, USB Audio streaming, Wi-Fi OpenHPSDR Protocol 1 streaming, AGC supervision, and Command & Control).
-
+![](README_20260827141206835.png)
 ```mermaid
 graph TD
     subgraph Analog_RF_FrontEnd ["Analog RF Front-End"]
