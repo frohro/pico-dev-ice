@@ -1279,37 +1279,23 @@ int main(void)
                 cyw43_arch_lwip_begin();
                 int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
                 if (st == CYW43_LINK_UP) {
-                    s_noip_since = 0;
+                    static bool s_pm_disabled = false;
+                    if (!s_pm_disabled) {
+                        s_pm_disabled = true;
+                        cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);
+                    }
                     last_reconnect_ms = now_ms;
                     bool active = openhpsdr_is_active();
                     uint32_t period = active ? 125 : 500;
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / period) % 2);
                 } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
-                    last_reconnect_ms = now_ms;
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 250) % 2);
-#ifdef STATIC_FALLBACK_IP
-                    if ((st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) && !s_ip_configured) {
-                        if (s_noip_since == 0) s_noip_since = now_ms;
-                        if (now_ms - s_noip_since >= 5000) {
-                            s_ip_configured = true;
-                            ip4_addr_t ip, nm, gw;
-                            ip4addr_aton(STATIC_FALLBACK_IP, &ip);
-                            ip4addr_aton(STATIC_FALLBACK_NETMASK, &nm);
-                            ip4addr_aton(STATIC_FALLBACK_GATEWAY, &gw);
-                            netif_set_addr(&cyw43_state.netif[CYW43_ITF_STA], &ip, &nm, &gw);
-                            netif_set_up(&cyw43_state.netif[CYW43_ITF_STA]);
-                        }
-                    }
-#endif
                 } else {
-                    s_noip_since = 0;
-                    s_ip_configured = false;
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 1000) % 2);
-                    if (now_ms - last_reconnect_ms >= 10000) {
+                    if (now_ms - last_reconnect_ms >= 15000) {
                         last_reconnect_ms = now_ms;
                         uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
                         const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
-                        cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
                         cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
                     }
                 }

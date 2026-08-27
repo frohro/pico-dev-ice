@@ -201,9 +201,10 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             init_hpsdr_packet();
         }
 
-        // Natural I/Q mapping matching USB audio: samples[i]=I, samples[i+1]=Q
-        uint32_t w_i = samples[i];
-        uint32_t w_q = samples[i + 1];
+        // SDR++ hermes source assigns byte 0..2 (si) to .im (Q) and byte 3..5 (sq) to .re (I).
+        // To provide standard (I, Q) orientation without requiring "Invert IQ":
+        uint32_t w_i = samples[i + 1]; // Right/Q -> si -> SDR++ .im
+        uint32_t w_q = samples[i];     // Left/I  -> sq -> SDR++ .re
 
         uint32_t offset;
         if (s_sample_idx < 63) {
