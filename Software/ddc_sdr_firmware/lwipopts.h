@@ -1,36 +1,53 @@
 #ifndef _LWIPOPTS_H
 #define _LWIPOPTS_H
 
-#define NO_SYS                      1
-#define LWIP_SOCKET                 0
-#define LWIP_NETCONN                0
-#define MEM_LIBC_MALLOC             0
-#define MEM_ALIGNMENT               4
-#define MEM_SIZE                    4000
-#define MEMP_NUM_TCP_SEG            32
-#define MEMP_NUM_ARP_QUEUE          10
-#define PBUF_POOL_SIZE              32
-#define PBUF_POOL_BUFSIZE           1600
-#define LWIP_ARP                    1
-#define LWIP_ETHERNET               1
-#define LWIP_ICMP                   1
-#define LWIP_RAW                    1
-#define TCP_WND                     (8 * TCP_MSS)
-#define TCP_MSS                     1460
-#define TCP_SND_BUF                 (8 * TCP_MSS)
-#define TCP_SND_QUEUELEN            ((4 * (TCP_SND_BUF) + (TCP_MSS - 1)) / (TCP_MSS))
-#define LWIP_NETIF_STATUS_CALLBACK  1
-#define LWIP_NETIF_LINK_CALLBACK    1
-#define LWIP_NETIF_HOSTNAME         1
-#define LWIP_NETIF_TX_SINGLE_PBUF   1
-#define DHCP_DOES_ARP_CHECK         0
-#define LWIP_DHCP_DOES_ACD_CHECK    0
+// lwipopts.h — lwIP configuration for Pico-Dev-iCE DDC SDR (OpenHPSDR UDP + TCP Control)
 
-#define LWIP_DHCP                   1
-#define LWIP_UDP                    1
-#define LWIP_TCP                    1
+// General options
+#define NO_SYS                          1
+#define LWIP_SOCKET                     0
+#define LWIP_NETCONN                    0
+#define MEM_ALIGNMENT                   4
 
-#define LWIP_DEBUG                  0
-#define UDP_DEBUG                   LWIP_DBG_OFF
+// Memory sizing tuned for high-throughput 24-bit SDR streaming
+#define MEM_SIZE                        16384
+#define MEMP_NUM_PBUF                   32
+#define MEMP_NUM_UDP_PCB                6
+#define MEMP_NUM_TCP_PCB                6
+#define MEMP_NUM_TCP_PCB_LISTEN         2
+#define MEMP_NUM_TCP_SEG                32
+#define MEMP_NUM_SYS_TIMEOUT            10
 
-#endif
+#define PBUF_POOL_SIZE                  24
+#define PBUF_POOL_BUFSIZE               1536
+
+// Protocol enabling
+#define LWIP_ARP                        1
+#define LWIP_ETHERNET                   1
+#define LWIP_ICMP                       1
+#define LWIP_RAW                        0
+#define LWIP_DHCP                       1
+#define LWIP_AUTOIP                     1
+#define LWIP_DNS                        0
+#define LWIP_UDP                        1
+#define LWIP_TCP                        1
+
+// TCP tuning
+#define TCP_MSS                         1460
+#define TCP_WND                         (8 * TCP_MSS)
+#define TCP_SND_BUF                     (8 * TCP_MSS)
+#define TCP_SND_QUEUELEN                ((4 * (TCP_SND_BUF) + (TCP_MSS - 1)) / (TCP_MSS))
+
+// Checksum options
+#define CHECKSUM_GEN_IP                 1
+#define CHECKSUM_GEN_UDP                1
+#define CHECKSUM_GEN_TCP                1
+#define CHECKSUM_CHECK_IP               1
+#define CHECKSUM_CHECK_UDP              1
+#define CHECKSUM_CHECK_TCP              1
+
+// Stats and debugging (disabled for max performance)
+#define LWIP_STATS                      0
+#define LWIP_DEBUG                      0
+
+#endif /* _LWIPOPTS_H */

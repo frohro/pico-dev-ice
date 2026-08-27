@@ -45,13 +45,11 @@ static void send_discovery_reply(const ip_addr_t *addr, u16_t port) {
 }
 
 static uint32_t s_last_parsed_freq = 0;
-static bool s_has_rx0_cmd = false;
 
 static void handle_cc_packet(const uint8_t *data, uint16_t len) {
     if (len < 8) return;
 
-    uint32_t new_rx0_freq = 0;
-    uint32_t new_vfo_freq = 0;
+    uint32_t target_freq = 0;
 
     // Check for C&C sync pattern 0x7F 0x7F 0x7F across subframes
     for (int offset = 8; offset + 7 < (int)len; offset += 512) {
@@ -64,21 +62,14 @@ static void handle_cc_packet(const uint8_t *data, uint16_t len) {
 
             uint8_t command_type = (c0 >> 1) & 0x3F;
 
-            // Command 0x02: RX 0 (Receiver 1 DDC NCO) Frequency
-            if (command_type == 0x02) {
+            // Command 0x01 (VFO/TX) or Command 0x02..0x09 (RX0..RX7)
+            if (command_type >= 0x01 && command_type <= 0x09) {
                 uint32_t freq_hz = ((uint32_t)c1 << 24) | ((uint32_t)c2 << 16) | ((uint32_t)c3 << 8) | c4;
                 if (freq_hz <= 30000000) {
-                    new_rx0_freq = freq_hz;
+                    target_freq = freq_hz;
                 }
             }
-            // Command 0x01: TX / VFO Frequency (Fallback if RX0 not used)
-            else if (command_type == 0x01) {
-                uint32_t freq_hz = ((uint32_t)c1 << 24) | ((uint32_t)c2 << 16) | ((uint32_t)c3 << 8) | c4;
-                if (freq_hz <= 30000000) {
-                    new_vfo_freq = freq_hz;
-                }
-            }
-            // Command 0x00: General control (sample rate)
+            // Command 0x00: General control (sample rate & preamp)
             else if (command_type == 0x00) {
                 uint8_t speed = c1 & 0x03;
                 uint32_t rate = (speed == 0x01) ? 96000 : 48000;
@@ -92,14 +83,6 @@ static void handle_cc_packet(const uint8_t *data, uint16_t len) {
                 }
             }
         }
-    }
-
-    uint32_t target_freq = 0;
-    if (new_rx0_freq > 0) {
-        s_has_rx0_cmd = true;
-        target_freq = new_rx0_freq;
-    } else if (new_vfo_freq > 0 && !s_has_rx0_cmd) {
-        target_freq = new_vfo_freq;
     }
 
     if (target_freq > 0 && target_freq != s_last_parsed_freq && s_freq_cb) {

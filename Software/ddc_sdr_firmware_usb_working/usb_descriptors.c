@@ -1,5 +1,5 @@
 #include <string.h>
-#include "bsp/board_api.h"
+
 #include "tusb.h"
 
 #define ITF_NUM_CDC 0
@@ -54,31 +54,14 @@
 #define CONFIG_TOTAL_LEN DDC_CONFIGURATION_LEN
 #endif
 
-/* Device Descriptor */
-static const tusb_desc_device_t desc_device = {
-    .bLength            = sizeof(tusb_desc_device_t),
-    .bDescriptorType    = TUSB_DESC_DEVICE,
-    .bcdUSB             = 0x0200,
-    .bDeviceClass       = TUSB_CLASS_MISC,
-    .bDeviceSubClass    = MISC_SUBCLASS_COMMON,
-    .bDeviceProtocol    = MISC_PROTOCOL_IAD,
-    .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
-    .idVendor           = 0x1209,
-    .idProduct          = 0x0001,
-    .bcdDevice          = 0x0100,
-    .iManufacturer      = 1,
-    .iProduct           = 2,
-    .iSerialNumber      = 3,
-    .bNumConfigurations = 1
-};
+#include "ice_usb.h"
 
-uint8_t const *tud_descriptor_device_cb(void) {
-    return (uint8_t const *)&desc_device;
-}
+_Static_assert(DDC_CONFIGURATION_LEN == CONFIG_TOTAL_LEN,
+               "CONFIG_TOTAL_LEN does not match the DDC descriptor");
 
 const uint8_t tud_desc_configuration[CONFIG_TOTAL_LEN] = {
     TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, CONFIG_TOTAL_LEN, 0x00, 500),
-    TUD_CDC_DESCRIPTOR(ITF_NUM_CDC, 4, EPNUM_CDC_NOTIF, 8,
+    TUD_CDC_DESCRIPTOR(ITF_NUM_CDC, STRID_CDC, EPNUM_CDC_NOTIF, 8,
                        EPNUM_CDC_OUT, EPNUM_CDC_IN, 64),
 
     8, TUSB_DESC_INTERFACE_ASSOCIATION,
@@ -100,10 +83,10 @@ const uint8_t tud_desc_configuration[CONFIG_TOTAL_LEN] = {
                                  0x01, 0x02, 0x00),
 
     TUD_AUDIO10_DESC_INPUT_TERM(0x11, AUDIO_TERM_TYPE_USB_STREAMING,
-                                 0x13, 2,
-                                 AUDIO10_CHANNEL_CONFIG_LEFT_FRONT |
-                                 AUDIO10_CHANNEL_CONFIG_RIGHT_FRONT,
-                                 0x00, 0x00),
+                                0x13, 2,
+                                AUDIO10_CHANNEL_CONFIG_LEFT_FRONT |
+                                AUDIO10_CHANNEL_CONFIG_RIGHT_FRONT,
+                                0x00, 0x00),
     TUD_AUDIO10_DESC_OUTPUT_TERM(0x13, AUDIO_TERM_TYPE_OUT_GENERIC_SPEAKER,
                                  0x00, 0x11, 0x00),
 
@@ -155,46 +138,16 @@ const uint8_t tud_desc_configuration[CONFIG_TOTAL_LEN] = {
         AUDIO10_CS_AS_ISO_DATA_EP_ATT_SAMPLING_FRQ,
         AUDIO10_CS_AS_ISO_DATA_EP_LOCK_DELAY_UNIT_MILLISEC, 0x0001),
 
-    TUD_DFU_DESCRIPTOR(ITF_NUM_DFU, CFG_TUD_DFU_ALT, 5,
+    TUD_DFU_DESCRIPTOR(ITF_NUM_DFU, CFG_TUD_DFU_ALT, STRID_DFU,
                        DFU_ATTR_CAN_DOWNLOAD, 1000, CFG_TUD_DFU_XFER_BUFSIZE),
 };
 
-uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
-    (void)index;
-    return tud_desc_configuration;
-}
-
-static const char *const string_desc_arr[] = {
-    [0] = (const char[]){ 0x09, 0x04 }, // 0: English
-    [1] = "WWU CPTR 480",              // 1: Manufacturer
-    [2] = "WWU DDC SDR",                // 2: Product
-    [3] = NULL,                         // 3: Serial
-    [4] = "SDR Control",                // 4: CDC
-    [5] = "iCE40 DFU (CRAM)",           // 5: DFU
+char const *tud_string_desc[STRID_NUM_TOTAL] = {
+    [STRID_LANGID] = USB_LANG_EN,
+    [STRID_MANUFACTURER] = USB_MANUFACTURER,
+    [STRID_PRODUCT] = USB_PRODUCT,
+    [STRID_SERIAL_NUMBER] = usb_serial_number,
+    [STRID_VENDOR] = "WWU DDC SDR",
+    [STRID_CDC] = "SDR Control",
+    [STRID_DFU] = "iCE40 DFU (CRAM)",
 };
-
-static uint16_t _desc_str[33];
-
-uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
-    (void)langid;
-    size_t chr_count;
-
-    if (index == 0) {
-        memcpy(&_desc_str[1], string_desc_arr[0], 2);
-        chr_count = 1;
-    } else if (index == 3) {
-        chr_count = board_usb_get_serial(_desc_str + 1, 32);
-    } else {
-        if (index >= sizeof(string_desc_arr) / sizeof(string_desc_arr[0]))
-            return NULL;
-        const char *str = string_desc_arr[index];
-        if (!str) return NULL;
-        chr_count = strlen(str);
-        if (chr_count > 32) chr_count = 32;
-        for (size_t i = 0; i < chr_count; i++)
-            _desc_str[1 + i] = (uint16_t)str[i];
-    }
-
-    _desc_str[0] = (uint16_t)((TUSB_DESC_STRING << 8) | (2 * chr_count + 2));
-    return _desc_str;
-}

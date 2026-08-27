@@ -15,7 +15,7 @@ except ImportError:
         import quisk_hardware_model as quisk_hardware
 
 # 2. Network Configuration
-hermes_ip = "192.168.1.186" # Pico W IP address
+hermes_ip = "192.168.1.191" # Pico W IP address
 hermes_card_name = "Hermes"
 
 # 3. Sample Rate & Audio Options

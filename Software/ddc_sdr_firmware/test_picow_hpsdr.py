@@ -164,7 +164,7 @@ def test_tcp_control(ip):
 
 def main():
     parser = argparse.ArgumentParser(description="Pico-Dev-iCE OpenHPSDR Protocol 1 Wi-Fi Tester")
-    parser.add_argument("--ip", default="192.168.1.186", help="IP address of Pico W (default: 192.168.1.186)")
+    parser.add_argument("--ip", default="192.168.1.191", help="IP address of Pico W (default: 192.168.1.191)")
     parser.add_argument("--discover", action="store_true", help="Perform discovery broadcast first")
     parser.add_argument("--freq", type=int, default=7050000, help="Test frequency in Hz (default: 7050000)")
     args = parser.parse_args()
