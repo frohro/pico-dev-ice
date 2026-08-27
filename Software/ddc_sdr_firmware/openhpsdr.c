@@ -67,6 +67,15 @@ static void handle_cc_packet(const uint8_t *data, uint16_t len) {
                     target_freq = freq_hz;
                 }
             }
+            // Command 0x0A: Hermes-Lite RX LNA Gain (from SDR++ gain slider: 0..60 dB)
+            else if (command_type == 0x0A) {
+                uint8_t raw_gain = c4 & 0x3F; // 0 to 60 dB
+                // Map 0..60 dB slider to 4-bit PGA code (0..15, where 0=max gain, 15=min gain):
+                uint8_t pga_code = (raw_gain >= 60) ? 0 : (uint8_t)(15 - ((uint32_t)raw_gain * 15 / 60));
+                if (s_gain_cb) {
+                    s_gain_cb(pga_code);
+                }
+            }
             // Command 0x00: General control (sample rate & preamp)
             else if (command_type == 0x00) {
                 uint8_t speed = c1 & 0x03;
