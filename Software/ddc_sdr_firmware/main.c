@@ -1243,6 +1243,7 @@ int main(void)
         wifi_ok = true;
         cyw43_arch_enable_sta_mode();
         cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);
+        netif_set_hostname(&cyw43_state.netif[CYW43_ITF_STA], "Pico-Dev-iCE-SDR");
         uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
         const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
         cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
@@ -1297,7 +1298,7 @@ int main(void)
                     s_ip_configured = false;
 #endif
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 1000) % 2);
-                    if (now_ms - last_reconnect_ms >= 5000) {
+                    if (now_ms - last_reconnect_ms >= 15000) {
                         last_reconnect_ms = now_ms;
                         uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
                         const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;

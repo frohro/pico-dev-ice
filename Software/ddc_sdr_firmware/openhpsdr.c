@@ -91,11 +91,15 @@ static void handle_cc_packet(const uint8_t *data, uint16_t len) {
     }
 }
 
+static uint32_t s_last_packet_rx_ms = 0;
+
 static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
                                 const ip_addr_t *addr, u16_t port)
 {
     (void)arg; (void)pcb;
     if (!p) return;
+
+    s_last_packet_rx_ms = to_ms_since_boot(get_absolute_time());
 
     uint8_t *data = (uint8_t *)p->payload;
 
@@ -141,7 +145,15 @@ void openhpsdr_init(hpsdr_freq_callback_t on_freq, hpsdr_rate_callback_t on_rate
 }
 
 void openhpsdr_task(void) {
-    // Background tasks if needed
+    if (s_active) {
+        uint32_t now = to_ms_since_boot(get_absolute_time());
+        if (now - s_last_packet_rx_ms > 2000) {
+            // No keepalive or C&C packets received for 2 seconds -> host disconnected
+            s_active = false;
+            s_sequence = 0;
+            s_sample_idx = 0;
+        }
+    }
 }
 
 bool openhpsdr_is_active(void) {
@@ -230,8 +242,11 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_RAM);
             if (p) {
                 pbuf_take(p, s_packet_buffer, HPSDR_PACKET_SIZE);
-                udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
+                err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
                 pbuf_free(p);
+                if (err != ERR_OK) {
+                    s_active = false;
+                }
             }
             cyw43_arch_lwip_end();
             s_sample_idx = 0;
