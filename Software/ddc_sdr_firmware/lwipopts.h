@@ -16,7 +16,7 @@
 #define MEMP_NUM_TCP_PCB                6
 #define MEMP_NUM_TCP_PCB_LISTEN         2
 #define MEMP_NUM_TCP_SEG                32
-#define MEMP_NUM_SYS_TIMEOUT            10
+#define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 4)
 
 #define PBUF_POOL_SIZE                  24
 #define PBUF_POOL_BUFSIZE               1536
@@ -27,7 +27,8 @@
 #define LWIP_ICMP                       1
 #define LWIP_RAW                        0
 #define LWIP_DHCP                       1
-#define LWIP_AUTOIP                     1
+#define LWIP_AUTOIP                     0
+#define LWIP_DHCP_AUTOIP_COOP           0
 #define LWIP_NETIF_HOSTNAME             1
 #define LWIP_DNS                        0
 #define LWIP_UDP                        1

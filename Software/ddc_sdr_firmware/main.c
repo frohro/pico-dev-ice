@@ -917,12 +917,15 @@ static void handle_line(const char *line, uint8_t length)
     if (strcmp(line, "SCAN") == 0) {
         static cyw43_wifi_scan_options_t scan_opts;
         memset(&scan_opts, 0, sizeof(scan_opts));
+        cyw43_arch_lwip_begin();
         int r = cyw43_wifi_scan(&cyw43_state, &scan_opts, NULL, wifi_scan_result_cb);
+        cyw43_arch_lwip_end();
         snprintf(reply, sizeof(reply), "SCAN_START,%d\r\nOK\r\n", r);
         cdc_write(reply);
         return;
     }
     if (strcmp(line, "WIFI") == 0 || strcmp(line, "WIFI,STATUS") == 0 || strcmp(line, "IP") == 0) {
+        cyw43_arch_lwip_begin();
         int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
         const char *st_str = "DOWN";
         if (st == CYW43_LINK_UP) st_str = "UP";
@@ -937,6 +940,7 @@ static void handle_line(const char *line, uint8_t length)
             snprintf(ip_str, sizeof(ip_str), "%s",
                      ip4addr_ntoa(netif_ip4_addr(&cyw43_state.netif[CYW43_ITF_STA])));
         }
+        cyw43_arch_lwip_end();
         snprintf(reply, sizeof(reply), "WIFI,%s,IP,%s,SSID,%s\r\nOK\r\n",
                  st_str, ip_str, s_current_ssid ? s_current_ssid : "NONE");
         cdc_write(reply);
@@ -1239,7 +1243,7 @@ int main(void)
 
 #ifdef PICO_CYW43_SUPPORTED
     bool wifi_ok = false;
-    if (cyw43_arch_init_with_country(CYW43_COUNTRY_USA) == 0) {
+    if (cyw43_arch_init() == 0) {
         wifi_ok = true;
         cyw43_arch_enable_sta_mode();
         cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);
@@ -1250,7 +1254,7 @@ int main(void)
         openhpsdr_init(on_hpsdr_freq_change, on_hpsdr_rate_change, on_hpsdr_gain_change);
     }
     uint32_t last_led_poll = 0;
-    uint32_t last_reconnect_ms = 0;
+    uint32_t last_reconnect_ms = to_ms_since_boot(get_absolute_time());
     uint32_t s_join_start_ms = 0;
 #endif
 
@@ -1270,42 +1274,41 @@ int main(void)
             } else if (!openhpsdr_is_active() && capture_alt == 0 && i2s_running) {
                 i2s_stop();
             }
-            cyw43_arch_poll();
             uint32_t now_ms = to_ms_since_boot(get_absolute_time());
-            if (now_ms - last_led_poll >= 50) {
+            if (now_ms - last_led_poll >= 100) {
                 last_led_poll = now_ms;
+                cyw43_arch_lwip_begin();
                 int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
                 if (st == CYW43_LINK_UP) {
+                    s_join_start_ms = 0;
+                    last_reconnect_ms = now_ms;
                     bool active = openhpsdr_is_active();
                     uint32_t period = active ? 125 : 500;
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / period) % 2);
                 } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 250) % 2);
-#ifdef STATIC_FALLBACK_IP
-                    if (st == CYW43_LINK_NOIP && !s_ip_configured) {
-                        s_ip_configured = true;
-                        ip4_addr_t ip, nm, gw;
-                        ip4addr_aton(STATIC_FALLBACK_IP, &ip);
-                        ip4addr_aton(STATIC_FALLBACK_NETMASK, &nm);
-                        ip4addr_aton(STATIC_FALLBACK_GATEWAY, &gw);
-                        netif_set_addr(&cyw43_state.netif[CYW43_ITF_STA], &ip, &nm, &gw);
-                        netif_set_up(&cyw43_state.netif[CYW43_ITF_STA]);
+                    if (s_join_start_ms == 0) {
+                        s_join_start_ms = now_ms;
                     }
-#endif
-                } else {
-                    s_join_start_ms = 0;
-#ifdef STATIC_FALLBACK_IP
-                    s_ip_configured = false;
-#endif
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 1000) % 2);
-                    if (now_ms - last_reconnect_ms >= 15000) {
+                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 250) % 2);
+                    // If stuck in JOIN/NOIP for more than 10 seconds without an IP, retry connect
+                    if (now_ms - s_join_start_ms >= 10000) {
+                        s_join_start_ms = 0;
                         last_reconnect_ms = now_ms;
                         uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
                         const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
-                        cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
+                        cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
+                    }
+                } else {
+                    s_join_start_ms = 0;
+                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 1000) % 2);
+                    if (now_ms - last_reconnect_ms >= 10000) {
+                        last_reconnect_ms = now_ms;
+                        uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
+                        const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
                         cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
                     }
                 }
+                cyw43_arch_lwip_end();
             }
         }
 #endif

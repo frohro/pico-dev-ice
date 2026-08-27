@@ -17,7 +17,6 @@ static uint8_t s_packet_buffer[HPSDR_PACKET_SIZE];
 static uint32_t s_sample_idx = 0; // 0 to 125 samples (63 in subframe 1, 63 in subframe 2)
 
 static void send_discovery_reply(const ip_addr_t *addr, u16_t port) {
-    cyw43_arch_lwip_begin();
     struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, 60, PBUF_RAM);
     if (p) {
         uint8_t *payload = (uint8_t *)p->payload;
@@ -41,7 +40,6 @@ static void send_discovery_reply(const ip_addr_t *addr, u16_t port) {
         udp_sendto(s_pcb, p, addr, port);
         pbuf_free(p);
     }
-    cyw43_arch_lwip_end();
 }
 
 static uint32_t s_last_parsed_freq = 0;
@@ -145,15 +143,7 @@ void openhpsdr_init(hpsdr_freq_callback_t on_freq, hpsdr_rate_callback_t on_rate
 }
 
 void openhpsdr_task(void) {
-    if (s_active) {
-        uint32_t now = to_ms_since_boot(get_absolute_time());
-        if (now - s_last_packet_rx_ms > 2000) {
-            // No keepalive or C&C packets received for 2 seconds -> host disconnected
-            s_active = false;
-            s_sequence = 0;
-            s_sample_idx = 0;
-        }
-    }
+    // Background tasks if needed
 }
 
 bool openhpsdr_is_active(void) {
@@ -242,11 +232,8 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_RAM);
             if (p) {
                 pbuf_take(p, s_packet_buffer, HPSDR_PACKET_SIZE);
-                err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
+                udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
                 pbuf_free(p);
-                if (err != ERR_OK) {
-                    s_active = false;
-                }
             }
             cyw43_arch_lwip_end();
             s_sample_idx = 0;
