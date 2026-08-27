@@ -199,8 +199,9 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             init_hpsdr_packet();
         }
 
-        uint32_t w_i = samples[i];
-        uint32_t w_q = samples[i + 1];
+        // Swap I and Q for Wi-Fi OpenHPSDR streaming to match SDR++ default orientation
+        uint32_t w_i = samples[i + 1];
+        uint32_t w_q = samples[i];
 
         uint32_t offset;
         if (s_sample_idx < 63) {

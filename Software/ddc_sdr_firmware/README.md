@@ -226,34 +226,34 @@ Software/ddc_sdr_firmware/build-picow/ddc_sdr.uf2
 
 ### Wi-Fi Configuration
 
-The firmware is pre-configured to connect to:
-- Primary AP: `Frohro-2.4GHz` (bench)
-- Fallback AP: `Frohro-Shop-2.4GHz` (shop with antenna)
-- Default IP: `192.168.1.186` (via DHCP or static fallback)
+The firmware is configured via [`wifi_config.h`](file:///home/frohro/Projects/pico-dev-ice/Software/ddc_sdr_firmware/wifi_config.h):
+- Primary AP: `Frohne-Shop-2.4GHz` (shop with antenna)
+- Secondary AP: `Frohne-2.4GHz` (bench)
+- Fallback Static IP: `192.168.1.191` (used if DHCP lease is delayed)
+- Subnet Gateway: `192.168.1.1` | Netmask: `255.255.255.0`
 
-To query or dynamically connect to a different AP over USB CDC or TCP port 5000:
-```text
-WIFI?
-WIFI,MyNetworkSSID,MyPassword
-```
+### Pico W Onboard LED Status Indicators
+
+| Blink Pattern | Rate / Period | Meaning |
+| :--- | :--- | :--- |
+| **Rapid Flash** | **4 Hz** (125 ms on / 125 ms off) | **Active SDR Streaming**: SDR++ (Hermes), Quisk, or linHPSDR is connected and actively receiving the 24-bit I/Q stream over UDP. |
+| **Steady Heartbeat** | **1 Hz** (500 ms on / 500 ms off) | **Wi-Fi Connected & Ready (`CYW43_LINK_UP`)**: Assigned an IP address and listening for OpenHPSDR discovery. |
+| **Medium Blink** | **2 Hz** (250 ms on / 250 ms off) | **Associating / Joining**: Connected to the AP, acquiring IP (`CYW43_LINK_JOIN` / `NO_IP`). |
+| **Slow Blink** | **0.5 Hz** (1 s on / 1 s off) | **Disconnected / Scanning**: Searching for the Wi-Fi network (`CYW43_LINK_DOWN` / `FAIL`). |
 
 ### Using with SDR Software
 
-#### 1. SDR++ (OpenHPSDR Source)
-* **Source**: Choose **OpenHPSDR** (or Metis / Hermes).
-* **Sample Rate**: `48000` (or `96000`).
+#### 1. SDR++ (Hermes / OpenHPSDR Source)
+* **Source**: Select **Hermes** (or OpenHPSDR).
+* **Sample Rate**: `48000` (48 kHz) or `96000` (96 kHz).
+* **I/Q Inversion**: Normal (I/Q channels are pre-aligned to match SDR++ default orientation).
 * Press **Play (▶)** and tune across 0 – 30 MHz.
 
-#### 2. Quisk (OpenHPSDR Wi-Fi)
-Launch Quisk with the provided configuration:
+#### 2. Python Diagnostic & Stream Verification Tool
+To verify Wi-Fi discovery, C&C frequency tuning, packet health, sample throughput, RMS signal level, and spectral balance without needing SDR++:
 ```bash
-quisk -c Software/ddc_sdr_firmware/quisk_conf_openhpsdr.py
-```
-
-#### 3. Command-Line Test & Validation
-To test discovery, TCP control, and verify active UDP packet streaming:
-```bash
-python3 Software/ddc_sdr_firmware/test_picow_hpsdr.py --ip 192.168.1.186
+cd Software/ddc_sdr_firmware
+python3 test_openhpsdr_stream.py 192.168.1.192
 ```
 
 ## Current gateware dependency

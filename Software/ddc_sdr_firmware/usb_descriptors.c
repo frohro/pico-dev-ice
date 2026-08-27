@@ -1,5 +1,5 @@
 #include <string.h>
-#include "bsp/board_api.h"
+
 #include "tusb.h"
 
 #define ITF_NUM_CDC 0
@@ -54,6 +54,12 @@
 #define CONFIG_TOTAL_LEN DDC_CONFIGURATION_LEN
 #endif
 
+#include "pico/unique_id.h"
+#include "pico/bootrom.h"
+
+_Static_assert(DDC_CONFIGURATION_LEN == CONFIG_TOTAL_LEN,
+               "CONFIG_TOTAL_LEN does not match the DDC descriptor");
+
 /* Device Descriptor */
 static const tusb_desc_device_t desc_device = {
     .bLength            = sizeof(tusb_desc_device_t),
@@ -64,7 +70,7 @@ static const tusb_desc_device_t desc_device = {
     .bDeviceProtocol    = MISC_PROTOCOL_IAD,
     .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
     .idVendor           = 0x1209,
-    .idProduct          = 0x0001,
+    .idProduct          = 0xb1c0,
     .bcdDevice          = 0x0100,
     .iManufacturer      = 1,
     .iProduct           = 2,
@@ -100,10 +106,10 @@ const uint8_t tud_desc_configuration[CONFIG_TOTAL_LEN] = {
                                  0x01, 0x02, 0x00),
 
     TUD_AUDIO10_DESC_INPUT_TERM(0x11, AUDIO_TERM_TYPE_USB_STREAMING,
-                                 0x13, 2,
-                                 AUDIO10_CHANNEL_CONFIG_LEFT_FRONT |
-                                 AUDIO10_CHANNEL_CONFIG_RIGHT_FRONT,
-                                 0x00, 0x00),
+                                0x13, 2,
+                                AUDIO10_CHANNEL_CONFIG_LEFT_FRONT |
+                                AUDIO10_CHANNEL_CONFIG_RIGHT_FRONT,
+                                0x00, 0x00),
     TUD_AUDIO10_DESC_OUTPUT_TERM(0x13, AUDIO_TERM_TYPE_OUT_GENERIC_SPEAKER,
                                  0x00, 0x11, 0x00),
 
@@ -166,8 +172,8 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
 
 static const char *const string_desc_arr[] = {
     [0] = (const char[]){ 0x09, 0x04 }, // 0: English
-    [1] = "WWU CPTR 480",              // 1: Manufacturer
-    [2] = "WWU DDC SDR",                // 2: Product
+    [1] = USB_MANUFACTURER,             // 1: Manufacturer
+    [2] = USB_PRODUCT,                  // 2: Product
     [3] = NULL,                         // 3: Serial
     [4] = "SDR Control",                // 4: CDC
     [5] = "iCE40 DFU (CRAM)",           // 5: DFU
@@ -183,7 +189,12 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
         memcpy(&_desc_str[1], string_desc_arr[0], 2);
         chr_count = 1;
     } else if (index == 3) {
-        chr_count = board_usb_get_serial(_desc_str + 1, 32);
+        char serial[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+        pico_get_unique_board_id_string(serial, sizeof(serial));
+        chr_count = strlen(serial);
+        if (chr_count > 32) chr_count = 32;
+        for (size_t i = 0; i < chr_count; i++)
+            _desc_str[1 + i] = (uint16_t)serial[i];
     } else {
         if (index >= sizeof(string_desc_arr) / sizeof(string_desc_arr[0]))
             return NULL;
@@ -197,4 +208,30 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
 
     _desc_str[0] = (uint16_t)((TUSB_DESC_STRING << 8) | (2 * chr_count + 2));
     return _desc_str;
+}
+
+void tud_dfu_download_cb(uint8_t alt, uint16_t block_num, const uint8_t *data, uint16_t length)
+{
+    (void)alt; (void)block_num; (void)data; (void)length;
+}
+
+void tud_dfu_manifest_cb(uint8_t alt)
+{
+    (void)alt;
+}
+
+void tud_dfu_abort_cb(uint8_t alt)
+{
+    (void)alt;
+}
+
+void tud_dfu_detach_cb(void)
+{
+    reset_usb_boot(0, 0);
+}
+
+uint32_t tud_dfu_get_timeout_cb(uint8_t alt, uint8_t state)
+{
+    (void)alt; (void)state;
+    return 0;
 }

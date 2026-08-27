@@ -28,6 +28,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
+set(PICO_DEV_ICE 1 CACHE BOOL "Pico Dev-iCE board" FORCE)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk pico-ice-sdk)
 
 set(FPGA_BITSTREAM_BIN "" CACHE FILEPATH
@@ -173,6 +174,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk/include/boards
     ${DDC_GENERATED_INCLUDES}
+    ${PICO_TINYUSB_PATH}/hw/bsp/rp2040
     ${PICO_TINYUSB_PATH}/hw/bsp
     ${PICO_TINYUSB_PATH}/hw
     ${PICO_TINYUSB_PATH}/src
@@ -181,6 +183,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 set(DDC_LIBS
     pico_ice_preinit_common
     pico_ice_sdk
+    pico_unique_id
     hardware_clocks
     hardware_dma
     hardware_irq
