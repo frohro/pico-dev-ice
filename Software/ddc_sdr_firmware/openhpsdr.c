@@ -117,6 +117,10 @@ static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
     // Start / Stop / Run command: 0xEFFE 0x04
     else if (p->len >= 4 && data[0] == 0xEF && data[1] == 0xFE && data[2] == 0x04) {
         if (data[3] & 0x01) {
+            if (!s_active) {
+                s_sequence = 0;
+                s_sample_idx = 0;
+            }
             s_active = true;
             ip_addr_copy(s_host_ip, *addr);
             s_host_port = port;
@@ -128,6 +132,10 @@ static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
     }
     // Command & Control (C&C) or standard data: 0xEFFE 0x01
     else if (p->len >= 8 && data[0] == 0xEF && data[1] == 0xFE) {
+        if (!s_active) {
+            s_sequence = 0;
+            s_sample_idx = 0;
+        }
         ip_addr_copy(s_host_ip, *addr);
         s_host_port = port;
         s_active = true;

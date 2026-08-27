@@ -328,18 +328,31 @@ static void i2s_start(void)
         return;
     }
 
+    // Stop and clear PIO SM and FIFOs completely first
+    pio_sm_set_enabled(pio0, 0, false);
+    pio_sm_clear_fifos(pio0, 0);
+
     i2s_configure();
+
+    // Reset PIO execution state to sync anchor at start of program
+    pio_sm_restart(pio0, 0);
+    pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
+    pio_sm_clear_fifos(pio0, 0);
+
+    // Configure and start DMA channel A FIRST so it is armed and waiting for word 0
     dma_channel_set_write_addr(dma_channel_a, audio_buffer_a, false);
     dma_channel_set_trans_count(dma_channel_a, words_per_buffer, false);
     dma_channel_set_write_addr(dma_channel_b, audio_buffer_b, false);
     dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
     dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
-    pio_sm_restart(pio0, 0);
-    pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
-    pio_sm_set_enabled(pio0, 0, true);
     ready_buffers = 0;
     irq_set_enabled(DMA_IRQ_0, true);
     dma_channel_start(dma_channel_a);
+
+    // NOW enable PIO state machine with guaranteed empty FIFO.
+    // The PIO begins with 'wait 1 pin 2; wait 0 pin 2' (WS falling edge),
+    // guaranteeing that word 0 received by DMA is ALWAYS Left (I).
+    pio_sm_set_enabled(pio0, 0, true);
     i2s_running = true;
 }
 
