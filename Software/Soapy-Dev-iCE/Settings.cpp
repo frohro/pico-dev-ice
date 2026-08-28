@@ -240,17 +240,11 @@ double Soapy2026SDR::getGain(int dir, size_t ch) const
 
 std::vector<double> Soapy2026SDR::listSampleRates(int, size_t) const
 {
-    if (_isDDC) {
-        return {48000.0};
-    }
     return {48000.0, 96000.0};
 }
 
 SoapySDR::RangeList Soapy2026SDR::getSampleRateRange(int, size_t) const
 {
-    if (_isDDC) {
-        return {SoapySDR::Range(48000.0, 48000.0)};
-    }
     return {
         SoapySDR::Range(48000.0, 48000.0),
         SoapySDR::Range(96000.0, 96000.0)
