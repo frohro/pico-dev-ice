@@ -13,7 +13,8 @@ This document provides a comprehensive technical reference for the **Pico Dev-iC
    - [2.4 Complex Quadrature Downconversion (Mixer)](#24-complex-quadrature-downconversion-mixer)
    - [2.5 Cascaded Integrator-Comb (CIC) Decimating Filter](#25-cascaded-integrator-comb-cic-decimating-filter)
    - [2.6 Output Scaling & Bit Growth Analysis](#26-output-scaling--bit-growth-analysis)
-   - [2.7 I2S Baseband Transmission](#27-i2s-baseband-transmission)
+   - [2.7 Dual-Rate FIR Passband Droop Equalization](#27-dual-rate-fir-passband-droop-equalization)
+   - [2.8 Dual-Rate I2S Baseband Transmission](#28-dual-rate-i2s-baseband-transmission)
 3. [PGA Gain Control & AGC Algorithm](#3-pga-gain-control--agc-algorithm)
    - [3.1 Hardware PGA Architecture](#31-hardware-pga-architecture)
    - [3.2 Manual Gain Control & OpenHPSDR Protocol 1 Mapping](#32-manual-gain-control--openhpsdr-protocol-1-mapping)
@@ -29,7 +30,7 @@ This document provides a comprehensive technical reference for the **Pico Dev-iC
 
 ## 1. System Architecture & Block Diagram
 
-The Pico Dev-iCE SDR partitions signal processing between a high-speed **Lattice iCE40UP5K FPGA** (performing real-time Digital Down-Conversion, filtering, and decimation at 30.72 MHz) and a **Raspberry Pi RP2040 / Pico W MCU** (handling DMA sample acquisition, USB Audio streaming, Wi-Fi OpenHPSDR Protocol 1 streaming, AGC supervision, and Command & Control).
+The Pico Dev-iCE SDR partitions signal processing between a high-speed **Lattice iCE40UP5K FPGA** (performing real-time Digital Down-Conversion, dual-rate CIC decimation, and FIR passband droop compensation at 30.72 MHz) and a **Raspberry Pi RP2040 / Pico W MCU** (handling DMA sample acquisition, USB Audio streaming, Wi-Fi OpenHPSDR Protocol 1 streaming, AGC supervision, and Command & Control).
 ![](README_20260827141206835.png)
 ```mermaid
 graph TD
@@ -50,15 +51,19 @@ graph TD
         COS_LUT -->|nco_cos 8-bit| MIX
         SIN_LUT -->|nco_sin 8-bit| MIX
 
-        MIX -->|mixer_i 16-bit| CIC_I[3rd-Order CIC Decimator R=640]
-        MIX -->|mixer_q 16-bit| CIC_Q[3rd-Order CIC Decimator R=640]
+        MIX -->|mixer_i 16-bit| CIC_I[Dual-Rate CIC Decimator R=640/320]
+        MIX -->|mixer_q 16-bit| CIC_Q[Dual-Rate CIC Decimator R=640/320]
 
-        CIC_I -->|cic_i 24-bit @ 48 kHz| I2S_TX[I2S Master Transmitter]
-        CIC_Q -->|cic_q 24-bit @ 48 kHz| I2S_TX
+        CIC_I -->|cic_i 24-bit| FIR_I[5-Tap Symmetric FIR Compensator]
+        CIC_Q -->|cic_q 24-bit| FIR_Q[5-Tap Symmetric FIR Compensator]
+
+        FIR_I -->|audio_i 24-bit @ 48k/96k| I2S_TX[Dual-Rate I2S Master Transmitter]
+        FIR_Q -->|audio_q 24-bit @ 48k/96k| I2S_TX
         
         SPI_SLV[SPI Command Parser] -->|tuning_word 32-bit| NCO_GEN
-        SPI_SLV -->|decimation_ratio| CIC_I
-        SPI_SLV -->|decimation_ratio| CIC_Q
+        SPI_SLV -->|CMD_SET_SAMPLE_RATE 0x02| CIC_I
+        SPI_SLV -->|CMD_SET_SAMPLE_RATE 0x02| CIC_Q
+        SPI_SLV -->|rate_select| I2S_TX
         FPGA_INT -->|fpga_int pin| MCU_INT[RP2040 GPIO Interrupt]
     end
 
@@ -198,15 +203,41 @@ $$B_{internal} = B_{in} + B_{growth} = 16 + 28 = 44\text{ bits}$$
 
 ---
 
-### 2.7 I2S Baseband Transmission
-The decimated 24-bit $I$ and $Q$ samples are transmitted over an I2S serial link:
-- **Bit Clock (`i2s_bck`)**: $3.072\text{ MHz}$ ($64 \times 48\text{ kHz}$)
-- **Word Select (`i2s_ws`)**: $48\text{ kHz}$ square wave
+### 2.7 Dual-Rate FIR Passband Droop Equalization
+
+While the 3-stage CIC decimator provides high stopband attenuation, its passband exhibits severe $\text{sinc}^3$ droop:
+- At $48\text{ kHz}$ ($R=640$), the response droops by **$-7.92\text{ dB}$ at $20\text{ kHz}$** ($0.416 F_s$).
+- At $96\text{ kHz}$ ($R=320$), the response droops by **$-7.92\text{ dB}$ at $40\text{ kHz}$** ($0.416 F_s$).
+
+Because normalized frequency $\omega = 2\pi f / F_s$ is identical at both sample rates ($F_s \cdot R = F_{\text{clk}} = 30.72\text{ MHz}$), the exact same FIR compensator flattens both 48 kHz and 96 kHz rates.
+
+#### Minimalist 5-Tap Folded FIR Architecture:
+A 5-tap symmetric linear-phase FIR filter ($h_0, h_1, h_2, h_1, h_0$) flattens the response to **$\pm 0.48\text{ dB}$ ($0.96\text{ dB}$ total ripple $\le 1.0\text{ dB}$)**:
+
+$$H_{\text{FIR}}(z) = h_0 + h_1 z^{-1} + h_2 z^{-2} + h_1 z^{-3} + h_0 z^{-4}$$
+
+#### Signed 16-Bit Q2.14 Fixed-Point Sizing:
+- $h_0 = h_4 = +0.100302 \times 16384 \approx \mathbf{+1643}$ (`16'sh066B`)
+- $h_1 = h_3 = -0.389698 \times 16384 \approx \mathbf{-6385}$ (`16'shE70F`)
+- $h_2 = +1.578857 \times 16384 \approx \mathbf{+25868}$ (`16'sh650C`) (Center tap)
+- $\sum h_i = 1643 + 1643 - 6385 - 6385 + 25868 = \mathbf{16384} = 2^{14} \implies \mathbf{1.000000}$ **Exact DC Gain**.
+
+#### Dual-Rate Gain Slicing:
+- **48 kHz Mode ($R=640$):** Slices bits `[41:18]` (DC gain $= 640^3 / 2^{18} = 1000$).
+- **96 kHz Mode ($R=320$):** Slices bits `[38:15]` (DC gain $= 320^3 / 2^{15} = 1000$).
+- Dynamic 3-bit downward shift equalizes output volume across sample rate changes with zero multiplier logic.
+
+---
+
+### 2.8 Dual-Rate I2S Baseband Transmission
+The compensated 24-bit $I$ and $Q$ samples are transmitted over an I2S serial link in standard Philips framing:
+- **48 kHz Mode:** Bit Clock (`i2s_bck`) $= 3.072\text{ MHz}$ ($64 \times 48\text{ kHz}$), Word Select (`i2s_ws`) $= 48.0\text{ kHz}$.
+- **96 kHz Mode:** Bit Clock (`i2s_bck`) $= 6.144\text{ MHz}$ ($64 \times 96\text{ kHz}$), Word Select (`i2s_ws`) $= 96.0\text{ kHz}$.
   - $\text{WS} = 0$ (Low): Left Channel = $I$ (In-phase sample)
   - $\text{WS} = 1$ (High): Right Channel = $Q$ (Quadrature sample)
 - **Data (`i2s_rx_data`)**: 24-bit signed MSB-first, left-aligned in a 32-bit frame.
 
-The RP2040 PIO state machine shifts 32 bits into the RX FIFO on each half-period of WS, populating memory buffers with alternating $(I, Q)$ pairs.
+The RP2040 PIO state machine acts as an I2S slave, capturing 32 bits into the RX FIFO on each half-period of WS and populating memory buffers with alternating $(I, Q)$ pairs.
 
 ---
 

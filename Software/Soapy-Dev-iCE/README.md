@@ -45,11 +45,12 @@ This driver exposes the board as a standard SoapySDR receiver device, making it 
 ### 1. Control Protocol (USB CDC Serial)
 * **Discovery:** Scans available serial ports for USB Vendor/Product IDs `0x1209:0xB1C0` (Pico-Dev-iCE DDC SDR) as well as `0xCAFE:0x4011` / `0xCAFE:0x4010` (WWU 2026 SDR).
 * **Direct NCO Frequency Tuning (DDC):** When tuning frequency, the driver sends `FREQ,<hz>\r\n`. The RP2040 firmware computes the 32-bit frequency tuning word (FCW) and programs the FPGA NCO over SPI.
+* **Dual Sample Rate (48 kHz / 96 kHz):** Supports dynamic switching between 48,000 Hz and 96,000 Hz via `RATE,<hz>\r\n`.
 * **PGA Gain Control:** Digital step attenuator codes (0x0 = +40 dB, 0x1 = +35 dB, 0x3 = +25 dB, 0xF = -15 dB) via `PGA,<code>\r\n`.
 * **Antenna Switching:** Front-end RF switch via `REF,<0|1>\r\n` (0 = Antenna RX, 1 = VNA Input).
 
 ### 2. Audio & I/Q Baseband Capture (USB Audio)
-* **ADC / DDC:** The FPGA streams I2S baseband samples (Left = I, Right = Q) at 24-bit resolution (`S24_3LE`) into the RP2040.
+* **ADC / DDC:** The FPGA streams I2S baseband samples (Left = I, Right = Q) at 24-bit resolution (`S24_3LE`) into the RP2040 at 48 kHz or 96 kHz.
 * **ALSA Direct Bypass:** Binds directly to the ALSA hardware device `hw:CARD=D2026,DEV=0` (or `hw:CARD=SDR,DEV=0`) using `miniaudio` with `noAutoResample = true` to prevent any OS audio resampling.
 * **Buffering & Format Conversion:** Converts 24-bit PCM samples to normalized float32 complex samples (`CF32` or `CS16`) in an internal lock-protected ring buffer.
 
