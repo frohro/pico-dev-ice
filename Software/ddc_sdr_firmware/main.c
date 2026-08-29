@@ -938,6 +938,16 @@ static void handle_line(const char *line, uint8_t length)
         cdc_write(reply);
         return;
     }
+    if (strncmp(line, "WIFI,JOIN,", 10) == 0 || strncmp(line, "JOIN,", 5) == 0) {
+        const char *target_ssid = strncmp(line, "WIFI,JOIN,", 10) == 0 ? line + 10 : line + 5;
+        s_current_ssid = target_ssid;
+        cyw43_arch_lwip_begin();
+        int r = cyw43_arch_wifi_connect_async(target_ssid, NULL, CYW43_AUTH_OPEN);
+        cyw43_arch_lwip_end();
+        snprintf(reply, sizeof(reply), "JOIN_START,%d,SSID,%s\r\nOK\r\n", r, target_ssid);
+        cdc_write(reply);
+        return;
+    }
     if (strcmp(line, "WIFI") == 0 || strcmp(line, "WIFI,STATUS") == 0 || strcmp(line, "IP") == 0) {
         cyw43_arch_lwip_begin();
         int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
@@ -1292,6 +1302,7 @@ int main(void)
                 cyw43_arch_lwip_begin();
                 int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
                 if (st == CYW43_LINK_UP) {
+                    s_noip_since = 0;
                     static bool s_pm_disabled = false;
                     if (!s_pm_disabled) {
                         s_pm_disabled = true;
@@ -1302,8 +1313,27 @@ int main(void)
                     uint32_t period = active ? 125 : 500;
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / period) % 2);
                 } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
+                    last_reconnect_ms = now_ms;
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 250) % 2);
+#ifdef STATIC_FALLBACK_IP
+                    if (!s_ip_configured) {
+                        if (s_noip_since == 0) s_noip_since = now_ms;
+                        if (now_ms - s_noip_since >= 8000) {
+                            s_ip_configured = true;
+                            dhcp_stop(&cyw43_state.netif[CYW43_ITF_STA]);
+                            ip4_addr_t ip, nm, gw;
+                            ip4addr_aton(STATIC_FALLBACK_IP, &ip);
+                            ip4addr_aton(STATIC_FALLBACK_NETMASK, &nm);
+                            ip4addr_aton(STATIC_FALLBACK_GATEWAY, &gw);
+                            netif_set_addr(&cyw43_state.netif[CYW43_ITF_STA], &ip, &nm, &gw);
+                            netif_set_link_up(&cyw43_state.netif[CYW43_ITF_STA]);
+                            netif_set_up(&cyw43_state.netif[CYW43_ITF_STA]);
+                        }
+                    }
+#endif
                 } else {
+                    s_noip_since = 0;
+                    s_ip_configured = false;
                     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 1000) % 2);
                     if (now_ms - last_reconnect_ms >= 15000) {
                         last_reconnect_ms = now_ms;
