@@ -22,6 +22,7 @@
 
 #ifdef PICO_CYW43_SUPPORTED
 #include "pico/cyw43_arch.h"
+#include "cyw43_internal.h"
 #include "openhpsdr.h"
 #include "wifi_config.h"
 #include "lwip/dhcp.h"
@@ -54,7 +55,7 @@
 #define DDC_PGA_GPIO_COUNT 4
 #define DDC_DEFAULT_SAMPLE_RATE 48000u
 #define DDC_RUNTIME_SPI_BAUD_HZ 10000000u
-#define DDC_MAX_WORDS_PER_BUFFER 192u
+#define DDC_MAX_WORDS_PER_BUFFER 256u
 #define DDC_TX_BUFFER_COUNT 4u
 #define DDC_AUDIO_CAPTURE_INTERFACE 3u
 #define DDC_AUDIO_PLAYBACK_INTERFACE 4u
@@ -71,8 +72,11 @@ typedef struct {
     size_t size;
 } ddc_fpga_bitstream_t;
 
-static uint32_t audio_buffer_a[DDC_MAX_WORDS_PER_BUFFER];
-static uint32_t audio_buffer_b[DDC_MAX_WORDS_PER_BUFFER];
+#define DDC_AUDIO_RING_COUNT 32u
+static uint32_t audio_ring[DDC_AUDIO_RING_COUNT][DDC_MAX_WORDS_PER_BUFFER];
+static volatile uint8_t ring_write_idx = 0;
+static volatile uint8_t ring_read_idx = 0;
+static volatile uint32_t ring_overruns = 0;
 static uint32_t tx_audio_buffers[DDC_TX_BUFFER_COUNT][DDC_MAX_WORDS_PER_BUFFER];
 static uint32_t tx_silence_buffer[DDC_MAX_WORDS_PER_BUFFER];
 static uint g_pio_offset;
@@ -109,6 +113,8 @@ static uint8_t line_length;
 static bool ready_message_sent;
 static uint32_t last_frequency_hz = 7050000u;
 static uint32_t freq_cmd_count;
+static volatile uint32_t s_main_loop_counter = 0;
+static volatile uint32_t prof_tud = 0, prof_cdc = 0, prof_fpga = 0, prof_agc = 0, prof_audio = 0, prof_task = 0, prof_led = 0, prof_wifi = 0;
 
 static bool fpga_write_command(uint8_t command, uint32_t value);
 static bool fpga_set_frequency(uint32_t frequency_hz);
@@ -217,9 +223,10 @@ static void pga_set_code(uint8_t code)
 
 static void fpga_interrupt_handler(uint gpio, uint32_t events)
 {
-    (void)gpio;
     (void)events;
-    fpga_interrupt_pending = true;
+    if (gpio == DDC_FPGA_INT_PIN) {
+        fpga_interrupt_pending = true;
+    }
 }
 
 static void handle_fpga_interrupt(void)
@@ -254,21 +261,42 @@ static void cdc_write(const char *text)
     tud_cdc_write_flush();
 }
 
+static volatile uint32_t dma_a_irq_count = 0;
+static volatile uint32_t dma_b_irq_count = 0;
+
 static void dma_handler(void)
 {
     uint32_t status = dma_hw->ints0;
 
     if (status & (1u << dma_channel_a)) {
         dma_hw->ints0 = 1u << dma_channel_a;
-        dma_channel_set_write_addr(dma_channel_a, audio_buffer_a, false);
+        dma_a_irq_count++;
+        uint8_t next_write = (ring_write_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        if (next_write == ring_read_idx) {
+            ring_overruns++;
+            ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        }
+        ring_write_idx = next_write;
+
+        // Channel A runs on even slots (0, 2, 4, 6...): arm next even slot
+        uint8_t next_a = (ring_write_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        dma_channel_set_write_addr(dma_channel_a, audio_ring[next_a], false);
         dma_channel_set_trans_count(dma_channel_a, words_per_buffer, false);
-        ready_buffers |= 1u;
     }
     if (status & (1u << dma_channel_b)) {
         dma_hw->ints0 = 1u << dma_channel_b;
-        dma_channel_set_write_addr(dma_channel_b, audio_buffer_b, false);
+        dma_b_irq_count++;
+        uint8_t next_write = (ring_write_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        if (next_write == ring_read_idx) {
+            ring_overruns++;
+            ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        }
+        ring_write_idx = next_write;
+
+        // Channel B runs on odd slots (1, 3, 5, 7...): arm next odd slot
+        uint8_t next_b = (ring_write_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        dma_channel_set_write_addr(dma_channel_b, audio_ring[next_b], false);
         dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
-        ready_buffers |= 2u;
     }
     if (tx_dma_channel >= 0 && (status & (1u << tx_dma_channel))) {
         uint32_t buffer_bit;
@@ -328,6 +356,16 @@ static void i2s_start(void)
         return;
     }
 
+#ifdef PICO_CYW43_SUPPORTED
+    if (openhpsdr_is_active()) {
+        words_per_buffer = HPSDR_WORDS_PER_PACKET;
+    } else {
+        words_per_buffer = (sample_rate == 96000u) ? 192u : 96u;
+    }
+#else
+    words_per_buffer = (sample_rate == 96000u) ? 192u : 96u;
+#endif
+
     // Stop and clear PIO SM and FIFOs completely first
     pio_sm_set_enabled(pio0, 0, false);
     pio_sm_clear_fifos(pio0, 0);
@@ -339,10 +377,12 @@ static void i2s_start(void)
     pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
     pio_sm_clear_fifos(pio0, 0);
 
-    // Configure and start DMA channel A FIRST so it is armed and waiting for word 0
-    dma_channel_set_write_addr(dma_channel_a, audio_buffer_a, false);
+    // Initialize ring buffer pointers and arm slot 0 on channel A, slot 1 on channel B
+    ring_write_idx = 0;
+    ring_read_idx = 0;
+    dma_channel_set_write_addr(dma_channel_a, audio_ring[0], false);
     dma_channel_set_trans_count(dma_channel_a, words_per_buffer, false);
-    dma_channel_set_write_addr(dma_channel_b, audio_buffer_b, false);
+    dma_channel_set_write_addr(dma_channel_b, audio_ring[1], false);
     dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
     dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
     ready_buffers = 0;
@@ -754,55 +794,59 @@ static bool switch_stored_fpga(ddc_fpga_image_t image)
     return success && fpga_ready;
 }
 
+#ifdef PICO_CYW43_SUPPORTED
+static inline bool cyw43_can_send(void) {
+    cyw43_int_t *ci = (cyw43_int_t *)&cyw43_state;
+    if (ci->wlan_flow_control) {
+        return false;
+    }
+    if (ci->wwd_sdpcm_last_bus_data_credit == ci->wwd_sdpcm_packet_transmit_sequence_number) {
+        cyw43_arch_lwip_begin();
+        cyw43_poll();
+        cyw43_arch_lwip_end();
+        if (ci->wwd_sdpcm_last_bus_data_credit == ci->wwd_sdpcm_packet_transmit_sequence_number) {
+            return false;
+        }
+    }
+    return true;
+}
+#endif
+
 static void audio_task(void)
 {
-    uint32_t mask;
-    const uint32_t *source;
-    uint32_t words;
-    uint32_t saved_interrupts;
-    tu_fifo_t *fifo;
-    static uint8_t packed[DDC_MAX_WORDS_PER_BUFFER * 3u];
-
     if (!i2s_running) {
         return;
     }
 
-    mask = ready_buffers;
-    if (mask == 0) {
-        return;
-    }
+    uint32_t words = words_per_buffer;
+    int budget = 4;
 
-    words = words_per_buffer;
-
-    // If USB audio capture is active, make sure endpoint FIFO has space
-    if (tud_audio_mounted() && capture_alt > 0) {
-        fifo = tud_audio_get_ep_in_ff();
-        if (fifo == NULL || tu_fifo_remaining(fifo) < words * 3u) {
-            return;
-        }
-    }
-
-    source = (mask & 1u) ? audio_buffer_a : audio_buffer_b;
+    while (ring_read_idx != ring_write_idx && budget-- > 0) {
+        const uint32_t *source = audio_ring[ring_read_idx];
 
 #ifdef PICO_CYW43_SUPPORTED
-    if (openhpsdr_is_active()) {
-        openhpsdr_push_samples(source, words);
-    }
+        if (openhpsdr_is_active()) {
+            openhpsdr_push_samples(source, words);
+        } else
 #endif
-
-    if (tud_audio_mounted() && capture_alt > 0) {
-        for (uint32_t index = 0; index < words; index++) {
-            uint32_t word = source[index];
-            packed[3u * index] = (uint8_t)(word >> 8);
-            packed[3u * index + 1u] = (uint8_t)(word >> 16);
-            packed[3u * index + 2u] = (uint8_t)(word >> 24);
+        if (tud_audio_mounted() && capture_alt > 0) {
+            tu_fifo_t *fifo = tud_audio_get_ep_in_ff();
+            if (fifo && tu_fifo_remaining(fifo) >= words * 3u) {
+                static uint8_t packed[DDC_MAX_WORDS_PER_BUFFER * 3u];
+                for (uint32_t index = 0; index < words; index++) {
+                    uint32_t word = source[index];
+                    packed[3u * index] = (uint8_t)(word >> 8);
+                    packed[3u * index + 1u] = (uint8_t)(word >> 16);
+                    packed[3u * index + 2u] = (uint8_t)(word >> 24);
+                }
+                tud_audio_write(packed, (uint16_t)(words * 3u));
+            } else {
+                return;
+            }
         }
-        tud_audio_write(packed, (uint16_t)(words * 3u));
-    }
 
-    saved_interrupts = save_and_disable_interrupts();
-    ready_buffers &= ~(mask & 1u ? 1u : 2u);
-    restore_interrupts(saved_interrupts);
+        ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+    }
 }
 
 static void handle_line(const char *line, uint8_t length)
@@ -902,6 +946,68 @@ static void handle_line(const char *line, uint8_t length)
         cdc_write(reply);
         return;
     }
+#ifdef PICO_CYW43_SUPPORTED
+    if (strcmp(line, "HPSDR") == 0) {
+        uint32_t push = 0, sent = 0, pfail = 0, uerr = 0, max_us = 0, last_us = 0;
+        uint32_t stall_seq = 0, stall_dt = 0;
+        openhpsdr_get_stats(&push, &sent, &pfail, &uerr, &max_us, &last_us, &stall_seq, &stall_dt);
+        cyw43_int_t *ci = (cyw43_int_t *)&cyw43_state;
+        snprintf(reply, sizeof(reply),
+                 "HPSDR: act=%d, words=%lu, dmaA=%lu, push=%lu, sent=%lu, ovr=%lu, fc=%d, cred=%d, max_us=%lu, last_us=%lu, stall_seq=%lu\r\nOK\r\n",
+                 openhpsdr_is_active(), (unsigned long)words_per_buffer,
+                 (unsigned long)dma_a_irq_count,
+                 (unsigned long)push, (unsigned long)sent, (unsigned long)ring_overruns,
+                 (int)ci->wlan_flow_control,
+                 (int)(uint8_t)(ci->wwd_sdpcm_last_bus_data_credit - ci->wwd_sdpcm_packet_transmit_sequence_number),
+                 (unsigned long)max_us, (unsigned long)last_us, (unsigned long)stall_seq);
+        cdc_write(reply);
+        return;
+    }
+    if (strcmp(line, "PROF") == 0) {
+        snprintf(reply, sizeof(reply),
+                 "PROF: loops=%lu tud=%lu cdc=%lu fpga=%lu agc=%lu audio=%lu wifi=%lu\r\nOK\r\n",
+                 (unsigned long)s_main_loop_counter,
+                 (unsigned long)prof_tud, (unsigned long)prof_cdc,
+                 (unsigned long)prof_fpga, (unsigned long)prof_agc,
+                 (unsigned long)prof_audio, (unsigned long)prof_wifi);
+        prof_tud = prof_cdc = prof_fpga = prof_agc = prof_audio = prof_wifi = 0;
+        cdc_write(reply);
+        return;
+    }
+    if (strncmp(line, "UDPBENCH,", 9) == 0 || strcmp(line, "UDPBENCH") == 0) {
+        const char *target_ip_str = (strncmp(line, "UDPBENCH,", 9) == 0) ? (line + 9) : "192.168.1.205";
+        ip_addr_t tip;
+        ip4addr_aton(target_ip_str, &tip);
+        uint32_t total_us = 0;
+        uint32_t max_p_us = 0;
+        int sent_count = 0;
+        int err_count = 0;
+        uint8_t bench_buf[1032];
+        memset(bench_buf, 0x55, sizeof(bench_buf));
+        for (int i = 0; i < 50; i++) {
+            uint32_t t0 = time_us_32();
+            cyw43_arch_lwip_begin();
+            struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, 1032, PBUF_POOL);
+            if (p) {
+                pbuf_take(p, bench_buf, 1032);
+                err_t err = udp_sendto(openhpsdr_get_pcb(), p, &tip, 1024);
+                if (err == ERR_OK) sent_count++;
+                else err_count++;
+                pbuf_free(p);
+            }
+            cyw43_arch_lwip_end();
+            uint32_t dt = time_us_32() - t0;
+            total_us += dt;
+            if (dt > max_p_us) max_p_us = dt;
+            busy_wait_us(2500); // 2.5 ms pacing (400 pkts/s)
+            cyw43_arch_poll();
+        }
+        snprintf(reply, sizeof(reply), "UDPBENCH: sent=%d err=%d avg_us=%lu max_us=%lu\r\nOK\r\n",
+                 sent_count, err_count, (unsigned long)(total_us / 50), (unsigned long)max_p_us);
+        cdc_write(reply);
+        return;
+    }
+#endif
     if (strcmp(line, "REF") == 0) {
         snprintf(reply, sizeof(reply), "REF,%d\r\nOK\r\n", gpio_get(DDC_REF_PIN));
         cdc_write(reply);
@@ -1209,7 +1315,7 @@ int main(void)
     channel_config_set_write_increment(&config_a, true);
     channel_config_set_dreq(&config_a, pio_get_dreq(pio0, 0, false));
     channel_config_set_chain_to(&config_a, dma_channel_b);
-    dma_channel_configure(dma_channel_a, &config_a, audio_buffer_a,
+    dma_channel_configure(dma_channel_a, &config_a, audio_ring[0],
                           &pio0->rxf[0], words_per_buffer, false);
 
     dma_channel_config config_b = dma_channel_get_default_config(dma_channel_b);
@@ -1218,7 +1324,7 @@ int main(void)
     channel_config_set_write_increment(&config_b, true);
     channel_config_set_dreq(&config_b, pio_get_dreq(pio0, 0, false));
     channel_config_set_chain_to(&config_b, dma_channel_a);
-    dma_channel_configure(dma_channel_b, &config_b, audio_buffer_b,
+    dma_channel_configure(dma_channel_b, &config_b, audio_ring[1],
                           &pio0->rxf[0], words_per_buffer, false);
 
     dma_channel_set_irq0_enabled(dma_channel_a, true);
@@ -1281,40 +1387,78 @@ int main(void)
 #endif
 
     while (true) {
+        s_main_loop_counter++;
+        uint32_t t = time_us_32();
         tud_task();
+        uint32_t d = time_us_32() - t; if (d > prof_tud) prof_tud = d;
+
+        t = time_us_32();
         cdc_task();
+        d = time_us_32() - t; if (d > prof_cdc) prof_cdc = d;
+
+        t = time_us_32();
         handle_fpga_interrupt();
+        d = time_us_32() - t; if (d > prof_fpga) prof_fpga = d;
+
+        t = time_us_32();
         agc_task();
+        d = time_us_32() - t; if (d > prof_agc) prof_agc = d;
+
+        t = time_us_32();
         audio_task();
+        d = time_us_32() - t; if (d > prof_audio) prof_audio = d;
+
         tx_task();
 
 #ifdef PICO_CYW43_SUPPORTED
+        t = time_us_32();
         if (wifi_ok) {
             openhpsdr_task();
-            if (openhpsdr_is_active() && !i2s_running) {
-                i2s_start();
-            } else if (!openhpsdr_is_active() && capture_alt == 0 && i2s_running) {
-                i2s_stop();
+            static bool s_last_hpsdr = false;
+            bool hpsdr_now = openhpsdr_is_active();
+            if (hpsdr_now != s_last_hpsdr) {
+                s_last_hpsdr = hpsdr_now;
+                if (i2s_running) {
+                    i2s_stop();
+                }
+                if (hpsdr_now || capture_alt > 0) {
+                    i2s_start();
+                }
+            } else {
+                if (hpsdr_now && !i2s_running) {
+                    i2s_start();
+                } else if (!hpsdr_now && capture_alt == 0 && i2s_running) {
+                    i2s_stop();
+                }
             }
             uint32_t now_ms = to_ms_since_boot(get_absolute_time());
-            if (now_ms - last_led_poll >= 100) {
+            bool active = openhpsdr_is_active();
+            static bool s_was_active = false;
+            if (active != s_was_active) {
+                s_was_active = active;
+                if (active) {
+                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+                }
+            }
+
+            if (!active && (now_ms - last_led_poll >= 500)) {
                 last_led_poll = now_ms;
                 cyw43_arch_lwip_begin();
                 int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
+                static int s_last_led = -1;
+                int led_val = 0;
                 if (st == CYW43_LINK_UP) {
                     s_noip_since = 0;
                     static bool s_pm_disabled = false;
                     if (!s_pm_disabled) {
                         s_pm_disabled = true;
-                        cyw43_wifi_pm(&cyw43_state, CYW43_NO_POWERSAVE_MODE);
+                        cyw43_wifi_pm(&cyw43_state, CYW43_NONE_PM);
                     }
                     last_reconnect_ms = now_ms;
-                    bool active = openhpsdr_is_active();
-                    uint32_t period = active ? 125 : 500;
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / period) % 2);
+                    led_val = (now_ms / 500) % 2;
                 } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
                     last_reconnect_ms = now_ms;
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 250) % 2);
+                    led_val = (now_ms / 250) % 2;
 #ifdef STATIC_FALLBACK_IP
                     if (!s_ip_configured) {
                         if (s_noip_since == 0) s_noip_since = now_ms;
@@ -1334,7 +1478,7 @@ int main(void)
                 } else {
                     s_noip_since = 0;
                     s_ip_configured = false;
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, (now_ms / 1000) % 2);
+                    led_val = (now_ms / 1000) % 2;
                     if (now_ms - last_reconnect_ms >= 15000) {
                         last_reconnect_ms = now_ms;
                         uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
@@ -1342,9 +1486,14 @@ int main(void)
                         cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
                     }
                 }
+                if (led_val != s_last_led) {
+                    s_last_led = led_val;
+                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_val);
+                }
                 cyw43_arch_lwip_end();
             }
         }
+        d = time_us_32() - t; if (d > prof_wifi) prof_wifi = d;
 #endif
     }
 }

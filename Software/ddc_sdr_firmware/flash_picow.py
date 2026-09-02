@@ -48,16 +48,21 @@ def find_rp2_mount():
 
 
 def trigger_bootsel_serial(port):
-    """Trigger BOOTSEL mode via 1200 baud touch reset or command."""
+    """Trigger BOOTSEL mode via USB CDC command or 1200 baud touch reset."""
     print(f"[*] Trying serial reset on {port}...")
+    try:
+        import serial
+        s = serial.Serial(port, 115200, timeout=0.5)
+        s.write(b"BOOTSEL\r\n")
+        time.sleep(0.1)
+        s.close()
+        time.sleep(0.5)
+        return True
+    except Exception as e:
+        pass
     try:
         import termios
         fd = os.open(port, os.O_RDWR | os.O_NONBLOCK | os.O_NOCTTY)
-        try:
-            os.write(fd, b"BOOTSEL\r\n")
-            time.sleep(0.1)
-        except Exception:
-            pass
         attrs = termios.tcgetattr(fd)
         attrs[4] = termios.B1200
         attrs[5] = termios.B1200

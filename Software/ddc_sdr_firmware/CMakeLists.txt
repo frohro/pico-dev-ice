@@ -178,6 +178,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${PICO_TINYUSB_PATH}/hw/bsp
     ${PICO_TINYUSB_PATH}/hw
     ${PICO_TINYUSB_PATH}/src
+    ${PICO_SDK_PATH}/lib/cyw43-driver/src
 )
 
 set(DDC_LIBS
