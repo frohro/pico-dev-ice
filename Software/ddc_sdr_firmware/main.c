@@ -75,8 +75,10 @@ typedef struct {
 #define DDC_AUDIO_RING_COUNT 32u
 static uint32_t audio_ring[DDC_AUDIO_RING_COUNT][DDC_MAX_WORDS_PER_BUFFER];
 static volatile uint8_t ring_write_idx = 0;
-static volatile uint8_t ring_read_idx = 0;
-static volatile uint32_t ring_overruns = 0;
+static volatile uint8_t ring_usb_read_idx = 0;
+static volatile uint8_t ring_wifi_read_idx = 0;
+static volatile uint32_t ring_usb_overruns = 0;
+static volatile uint32_t ring_wifi_overruns = 0;
 static uint32_t tx_audio_buffers[DDC_TX_BUFFER_COUNT][DDC_MAX_WORDS_PER_BUFFER];
 static uint32_t tx_silence_buffer[DDC_MAX_WORDS_PER_BUFFER];
 static uint g_pio_offset;
@@ -135,6 +137,10 @@ static int s_wifi_ssid_idx = 0;
 static const char *s_current_ssid = DEFAULT_WIFI_SSID_PRIMARY;
 static bool s_ip_configured = false;
 static uint32_t s_noip_since = 0;
+
+static volatile bool s_wifi_connected = false;
+static char s_wifi_ip_str[32] = "0.0.0.0";
+static volatile int s_wifi_link_status = CYW43_LINK_DOWN;
 
 static volatile uint32_t s_pending_hpsdr_freq = 0;
 static volatile uint32_t s_pending_hpsdr_rate = 0;
@@ -271,10 +277,16 @@ static void dma_handler(void)
         dma_hw->ints0 = 1u << dma_channel_a;
         dma_a_irq_count++;
         uint8_t next_write = (ring_write_idx + 1u) % DDC_AUDIO_RING_COUNT;
-        if (next_write == ring_read_idx) {
-            ring_overruns++;
-            ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        if (capture_alt > 0 && next_write == ring_usb_read_idx) {
+            ring_usb_overruns++;
+            ring_usb_read_idx = (ring_usb_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
         }
+#ifdef PICO_CYW43_SUPPORTED
+        if (openhpsdr_is_active() && next_write == ring_wifi_read_idx) {
+            ring_wifi_overruns++;
+            ring_wifi_read_idx = (ring_wifi_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        }
+#endif
         ring_write_idx = next_write;
 
         // Channel A runs on even slots (0, 2, 4, 6...): arm next even slot
@@ -286,10 +298,16 @@ static void dma_handler(void)
         dma_hw->ints0 = 1u << dma_channel_b;
         dma_b_irq_count++;
         uint8_t next_write = (ring_write_idx + 1u) % DDC_AUDIO_RING_COUNT;
-        if (next_write == ring_read_idx) {
-            ring_overruns++;
-            ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        if (capture_alt > 0 && next_write == ring_usb_read_idx) {
+            ring_usb_overruns++;
+            ring_usb_read_idx = (ring_usb_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
         }
+#ifdef PICO_CYW43_SUPPORTED
+        if (openhpsdr_is_active() && next_write == ring_wifi_read_idx) {
+            ring_wifi_overruns++;
+            ring_wifi_read_idx = (ring_wifi_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+        }
+#endif
         ring_write_idx = next_write;
 
         // Channel B runs on odd slots (1, 3, 5, 7...): arm next odd slot
@@ -374,7 +392,8 @@ static void i2s_start(void)
     // Reset PIO execution state to sync anchor at start of program
     // Initialize ring buffer pointers and arm slot 0 on channel A, slot 1 on channel B
     ring_write_idx = 0;
-    ring_read_idx = 0;
+    ring_usb_read_idx = 0;
+    ring_wifi_read_idx = 0;
     dma_channel_set_write_addr(dma_channel_a, audio_ring[0], false);
     dma_channel_set_trans_count(dma_channel_a, words_per_buffer, false);
     dma_channel_set_write_addr(dma_channel_b, audio_ring[1], false);
@@ -792,29 +811,6 @@ static bool switch_stored_fpga(ddc_fpga_image_t image)
     return success && fpga_ready;
 }
 
-#ifdef PICO_CYW43_SUPPORTED
-static inline bool cyw43_wait_credit(uint32_t max_wait_us) {
-    cyw43_int_t *ci = (cyw43_int_t *)&cyw43_state;
-    if (ci->wlan_flow_control) {
-        return false;
-    }
-    if (ci->wwd_sdpcm_last_bus_data_credit != ci->wwd_sdpcm_packet_transmit_sequence_number) {
-        return true;
-    }
-    uint32_t t0 = time_us_32();
-    do {
-        cyw43_arch_lwip_begin();
-        cyw43_poll();
-        cyw43_arch_lwip_end();
-        if (!ci->wlan_flow_control && 
-            (ci->wwd_sdpcm_last_bus_data_credit != ci->wwd_sdpcm_packet_transmit_sequence_number)) {
-            return true;
-        }
-    } while (time_us_32() - t0 < max_wait_us);
-    return false;
-}
-#endif
-
 static void audio_task(void)
 {
     if (!i2s_running) {
@@ -824,35 +820,25 @@ static void audio_task(void)
     uint32_t words = words_per_buffer;
     int budget = 4;
 
-    while (ring_read_idx != ring_write_idx && budget-- > 0) {
-        const uint32_t *source = audio_ring[ring_read_idx];
-
-#ifdef PICO_CYW43_SUPPORTED
-        if (openhpsdr_is_active()) {
-            if (!cyw43_wait_credit(100)) {
-                ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
-                continue;
-            }
-            openhpsdr_push_samples(source, words);
-        } else
-#endif
-        if (tud_audio_mounted() && capture_alt > 0) {
-            tu_fifo_t *fifo = tud_audio_get_ep_in_ff();
-            if (fifo && tu_fifo_remaining(fifo) >= words * 3u) {
-                static uint8_t packed[DDC_MAX_WORDS_PER_BUFFER * 3u];
-                for (uint32_t index = 0; index < words; index++) {
-                    uint32_t word = source[index];
-                    packed[3u * index] = (uint8_t)(word >> 8);
-                    packed[3u * index + 1u] = (uint8_t)(word >> 16);
-                    packed[3u * index + 2u] = (uint8_t)(word >> 24);
-                }
-                tud_audio_write(packed, (uint16_t)(words * 3u));
-            } else {
+    if (tud_audio_mounted() && capture_alt > 0) {
+        tu_fifo_t *fifo = tud_audio_get_ep_in_ff();
+        while (ring_usb_read_idx != ring_write_idx && budget-- > 0) {
+            if (!fifo || tu_fifo_remaining(fifo) < words * 3u) {
                 return;
             }
+            const uint32_t *source = audio_ring[ring_usb_read_idx];
+            static uint8_t packed[DDC_MAX_WORDS_PER_BUFFER * 3u];
+            for (uint32_t index = 0; index < words; index++) {
+                uint32_t word = source[index];
+                packed[3u * index] = (uint8_t)(word >> 8);
+                packed[3u * index + 1u] = (uint8_t)(word >> 16);
+                packed[3u * index + 2u] = (uint8_t)(word >> 24);
+            }
+            tud_audio_write(packed, (uint16_t)(words * 3u));
+            ring_usb_read_idx = (ring_usb_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
         }
-
-        ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+    } else {
+        ring_usb_read_idx = ring_write_idx;
     }
 }
 
@@ -960,13 +946,12 @@ static void handle_line(const char *line, uint8_t length)
         openhpsdr_get_stats(&push, &sent, &pfail, &uerr, &max_us, &last_us, &stall_seq, &stall_dt);
         cyw43_int_t *ci = (cyw43_int_t *)&cyw43_state;
         snprintf(reply, sizeof(reply),
-                 "HPSDR: act=%d, words=%lu, dmaA=%lu, push=%lu, sent=%lu, ovr=%lu, fc=%d, cred=%d, max_us=%lu, last_us=%lu, stall_seq=%lu\r\nOK\r\n",
+                 "HPSDR: act=%d, words=%lu, dmaA=%lu, push=%lu, sent=%lu, ovr_u=%lu, ovr_w=%lu, max_us=%lu, last_us=%lu\r\nOK\r\n",
                  openhpsdr_is_active(), (unsigned long)words_per_buffer,
                  (unsigned long)dma_a_irq_count,
-                 (unsigned long)push, (unsigned long)sent, (unsigned long)ring_overruns,
-                 (int)ci->wlan_flow_control,
-                 (int)(uint8_t)(ci->wwd_sdpcm_last_bus_data_credit - ci->wwd_sdpcm_packet_transmit_sequence_number),
-                 (unsigned long)max_us, (unsigned long)last_us, (unsigned long)stall_seq);
+                 (unsigned long)push, (unsigned long)sent,
+                 (unsigned long)ring_usb_overruns, (unsigned long)ring_wifi_overruns,
+                 (unsigned long)max_us, (unsigned long)last_us);
         cdc_write(reply);
         return;
     }
@@ -1062,24 +1047,16 @@ static void handle_line(const char *line, uint8_t length)
         return;
     }
     if (strcmp(line, "WIFI") == 0 || strcmp(line, "WIFI,STATUS") == 0 || strcmp(line, "IP") == 0) {
-        cyw43_arch_lwip_begin();
-        int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
         const char *st_str = "DOWN";
-        if (st == CYW43_LINK_UP) st_str = "UP";
-        else if (st == CYW43_LINK_JOIN) st_str = "JOIN";
-        else if (st == CYW43_LINK_NOIP) st_str = "NO_IP";
-        else if (st == CYW43_LINK_BADAUTH) st_str = "BAD_AUTH";
-        else if (st == CYW43_LINK_NONET) st_str = "NO_NET";
-        else if (st == CYW43_LINK_FAIL) st_str = "FAIL";
+        if (s_wifi_link_status == CYW43_LINK_UP) st_str = "UP";
+        else if (s_wifi_link_status == CYW43_LINK_JOIN) st_str = "JOIN";
+        else if (s_wifi_link_status == CYW43_LINK_NOIP) st_str = "NO_IP";
+        else if (s_wifi_link_status == CYW43_LINK_BADAUTH) st_str = "BAD_AUTH";
+        else if (s_wifi_link_status == CYW43_LINK_NONET) st_str = "NO_NET";
+        else if (s_wifi_link_status == CYW43_LINK_FAIL) st_str = "FAIL";
 
-        char ip_str[32] = "0.0.0.0";
-        if (st == CYW43_LINK_UP) {
-            snprintf(ip_str, sizeof(ip_str), "%s",
-                     ip4addr_ntoa(netif_ip4_addr(&cyw43_state.netif[CYW43_ITF_STA])));
-        }
-        cyw43_arch_lwip_end();
         snprintf(reply, sizeof(reply), "WIFI,%s,IP,%s,SSID,%s\r\nOK\r\n",
-                 st_str, ip_str, s_current_ssid ? s_current_ssid : "NONE");
+                 st_str, s_wifi_ip_str, s_current_ssid ? s_current_ssid : "NONE");
         cdc_write(reply);
         return;
     }
@@ -1280,6 +1257,143 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport,
 
 
 
+#ifdef PICO_CYW43_SUPPORTED
+static inline bool cyw43_wait_credit(uint32_t max_wait_us) {
+    cyw43_int_t *ci = (cyw43_int_t *)&cyw43_state;
+    if (ci->wlan_flow_control) {
+        return false;
+    }
+    if (ci->wwd_sdpcm_last_bus_data_credit != ci->wwd_sdpcm_packet_transmit_sequence_number) {
+        return true;
+    }
+    uint32_t t0 = time_us_32();
+    do {
+        cyw43_arch_lwip_begin();
+        cyw43_poll();
+        cyw43_arch_lwip_end();
+        if (!ci->wlan_flow_control && 
+            (ci->wwd_sdpcm_last_bus_data_credit != ci->wwd_sdpcm_packet_transmit_sequence_number)) {
+            return true;
+        }
+    } while (time_us_32() - t0 < max_wait_us);
+    return false;
+}
+
+static void core1_entry(void)
+{
+    if (cyw43_arch_init() != 0) {
+        return;
+    }
+    cyw43_arch_enable_sta_mode();
+    cyw43_wifi_pm(&cyw43_state, CYW43_NONE_PM);
+
+    // Force high-speed OFDM (54 Mbps max, disable slow CCK rates)
+    uint32_t gmode = 4; // GMODE_PERFORMANCE
+    cyw43_ioctl(&cyw43_state, 110, sizeof(gmode), (uint8_t *)&gmode, CYW43_ITF_STA);
+
+    openhpsdr_init(on_hpsdr_freq_change, on_hpsdr_rate_change, on_hpsdr_gain_change);
+
+    uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
+    const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
+    cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
+
+    uint32_t last_led_poll = 0;
+    uint32_t last_reconnect_ms = to_ms_since_boot(get_absolute_time());
+
+    while (true) {
+        // 1. Service Wi-Fi events & incoming OpenHPSDR packets
+        cyw43_arch_poll();
+        openhpsdr_task();
+
+        // 2. Service Wi-Fi Audio Streaming from SPSC Ring Buffer
+        if (openhpsdr_is_active()) {
+            int budget = 8;
+            while (ring_wifi_read_idx != ring_write_idx && budget-- > 0) {
+                if (!cyw43_wait_credit(100)) {
+                    ring_wifi_read_idx = (ring_wifi_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+                    continue;
+                }
+                uint8_t lag = (ring_write_idx + DDC_AUDIO_RING_COUNT - ring_wifi_read_idx) % DDC_AUDIO_RING_COUNT;
+                if (lag > DDC_AUDIO_RING_COUNT - 4) {
+                    ring_wifi_read_idx = (ring_write_idx + DDC_AUDIO_RING_COUNT - 4) % DDC_AUDIO_RING_COUNT;
+                }
+                const uint32_t *source = audio_ring[ring_wifi_read_idx];
+                openhpsdr_push_samples(source, words_per_buffer);
+                ring_wifi_read_idx = (ring_wifi_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+            }
+        } else {
+            ring_wifi_read_idx = ring_write_idx;
+            sleep_ms(2);
+        }
+
+        // 3. Wi-Fi Link Monitoring & LED Control
+        uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+        bool active = openhpsdr_is_active();
+        static bool s_was_active = false;
+        if (active != s_was_active) {
+            s_was_active = active;
+            if (active) {
+                cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+            }
+        }
+
+        if (!active && (now_ms - last_led_poll >= 500)) {
+            last_led_poll = now_ms;
+            cyw43_arch_lwip_begin();
+            int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
+            s_wifi_link_status = st;
+            static int s_last_led = -1;
+            int led_val = 0;
+            if (st == CYW43_LINK_UP) {
+                s_noip_since = 0;
+                s_wifi_connected = true;
+                last_reconnect_ms = now_ms;
+                led_val = (now_ms / 500) % 2;
+                snprintf(s_wifi_ip_str, sizeof(s_wifi_ip_str), "%s",
+                         ip4addr_ntoa(netif_ip4_addr(&cyw43_state.netif[CYW43_ITF_STA])));
+            } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
+                s_wifi_connected = false;
+                last_reconnect_ms = now_ms;
+                led_val = (now_ms / 250) % 2;
+#ifdef STATIC_FALLBACK_IP
+                if (!s_ip_configured) {
+                    if (s_noip_since == 0) s_noip_since = now_ms;
+                    if (now_ms - s_noip_since >= 8000) {
+                        s_ip_configured = true;
+                        dhcp_stop(&cyw43_state.netif[CYW43_ITF_STA]);
+                        ip4_addr_t ip, nm, gw;
+                        ip4addr_aton(STATIC_FALLBACK_IP, &ip);
+                        ip4addr_aton(STATIC_FALLBACK_NETMASK, &nm);
+                        ip4addr_aton(STATIC_FALLBACK_GATEWAY, &gw);
+                        netif_set_addr(&cyw43_state.netif[CYW43_ITF_STA], &ip, &nm, &gw);
+                        netif_set_link_up(&cyw43_state.netif[CYW43_ITF_STA]);
+                        netif_set_up(&cyw43_state.netif[CYW43_ITF_STA]);
+                        snprintf(s_wifi_ip_str, sizeof(s_wifi_ip_str), "%s", STATIC_FALLBACK_IP);
+                    }
+                }
+#endif
+            } else {
+                s_wifi_connected = false;
+                s_noip_since = 0;
+                s_ip_configured = false;
+                led_val = (now_ms / 1000) % 2;
+                if (now_ms - last_reconnect_ms >= 15000) {
+                    last_reconnect_ms = now_ms;
+                    uint32_t reconnect_auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
+                    const char *reconnect_pass = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
+                    cyw43_arch_wifi_connect_async(s_current_ssid, reconnect_pass, reconnect_auth);
+                }
+            }
+            if (led_val != s_last_led) {
+                s_last_led = led_val;
+                cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_val);
+            }
+            cyw43_arch_lwip_end();
+        }
+    }
+}
+#endif
+
 int main(void)
 {
     board_init();
@@ -1379,18 +1493,7 @@ int main(void)
     tusb_init();
 
 #ifdef PICO_CYW43_SUPPORTED
-    bool wifi_ok = false;
-    if (cyw43_arch_init() == 0) {
-        wifi_ok = true;
-        cyw43_arch_enable_sta_mode();
-        uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
-        const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
-        cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
-        openhpsdr_init(on_hpsdr_freq_change, on_hpsdr_rate_change, on_hpsdr_gain_change);
-    }
-    uint32_t last_led_poll = 0;
-    uint32_t last_reconnect_ms = to_ms_since_boot(get_absolute_time());
-    uint32_t s_join_start_ms = 0;
+    multicore_launch_core1(core1_entry);
 #endif
 
     while (true) {
@@ -1418,115 +1521,48 @@ int main(void)
         tx_task();
 
 #ifdef PICO_CYW43_SUPPORTED
-        t = time_us_32();
-        if (wifi_ok) {
-            openhpsdr_task();
-            if (s_pending_hpsdr_freq > 0) {
-                uint32_t f = s_pending_hpsdr_freq;
-                s_pending_hpsdr_freq = 0;
-                if (fpga_ready && f != last_frequency_hz) {
-                    fpga_set_frequency(f);
-                    last_frequency_hz = f;
-                    freq_cmd_count++;
-                }
-            }
-            if (s_pending_hpsdr_rate > 0) {
-                uint32_t r = s_pending_hpsdr_rate;
-                s_pending_hpsdr_rate = 0;
-                if (r != sample_rate) {
-                    apply_sample_rate(r);
-                }
-            }
-            if (s_pending_hpsdr_gain >= 0) {
-                uint8_t g = (uint8_t)s_pending_hpsdr_gain;
-                s_pending_hpsdr_gain = -1;
-                agc_state.pga_code = g;
-                pga_set_code(g);
-            }
-            static bool s_last_hpsdr = false;
-            bool hpsdr_now = openhpsdr_is_active();
-            if (hpsdr_now != s_last_hpsdr) {
-                s_last_hpsdr = hpsdr_now;
-                if (i2s_running) {
-                    i2s_stop();
-                }
-                ring_read_idx = ring_write_idx = 0;
-                openhpsdr_reset_sample_idx();
-                if (hpsdr_now || capture_alt > 0) {
-                    i2s_start();
-                }
-            } else {
-                if (hpsdr_now && !i2s_running) {
-                    i2s_start();
-                } else if (!hpsdr_now && capture_alt == 0 && i2s_running) {
-                    i2s_stop();
-                }
-            }
-            uint32_t now_ms = to_ms_since_boot(get_absolute_time());
-            bool active = openhpsdr_is_active();
-            static bool s_was_active = false;
-            if (active != s_was_active) {
-                s_was_active = active;
-                if (active) {
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
-                }
-            }
-
-            if (!active && (now_ms - last_led_poll >= 500)) {
-                last_led_poll = now_ms;
-                cyw43_arch_lwip_begin();
-                int st = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
-                static int s_last_led = -1;
-                int led_val = 0;
-                if (st == CYW43_LINK_UP) {
-                    s_noip_since = 0;
-                    static bool s_pm_disabled = false;
-                    if (!s_pm_disabled) {
-                        s_pm_disabled = true;
-                        cyw43_wifi_pm(&cyw43_state, CYW43_NONE_PM);
-                        uint32_t gmode = 4; // GMODE_PERFORMANCE (OFDM only, high throughput)
-                        cyw43_ioctl(&cyw43_state, 110, sizeof(gmode), (uint8_t *)&gmode, CYW43_ITF_STA);
-                    }
-                    last_reconnect_ms = now_ms;
-                    led_val = (now_ms / 500) % 2;
-                } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
-                    last_reconnect_ms = now_ms;
-                    led_val = (now_ms / 250) % 2;
-#ifdef STATIC_FALLBACK_IP
-                    if (!s_ip_configured) {
-                        if (s_noip_since == 0) s_noip_since = now_ms;
-                        if (now_ms - s_noip_since >= 8000) {
-                            s_ip_configured = true;
-                            dhcp_stop(&cyw43_state.netif[CYW43_ITF_STA]);
-                            ip4_addr_t ip, nm, gw;
-                            ip4addr_aton(STATIC_FALLBACK_IP, &ip);
-                            ip4addr_aton(STATIC_FALLBACK_NETMASK, &nm);
-                            ip4addr_aton(STATIC_FALLBACK_GATEWAY, &gw);
-                            netif_set_addr(&cyw43_state.netif[CYW43_ITF_STA], &ip, &nm, &gw);
-                            netif_set_link_up(&cyw43_state.netif[CYW43_ITF_STA]);
-                            netif_set_up(&cyw43_state.netif[CYW43_ITF_STA]);
-                        }
-                    }
-#endif
-                } else {
-                    s_noip_since = 0;
-                    s_ip_configured = false;
-                    led_val = (now_ms / 1000) % 2;
-                    if (now_ms - last_reconnect_ms >= 15000) {
-                        last_reconnect_ms = now_ms;
-                        uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
-                        const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == '\0') ? NULL : DEFAULT_WIFI_PASSWORD;
-                        cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
-                    }
-                }
-                if (led_val != s_last_led) {
-                    s_last_led = led_val;
-                    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_val);
-                }
-                cyw43_arch_lwip_end();
+        if (s_pending_hpsdr_freq > 0) {
+            uint32_t f = s_pending_hpsdr_freq;
+            s_pending_hpsdr_freq = 0;
+            if (fpga_ready && f != last_frequency_hz) {
+                fpga_set_frequency(f);
+                last_frequency_hz = f;
+                freq_cmd_count++;
             }
         }
-        d = time_us_32() - t; if (d > prof_wifi) prof_wifi = d;
+        if (s_pending_hpsdr_rate > 0) {
+            uint32_t r = s_pending_hpsdr_rate;
+            s_pending_hpsdr_rate = 0;
+            if (r != sample_rate) {
+                apply_sample_rate(r);
+            }
+        }
+        if (s_pending_hpsdr_gain >= 0) {
+            uint8_t g = (uint8_t)s_pending_hpsdr_gain;
+            s_pending_hpsdr_gain = -1;
+            agc_state.pga_code = g;
+            pga_set_code(g);
+        }
+
+        static bool s_last_hpsdr = false;
+        bool hpsdr_now = openhpsdr_is_active();
+        if (hpsdr_now != s_last_hpsdr) {
+            s_last_hpsdr = hpsdr_now;
+            if (i2s_running) {
+                i2s_stop();
+            }
+            ring_write_idx = ring_usb_read_idx = ring_wifi_read_idx = 0;
+            openhpsdr_reset_sample_idx();
+            if (hpsdr_now || capture_alt > 0) {
+                i2s_start();
+            }
+        } else {
+            if (hpsdr_now && !i2s_running) {
+                i2s_start();
+            } else if (!hpsdr_now && capture_alt == 0 && i2s_running) {
+                i2s_stop();
+            }
+        }
 #endif
     }
 }

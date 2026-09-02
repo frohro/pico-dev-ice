@@ -9,6 +9,7 @@ import time
 import glob
 import subprocess
 import serial
+import re
 
 FIRMWARE_DIR = "/home/frohro/Projects/pico-dev-ice/Software/ddc_sdr_firmware"
 DEFAULT_IP = "192.168.1.191"
@@ -49,7 +50,10 @@ def flash_firmware():
     res = subprocess.run(["python3", "flash_picow.py"], cwd=FIRMWARE_DIR)
     return res.returncode == 0
 
+s_detected_ip = DEFAULT_IP
+
 def wait_for_wifi(timeout=25):
+    global s_detected_ip
     print("[*] Waiting for board to boot and connect to Wi-Fi...")
     time.sleep(8)
     start = time.time()
@@ -57,6 +61,9 @@ def wait_for_wifi(timeout=25):
         resp = send_cdc_command("WIFI")
         if "WIFI,UP" in resp:
             print(f"[+] Connected: {resp}")
+            m = re.search(r"IP,([0-9.]+)", resp)
+            if m:
+                s_detected_ip = m.group(1)
             return True
         elif "WIFI" in resp:
             print(f"[*] Status: {resp}")
@@ -71,7 +78,7 @@ def show_prof():
     print(send_cdc_command("PROF"))
 
 def run_test():
-    res = subprocess.run(["python3", "test_openhpsdr.py", "--ip", DEFAULT_IP], cwd=FIRMWARE_DIR)
+    res = subprocess.run(["python3", "test_openhpsdr.py", "--ip", s_detected_ip], cwd=FIRMWARE_DIR)
     return res.returncode == 0
 
 def full_cycle():

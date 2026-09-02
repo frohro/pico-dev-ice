@@ -6,8 +6,8 @@
 
 static struct udp_pcb *s_pcb = NULL;
 static ip_addr_t s_host_ip;
-static u16_t s_host_port = 0;
-static bool s_active = false;
+static volatile u16_t s_host_port = 0;
+static volatile bool s_active = false;
 static uint32_t s_sequence = 0;
 
 static hpsdr_freq_callback_t s_freq_cb = NULL;
