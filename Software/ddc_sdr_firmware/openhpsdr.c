@@ -1,6 +1,7 @@
 #include "openhpsdr.h"
 #include <string.h>
 #include "pico/cyw43_arch.h"
+#include "cyw43_internal.h"
 #include "lwip/pbuf.h"
 
 static struct udp_pcb *s_pcb = NULL;
@@ -160,13 +161,6 @@ static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
     }
     // Command & Control (C&C) or standard data: 0xEFFE 0x01
     else if (p->len >= 8 && data[0] == 0xEF && data[1] == 0xFE) {
-        if (!s_active) {
-            s_sequence = 0;
-            s_sample_idx = 0;
-        }
-        ip_addr_copy(s_host_ip, *addr);
-        s_host_port = port;
-        s_active = true;
         handle_cc_packet(data, p->len);
     }
 
@@ -254,22 +248,23 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
     }
 
     // Fast path: Exact 1-packet buffer (126 stereo samples = 252 words)
-    if (count == HPSDR_WORDS_PER_PACKET && s_sample_idx == 0) {
+    if (count == HPSDR_WORDS_PER_PACKET) {
+        s_sample_idx = 0;
         init_hpsdr_packet();
 
         // Subframe 1: 63 stereo samples (words 0..125)
         for (uint32_t s = 0; s < 63; s++) {
-            uint32_t w_i = samples[2 * s + 1]; // Right/Q -> si -> SDR++ .im
-            uint32_t w_q = samples[2 * s];     // Left/I  -> sq -> SDR++ .re
+            uint32_t w_i = samples[2 * s];     // Left / I (Real)
+            uint32_t w_q = samples[2 * s + 1]; // Right / Q (Imag)
             uint32_t offset = 16 + (s * 8);
 
-            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
-            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
-            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+            s_packet_buffer[offset + 0] = (uint8_t)(w_q >> 24); // SDR++ .im
+            s_packet_buffer[offset + 1] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_q >> 8);
 
-            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
-            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
-            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
+            s_packet_buffer[offset + 3] = (uint8_t)(w_i >> 24); // SDR++ .re
+            s_packet_buffer[offset + 4] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_i >> 8);
 
             s_packet_buffer[offset + 6] = 0x00;
             s_packet_buffer[offset + 7] = 0x00;
@@ -277,17 +272,17 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
 
         // Subframe 2: 63 stereo samples (words 126..251)
         for (uint32_t s = 0; s < 63; s++) {
-            uint32_t w_i = samples[126 + (2 * s) + 1];
-            uint32_t w_q = samples[126 + (2 * s)];
+            uint32_t w_i = samples[126 + (2 * s)];
+            uint32_t w_q = samples[126 + (2 * s) + 1];
             uint32_t offset = 528 + (s * 8);
 
-            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
-            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
-            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+            s_packet_buffer[offset + 0] = (uint8_t)(w_q >> 24);
+            s_packet_buffer[offset + 1] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_q >> 8);
 
-            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
-            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
-            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
+            s_packet_buffer[offset + 3] = (uint8_t)(w_i >> 24);
+            s_packet_buffer[offset + 4] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_i >> 8);
 
             s_packet_buffer[offset + 6] = 0x00;
             s_packet_buffer[offset + 7] = 0x00;

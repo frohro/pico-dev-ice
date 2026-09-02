@@ -136,21 +136,20 @@ static const char *s_current_ssid = DEFAULT_WIFI_SSID_PRIMARY;
 static bool s_ip_configured = false;
 static uint32_t s_noip_since = 0;
 
+static volatile uint32_t s_pending_hpsdr_freq = 0;
+static volatile uint32_t s_pending_hpsdr_rate = 0;
+static volatile int8_t s_pending_hpsdr_gain = -1;
+
 static void on_hpsdr_freq_change(uint32_t freq_hz) {
-    if (fpga_ready) {
-        fpga_set_frequency(freq_hz);
-        last_frequency_hz = freq_hz;
-        freq_cmd_count++;
-    }
+    s_pending_hpsdr_freq = freq_hz;
 }
 
 static void on_hpsdr_rate_change(uint32_t rate_hz) {
-    apply_sample_rate(rate_hz);
+    s_pending_hpsdr_rate = rate_hz;
 }
 
 static void on_hpsdr_gain_change(uint8_t pga_code) {
-    agc_state.pga_code = pga_code;
-    pga_set_code(pga_code);
+    s_pending_hpsdr_gain = (int8_t)pga_code;
 }
 
 static int wifi_scan_result_cb(void *env, const cyw43_ev_scan_result_t *r) {
@@ -373,10 +372,6 @@ static void i2s_start(void)
     i2s_configure();
 
     // Reset PIO execution state to sync anchor at start of program
-    pio_sm_restart(pio0, 0);
-    pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
-    pio_sm_clear_fifos(pio0, 0);
-
     // Initialize ring buffer pointers and arm slot 0 on channel A, slot 1 on channel B
     ring_write_idx = 0;
     ring_read_idx = 0;
@@ -385,14 +380,12 @@ static void i2s_start(void)
     dma_channel_set_write_addr(dma_channel_b, audio_ring[1], false);
     dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
     dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
+    pio_sm_restart(pio0, 0);
+    pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
+    pio_sm_set_enabled(pio0, 0, true);
     ready_buffers = 0;
     irq_set_enabled(DMA_IRQ_0, true);
     dma_channel_start(dma_channel_a);
-
-    // NOW enable PIO state machine with guaranteed empty FIFO.
-    // The PIO begins with 'wait 1 pin 2; wait 0 pin 2' (WS falling edge),
-    // guaranteeing that word 0 received by DMA is ALWAYS Left (I).
-    pio_sm_set_enabled(pio0, 0, true);
     i2s_running = true;
 }
 
@@ -644,10 +637,6 @@ static void fpga_interrupt_configure(void)
     gpio_init(DDC_FPGA_INT_PIN);
     gpio_set_dir(DDC_FPGA_INT_PIN, GPIO_IN);
     gpio_pull_down(DDC_FPGA_INT_PIN);
-    gpio_set_irq_enabled_with_callback(DDC_FPGA_INT_PIN,
-                                        GPIO_IRQ_EDGE_RISE,
-                                        true,
-                                        fpga_interrupt_handler);
 }
 
 static bool configure_fpga_bitstream(const uint8_t *bitstream, size_t size)
@@ -721,7 +710,16 @@ static bool apply_sample_rate(uint32_t rate)
     }
 
     sample_rate = rate;
-    words_per_buffer = rate == 96000u ? 192u : 96u;
+#ifdef PICO_CYW43_SUPPORTED
+    if (openhpsdr_is_active()) {
+        words_per_buffer = HPSDR_WORDS_PER_PACKET;
+        openhpsdr_reset_sample_idx();
+    } else {
+        words_per_buffer = (rate == 96000u) ? 192u : 96u;
+    }
+#else
+    words_per_buffer = (rate == 96000u) ? 192u : 96u;
+#endif
     if (was_running) {
         i2s_start();
     }
@@ -795,20 +793,25 @@ static bool switch_stored_fpga(ddc_fpga_image_t image)
 }
 
 #ifdef PICO_CYW43_SUPPORTED
-static inline bool cyw43_can_send(void) {
+static inline bool cyw43_wait_credit(uint32_t max_wait_us) {
     cyw43_int_t *ci = (cyw43_int_t *)&cyw43_state;
     if (ci->wlan_flow_control) {
         return false;
     }
-    if (ci->wwd_sdpcm_last_bus_data_credit == ci->wwd_sdpcm_packet_transmit_sequence_number) {
+    if (ci->wwd_sdpcm_last_bus_data_credit != ci->wwd_sdpcm_packet_transmit_sequence_number) {
+        return true;
+    }
+    uint32_t t0 = time_us_32();
+    do {
         cyw43_arch_lwip_begin();
         cyw43_poll();
         cyw43_arch_lwip_end();
-        if (ci->wwd_sdpcm_last_bus_data_credit == ci->wwd_sdpcm_packet_transmit_sequence_number) {
-            return false;
+        if (!ci->wlan_flow_control && 
+            (ci->wwd_sdpcm_last_bus_data_credit != ci->wwd_sdpcm_packet_transmit_sequence_number)) {
+            return true;
         }
-    }
-    return true;
+    } while (time_us_32() - t0 < max_wait_us);
+    return false;
 }
 #endif
 
@@ -826,6 +829,10 @@ static void audio_task(void)
 
 #ifdef PICO_CYW43_SUPPORTED
         if (openhpsdr_is_active()) {
+            if (!cyw43_wait_credit(100)) {
+                ring_read_idx = (ring_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+                continue;
+            }
             openhpsdr_push_samples(source, words);
         } else
 #endif
@@ -1414,6 +1421,28 @@ int main(void)
         t = time_us_32();
         if (wifi_ok) {
             openhpsdr_task();
+            if (s_pending_hpsdr_freq > 0) {
+                uint32_t f = s_pending_hpsdr_freq;
+                s_pending_hpsdr_freq = 0;
+                if (fpga_ready && f != last_frequency_hz) {
+                    fpga_set_frequency(f);
+                    last_frequency_hz = f;
+                    freq_cmd_count++;
+                }
+            }
+            if (s_pending_hpsdr_rate > 0) {
+                uint32_t r = s_pending_hpsdr_rate;
+                s_pending_hpsdr_rate = 0;
+                if (r != sample_rate) {
+                    apply_sample_rate(r);
+                }
+            }
+            if (s_pending_hpsdr_gain >= 0) {
+                uint8_t g = (uint8_t)s_pending_hpsdr_gain;
+                s_pending_hpsdr_gain = -1;
+                agc_state.pga_code = g;
+                pga_set_code(g);
+            }
             static bool s_last_hpsdr = false;
             bool hpsdr_now = openhpsdr_is_active();
             if (hpsdr_now != s_last_hpsdr) {
@@ -1421,6 +1450,8 @@ int main(void)
                 if (i2s_running) {
                     i2s_stop();
                 }
+                ring_read_idx = ring_write_idx = 0;
+                openhpsdr_reset_sample_idx();
                 if (hpsdr_now || capture_alt > 0) {
                     i2s_start();
                 }
@@ -1453,6 +1484,8 @@ int main(void)
                     if (!s_pm_disabled) {
                         s_pm_disabled = true;
                         cyw43_wifi_pm(&cyw43_state, CYW43_NONE_PM);
+                        uint32_t gmode = 4; // GMODE_PERFORMANCE (OFDM only, high throughput)
+                        cyw43_ioctl(&cyw43_state, 110, sizeof(gmode), (uint8_t *)&gmode, CYW43_ITF_STA);
                     }
                     last_reconnect_ms = now_ms;
                     led_val = (now_ms / 500) % 2;
