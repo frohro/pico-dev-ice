@@ -1,264 +1,195 @@
-# Dev-iCE DDC SDR firmware
+# Dev-iCE DDC SDR Firmware
 
-This application is the Dev-iCE successor to the earlier Si5351a/Tayloe/
-PCM1808 implementation. The FPGA replaces the Si5351a LO, Tayloe detector, and PCM1808 audio ADC path. It
-receives the FPGA's I/Q stream as PCM1808-compatible I2S and exposes the same
-UAC1 stereo 24-bit capture format to SDR++ or Quisk.
+A high-performance Direct Down-Conversion (DDC) Software Defined Radio (SDR) firmware for the **WWU Pico-Dev-iCE** platform, powered by a Raspberry Pi RP2040 / Pico W and an iCE40UP5K FPGA.
 
-## Dev-iCE Pico pins
+The FPGA implements the digital down-converter (mixer, 32-bit NCO, CIC decimators, half-band filters, and 24-bit stereo I2S master transmitter). The RP2040 receives the baseband I/Q stream over I2S DMA and simultaneously streams it to host software over **USB Audio (UAC1)** and **Wi-Fi (OpenHPSDR Protocol 1)**.
 
-| Signal | GPIO | Direction | Notes |
-| --- | ---: | --- | --- |
-| FPGA SPI0 MISO | 4 | Pico input | Runtime telemetry / SPI readback |
-| FPGA SPI0 CS | 5 | Pico output | Shared CS for boot CRAM and runtime SPI |
-| FPGA SPI0 SCK | 6 | Pico output | 10 MHz runtime SPI clock |
-| FPGA SPI0 MOSI | 7 | Pico output | Runtime command frames to FPGA |
-| FPGA I2S RX_DATA | 14 | Pico input | Baseband SDR I/Q audio from FPGA (Pin 11) |
-| FPGA I2S BCK | 15 | Pico input | 3.072 MHz Bit Clock from FPGA (Pin 12) |
-| FPGA I2S WS | 16 | Pico input | 48 kHz Word Select / LRCLK from FPGA (Pin 9) |
-| FPGA I2S TX_DATA | 13 | Pico output | Transmit audio to FPGA (Pin 10) |
-| FPGA interrupt | 0 | Pico input | Active-high OTR clipping notification |
-| PGA control mask | 8..11 | Pico outputs | PGA0..PGA3 digital step attenuators |
-| FPGA CDONE | 21 | Pico input | HIGH when FPGA CRAM boot is complete |
-| FPGA CRESET | 22 | Pico output | Active-low FPGA hardware reset |
-| REF Multiplexer | 26 | Pico output | **0 = SDR RF Antenna RX**, 1 = VNA Input |
-| T/R Switch | 28 | Pico output | **1 = RX Mode**, 0 = TX Mode |
-| Onboard Pico LED | 25 | Pico output | Toggles on FREQ and RATE tuning activity |
-| 30.720 MHz clock | FPGA pin 37 | External oscillator | Master DSP clock reference |
+---
 
-The FPGA is the I2S master. The firmware supports 48 kHz (and 96 kHz)
-UAC1 streaming, with standard Philips I2S framing, two channels (Left = I, Right = Q),
-24 valid bits, and little-endian three-byte (`S24_3LE`) USB samples.
+## Architecture Overview
 
-## FPGA SPI protocol
-
-Runtime SPI uses the same CS as CRAM configuration, GPIO 5. The Pico sends
-this versioned frame after configuration:
-
-```text
-D5 01 command 04 value[31:0] little-endian
+```
+                      +---------------------------------------+
+                      |       iCE40UP5K FPGA (DDC SDR)        |
+                      |  NCO + Mixer + CIC/FIR Decimators     |
+                      +---------------------------------------+
+                                  | I2S Master (BCK, WS, DATA)
+                                  v
+                      +---------------------------------------+
+                      |      RP2040 PIO I2S Receiver SM       |
+                      +---------------------------------------+
+                                  | Ping-Pong DMA
+                                  v
+             +---------------------------------------------------------+
+             |         Lock-Free Multi-Consumer SPSC Ring Buffer       |
+             |       audio_ring[32][252] (756 bytes / 126 samples)     |
+             |                   write_idx (DMA IRQ)                   |
+             +---------------------------------------------------------+
+                         |                                 |
+                         v                                 v
+         +-------------------------------+ +-------------------------------+
+         |    CORE 0: Real-Time Audio    | |     CORE 1: Dedicated Wi-Fi   |
+         |-------------------------------| |-------------------------------|
+         | - TinyUSB UAC1 24-bit Audio   | | - CYW43439 Wi-Fi Driver       |
+         | - USB CDC Serial Console      | | - lwIP 2.1.3 Network Stack    |
+         | - FPGA SPI Tuning / Control   | | - OpenHPSDR Protocol 1 (UDP)  |
+         | - Monotonic Hardware AGC      | | - SDPCM Credit Pacing Engine  |
+         | - Multi-Core Mailbox Dispatch | | - LED Status & Link Watchdog  |
+         +-------------------------------+ +-------------------------------+
+                         |                                 |
+                         v                                 v
+                 USB Host Audio & CDC              Wi-Fi UDP Port 1024
+               (SDR++, Quisk, Gqrx)              (SDR++, Thetis, Quisk)
 ```
 
-Commands are:
+### Dual-Core Thread Isolation
+To ensure smooth, sputter-free SDR audio, all execution is strictly partitioned between the two RP2040 cores:
 
-| Command | Value |
-| ---: | --- |
-| `01` | Set center frequency; value is a 32-bit FCW |
-| `02` | Set output sample rate, 48000 or 96000 |
-| `03` | Reserved for status reads |
-| `04` | Clear the FPGA's sticky OTR event when value bit 0 is set |
+1. **Core 0 — Deterministic Real-Time Audio & Hardware**:
+   - Executes `tud_task()`, `cdc_task()`, `audio_task()`, `agc_task()`, and `handle_fpga_interrupt()`.
+   - Dedicated exclusively to hardware operations with microsecond-level determinism.
+   - Consumes samples from `audio_ring` using `ring_usb_read_idx` and pushes them to the TinyUSB endpoint buffer.
+   - Dispatches FPGA frequency tuning and PGA gain commands over SPI.
+   - **Zero Wi-Fi or network code runs on Core 0**, guaranteeing that USB audio never suffers from network stack jitter or mutex contention.
 
-The four PGA GPIOs form a hardware control mask: `PGA0` is the least-
-significant bit and `PGA3` is the most-significant bit. This is not a linear
-attenuation number. The verified gain states are:
+2. **Core 1 — Dedicated Wi-Fi & OpenHPSDR Protocol 1**:
+   - Executes `core1_entry()`, dedicated 100% to CYW43 Wi-Fi and lwIP networking.
+   - Initializes the CYW43439 driver, associates with the AP, and enables `GMODE_PERFORMANCE` (54 Mbps OFDM only).
+   - Runs the OpenHPSDR Protocol 1 server on UDP port 1024 (Hermes board profile).
+   - Consumes samples from `audio_ring` using `ring_wifi_read_idx`, formats standard 1032-byte EP6 dual-subframe frames, and dispatches them via `udp_sendto()`.
+   - Never blocks Core 0 or shares mutexes with Core 0.
 
-| Mask | Hardware action | Nominal gain |
-| ---: | --- | ---: |
-| `0x0` | All MOSFETs off; straight path | `+40 dB` |
-| `0x1` | 5 dB pad engaged | `+35 dB` |
-| `0x3` | 5 dB and 10 dB pads engaged | `+25 dB` |
-| `0xF` | All pads engaged; both LNAs bypassed | `-15 dB` |
+### Lock-Free Multi-Consumer SPSC Ring Buffer
+Audio streaming between the hardware DMA and both consumers is completely lock-free:
+- `audio_ring[32][256]`: 32 buffers of 252 words (126 stereo samples each, matching exactly 1 OpenHPSDR UDP packet).
+- **Producer**: The DMA IRQ advances `ring_write_idx` every 2.625 ms (at 48 kHz).
+- **Consumer 1 (USB)**: `ring_usb_read_idx` tracks USB endpoint availability independently.
+- **Consumer 2 (Wi-Fi)**: `ring_wifi_read_idx` tracks Wi-Fi transmission credits independently.
+- Both streams operate simultaneously without mutexes, spinlocks, or priority inversion.
 
-The automatic overload path uses only the monotonic, verified sequence
-`0x0 -> 0x1 -> 0x3 -> 0xF`. It starts at `0x0`, advances after each FPGA
-OTR interrupt, and remains at `0xF` after the final step. Other masks remain
-available for manual calibration, but are not selected automatically until
-their gain has been measured.
+### CYW43 SDPCM Credit Pacing
+The CYW43439 Wi-Fi chip uses a credit-based flow control system. Under heavy UDP transmission, transmitting without verifying credits causes the driver's internal loop to block for 1.0 second per packet (`CYW43_SDPCM_SEND_TIMEOUT`).
+- The firmware implements `cyw43_wait_credit()` on Core 1, polling credits with a bounded 1.2 ms timeout.
+- If the Wi-Fi chip is temporarily busy servicing beacons or channel jitter, Core 1 yields cleanly rather than blocking.
+- If network congestion causes lag to exceed 16 buffers, older frames are dropped to keep the live stream strictly real-time.
 
-The FPGA latches an OTR event, holds `fpga_int` high, and keeps it high
-until it receives the `DDC_FPGA_CMD_CLEAR_OTR` command.
+---
+
+## Hardware Pinout (WWU Pico-Dev-iCE)
+
+| Signal | GPIO | Direction | Notes |
+| :--- | :---: | :--- | :--- |
+| **FPGA SPI MISO** | 4 | Pico input | Runtime telemetry / SPI readback |
+| **FPGA SPI CS** | 5 | Pico output | Shared CS for boot CRAM and runtime SPI |
+| **FPGA SPI SCK** | 6 | Pico output | 10 MHz runtime SPI clock |
+| **FPGA SPI MOSI** | 7 | Pico output | Runtime command frames to FPGA |
+| **FPGA I2S RX_DATA** | 14 | Pico input | Baseband SDR I/Q audio from FPGA (Pin 11) |
+| **FPGA I2S BCK** | 15 | Pico input | 3.072 MHz Bit Clock from FPGA (Pin 12) |
+| **FPGA I2S WS** | 16 | Pico input | 48 kHz Word Select / LRCLK from FPGA (Pin 9) |
+| **FPGA I2S TX_DATA** | 13 | Pico output | Transmit audio to FPGA (Pin 10) |
+| **FPGA Interrupt** | 0 | Pico input | Active-high OTR clipping notification |
+| **PGA Attenuator Mask** | 8..11 | Pico outputs | PGA0..PGA3 digital step attenuators |
+| **FPGA CDONE** | 21 | Pico input | HIGH when FPGA CRAM configuration completes |
+| **FPGA CRESET_B** | 22 | Pico output | Active-low FPGA hardware reset |
+| **REF Multiplexer** | 26 | Pico output | **0 = SDR RF Antenna RX**, 1 = VNA Input |
+| **T/R Switch** | 28 | Pico output | **1 = RX Mode**, 0 = TX Mode |
+| **Pico W Status LED** | WL_GPIO0 | Pico W output | Wi-Fi link status & streaming indicator |
+| **Master Clock** | FPGA pin 37 | Oscillator | 30.720 MHz ultra-low-jitter clock reference |
+
+---
+
+## Pico W Status LED Indicators
+
+The onboard LED on the CYW43 Wi-Fi module indicates connection and streaming state:
+
+| Pattern | Frequency | Description |
+| :--- | :---: | :--- |
+| **Solid ON** | Constant | **Active SDR Streaming**: SDR++ (Hermes), Quisk, or Thetis is streaming I/Q audio over UDP. |
+| **Steady Blink** | **1.0 Hz** (500 ms on / off) | **Wi-Fi Connected (`LINK_UP`)**: Assigned IP via DHCP/Static; ready for SDR connection. |
+| **Medium Blink** | **2.0 Hz** (250 ms on / off) | **Associating (`LINK_JOIN` / `NO_IP`)**: Connecting to AP or acquiring DHCP lease. |
+| **Slow Blink** | **0.5 Hz** (1000 ms on / off) | **Disconnected (`LINK_DOWN` / `FAIL`)**: Retrying connection every 4 seconds. |
+
+---
 
 ## CDC Serial Command Reference
 
-The USB CDC interface (`/dev/ttyACM0`) supports interactive terminals (`picocom`, `minicom`, PuTTY)
-with support for both `\r` (CR) and `\n` (LF) line endings, backspace (`0x08` / `0x7F`), and Ctrl+C (`0x03`).
+The USB CDC interface (`/dev/ttyACM0`) provides an interactive command shell:
 
-| Command | Response | Description |
+| Command | Example Response | Description |
 | :--- | :--- | :--- |
-| `VER` | `VER,DDC SDR 0.1` / `OK` | Reports firmware version |
-| `MODE` | `MODE,DDC` / `OK` | Reports SDR architecture mode (`DDC`) |
-| `XTAL` | `XTAL,30720000` / `OK` | Reports master clock frequency in Hz |
-| `FPGA,STATUS` | `FPGA,RX` / `OK` | Reports currently active FPGA image (`RX`, `TX`, or `DFU`) |
-| `FPGA,LOAD,RX` | `FPGA,RX` / `OK` | Reconfigures FPGA CRAM with stored RX image |
-| `FPGA,LOAD,TX` | `FPGA,TX` / `OK` | Reconfigures FPGA CRAM with stored TX image |
-| `FREQ,<hz>` | `<hz>` / `OK` | Sets NCO tuning frequency in Hz (calculates 32-bit FCW) |
-| `RATE,<hz>` | `RATE,<hz> OK` | Sets baseband audio sample rate in Hz (e.g. 48000) |
-| `REF` | `REF,<0\|1>` / `OK` | Queries front-end RF multiplexer (`0` = SDR RF RX, `1` = VNA) |
-| `REF,<0\|1>` | `REF,<0\|1>` / `OK` | Sets front-end RF multiplexer (`0` = SDR RF RX, `1` = VNA) |
-| `PGA` | `PGA,<code>` / `OK` | Queries current PGA digital attenuator code (`0` = max $+40\text{ dB}$ gain) |
-| `PGA,<code>` | `PGA,<code>` / `OK` | Sets PGA digital attenuator code (`0..15`) |
-| `DEBUG` | `DEBUG: ready=...` / `OK` | Reports real-time DMA, I2S toggle counts, and GPIO states |
-| `BOOTSEL` | `REBOOTING_BOOTSEL` | Soft-reboots the RP2040 into USB BOOTSEL flash mode |
-| `HELP` / `?` | Command list / `OK` | Lists all available interactive CDC commands |
+| `VER` | `VER,DDC SDR 0.2` | Firmware version |
+| `MODE` | `MODE,DDC` | SDR architecture mode |
+| `XTAL` | `XTAL,30720000` | Master oscillator frequency in Hz |
+| `FREQ,<hz>` | `14074000 OK` | Tunes NCO center frequency (calculates 32-bit FCW) |
+| `RATE,<hz>` | `RATE,48000 OK` | Sets sample rate (clamped safely to 48000) |
+| `PGA` | `PGA,0 OK` | Queries PGA attenuator code (0 = +40 dB, 15 = -15 dB) |
+| `PGA,<code>` | `PGA,3 OK` | Sets PGA attenuator code (0..15) |
+| `REF` | `REF,0 OK` | Queries RF switch (0 = SDR Antenna, 1 = VNA Input) |
+| `REF,<0\|1>` | `REF,0 OK` | Sets RF switch |
+| `WIFI` | `WIFI,UP,IP,192.168.1.191,SSID,...` | Reports live Wi-Fi link state, IP, and SSID |
+| `JOIN,<ssid>` | `JOIN_START,0,SSID,...` | Connects to a new Wi-Fi network |
+| `HPSDR` | `HPSDR: act=1, push=1142, sent=...` | OpenHPSDR stream diagnostics, throughput, and packet counters |
+| `PROF` | `PROF: loops=9606390 tud=461 ...` | Microsecond execution profiling across all Core 0 tasks |
+| `BOOTSEL` | `REBOOTING_BOOTSEL` | Soft-reboots RP2040 into USB BOOTSEL flash mode |
 
-## Build
+---
 
-Use the checked-in Pico SDK through the SDK port. Without a bitstream, the
-firmware builds as a USB/DFU development image and waits for FPGA CRAM to be
-loaded:
+## Management & Automation Tool (`manage_sdr.py`)
 
-```sh
-cmake -S Software/ddc_sdr_firmware -B Software/ddc_sdr_firmware/build \
-    -DPICO_BOARD=pico_dev_ice -DPICO_NO_PICOTOOL=1
-cmake --build Software/ddc_sdr_firmware/build -j2
+A unified management script is provided for one-step building, flashing, and verification:
+
+```bash
+# Full build, flash, Wi-Fi wait, and automated stream test:
+python3 manage_sdr.py cycle
+
+# Flash firmware UF2 to board:
+python3 manage_sdr.py flash
+
+# Wait for and check Wi-Fi connection:
+python3 manage_sdr.py wifi
+
+# Run OpenHPSDR Protocol 1 test suite:
+python3 manage_sdr.py test
+
+# Display live HPSDR streaming statistics:
+python3 manage_sdr.py stats
+
+# Display Core 0 execution profiler:
+python3 manage_sdr.py prof
+
+# Send custom CDC command:
+python3 manage_sdr.py cmd "FREQ,7074000"
 ```
 
-For a production UF2 that configures the FPGA at every Pico boot, pass the
-packed `icepack` output. The legacy `FPGA_BITSTREAM_BIN` variable is treated as
-the stored RX image:
+---
 
-```sh
-cmake -S Software/ddc_sdr_firmware -B Software/ddc_sdr_firmware/build-embedded \
-    -DPICO_BOARD=pico_dev_ice -DPICO_NO_PICOTOOL=1 \
-    -DFPGA_BOOT_MODE=STORED \
-    -DFPGA_BITSTREAM_BIN=/path/to/ddc_sdr_rx.bin
-cmake --build Software/ddc_sdr_firmware/build-embedded -j2
-```
+## Using with Host SDR Software
 
-To store separate RX and TX images in the Pico firmware and boot into TX by
-default, use:
+### SDR++ (over Wi-Fi)
+1. In the **Source** panel, select **Hermes Source**.
+2. Click **Refresh**.
+3. In the device dropdown, select your board (e.g. `28:CD:C1:0F:EA:08 (192.168.1.191)`).
+4. Select Sample Rate: **48 kHz**.
+5. Click **Play (▶)**.
+6. The spectrum and waterfall will begin streaming immediately with zero packet loss.
 
-```sh
-cmake -S Software/ddc_sdr_firmware -B Software/ddc_sdr_firmware/build-stored \
-    -DPICO_BOARD=pico_dev_ice -DPICO_NO_PICOTOOL=1 \
-    -DFPGA_BOOT_MODE=STORED -DFPGA_DEFAULT_IMAGE=TX \
-    -DFPGA_RX_BITSTREAM_BIN=/path/to/ddc_sdr_rx.bin \
-    -DFPGA_TX_BITSTREAM_BIN=/path/to/lab10_tx.bin
-cmake --build Software/ddc_sdr_firmware/build-stored -j2
-```
+### SDR++ (over USB)
+1. In the **Source** panel, select **SoapySDR**.
+2. Select driver `driver=2026_sdr` or ALSA audio card `D2026`.
+3. Click **Play (▶)**.
 
-`FPGA_BOOT_MODE=DFU` builds the development behavior: the Pico does not load
-an image at reset and waits for `dfu-util`. `FPGA_BOOT_MODE=STORED` loads the
-selected embedded image at every reset. `FPGA_DEFAULT_IMAGE` chooses RX or TX
-when both images are present. The stored images are generated as separate C
-arrays, so the same firmware can switch between them without reflashing the
-Pico.
+---
 
-The `.uf2` flashes the RP2040. Dev-iCE has no FPGA configuration flash, so
-FPGA CRAM is volatile and must be loaded again after reset or power loss.
+## Building from Source
 
-While the firmware is running, the CDC control port accepts:
-
-```text
-FPGA,STATUS
-FPGA,LOAD,RX
-FPGA,LOAD,TX
-```
-
-`FPGA,LOAD,RX` and `FPGA,LOAD,TX` stop audio DMA, force GPIO28 high for
-receive, release runtime SPI, reload the selected stored CRAM image, restore
-the sample-rate and audio streams, and then allow the normal TX start path to
-assert GPIO28 low. A missing image returns an error. `FPGA,STATUS` reports the
-active image or `DFU`. The existing `DFU,PREPARE` and `dfu-util` workflow is
-unchanged and remains useful for development images that are not embedded.
-
-These are deployment and transceiver-profile choices. Use DFU while developing
-or testing a new image, and use STORED when the Pico should boot a known image
-from its own flash. If both stored images are embedded, RX and TX can be
-selected at boot or between transceiver sessions with the `FPGA_DEFAULT_IMAGE`
-setting and the `FPGA,LOAD,*` commands.
-
-Do not use RX/TX CRAM switching as the ordinary VNA mode switch. A VNA sweep
-needs its stimulus, reference, receive channel, and measurement processing to
-remain clock-coherent for the entire sweep. VNA support therefore needs one
-persistent VNA-capable FPGA design, either as its own stored image selected
-before the measurement or as part of an integrated design; reconfiguration is
-only a between-session operation.
-
-## Development bitstream update
-
-Stop or close the SDR++/Quisk audio stream before updating. Then run:
-
-```sh
-python3 Software/ddc_sdr_firmware/tools/dfu_fpga.py /path/to/ddc_sdr.bin
-```
-
-The helper sends `DFU,PREPARE`, which stops I2S/DMA and releases runtime SPI,
-then invokes:
-
-```sh
-dfu-util -d 1209:b1c0 -a 0 -D /path/to/ddc_sdr.bin
-```
-
-The SDK's DFU callback streams the raw packed bitstream into FPGA CRAM and
-checks CDONE. The Pico remains running; after a successful transfer it
-reinitializes runtime SPI, restores the selected rate, and restarts I2S. The
-helper deliberately does not pass `-R`, because a reset would clear volatile
-CRAM and would also discard a bitstream that was only loaded through DFU.
-
-The SDK also prepares automatically when the first DFU block arrives, so
-`--skip-prepare` is available for manual testing:
-
-```sh
-python3 Software/ddc_sdr_firmware/tools/dfu_fpga.py --skip-prepare /path/to/ddc_sdr.bin
-```
-
-## Raspberry Pi Pico W & OpenHPSDR Protocol 1 over Wi-Fi
-
-When running on a **Raspberry Pi Pico W**, the firmware operates simultaneously over:
-1. **Wi-Fi OpenHPSDR Protocol 1 (UDP Port 1024)**: Compatible with **SDR++**, **Quisk**, **PowerSDR**, **Thetis**, and **SparkSDR** using the Hermes board identity.
-2. **Wi-Fi TCP Control Server (TCP Port 5000)**: Interactive command port for frequency/PGA control, Wi-Fi status, and debugging.
-3. **USB Audio Class 1.0 (UAC1)**: 24-bit stereo I/Q streaming over USB.
-4. **USB CDC Serial Port (`/dev/ttyACM0`)**: Full interactive command prompt.
-
-### Building for Pico W
-
-Run the dedicated build script:
+Prerequisites: `pico-sdk` (v1.5+), `arm-none-eabi-gcc`, `cmake`, and `python3`.
 
 ```bash
 cd Software/ddc_sdr_firmware
-bash build_picow.sh
+./build_picow.sh
 ```
 
-This compiles the firmware and automatically embeds the Lab 09 DDC FPGA bitstream (`ddc_sdr_top.bin`). The resulting file is generated at:
-```text
+The output UF2 will be created at:
+```
 Software/ddc_sdr_firmware/build-picow/ddc_sdr.uf2
 ```
-
-### Flashing
-
-1. Put the Raspberry Pi Pico W in BOOTSEL mode (hold BOOTSEL button while plugging into USB).
-2. Copy `build-picow/ddc_sdr.uf2` to the `RPI-RP2` drive:
-   ```bash
-   cp Software/ddc_sdr_firmware/build-picow/ddc_sdr.uf2 /media/$USER/RPI-RP2/
-   ```
-3. The board will reboot, automatically boot the FPGA CRAM from the embedded bitstream, connect to Wi-Fi, and turn on the onboard Wi-Fi LED.
-
-### Wi-Fi Configuration
-
-The firmware is configured via [`wifi_config.h`](file:///home/frohro/Projects/pico-dev-ice/Software/ddc_sdr_firmware/wifi_config.h):
-- Primary AP: `Frohne-Shop-2.4GHz` (shop with antenna)
-- Secondary AP: `Frohne-2.4GHz` (bench)
-- Fallback Static IP: `192.168.1.191` (used if DHCP lease is delayed)
-- Subnet Gateway: `192.168.1.1` | Netmask: `255.255.255.0`
-
-### Pico W Onboard LED Status Indicators
-
-| Blink Pattern | Rate / Period | Meaning |
-| :--- | :--- | :--- |
-| **Rapid Flash** | **4 Hz** (125 ms on / 125 ms off) | **Active SDR Streaming**: SDR++ (Hermes), Quisk, or linHPSDR is connected and actively receiving the 24-bit I/Q stream over UDP. |
-| **Steady Heartbeat** | **1 Hz** (500 ms on / 500 ms off) | **Wi-Fi Connected & Ready (`CYW43_LINK_UP`)**: Assigned an IP address and listening for OpenHPSDR discovery. |
-| **Medium Blink** | **2 Hz** (250 ms on / 250 ms off) | **Associating / Joining**: Connected to the AP, acquiring IP (`CYW43_LINK_JOIN` / `NO_IP`). |
-| **Slow Blink** | **0.5 Hz** (1 s on / 1 s off) | **Disconnected / Scanning**: Searching for the Wi-Fi network (`CYW43_LINK_DOWN` / `FAIL`). |
-
-### Using with SDR Software
-
-#### 1. SDR++ (Hermes / OpenHPSDR Source)
-* **Source**: Select **Hermes** (or OpenHPSDR).
-* **Sample Rate**: `48000` (48 kHz) or `96000` (96 kHz).
-* **I/Q Inversion**: Normal (I/Q channels are pre-aligned to match SDR++ default orientation).
-* Press **Play (▶)** and tune across 0 – 30 MHz.
-
-#### 2. Python Diagnostic & Stream Verification Tool
-To verify Wi-Fi discovery, C&C frequency tuning, packet health, sample throughput, RMS signal level, and spectral balance without needing SDR++:
-```bash
-cd Software/ddc_sdr_firmware
-python3 test_openhpsdr_stream.py 192.168.1.192
-```
-
-## Current gateware dependency
-
-This directory defines the Pico-side contract but does not invent the DDC HDL
-or its `.pcf`. Add the FPGA top level and Dev-iCE constraints separately, then
-synthesize with `yosys`, place and route with `nextpnr-ice40`, pack with
-`icepack`, and pass the resulting `.bin` to the build or DFU helper.

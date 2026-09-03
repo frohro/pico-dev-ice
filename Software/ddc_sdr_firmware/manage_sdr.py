@@ -52,7 +52,7 @@ def flash_firmware():
 
 s_detected_ip = DEFAULT_IP
 
-def wait_for_wifi(timeout=25):
+def wait_for_wifi(timeout=50):
     global s_detected_ip
     print("[*] Waiting for board to boot and connect to Wi-Fi...")
     time.sleep(8)

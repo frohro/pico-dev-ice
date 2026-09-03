@@ -188,10 +188,9 @@ void openhpsdr_reset_sample_idx(void) {
 
 void openhpsdr_task(void) {
     cyw43_arch_poll();
-    if (s_active) {
+    if (s_active && !s_no_watchdog) {
         uint32_t now_ms = to_ms_since_boot(get_absolute_time());
-        uint32_t timeout_ms = s_no_watchdog ? 10000 : 3000;
-        if (now_ms - s_last_packet_rx_ms >= timeout_ms) {
+        if (now_ms - s_last_packet_rx_ms >= 5000) {
             s_active = false;
             s_host_port = 0;
             s_sample_idx = 0;

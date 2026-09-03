@@ -1314,9 +1314,12 @@ static void core1_entry(void)
         if (openhpsdr_is_active()) {
             int budget = 8;
             while (ring_wifi_read_idx != ring_write_idx && budget-- > 0) {
-                if (!cyw43_wait_credit(100)) {
-                    ring_wifi_read_idx = (ring_wifi_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
-                    continue;
+                if (!cyw43_wait_credit(1200)) {
+                    uint8_t lag = (ring_write_idx + DDC_AUDIO_RING_COUNT - ring_wifi_read_idx) % DDC_AUDIO_RING_COUNT;
+                    if (lag > 16) {
+                        ring_wifi_read_idx = (ring_wifi_read_idx + 1u) % DDC_AUDIO_RING_COUNT;
+                    }
+                    break;
                 }
                 uint8_t lag = (ring_write_idx + DDC_AUDIO_RING_COUNT - ring_wifi_read_idx) % DDC_AUDIO_RING_COUNT;
                 if (lag > DDC_AUDIO_RING_COUNT - 4) {
