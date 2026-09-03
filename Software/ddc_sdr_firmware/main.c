@@ -151,6 +151,11 @@ static void on_hpsdr_freq_change(uint32_t freq_hz) {
 }
 
 static void on_hpsdr_rate_change(uint32_t rate_hz) {
+    if (rate_hz != 48000) {
+        // The RX FPGA bitstream only generates stable I2S clocks at 48 kHz.
+        // Ignore requests for 96 kHz to prevent halting FPGA I2S clocks.
+        return;
+    }
     s_pending_hpsdr_rate = rate_hz;
 }
 
