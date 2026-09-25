@@ -100,23 +100,20 @@ Every week, your team must submit the following before your oral defense:
 *   **Testbench:** Run a full-system simulation. Feed fake radio static into the ADC and prove that clean audio comes out the I2S port. 
 *   **Hardware Payoff:** Flash the full bitstream. The Digital Down-Converter (DDC) is alive!
 
-### Week 10: AGC & Live Radio Demonstration
-**Goal:** The Software/Hardware handshake.
-*   **Lab:** The FPGA hardware is frozen. Spend this week writing the MicroPython Automatic Gain Control (AGC) loop on the Pico. It must monitor the I2S volume, listen to the OTR interrupt, and send SPI commands to the FPGA to toggle the PGA switches.
-*   **Hardware Payoff:** Plug in an antenna, open SDR++ on your PC, and tune into a real shortwave broadcast station using the radio you built from scratch.
-
+### Week 10: Your Own Mini-Project
+**Goal:** You want to do something with the Pico-Dev-iCE to present to the class at at the final exam time.  You will have about 30 minutes per team.
 ---
 
 ## 🗣️ Assessment & The Oral Defense
 
-Because AI is generating your syntax, you will be graded on your ability to act as a **Senior Reviewer**. Every week, your team will have a 15-minute oral defense with the instructor. 
+Because AI is generating your syntax, you will be graded on your ability to act as a **Senior Reviewer**. Every week, your team will have a 15-minute oral defense with the instructor.  You will teach your instructor about your lab.  He will ask questions to help assess your knowledge. 
 
-**Grade 1: The AI & Verification Product (40%)**
+**Grade 1: The AI & Verification Product (30%)**
 *   Does the code synthesize? 
 *   Is the testbench self-checking, or does it only test the "happy path"?
 *   Did your testbench successfully catch an edge-case or AI hallucination?
 
-**Grade 2: Student Understanding (60%)**
+**Grade 2: Student Understanding (70%)**
 During the oral defense, you must be prepared to answer:
 1.  **"Show me the Waveform:"** Open GTKWave. *"Why did this signal go high exactly here? Trace it back to the RTL."*
 2.  **The "What If" Simulation:** *"What happens in your simulation if the Pico tries to write to the SPI register at the exact same time the CIC filter updates?"*
@@ -125,9 +122,4 @@ During the oral defense, you must be prepared to answer:
 If you blindly copy-pasted the AI's work and cannot explain the physics, you will fail the week (with one opportunity to study the code and try the defense again). 
 
 ### 🎓 The Final Exam
-For the final exam, the radio will be broken down into three interconnected systems:
-1.  **Analog Front End & Control** (Op-amps, T-networks, VNA bridge, and Pico SPI/AGC).
-2.  **High-Speed DSP** (ADC kickback, NCO phase accumulator, and IQ Mixer math).
-3.  **Multi-Rate DSP & Baseband** (CIC filter math, Decimation, Process Gain, and I2S formatting).
-
-Your team will be assigned one section. You will have 20 minutes to present it to the rest of the class, defending your architectural choices as if you are pitching a commercial product to a tech company.
+For the final exam, you will explain your mini-project from Lab 10.
