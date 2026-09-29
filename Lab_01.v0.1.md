@@ -26,7 +26,7 @@ Follow the RF signal path from the `SDR_ANT` SMA connector to the MS9280 ADC.
 *   **The ADC Balun (`TR2`):** Explain how this transformer converts the single-ended RF signal into a differential signal for the ADC. How does it apply the 2.25V DC bias to the ADC inputs?
 
 ### 3. Digital Control & Clocking
-*   **The Clock:** Find the 30.72 MHz CMOS Oscillator. Why is there a 22 Ω resistor (`R34`) placed in series with the clock output trace before it reaches the FPGA?
+*   **The Clock:** Find the 30.72 MHz CMOS Oscillator. Why is there a 22 Ω resistor (`R29`) placed in series with the clock output trace before it reaches the FPGA?
 *   **The SPI CRAM Paradox:** Explain how the SPI0 is used for both CRAM loading and for control data when the SDR is running. Is R33 placed correctly on the PCB? *What IC is master and what IC is slave in both boot and run modes?  (Hint: Think about what happens when the Pico writes to the FPGA's CRAM during boot and what happens after boot.)*
 *   **The OTR Pin:** The ADC's Out-of-Range (`OTR`) pin pulses high when the analog signal clips. Why is this pin routed to the FPGA instead of directly to a Pico GPIO pin? 
 
