@@ -62,20 +62,14 @@ Write a short MicroPython script (`main.py`) on the Pico to load the bitstream:
 ```python
 import ice
 import time
+from machine import Pin
 
 # 1. Initialize the FPGA SPI programming interface
 # (This utilizes the Pico's SPI0 block connected to ICE_SI, ICE_SO, ICE_SCK)
-fpga = ice.FPGA()
-
-print("Holding FPGA in Reset...")
-fpga.reset()
-time.sleep(0.1)
-
-print("Flashing led_test.bin to FPGA CRAM...")
-with open("led_test.bin", "rb") as f:
-    bitstream = f.read()
-    fpga.program_cram(bitstream)
-
+fpga = ice.fpga(cdone=Pin(21), clock=Pin(1), creset=Pin(22), cram_cs=Pin(5), cram_mosi=Pin(7), cram_sck=Pin(6), frequency=48)
+file = open("led_test.bin", "br")
+fpga.start()
+fpga.cram(file)
 print("Boot complete. Checking CDONE status...")
 # CDONE is wired to Pico GPIO 21. 
 # Check your physical board: Is the White Done LED lit? Is the Green RGB LED lit?
