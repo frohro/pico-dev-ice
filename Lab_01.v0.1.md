@@ -74,8 +74,7 @@ print("Boot complete. Checking CDONE status...")
 # CDONE is wired to Pico GPIO 21. 
 # Check your physical board: Is the White Done LED lit? Is the Green RGB LED lit?
 ```
-
-Run the script. If the White `ICE_DONE` LED turns on, and the Green diagnostic LED turns on, your hardware is healthy and your toolchain is ready for Week 2!
+You need to upload in Thonny the led_test.bin to the / directory on the YD-RP2040.  Then run the script. If the White `ICE_DONE` LED turns on, and the Green diagnostic LED turns on, your hardware is healthy and your toolchain is ready for Week 2!
 
 ---
 
