@@ -23,18 +23,32 @@ static uint32_t s_pbuf_alloc_failed = 0;
 static uint32_t s_udp_err = 0;
 static uint32_t s_max_send_us = 0;
 static uint32_t s_last_send_us = 0;
-static uint32_t s_stall_seq = 0;
-static uint32_t s_stall_dt = 0;
+static uint32_t s_max_lock_us = 0;
+static uint32_t s_max_sendto_us = 0;
+static uint32_t s_max_poll_us = 0;
 
-void openhpsdr_get_stats(uint32_t *push_calls, uint32_t *pkts_sent, uint32_t *pbuf_failed, uint32_t *udp_err, uint32_t *max_us, uint32_t *last_us, uint32_t *stall_seq, uint32_t *stall_dt) {
+static volatile uint32_t s_rx_udp_count = 0;
+static volatile uint32_t s_rx_discovery_count = 0;
+static volatile uint32_t s_tx_discovery_count = 0;
+static volatile uint32_t s_rx_start_count = 0;
+
+void openhpsdr_get_stats(uint32_t *push_calls, uint32_t *pkts_sent, uint32_t *pbuf_failed, uint32_t *udp_err, uint32_t *max_us, uint32_t *last_us, uint32_t *max_lock, uint32_t *max_sendto, uint32_t *max_poll) {
     if (push_calls) *push_calls = s_push_calls;
     if (pkts_sent) *pkts_sent = s_pkts_sent;
     if (pbuf_failed) *pbuf_failed = s_pbuf_alloc_failed;
     if (udp_err) *udp_err = s_udp_err;
     if (max_us) *max_us = s_max_send_us;
     if (last_us) *last_us = s_last_send_us;
-    if (stall_seq) *stall_seq = s_stall_seq;
-    if (stall_dt) *stall_dt = s_stall_dt;
+    if (max_lock) *max_lock = s_max_lock_us;
+    if (max_sendto) *max_sendto = s_max_sendto_us;
+    if (max_poll) *max_poll = s_max_poll_us;
+}
+
+void openhpsdr_get_rx_stats(uint32_t *rx_udp, uint32_t *rx_disc, uint32_t *tx_disc, uint32_t *rx_start) {
+    if (rx_udp) *rx_udp = s_rx_udp_count;
+    if (rx_disc) *rx_disc = s_rx_discovery_count;
+    if (tx_disc) *tx_disc = s_tx_discovery_count;
+    if (rx_start) *rx_start = s_rx_start_count;
 }
 
 struct udp_pcb *openhpsdr_get_pcb(void) {
@@ -62,7 +76,10 @@ static void send_discovery_reply(const ip_addr_t *addr, u16_t port) {
         payload[12] = 0x01; // Number of DDC Receivers: 1
         payload[13] = 0x01; // Number of ADCs: 1
 
-        udp_sendto(s_pcb, p, addr, port);
+        err_t err = udp_sendto(s_pcb, p, addr, port);
+        if (err == ERR_OK) {
+            s_tx_discovery_count++;
+        }
         pbuf_free(p);
     }
 }
@@ -132,16 +149,19 @@ static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
     (void)arg; (void)pcb;
     if (!p) return;
 
+    s_rx_udp_count++;
     s_last_packet_rx_ms = to_ms_since_boot(get_absolute_time());
 
     uint8_t *data = (uint8_t *)p->payload;
 
     // Discovery Broadcast: 0xEFFE 0x02
     if (p->len >= 3 && data[0] == 0xEF && data[1] == 0xFE && data[2] == 0x02) {
+        s_rx_discovery_count++;
         send_discovery_reply(addr, port);
     }
     // Start / Stop / Run command: 0xEFFE 0x04
     else if (p->len >= 4 && data[0] == 0xEF && data[1] == 0xFE && data[2] == 0x04) {
+        s_rx_start_count++;
         if (data[3] & 0x01) {
             if (!s_active) {
                 s_sequence = 0;
@@ -172,6 +192,8 @@ void openhpsdr_init(hpsdr_freq_callback_t on_freq, hpsdr_rate_callback_t on_rate
     s_rate_cb = on_rate;
     s_gain_cb = on_gain;
 
+    memset(s_packet_buffer, 0, HPSDR_PACKET_SIZE);
+
     cyw43_arch_lwip_begin();
     s_pcb = udp_new();
     if (s_pcb) {
@@ -187,7 +209,8 @@ void openhpsdr_reset_sample_idx(void) {
 }
 
 void openhpsdr_task(void) {
-    cyw43_arch_poll();
+    // NOTE: cyw43_arch_poll() is called by Core 1's main loop before this function.
+    // Do NOT call it again here to avoid double-poll confusion.
     if (s_active && !s_no_watchdog) {
         uint32_t now_ms = to_ms_since_boot(get_absolute_time());
         if (now_ms - s_last_packet_rx_ms >= 5000) {
@@ -204,7 +227,6 @@ bool openhpsdr_is_active(void) {
 }
 
 static void init_hpsdr_packet(void) {
-    memset(s_packet_buffer, 0, HPSDR_PACKET_SIZE);
     s_packet_buffer[0] = 0xEF;
     s_packet_buffer[1] = 0xFE;
     s_packet_buffer[2] = HPSDR_DATA_PACKET;  // 0x01 = Data packet
@@ -259,13 +281,13 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             uint32_t w_q = samples[2 * s + 1]; // Right / Q (Imag)
             uint32_t offset = 16 + (s * 8);
 
-            s_packet_buffer[offset + 0] = (uint8_t)(w_q >> 24); // SDR++ .im
-            s_packet_buffer[offset + 1] = (uint8_t)(w_q >> 16);
-            s_packet_buffer[offset + 2] = (uint8_t)(w_q >> 8);
+            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24); // Left / I (Real)
+            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
 
-            s_packet_buffer[offset + 3] = (uint8_t)(w_i >> 24); // SDR++ .re
-            s_packet_buffer[offset + 4] = (uint8_t)(w_i >> 16);
-            s_packet_buffer[offset + 5] = (uint8_t)(w_i >> 8);
+            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24); // Right / Q (Imag)
+            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
 
             s_packet_buffer[offset + 6] = 0x00;
             s_packet_buffer[offset + 7] = 0x00;
@@ -277,13 +299,13 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             uint32_t w_q = samples[126 + (2 * s) + 1];
             uint32_t offset = 528 + (s * 8);
 
-            s_packet_buffer[offset + 0] = (uint8_t)(w_q >> 24);
-            s_packet_buffer[offset + 1] = (uint8_t)(w_q >> 16);
-            s_packet_buffer[offset + 2] = (uint8_t)(w_q >> 8);
+            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24); // Left / I (Real)
+            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
 
-            s_packet_buffer[offset + 3] = (uint8_t)(w_i >> 24);
-            s_packet_buffer[offset + 4] = (uint8_t)(w_i >> 16);
-            s_packet_buffer[offset + 5] = (uint8_t)(w_i >> 8);
+            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24); // Right / Q (Imag)
+            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
 
             s_packet_buffer[offset + 6] = 0x00;
             s_packet_buffer[offset + 7] = 0x00;
@@ -292,6 +314,10 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
         s_push_calls++;
         uint32_t t0 = time_us_32();
         cyw43_arch_lwip_begin();
+        uint32_t t_lock = time_us_32() - t0;
+        if (t_lock > s_max_lock_us) s_max_lock_us = t_lock;
+
+        uint32_t t_s0 = time_us_32();
         struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_POOL);
         if (p) {
             pbuf_take(p, s_packet_buffer, HPSDR_PACKET_SIZE);
@@ -305,14 +331,14 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
         } else {
             s_pbuf_alloc_failed++;
         }
+        uint32_t t_send = time_us_32() - t_s0;
+        if (t_send > s_max_sendto_us) s_max_sendto_us = t_send;
         cyw43_arch_lwip_end();
-        cyw43_arch_poll();
+
+
+
         uint32_t dt = time_us_32() - t0;
         if (dt > s_max_send_us) s_max_send_us = dt;
-        if (dt > 100000) {
-            s_stall_seq = s_sequence;
-            s_stall_dt = dt;
-        }
         s_last_send_us = dt;
         return;
     }
@@ -323,8 +349,8 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             init_hpsdr_packet();
         }
 
-        uint32_t w_i = samples[i + 1];
-        uint32_t w_q = samples[i];
+        uint32_t w_i = samples[i];
+        uint32_t w_q = samples[i + 1];
 
         uint32_t offset;
         if (s_sample_idx < 63) {

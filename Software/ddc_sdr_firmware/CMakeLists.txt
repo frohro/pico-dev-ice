@@ -196,7 +196,7 @@ set(DDC_LIBS
 )
 
 if(PICO_BOARD STREQUAL "pico_w")
-    list(APPEND DDC_LIBS pico_cyw43_arch_lwip_threadsafe_background)
+    list(APPEND DDC_LIBS pico_cyw43_arch_lwip_poll)
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME}

@@ -11,14 +11,14 @@
 
 // Memory sizing tuned for high-throughput 24-bit SDR streaming
 #define MEM_SIZE                        32768
-#define MEMP_NUM_PBUF                   64
+#define MEMP_NUM_PBUF                   32
 #define MEMP_NUM_UDP_PCB                6
 #define MEMP_NUM_TCP_PCB                6
 #define MEMP_NUM_TCP_PCB_LISTEN         2
 #define MEMP_NUM_TCP_SEG                32
-#define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 4)
+#define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 6)
 
-#define PBUF_POOL_SIZE                  64
+#define PBUF_POOL_SIZE                  32
 #define PBUF_POOL_BUFSIZE               1536
 
 // Protocol enabling
@@ -42,9 +42,9 @@
 #define TCP_SND_BUF                     (8 * TCP_MSS)
 #define TCP_SND_QUEUELEN                ((4 * (TCP_SND_BUF) + (TCP_MSS - 1)) / (TCP_MSS))
 
-// Checksum options
+// Checksum options — all enabled (matches reference)
 #define CHECKSUM_GEN_IP                 1
-#define CHECKSUM_GEN_UDP                0
+#define CHECKSUM_GEN_UDP                1
 #define CHECKSUM_GEN_TCP                1
 #define CHECKSUM_CHECK_IP               1
 #define CHECKSUM_CHECK_UDP              1
@@ -55,3 +55,4 @@
 #define LWIP_DEBUG                      0
 
 #endif /* _LWIPOPTS_H */
+

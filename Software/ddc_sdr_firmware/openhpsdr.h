@@ -28,7 +28,8 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count);
 // Safely reset packet sample index (e.g. on sample rate change)
 void openhpsdr_reset_sample_idx(void);
 
-void openhpsdr_get_stats(uint32_t *push_calls, uint32_t *pkts_sent, uint32_t *pbuf_failed, uint32_t *udp_err, uint32_t *max_us, uint32_t *last_us, uint32_t *stall_seq, uint32_t *stall_dt);
+void openhpsdr_get_stats(uint32_t *push_calls, uint32_t *pkts_sent, uint32_t *pbuf_failed, uint32_t *udp_err, uint32_t *max_us, uint32_t *last_us, uint32_t *max_lock, uint32_t *max_sendto, uint32_t *max_poll);
+void openhpsdr_get_rx_stats(uint32_t *rx_udp, uint32_t *rx_disc, uint32_t *tx_disc, uint32_t *rx_start);
 struct udp_pcb *openhpsdr_get_pcb(void);
 bool openhpsdr_is_active(void);
 

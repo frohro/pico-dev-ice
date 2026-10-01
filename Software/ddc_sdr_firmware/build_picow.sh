@@ -23,10 +23,7 @@ if [ ! -f "${BITSTREAM}" ] && [ -f "${SCRIPT_DIR}/../../ENGR433-Solutions/Lab_09
     BITSTREAM="${SCRIPT_DIR}/../../ENGR433-Solutions/Lab_09/ddc_sdr_top.bin"
 fi
 
-TINYUSB_ARG=""
-if [ -d "${HOME}/tinyusb/src" ]; then
-    TINYUSB_ARG="-DPICO_TINYUSB_PATH=${HOME}/tinyusb"
-fi
+TINYUSB_ARG="-DPICO_TINYUSB_PATH=${HOME}/tinyusb"
 
 cmake .. \
     -DPICO_BOARD=pico_w \

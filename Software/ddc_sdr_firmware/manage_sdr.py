@@ -12,7 +12,7 @@ import serial
 import re
 
 FIRMWARE_DIR = "/home/frohro/Projects/pico-dev-ice/Software/ddc_sdr_firmware"
-DEFAULT_IP = "192.168.1.191"
+DEFAULT_IP = "192.168.1.192"
 
 def find_serial_port():
     ports = glob.glob('/dev/ttyACM*')
