@@ -57,6 +57,7 @@ You are provided with a tiny pre-compiled bitstream (`led_test.bin`) in the main
 *(Hardware Note: The RGB LED pins on the iCE40UP5K are Open-Drain. They sink current to Ground to turn the LED on. To turn the LED off, the pin must be set to High-Impedance/1).*
 
 ### Step 4: Flashing the FPGA
+To use MicroPython, the code and instructions are at my [GitHub repo for the MicroPython for the Pico Dev-iCE.](https://github.com/frohro/pico-ice-micropython)  
 Write a short MicroPython script (`main.py`) on the Pico to load the bitstream:
 
 ```python
@@ -66,7 +67,7 @@ from machine import Pin
 
 # 1. Initialize the FPGA SPI programming interface
 # (This utilizes the Pico's SPI0 block connected to ICE_SI, ICE_SO, ICE_SCK)
-fpga = ice.fpga(cdone=Pin(21), clock=Pin(1), creset=Pin(22), cram_cs=Pin(5), cram_mosi=Pin(7), cram_sck=Pin(6), frequency=48)
+fpga = ice.fpga(cdone=Pin(21), creset=Pin(22), cram_cs=Pin(5), cram_mosi=Pin(7), cram_sck=Pin(6))
 file = open("led_test.bin", "br")
 fpga.start()
 fpga.cram(file)
