@@ -57,31 +57,25 @@ You are provided with a tiny pre-compiled bitstream (`led_test.bin`) in the main
 *(Hardware Note: The RGB LED pins on the iCE40UP5K are Open-Drain. They sink current to Ground to turn the LED on. To turn the LED off, the pin must be set to High-Impedance/1).*
 
 ### Step 4: Flashing the FPGA
+To use MicroPython, the code and instructions are at my [GitHub repo for the MicroPython for the Pico Dev-iCE.](https://github.com/frohro/pico-ice-micropython)  
 Write a short MicroPython script (`main.py`) on the Pico to load the bitstream:
 
 ```python
 import ice
 import time
+from machine import Pin
 
 # 1. Initialize the FPGA SPI programming interface
 # (This utilizes the Pico's SPI0 block connected to ICE_SI, ICE_SO, ICE_SCK)
-fpga = ice.FPGA()
-
-print("Holding FPGA in Reset...")
-fpga.reset()
-time.sleep(0.1)
-
-print("Flashing led_test.bin to FPGA CRAM...")
-with open("led_test.bin", "rb") as f:
-    bitstream = f.read()
-    fpga.program_cram(bitstream)
-
+fpga = ice.fpga(cdone=Pin(21), creset=Pin(22), cram_cs=Pin(5), cram_mosi=Pin(7), cram_sck=Pin(6))
+file = open("led_test.bin", "br")
+fpga.start()
+fpga.cram(file)
 print("Boot complete. Checking CDONE status...")
 # CDONE is wired to Pico GPIO 21. 
 # Check your physical board: Is the White Done LED lit? Is the Green RGB LED lit?
 ```
-
-Run the script. If the White `ICE_DONE` LED turns on, and the Green diagnostic LED turns on, your hardware is healthy and your toolchain is ready for Week 2!
+You need to upload in Thonny the led_test.bin to the / directory on the YD-RP2040.  Then run the script. If the White `ICE_DONE` LED turns on, and the Green diagnostic LED turns on, your hardware is healthy and your toolchain is ready for Week 2!
 
 ---
 
