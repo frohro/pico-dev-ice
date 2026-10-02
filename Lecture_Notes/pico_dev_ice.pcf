@@ -1,5 +1,5 @@
 # 30.72 MHz On-Board Oscillator (replace with your board's clock pin)
-set_io clk        20
+set_io clk        37
 
 # Dedicated iCE40UP5K RGB Driver Pins (SG48 Package)
 set_io led_red   39
