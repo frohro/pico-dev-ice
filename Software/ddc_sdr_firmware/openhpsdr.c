@@ -16,8 +16,32 @@ static hpsdr_gain_callback_t s_gain_cb = NULL;
 static uint8_t s_packet_buffer[HPSDR_PACKET_SIZE];
 static uint32_t s_sample_idx = 0; // 0 to 125 samples (63 in subframe 1, 63 in subframe 2)
 
+static uint32_t s_push_calls = 0;
+static uint32_t s_pkts_sent = 0;
+static uint32_t s_pbuf_alloc_failed = 0;
+static uint32_t s_udp_err = 0;
+static uint32_t s_max_send_us = 0;
+static uint32_t s_last_send_us = 0;
+static uint32_t s_stall_seq = 0;
+static uint32_t s_stall_dt = 0;
+
+void openhpsdr_get_stats(uint32_t *push_calls, uint32_t *pkts_sent, uint32_t *pbuf_failed, uint32_t *udp_err, uint32_t *max_us, uint32_t *last_us, uint32_t *stall_seq, uint32_t *stall_dt) {
+    if (push_calls) *push_calls = s_push_calls;
+    if (pkts_sent) *pkts_sent = s_pkts_sent;
+    if (pbuf_failed) *pbuf_failed = s_pbuf_alloc_failed;
+    if (udp_err) *udp_err = s_udp_err;
+    if (max_us) *max_us = s_max_send_us;
+    if (last_us) *last_us = s_last_send_us;
+    if (stall_seq) *stall_seq = s_stall_seq;
+    if (stall_dt) *stall_dt = s_stall_dt;
+}
+
+struct udp_pcb *openhpsdr_get_pcb(void) {
+    return s_pcb;
+}
+
 static void send_discovery_reply(const ip_addr_t *addr, u16_t port) {
-    struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, 60, PBUF_RAM);
+    struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, 60, PBUF_POOL);
     if (p) {
         uint8_t *payload = (uint8_t *)p->payload;
         memset(payload, 0, 60);
@@ -98,6 +122,7 @@ static void handle_cc_packet(const uint8_t *data, uint16_t len) {
     }
 }
 
+static volatile bool s_no_watchdog = false;
 static uint32_t s_last_packet_rx_ms = 0;
 
 static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
@@ -122,10 +147,13 @@ static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
                 s_sample_idx = 0;
             }
             s_active = true;
+            s_no_watchdog = (data[3] & 0x80) != 0;
             ip_addr_copy(s_host_ip, *addr);
             s_host_port = port;
         } else {
             s_active = false;
+            s_no_watchdog = false;
+            s_host_port = 0;
             s_sequence = 0;
             s_sample_idx = 0;
         }
@@ -153,14 +181,27 @@ void openhpsdr_init(hpsdr_freq_callback_t on_freq, hpsdr_rate_callback_t on_rate
     cyw43_arch_lwip_begin();
     s_pcb = udp_new();
     if (s_pcb) {
+        ip_set_option(s_pcb, SOF_BROADCAST);
         udp_bind(s_pcb, IP_ADDR_ANY, HPSDR_PORT);
         udp_recv(s_pcb, hpsdr_recv_callback, NULL);
     }
     cyw43_arch_lwip_end();
 }
 
+void openhpsdr_reset_sample_idx(void) {
+    s_sample_idx = 0;
+}
+
 void openhpsdr_task(void) {
-    // Background tasks if needed
+    cyw43_arch_poll();
+    if (s_active && !s_no_watchdog) {
+        uint32_t now_ms = to_ms_since_boot(get_absolute_time());
+        if (now_ms - s_last_packet_rx_ms >= 5000) {
+            s_active = false;
+            s_sample_idx = 0;
+            s_sequence = 0;
+        }
+    }
 }
 
 bool openhpsdr_is_active(void) {
@@ -207,30 +248,95 @@ static void init_hpsdr_packet(void) {
 }
 
 void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
-    if (!s_active || s_host_port == 0) {
+    if (!s_active || s_host_port == 0 || s_pcb == NULL) {
         s_sample_idx = 0;
         return;
     }
 
-    // Each stereo frame is 2 words: [0]=Left (I), [1]=Right (Q)
+    // Fast path: Exact 1-packet buffer (126 stereo samples = 252 words)
+    if (count == HPSDR_WORDS_PER_PACKET && s_sample_idx == 0) {
+        init_hpsdr_packet();
+
+        // Subframe 1: 63 stereo samples (words 0..125)
+        for (uint32_t s = 0; s < 63; s++) {
+            uint32_t w_i = samples[2 * s + 1]; // Right/Q -> si -> SDR++ .im
+            uint32_t w_q = samples[2 * s];     // Left/I  -> sq -> SDR++ .re
+            uint32_t offset = 16 + (s * 8);
+
+            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
+            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+
+            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
+            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
+
+            s_packet_buffer[offset + 6] = 0x00;
+            s_packet_buffer[offset + 7] = 0x00;
+        }
+
+        // Subframe 2: 63 stereo samples (words 126..251)
+        for (uint32_t s = 0; s < 63; s++) {
+            uint32_t w_i = samples[126 + (2 * s) + 1];
+            uint32_t w_q = samples[126 + (2 * s)];
+            uint32_t offset = 528 + (s * 8);
+
+            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
+            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+
+            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
+            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
+
+            s_packet_buffer[offset + 6] = 0x00;
+            s_packet_buffer[offset + 7] = 0x00;
+        }
+
+        s_push_calls++;
+        uint32_t t0 = time_us_32();
+        cyw43_arch_lwip_begin();
+        struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_POOL);
+        if (p) {
+            pbuf_take(p, s_packet_buffer, HPSDR_PACKET_SIZE);
+            err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
+            if (err == ERR_OK) {
+                s_pkts_sent++;
+            } else {
+                s_udp_err++;
+            }
+            pbuf_free(p);
+        } else {
+            s_pbuf_alloc_failed++;
+        }
+        cyw43_arch_lwip_end();
+        cyw43_arch_poll();
+        uint32_t dt = time_us_32() - t0;
+        if (dt > s_max_send_us) s_max_send_us = dt;
+        if (dt > 100000) {
+            s_stall_seq = s_sequence;
+            s_stall_dt = dt;
+        }
+        s_last_send_us = dt;
+        return;
+    }
+
+    // Fallback streaming chunk path for any other count
     for (uint32_t i = 0; i + 1 < count; i += 2) {
         if (s_sample_idx == 0) {
             init_hpsdr_packet();
         }
 
-        // SDR++ hermes source assigns byte 0..2 (si) to .im (Q) and byte 3..5 (sq) to .re (I).
-        // To provide standard (I, Q) orientation without requiring "Invert IQ":
-        uint32_t w_i = samples[i + 1]; // Right/Q -> si -> SDR++ .im
-        uint32_t w_q = samples[i];     // Left/I  -> sq -> SDR++ .re
+        uint32_t w_i = samples[i + 1];
+        uint32_t w_q = samples[i];
 
         uint32_t offset;
         if (s_sample_idx < 63) {
-            offset = 16 + (s_sample_idx * 8); // Subframe 1 data (3B I, 3B Q, 2B mic)
+            offset = 16 + (s_sample_idx * 8);
         } else {
-            offset = 528 + ((s_sample_idx - 63) * 8); // Subframe 2 data
+            offset = 528 + ((s_sample_idx - 63) * 8);
         }
 
-        // S24 Big-Endian (OpenHPSDR wire format)
         s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
         s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
         s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
@@ -239,21 +345,33 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
         s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
         s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
 
-        s_packet_buffer[offset + 6] = 0x00; // Mic byte 1
-        s_packet_buffer[offset + 7] = 0x00; // Mic byte 2
+        s_packet_buffer[offset + 6] = 0x00;
+        s_packet_buffer[offset + 7] = 0x00;
 
         s_sample_idx++;
 
         if (s_sample_idx >= 126) {
-            // Full 1032-byte packet ready -> send over UDP
+            s_push_calls++;
+            uint32_t t0 = time_us_32();
             cyw43_arch_lwip_begin();
-            struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_RAM);
+            struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_POOL);
             if (p) {
                 pbuf_take(p, s_packet_buffer, HPSDR_PACKET_SIZE);
-                udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
+                err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
+                if (err == ERR_OK) {
+                    s_pkts_sent++;
+                } else {
+                    s_udp_err++;
+                }
                 pbuf_free(p);
+            } else {
+                s_pbuf_alloc_failed++;
             }
             cyw43_arch_lwip_end();
+            cyw43_arch_poll();
+            uint32_t dt = time_us_32() - t0;
+            if (dt > s_max_send_us) s_max_send_us = dt;
+            s_last_send_us = dt;
             s_sample_idx = 0;
         }
     }
