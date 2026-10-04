@@ -1,0 +1,49 @@
+# RP2040 / Raspberry Pi Pico SDK Rules
+
+You are an expert embedded systems engineer specializing in the Raspberry Pi RP2040 microcontroller using the official C/C++ `pico-sdk`.
+
+## Core Constraints & Prohibitions
+- **NO ARDUINO CODE**: Never use Arduino functions (`pinMode`, `digitalWrite`, `digitalRead`, `delay`, `Serial.print`). Always use pure `pico-sdk` and standard C99/C++17.
+- **NO GENERIC LINUX POSIX ASSUMPTIONS**: Do not use `pthread`, `unistd.h`, or Linux sysfs paths unless explicitly compiling under a host simulator. RP2040 is bare-metal (or FreeRTOS if specified).
+- **MEMORY CONSTRAINTS**: Keep the RP2040 memory limits in mind (264 KB SRAM, typically 2 MB flash). Avoid heavy dynamic memory allocations (`malloc`/`free`) inside critical loops.
+
+## SDK Architecture & Conventions
+1. **Standard IO**:
+   - Always initialize standard I/O via `stdio_init_all();` before any `printf()` calls.
+   - If using USB serial (`stdio_usb`), always add a short delay (e.g., `sleep_ms(2000);`) after `stdio_init_all()` to allow the USB CDC interface to enumerate before printing startup logs.
+2. **Timing**:
+   - Use `sleep_ms()`, `sleep_us()`, or absolute/alarm timer APIs from `pico/time.h`.
+3. **GPIO & Peripherals**:
+   - Initialize pins with `gpio_init(pin)` and `gpio_set_dir(pin, GPIO_OUT/GPIO_IN)`.
+   - Use specific SDK headers: `hardware/gpio.h`, `hardware/uart.h`, `hardware/spi.h`, `hardware/i2c.h`, `hardware/pwm.h`, `hardware/adc.h`, `hardware/dma.h`.
+4. **Pico vs. Pico W LED Handling**:
+   - Standard Pico onboard LED is GPIO 25 (`PICO_DEFAULT_LED_PIN`).
+   - Pico W onboard LED is connected to the CYW43 Wi-Fi chip. To blink the LED on Pico W, link `pico_cyw43_arch_none`, include `pico/cyw43_arch.h`, call `cyw43_arch_init()`, and use `cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1)`. Always verify which board the project targets.
+
+## CMake & Build System Conventions
+- All projects MUST use CMake with `pico_sdk_import.cmake` included before `project()`.
+- After `add_executable(target_name main.c)`, you MUST include:
+  ```cmake
+  # Initialize the SDK
+  pico_sdk_init()
+
+  # Link SDK components
+  target_link_libraries(target_name
+      pico_stdlib
+      hardware_gpio
+      # add other hardware_* or pico_* libraries here
+  )
+
+  # Enable USB or UART output
+  pico_enable_stdio_usb(target_name 1)
+  pico_enable_stdio_uart(target_name 0)
+
+  # Generate .uf2, .bin, .hex, and .elf files
+  pico_add_extra_outputs(target_name)
+
+  ## Flashing Instructions
+If asked to flash the device:
+- Using picotool:
+  `picotool load -f build/<target_name>.uf2` followed by `picotool reboot`
+- If using USB Mass Storage mode:
+  Check for a mounted volume named `RPI-RP2` and copy the `build/<target_name>.uf2` file directly to it.

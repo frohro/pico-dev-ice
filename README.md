@@ -4,13 +4,13 @@
 ## 📌 Overview
 The **Pico Dev-iCE** is a low-cost, high-performance "Lab-in-a-Box." It combines the high-speed programmable logic of a **Lattice iCE40UP5K FPGA** with the flexible C/MicroPython ecosystem of a **Raspberry Pi Pico (YD-RP2040 with 16MB Flash)**. 
 
-Designed specifically as an educational platform, it abandons "black box" RF chips in favor of discrete, observable analog blocks. Students can physically probe the RF signal path, design their own LC filters on pluggable sandboxes, and write Verilog to perform Digital Down Conversion (DDC), digital decimation, and hardware I2S audio routing.
+Designed specifically as an educational platform, it abandons "black box" RF chips in favor of discrete, observable analog blocks. Students can physically probe the RF signal path, design their own LC filters on pluggable sandboxes, and write Verilog to perform Direct Digital Conversion (DDC), digital decimation, and hardware I2S audio routing.
 
 ![](README_20260730193606897.png)
 
 Here is a video of the SDR receiving on 20 meters.[![](https://img.youtube.com/vi/qYo4EEl96wU/maxresdefault.jpg)](https://youtu.be/qYo4EEl96wU).
 ## 🚀 Key Capabilities
-* **HF Software Defined Radio (RX/TX):** DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30+ MHz.
+* **HF Software Defined Radio (RX/TX):** Full-duplex DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30+ MHz.
 * **Vector Network Analyzer (VNA):** Built-in Return Loss Bridge (RLB) for S11 (reflection) antenna tuning, and Port-to-Port S21 (transmission) filter characterization.
 * **Arbitrary Waveform Generator (AWG):** Dedicated DC-coupled and AC-coupled SMA outputs for 30 MSPS generic signal generation.
 * **Real-Time Spectrum Analyzer:** Visualize the entire 15 MHz HF spectrum simultaneously via FPGA-accelerated FFTs.
@@ -21,7 +21,7 @@ Here is a video of the SDR receiving on 20 meters.[![](https://img.youtube.com/v
 ## 🧠 Hardware Architecture
 
 ### Processing Core
-* **Microcontroller:** YD-RP2040 / Pico / Pico 2 / Pico W / Pico 2 W socket. Handles AGC math, user interface, USB communications, and slow-state hardware toggles. The massive internal Flash (up to 16MB) stores the FPGA bitstream and programs the FPGA directly on every boot, eliminating the need for an external FPGA flash chip.
+* **Microcontroller:** YD-RP2040 / Pico 2 socket. Handles AGC math, user interface, USB communications, and slow-state hardware toggles. The massive internal Flash (up to 16MB) stores the FPGA bitstream and programs the FPGA directly on every boot, eliminating the need for an external FPGA flash chip.
 * **FPGA:** Lattice iCE40UP5K (SG48). Handles high-speed 30.72 MHz DSP, NCO generation, CIC decimation/interpolation, and I2S master clocking.
 * **Control Bus:** The Pico uses its high-speed `SPI0` bus to dual-role: it blasts the bitstream into the FPGA's internal CRAM on boot, and then seamlessly transitions to sending runtime DSP commands to the user's Verilog over the exact same 4 wires.
 
@@ -31,14 +31,14 @@ Here is a video of the SDR receiving on 20 meters.[![](https://img.youtube.com/v
 * **Process Gain:** The 640x decimation provides ~ 28 dB of digital processing gain, turning the raw 8-bit ADC into a highly sensitive 12.6-bit effective receiver!
 
 ### The Receive (RX) Path
-* **Topology:** `BNC` ➔ `Ethernet Isolation/CMC` ➔ `Band Sandbox` ➔ `T/R Switch` ➔ `LNA 1` ➔ `PGA (5/10dB)` ➔ `LNA 2` ➔ `ADC`.
+* **Topology:** `SMA` ➔ `Ethernet Isolation/CMC` ➔ `Band Sandbox` ➔ `T/R Switch` ➔ `LNA 1` ➔ `PGA (5/10dB)` ➔ `LNA 2` ➔ `ADC`.
 * **Amplifiers:** Uses discrete high-speed op-amps wired as AC-coupled inverting amplifiers. 
 * **Programmable Gain:** A Digital Step Attenuator (DSA) built from CMOS switches and precision T-networks, providing 0 to 55 dB of gain control in 5 dB steps. LNA 1 and LNA 2 are both bypassable to prevent clipping on massive signals.
 * **ADC (MS9280):** 8-bit, 32 MSPS. Driven by an RF balun into True Differential Mode with a 4.5V analog supply, yielding a massive 4.0V peak-to-peak input span for maximum dynamic range.
 
 ### The Transmit (TX) Path
 * **Topology:** `DAC` ➔ `Passive I-V` ➔ `Ethernet Transformer` ➔ `TX Switch` ➔ `Recon Sandbox` ➔ `TX Op-Amp (+12dB)` ➔ `T/R Switch` ➔ `SMA`.
-* **DAC (MS9708):** 8-bit, 125 MSPS Current-Steering DAC.
+* **DAC (MS9708):** 8-bit, 32 MSPS Current-Steering DAC.
 * Passive 50Ω resistors and an Ethernet transformer gracefully map the DAC's strict output compliance limits into a clean 1.0V p-p RF signal, which is then amplified to drive a 50-ohm antenna.
 
 ### Power Domains (Strict Isolation)
@@ -66,17 +66,15 @@ The board features `IN-GND-GND-OUT` 0.1" sockets for inserting custom filter dau
 
 ## 🛠️ Software & HDL Notes
 
-* **Level Shifters (Logic Inversion):** The 4.5V analog switches are controlled by 3.3V GPIOs via 2N7002 N-Channel MOSFETs. **Note:** This results in a logic inversion. Writing `0` to the pin = Switch HIGH (Max Gain / Default Path). Writing `1` = Switch LOW (Attenuated / VNA / TX Path).
+* **Level Shifters (Logic Inversion):** The 4.5V analog switches are controlled by 3.3V GPIOs via 2N7002 N-Channel MOSFETs. **Note:** This results in a logic inversion. Writing `0` to the pin in MicroPython = Switch HIGH (Max Gain / Default Path). Writing `1` = Switch LOW (Attenuated / VNA / TX Path).
 * **FPGA Boot & SPI0 Bus:** 
     *   The external FPGA Flash chip was removed to simplify the architecture. The Pico boots the FPGA directly by blasting the bitstream into CRAM using its Hardware `SPI0` block. 
     *   Because the Pico drives the bus, the net names match the Pico's hardware roles: `SPI0_TX` (MOSI) is data entering the FPGA, and `SPI0_RX` (MISO) is data leaving the FPGA. 
-    *   **Runtime:** Once booted, the Pico reuses the exact same `SPI0` bus and `ICE_SSN` Chip Select pin to send DSP commands to the user's Verilog running in the iCE40UP5K.
+    *   **Runtime:** Once booted, the Pico reuses the exact same `SPI0` bus and `ICE_SSN` Chip Select pin to send DSP commands to the user's Verilog.
 * **ADC OTR:** The MS9280 "Out of Range" (Clipping) pin pulses for only 32ns. The FPGA catches this, stretches the pulse, and triggers a hardware interrupt on the Pico to engage the AGC.
 
 The ten-week, verification-first HDL course sequence is documented in
 [`DDC_SDR_Lab_Plan.md`](DDC_SDR_Lab_Plan.md).
-
-This board has undergone testing and no problems have been yet found.  The SDR receiver works really well.  The gateware is not shared here, because I am using this as a teaching platform for my Digital Design class at Walla Walla University.  If you want the gateware, send me a note, and I'll get you access to it.
 
 ---
 
@@ -164,7 +162,8 @@ This board has undergone testing and no problems have been yet found.  The SDR r
 ## Pico SDK Bring-Up
 
 The SDK port is under `Software/pico-ice-sdk`. It uses the checked-in Pico SDK
-(currently 2.2.0).  The DDC firmware below uses a newer TinyUSB checkout because it needs
+(currently 2.2.0). The general SDK examples use the TinyUSB revision bundled by
+that SDK. The DDC firmware below uses a newer TinyUSB checkout because it needs
 the UAC1 descriptor definitions that are not present in the bundled revision.
 
 The smallest board-specific firmware example programs the FPGA's volatile CRAM directly from the RP2040:
@@ -176,12 +175,13 @@ cmake -S Software/pico-ice-sdk/examples/rp2_dev_ice_blinky \
 cmake --build Software/pico-ice-sdk/examples/rp2_dev_ice_blinky/build
 ```
 
-This design evolved from the [pico-ice / pico2-ice](https://pico2-ice.tinyvision.ai/).  The generated UF2 is RP2040 firmware that contains the FPGA bitstream. The Pico-Dev-iCE has no external FPGA configuration flash, so the board port excludes the external-flash and TinyUF2 FPGA-storage paths. SPI0 GPIO 6 is the CRAM transfer clock and GPIO 7 carries configuration data; normal FPGA operation uses the separate external 30.720 MHz oscillator, not a Pico-generated clock on GPIO 27.
+The generated UF2 is RP2040 firmware that contains the FPGA bitstream. The Dev-iCE has no external FPGA configuration flash, so the board port excludes the external-flash and TinyUF2 FPGA-storage paths. SPI0 GPIO 6 is the CRAM transfer clock and GPIO 7 carries configuration data; normal FPGA operation uses the separate external 30.720 MHz oscillator, not a Pico-generated clock on GPIO 27.
 
 ## DDC SDR Firmware
 
 The first Dev-iCE SDR application is in
-[`Software/ddc_sdr_firmware`](Software/ddc_sdr_firmware). It evolved from the [Intro-to-CAD-2026 SDR](https://github.com/frohro/Intro-to-CAD-2026), where the Si5351a, Tayloe detector, and PCM1808 path with FPGA-generated DDC I/Q data received as
+[`Software/ddc_sdr_firmware`](Software/ddc_sdr_firmware). It replaces the
+earlier Si5351a, Tayloe detector, and PCM1808 path with FPGA-generated DDC I/Q data received as
 PCM1808-compatible I2S. The Pico firmware:
 
 * programs the FPGA's volatile CRAM over SPI0;
@@ -215,7 +215,7 @@ These profile loads are not a VNA sweep mechanism. A VNA needs a single
 coherent FPGA design containing the stimulus, reference, receive, and
 measurement paths for the complete sweep. Select a persistent VNA-capable
 image before a measurement, or implement those paths in one integrated image;
-do not reconfigure between sweep points.  These are not yet tried out.
+do not reconfigure between sweep points.
 
 For development, compile an FPGA bitstream with Yosys, nextpnr-ice40, and
 icepack, then load it without reflashing the Pico:

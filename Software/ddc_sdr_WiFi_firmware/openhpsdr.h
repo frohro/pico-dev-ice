@@ -22,6 +22,8 @@ typedef void (*hpsdr_gain_callback_t)(uint8_t pga_code);
 void openhpsdr_init(hpsdr_freq_callback_t on_freq, hpsdr_rate_callback_t on_rate, hpsdr_gain_callback_t on_gain);
 void openhpsdr_task(void);
 
+bool openhpsdr_can_send(void);
+
 // Push raw 32-bit words (I/Q stereo pairs from FPGA I2S) into OpenHPSDR Protocol 1 packets
 void openhpsdr_push_samples(const uint32_t *samples, uint32_t count);
 
@@ -29,6 +31,11 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count);
 void openhpsdr_reset_sample_idx(void);
 
 void openhpsdr_get_stats(uint32_t *push_calls, uint32_t *pkts_sent, uint32_t *pbuf_failed, uint32_t *udp_err, uint32_t *max_us, uint32_t *last_us, uint32_t *stall_seq, uint32_t *stall_dt);
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/openhpsdr.h
+uint32_t get_ring_overruns(void);
+uint32_t get_dma_irq_count(void);
+=======
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/openhpsdr.h
 struct udp_pcb *openhpsdr_get_pcb(void);
 bool openhpsdr_is_active(void);
 

@@ -8,19 +8,6 @@ elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk/lib/pico-sdk/pico_sdk
     set(PICO_SDK_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk/lib/pico-sdk")
 endif()
 
-if(NOT DEFINED PICO_TINYUSB_PATH AND DEFINED ENV{PICO_TINYUSB_PATH})
-    set(PICO_TINYUSB_PATH "$ENV{PICO_TINYUSB_PATH}" CACHE PATH
-        "Path to the TinyUSB checkout used by the DDC firmware")
-elseif(NOT DEFINED PICO_TINYUSB_PATH AND DEFINED ENV{HOME}
-       AND EXISTS "$ENV{HOME}/tinyusb/src/tusb.h"
-       AND EXISTS "$ENV{HOME}/tinyusb/hw/bsp/rp2040")
-    set(PICO_TINYUSB_PATH "$ENV{HOME}/tinyusb" CACHE PATH
-        "Path to the TinyUSB checkout used by the DDC firmware")
-elseif(EXISTS "${PICO_SDK_PATH}/lib/tinyusb/src/tusb.h")
-    set(PICO_TINYUSB_PATH "${PICO_SDK_PATH}/lib/tinyusb" CACHE PATH
-        "Path to the TinyUSB checkout used by the DDC firmware")
-endif()
-
 include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 project(ddc_sdr C CXX ASM)
@@ -127,12 +114,8 @@ endif()
 
 set(DDC_SOURCES
     main.c
-    usb_descriptors.c
+    openhpsdr.c
 )
-
-if(PICO_BOARD STREQUAL "pico_w")
-    list(APPEND DDC_SOURCES openhpsdr.c)
-endif()
 
 add_executable(${CMAKE_PROJECT_NAME}
     ${DDC_SOURCES}
@@ -140,9 +123,6 @@ add_executable(${CMAKE_PROJECT_NAME}
 
 pico_generate_pio_header(${CMAKE_PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/i2s_rx.pio
-)
-pico_generate_pio_header(${CMAKE_PROJECT_NAME}
-    ${CMAKE_CURRENT_SOURCE_DIR}/i2s_tx.pio
 )
 if(DDC_BITSTREAM_HEADERS)
     add_dependencies(${CMAKE_PROJECT_NAME} ddc_fpga_bitstream_headers)
@@ -162,22 +142,20 @@ endif()
 
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     PICO_DEV_ICE=1
+    PICO_CYW43_SUPPORTED=1
 )
-
-if(PICO_BOARD STREQUAL "pico_w")
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
-        PICO_CYW43_SUPPORTED=1
-    )
-endif()
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk/include/boards
     ${DDC_GENERATED_INCLUDES}
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/CMakeLists.txt
+=======
     ${PICO_TINYUSB_PATH}/hw/bsp/rp2040
     ${PICO_TINYUSB_PATH}/hw/bsp
     ${PICO_TINYUSB_PATH}/hw
     ${PICO_TINYUSB_PATH}/src
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/CMakeLists.txt
     ${PICO_SDK_PATH}/lib/cyw43-driver/src
 )
 
@@ -191,13 +169,8 @@ set(DDC_LIBS
     hardware_pio
     pico_multicore
     pico_stdlib
-    tinyusb_device
-    tinyusb_board
+    pico_cyw43_arch_lwip_threadsafe_background
 )
-
-if(PICO_BOARD STREQUAL "pico_w")
-    list(APPEND DDC_LIBS pico_cyw43_arch_lwip_threadsafe_background)
-endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
     ${DDC_LIBS}
