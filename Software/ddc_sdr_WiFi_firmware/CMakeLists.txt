@@ -149,6 +149,13 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk/include/boards
     ${DDC_GENERATED_INCLUDES}
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/CMakeLists.txt
+=======
+    ${PICO_TINYUSB_PATH}/hw/bsp/rp2040
+    ${PICO_TINYUSB_PATH}/hw/bsp
+    ${PICO_TINYUSB_PATH}/hw
+    ${PICO_TINYUSB_PATH}/src
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/CMakeLists.txt
     ${PICO_SDK_PATH}/lib/cyw43-driver/src
 )
 

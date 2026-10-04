@@ -302,6 +302,7 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
 
     // Fast path: Exact 1-packet buffer (126 stereo samples = 252 words)
     if (count == HPSDR_WORDS_PER_PACKET && s_sample_idx == 0) {
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/openhpsdr.c
         cyw43_arch_lwip_begin();
         struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_POOL);
         if (!p) {
@@ -333,6 +334,9 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
         payload[520] = 0x7F;
         payload[521] = 0x7F;
         payload[522] = 0x7F;
+=======
+        init_hpsdr_packet();
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/openhpsdr.c
 
         // Subframe 1: 63 stereo samples (words 0..125)
         for (uint32_t s = 0; s < 63; s++) {
@@ -340,6 +344,7 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             uint32_t w_q = samples[2 * s];     // Left/I  -> sq -> SDR++ .re
             uint32_t offset = 16 + (s * 8);
 
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/openhpsdr.c
             payload[offset + 0] = (uint8_t)(w_i >> 24);
             payload[offset + 1] = (uint8_t)(w_i >> 16);
             payload[offset + 2] = (uint8_t)(w_i >> 8);
@@ -347,6 +352,18 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             payload[offset + 3] = (uint8_t)(w_q >> 24);
             payload[offset + 4] = (uint8_t)(w_q >> 16);
             payload[offset + 5] = (uint8_t)(w_q >> 8);
+=======
+            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
+            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+
+            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
+            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
+
+            s_packet_buffer[offset + 6] = 0x00;
+            s_packet_buffer[offset + 7] = 0x00;
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/openhpsdr.c
         }
 
         // Subframe 2: 63 stereo samples (words 126..251)
@@ -355,6 +372,7 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             uint32_t w_q = samples[126 + (2 * s)];
             uint32_t offset = 528 + (s * 8);
 
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/openhpsdr.c
             payload[offset + 0] = (uint8_t)(w_i >> 24);
             payload[offset + 1] = (uint8_t)(w_i >> 16);
             payload[offset + 2] = (uint8_t)(w_i >> 8);
@@ -362,10 +380,23 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             payload[offset + 3] = (uint8_t)(w_q >> 24);
             payload[offset + 4] = (uint8_t)(w_q >> 16);
             payload[offset + 5] = (uint8_t)(w_q >> 8);
+=======
+            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
+            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
+            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+
+            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
+            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
+            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
+
+            s_packet_buffer[offset + 6] = 0x00;
+            s_packet_buffer[offset + 7] = 0x00;
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/openhpsdr.c
         }
 
         s_push_calls++;
         uint32_t t0 = time_us_32();
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/openhpsdr.c
         err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
         if (err == ERR_OK) {
             s_pkts_sent++;
@@ -377,6 +408,30 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
 
         uint32_t dt = time_us_32() - t0;
         if (dt > s_max_send_us) s_max_send_us = dt;
+=======
+        cyw43_arch_lwip_begin();
+        struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_POOL);
+        if (p) {
+            pbuf_take(p, s_packet_buffer, HPSDR_PACKET_SIZE);
+            err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
+            if (err == ERR_OK) {
+                s_pkts_sent++;
+            } else {
+                s_udp_err++;
+            }
+            pbuf_free(p);
+        } else {
+            s_pbuf_alloc_failed++;
+        }
+        cyw43_arch_lwip_end();
+        cyw43_arch_poll();
+        uint32_t dt = time_us_32() - t0;
+        if (dt > s_max_send_us) s_max_send_us = dt;
+        if (dt > 100000) {
+            s_stall_seq = s_sequence;
+            s_stall_dt = dt;
+        }
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/openhpsdr.c
         s_last_send_us = dt;
         return;
     }
@@ -428,6 +483,10 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
                 s_pbuf_alloc_failed++;
             }
             cyw43_arch_lwip_end();
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/openhpsdr.c
+=======
+            cyw43_arch_poll();
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/openhpsdr.c
             uint32_t dt = time_us_32() - t0;
             if (dt > s_max_send_us) s_max_send_us = dt;
             s_last_send_us = dt;

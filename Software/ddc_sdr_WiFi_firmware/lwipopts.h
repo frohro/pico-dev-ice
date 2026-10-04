@@ -18,7 +18,11 @@
 #define MEMP_NUM_TCP_SEG                32
 #define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 4)
 
+<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/lwipopts.h
 #define PBUF_POOL_SIZE                  80
+=======
+#define PBUF_POOL_SIZE                  64
+>>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/lwipopts.h
 #define PBUF_POOL_BUFSIZE               1536
 
 // Protocol enabling
