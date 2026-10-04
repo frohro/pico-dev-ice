@@ -4,7 +4,7 @@
 **Objective:** This week, you will learn the "Edit-Simulate-Explain" loop. You will design Control Logic (a Finite State Machine), translate it into a strict AI prompt, and use AI to generate the SystemVerilog RTL. Before touching the hardware, you must write a self-checking testbench to mathematically prove the AI did not hallucinate the timing or the reset states.
 
 ## AI Use Policy
-Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, run the simulations, inject the bug, and verify the results yourself, and you must be able to explain all submitted work.
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, run the simulations, inject the bug, and verify the results yourself, and you must be able to explain all submitted work.  Do not just put this lab into the AI as your prompt.
 
 ## Part 1: The British Traffic Light FSM
 In the United States, traffic lights transition from Red, to Green, to Yellow. In the United Kingdom, traffic lights use an intermediate "Get Ready" state to alert drivers with manual transmissions to put their cars in gear. 
@@ -16,10 +16,12 @@ The UK Sequence is:
 4. **Amber** (Stop if safe to do so)
 5. **Red** (Stop)
 
+![Diagram of British traffic lights](image.png)
+
 *(Note: On our Pico Dev-iCE board, we will use the Yellow LED for Amber).*
 
 ### 1. The Hardware Constraints
-Look at your `ddc_sdr.pcf` file. You have three RGB LED pins:
+Make a `ddc_sdr.pcf` file for the Pico Dev-iCE.  Look at your file. You have three RGB LED pins:
 *   `RED` (Pin 39)
 *   `YELLOW` (Pin 40)
 *   `GREEN` (Pin 41)
@@ -27,6 +29,7 @@ Look at your `ddc_sdr.pcf` file. You have three RGB LED pins:
 **CRITICAL PHYSICS NOTE:** These pins are **Open-Drain**. They connect the LED cathode to Ground. Therefore:
 *   Outputting `1'b0` turns the LED **ON**.
 *   Outputting `1'b1` turns the LED **OFF** (High-Z).
+*   This information comes from the iCE40 datasheet.
 
 ### 2. The Parameterized Clock
 The Pico Dev-iCE master clock runs at **30.720 MHz**. If you simulate 5 seconds of real time at 30.72 MHz, your computer will simulate 153.6 million clock ticks, and your waveform viewer will likely crash.
@@ -75,7 +78,7 @@ Use the following template to prompt your AI. **Fill in the bracketed informatio
 
 ## Part 3: The Self-Checking Testbench
 
-You must not trust the AI. You must prove it works mathematically. Write a testbench (`traffic_tb.v`) that does the following:
+You must not trust the AI. You must prove it works mathematically. Write a testbench (`traffic_tb.sv`) that does the following:
 
 1.  **Override the Parameter:** Instantiate your module, overriding `TICKS_PER_SEC` to `10`. 
 2.  **Generate the Clock:** Write an `always` block to toggle the clock every 5 time units.
@@ -89,7 +92,7 @@ You must not trust the AI. You must prove it works mathematically. Write a testb
 
 Once your testbench prints a clean "PASS" across all states, it is time to build the real hardware.
 
-1.  Use the OSS CAD Suite tools (`yosys`, `nextpnr-ice40`, `icepack`) to synthesize your `.v` file against the `ddc_sdr.pcf` constraints file. 
+1.  Use the OSS CAD Suite tools (`yosys`, `nextpnr-ice40`, `icepack`) to synthesize your `.sv` file against the `ddc_sdr.pcf` constraints file. 
 2.  Generate your `traffic.bin` bitstream.
 3.  Load the bitstream onto the Pico using the MicroPython script from Lab 1.
 4.  Watch the LEDs on the Pico Dev-iCE board. If they sequence properly, your physical timing matches your simulated timing!
@@ -98,10 +101,11 @@ Once your testbench prints a clean "PASS" across all states, it is time to build
 
 ## 📝 Deliverables & Oral Defense
 
-At your weekly 15-minute team meeting with the instructor, you must provide:
+At your weekly team meeting with the instructor, you must provide:
 
 1. **The Blueprint:** Your hand-drawn FSM State Diagram, including timers and output vectors.
 2. **The Prompt Log:** The exact prompt you fed to the AI.
 3. **The AI Critique:** Identify one thing the AI did poorly (e.g., did it use an inefficient single-always block? Did it mess up the active-low logic? Did it have an off-by-one error on the counter?).
 4. **The Simulation Proof:** Demonstrate your self-checking testbench running in the terminal. Show the output catching your injected bug, and then show it passing the corrected RTL.
 5. **The Hardware Demo:** Show the physical board successfully running the UK traffic light sequence.
+6. **Your goal:** is to teach your professor this material.  He may want to do it by hand without AI.
