@@ -1,8 +1,11 @@
 `default_nettype none
 
 // 1. Simulation/Linting stub for Verilator
-// Yosys ignores this completely, but Verilator uses it to know the port directions.
+// Yosys ignores this completely, but Verilator uses it to understand port directions.
 `ifdef VERILATOR
+/* verilator lint_off DECLFILENAME */
+/* verilator lint_off UNUSEDPARAM */
+/* verilator lint_off UNUSEDSIGNAL */
 module SB_RGBA_DRV #(
     parameter CURRENT_MODE = "0b0",
     parameter RGB0_CURRENT = "0b000000",
@@ -22,13 +25,16 @@ module SB_RGBA_DRV #(
     assign RGB1 = RGB1PWM;
     assign RGB2 = RGB2PWM;
 endmodule
+/* verilator lint_on DECLFILENAME */
+/* verilator lint_on UNUSEDPARAM */
+/* verilator lint_on UNUSEDSIGNAL */
 `endif
 
 module top (
-    input  logic clk,       // 30.72 MHz Hardware Oscillator
-    output logic led_blue,
-    output logic led_green,
-    output logic led_red
+    input  logic clk,          // 30.72 MHz Hardware Oscillator (Pin 37)
+    output logic led_red,      // Pin 39 (RGB0)
+    output logic led_yellow,   // Pin 40 (RGB1)
+    output logic led_green     // Pin 41 (RGB2)
 );
 
     // Tell Verilator that this inline initialization is intentional for FPGA power-on
@@ -47,14 +53,14 @@ module top (
         .RGB1_CURRENT("0b000001"),
         .RGB2_CURRENT("0b000001")
     ) rgb_driver_inst (
-        .CURREN(1'b1),
-        .RGBLEDEN(1'b1),
-        .RGB0PWM(counter[24]),      // Blue
-        .RGB1PWM(counter[23]),      // Green
-        .RGB2PWM(~counter[24]),     // Red
-        .RGB0(led_blue),
-        .RGB1(led_green),
-        .RGB2(led_red)
+        .CURREN(1'b1),              // Master driver enable
+        .RGBLEDEN(1'b1),            // LED enable
+        .RGB0PWM(~counter[24]),     // Red    (Pin 39 / RGB0)
+        .RGB1PWM(counter[24]),      // Yellow (Pin 40 / RGB1)
+        .RGB2PWM(counter[23]),      // Green  (Pin 41 / RGB2 - toggles twice as fast)
+        .RGB0(led_red),
+        .RGB1(led_yellow),
+        .RGB2(led_green)
     );
 
 endmodule

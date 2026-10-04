@@ -12423,22 +12423,22 @@
     "top": {
       "attributes": {
         "top": "00000000000000000000000000000001",
-        "src": "top.sv:27.1-60.10"
+        "src": "top.sv:33.1-66.10"
       },
       "ports": {
         "clk": {
           "direction": "input",
           "bits": [ 2 ]
         },
-        "led_blue": {
+        "led_red": {
           "direction": "output",
           "bits": [ 3 ]
         },
-        "led_green": {
+        "led_yellow": {
           "direction": "output",
           "bits": [ 4 ]
         },
-        "led_red": {
+        "led_green": {
           "direction": "output",
           "bits": [ 5 ]
         }
@@ -12452,7 +12452,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12473,7 +12473,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12494,7 +12494,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12515,7 +12515,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -12538,7 +12538,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -12561,7 +12561,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12582,7 +12582,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -12605,7 +12605,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -12628,7 +12628,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12649,7 +12649,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -12672,7 +12672,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -12695,7 +12695,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12716,7 +12716,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -12739,7 +12739,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -12762,7 +12762,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12783,7 +12783,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -12806,7 +12806,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -12829,7 +12829,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12850,7 +12850,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -12873,7 +12873,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -12896,7 +12896,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12917,7 +12917,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -12940,7 +12940,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -12963,7 +12963,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -12984,7 +12984,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13007,7 +13007,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13030,7 +13030,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13051,7 +13051,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13074,7 +13074,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13097,7 +13097,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13118,7 +13118,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13141,7 +13141,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13164,7 +13164,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13187,7 +13187,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13210,7 +13210,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13231,7 +13231,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13252,7 +13252,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13275,7 +13275,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13298,7 +13298,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13319,7 +13319,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13342,7 +13342,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13365,7 +13365,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13386,7 +13386,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13409,7 +13409,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13432,7 +13432,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13453,7 +13453,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13478,7 +13478,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13524,7 +13524,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13547,7 +13547,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13570,7 +13570,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13591,7 +13591,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13614,7 +13614,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13637,7 +13637,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13658,7 +13658,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13681,7 +13681,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13704,7 +13704,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13725,7 +13725,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13748,7 +13748,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13771,7 +13771,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13792,7 +13792,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13815,7 +13815,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13838,7 +13838,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13859,7 +13859,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13882,7 +13882,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13905,7 +13905,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13926,7 +13926,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -13949,7 +13949,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -13972,7 +13972,7 @@
           "attributes": {
             "always_ff": "00000000000000000000000000000001",
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:39.5-41.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
+            "src": "top.sv:45.5-47.8|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/ff_map.v:2.51-2.90"
           },
           "port_directions": {
             "C": "input",
@@ -13993,7 +13993,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -14016,7 +14016,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -14039,7 +14039,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/cells_map.v:26.33-27.52"
           },
           "port_directions": {
             "I0": "input",
@@ -14062,7 +14062,7 @@
           "parameters": {
           },
           "attributes": {
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4"
           },
           "port_directions": {
             "CI": "input",
@@ -14088,7 +14088,7 @@
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
-            "src": "top.sv:49.7-58.6"
+            "src": "top.sv:55.7-64.6"
           },
           "port_directions": {
             "CURREN": "input",
@@ -14103,15 +14103,15 @@
           "connections": {
             "CURREN": [ "1" ],
             "RGB0": [ 3 ],
-            "RGB0PWM": [ 7 ],
+            "RGB0PWM": [ 79 ],
             "RGB1": [ 4 ],
-            "RGB1PWM": [ 9 ],
+            "RGB1PWM": [ 7 ],
             "RGB2": [ 5 ],
-            "RGB2PWM": [ 79 ],
+            "RGB2PWM": [ 9 ],
             "RGBLEDEN": [ "1" ]
           }
         },
-        "rgb_driver_inst_RGB2PWM_SB_LUT4_O": {
+        "rgb_driver_inst_RGB0PWM_SB_LUT4_O": {
           "hide_name": 0,
           "type": "SB_LUT4",
           "parameters": {
@@ -14142,14 +14142,14 @@
           "hide_name": 0,
           "bits": [ 2 ],
           "attributes": {
-            "src": "top.sv:28.18-28.21"
+            "src": "top.sv:34.18-34.21"
           }
         },
         "counter": {
           "hide_name": 0,
           "bits": [ 53, 54, 51, 48, 41, 38, 35, 32, 29, 26, 23, 20, 17, 14, 11, 76, 73, 70, 67, 64, 61, 58, 44, 9, 7 ],
           "attributes": {
-            "src": "top.sv:36.18-36.25"
+            "src": "top.sv:42.18-42.25"
           }
         },
         "counter_SB_DFF_Q_10_D": {
@@ -14163,7 +14163,7 @@
           "bits": [ 12 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_11_D": {
@@ -14177,7 +14177,7 @@
           "bits": [ 13 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_12_D": {
@@ -14191,7 +14191,7 @@
           "bits": [ 16 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_13_D": {
@@ -14205,7 +14205,7 @@
           "bits": [ 19 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_14_D": {
@@ -14219,7 +14219,7 @@
           "bits": [ 22 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_15_D": {
@@ -14233,7 +14233,7 @@
           "bits": [ 25 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_16_D": {
@@ -14247,7 +14247,7 @@
           "bits": [ 28 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_17_D": {
@@ -14261,7 +14261,7 @@
           "bits": [ 31 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_18_D": {
@@ -14275,7 +14275,7 @@
           "bits": [ 34 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_19_D": {
@@ -14289,7 +14289,7 @@
           "bits": [ 37 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_1_D": {
@@ -14303,7 +14303,7 @@
           "bits": [ 42 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_20_D": {
@@ -14317,7 +14317,7 @@
           "bits": [ 40 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_21_D": {
@@ -14331,7 +14331,7 @@
           "bits": [ 47 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_22_D": {
@@ -14345,7 +14345,7 @@
           "bits": [ 50 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_23_D": {
@@ -14371,7 +14371,7 @@
           "bits": [ 43 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_3_D": {
@@ -14385,7 +14385,7 @@
           "bits": [ 57 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_4_D": {
@@ -14399,7 +14399,7 @@
           "bits": [ 60 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_5_D": {
@@ -14413,7 +14413,7 @@
           "bits": [ 63 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_6_D": {
@@ -14427,7 +14427,7 @@
           "bits": [ 66 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_7_D": {
@@ -14441,7 +14441,7 @@
           "bits": [ 69 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_8_D": {
@@ -14455,7 +14455,7 @@
           "bits": [ 72 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_9_D": {
@@ -14469,7 +14469,7 @@
           "bits": [ 75 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "counter_SB_DFF_Q_D": {
@@ -14483,31 +14483,31 @@
           "bits": [ 78 ],
           "attributes": {
             "abc9_carry": "00000000000000000000000000000001",
-            "src": "top.sv:40.20-40.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
-          }
-        },
-        "led_blue": {
-          "hide_name": 0,
-          "bits": [ 3 ],
-          "attributes": {
-            "src": "top.sv:29.18-29.26"
+            "src": "top.sv:46.20-46.34|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/arith_map.v:62.5-70.4|/home/frohro/oss-cad-suite/lib/../share/yosys/ice40/abc9_model.v:4.9-4.11"
           }
         },
         "led_green": {
           "hide_name": 0,
-          "bits": [ 4 ],
+          "bits": [ 5 ],
           "attributes": {
-            "src": "top.sv:30.18-30.27"
+            "src": "top.sv:37.18-37.27"
           }
         },
         "led_red": {
           "hide_name": 0,
-          "bits": [ 5 ],
+          "bits": [ 3 ],
           "attributes": {
-            "src": "top.sv:31.18-31.25"
+            "src": "top.sv:35.18-35.25"
           }
         },
-        "rgb_driver_inst_RGB2PWM": {
+        "led_yellow": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "top.sv:36.18-36.28"
+          }
+        },
+        "rgb_driver_inst_RGB0PWM": {
           "hide_name": 0,
           "bits": [ 79 ],
           "attributes": {

@@ -6,6 +6,9 @@
 sticky status is a hardware-to-software handshake between the FPGA and the
 Pico.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, run the simulations, test the edge cases, and verify the results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The Hardware Contract
 The MS9280 is a 32 MSPS, 8-bit Analog-to-Digital Converter.
 *   **The Clock (`adc_clk`, FPGA pin 23):** The FPGA forwards the 30.720 MHz master clock to the ADC.

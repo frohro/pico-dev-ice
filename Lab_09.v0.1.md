@@ -3,6 +3,9 @@
 
 **Objective:** You have successfully built and verified every individual component of a Digital Down-Converter (DDC) radio. This week, you will act as a Systems Integrator. You will write a Top-Level wrapper to wire all your modules together: `ADC ➔ Mixer ➔ CIC ➔ I2S`. You will write a massive, full-system testbench to prove the entire radio works mathematically, and then flash the complete design to your Pico Dev-iCE board.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, run the full-system simulation, perform synthesis, and verify the results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The System Architecture (Structural Verilog)
 In this lab, you are not writing new math; you are wiring boxes together. This is called Structural Verilog.
 

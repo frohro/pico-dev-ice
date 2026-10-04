@@ -10,6 +10,9 @@ You can save this as `Lab_04_SPI_Parser.md` in your repository!
 
 **Objective:** This week, you will build the Control Interface for your radio. The Raspberry Pi Pico will act as the SPI Master, sending tuning and control commands to the FPGA. You will learn how to design a serial parsing FSM, how to handle Little-Endian byte ordering, and how to safely transfer data between two different clock speeds using Clock Domain Crossing (CDC) synchronization.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, run the simulations, test the malformed frames, and verify the results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The Hardware Contract & The CRAM Paradox
 As discussed in Lab 1, the Pico uses its hardware `SPI0` block to blast the bitstream into the FPGA's CRAM during boot, and reuses those exact same wires during runtime. 
 

@@ -3,6 +3,9 @@
 
 **Objective:** This week, you will bridge the FPGA to the Raspberry Pi Pico. You will learn clock division, shift registers, and the serial timing used by the board's I2S receiver. You will use Python to generate golden vectors, use AI to generate bounded SystemVerilog, and use a self-checking testbench to prove the bit alignment. The hardware demonstration is optional until boards and a configured Pico are available.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, run the simulations, generate the golden vectors, and verify the results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The I2S Hardware Contract
 The Pico is expecting to receive audio from the FPGA. The FPGA is the **I2S Master**, meaning it generates the clocks. The Pico's PIO state machine (which you used with the PCM1808 last semester) is the **I2S Slave**, meaning it listens.
 

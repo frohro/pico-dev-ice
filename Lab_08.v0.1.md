@@ -10,6 +10,9 @@ This lab forces the students to take absolute control of the bit-width math. You
 
 **Objective:** This week is the mathematical peak of the course. You will build a Cascaded Integrator-Comb (CIC) filter. This module will take the 30.72 MSPS, 16-bit high-speed signals from your Mixer and "average" them down to a clean, highly sensitive 48 kSPS audio stream. You will learn multi-rate signal processing, decimation, and how to harness intentional integer overflow.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, generate the golden vectors, run the simulations, and verify the synthesis results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The DSP Math & "Wrap-Around" Magic
 A CIC filter consists of three parts: Integrators, a Decimator, and Combs. 
 We are building a 3-stage ($N=3$) filter with a decimation ratio of $R=640$.

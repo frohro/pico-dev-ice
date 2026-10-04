@@ -4,6 +4,9 @@
 
 **Objective:** This week, you leave State Machines behind and enter the world of **Datapath Logic**. You will design a 32-bit Numerically Controlled Oscillator (NCO) using a Phase Accumulator and a Sine/Cosine Look-Up Table (LUT). You will use Python to generate your mathematical golden vectors, use AI to write your registered datapath, and finally route your digital sine wave physically out to the MS9708 DAC to create a real RF signal generator.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, generate the LUT and golden vectors, run the simulations, and verify the results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The DSP Math (The Phase Accumulator)
 An NCO generates frequencies purely through math. It consists of a 32-bit register (the Phase Accumulator) that simply adds a Tuning Word to itself on every single clock tick.
 

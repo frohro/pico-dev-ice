@@ -3,6 +3,9 @@
 
 **Objective:** This week, you will build the mathematical heart of the radio. You will take the raw RF signals from the ADC and multiply them by the Sine and Cosine waves from your NCO. This process (Heterodyning) shifts the high-frequency radio station down to 0 Hz (Baseband). You will learn how to handle bit-growth, Signed vs. Unsigned arithmetic, and pipelined multiplication.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, generate the golden vectors, run the simulations, inject the bug, and verify the results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The DSP Math & The "Signed" Trap
 To tune into a radio station, we multiply the incoming antenna signal by the NCO signal. 
 

@@ -3,6 +3,9 @@
 
 **Objective:** This week, you will learn the "Edit-Simulate-Explain" loop. You will design Control Logic (a Finite State Machine), translate it into a strict AI prompt, and use AI to generate the SystemVerilog RTL. Before touching the hardware, you must write a self-checking testbench to mathematically prove the AI did not hallucinate the timing or the reset states.
 
+## AI Use Policy
+Chat-based AI is permitted for this lab. You may ask a chat AI for explanations, design suggestions, or code generated from your written blueprint. Agentic AI is not permitted: do not use coding agents, autonomous IDE modes, workspace agents, or tools that inspect or modify your files, run commands, or execute tests on your behalf. You must make the edits, run the simulations, inject the bug, and verify the results yourself, and you must be able to explain all submitted work.
+
 ## Part 1: The British Traffic Light FSM
 In the United States, traffic lights transition from Red, to Green, to Yellow. In the United Kingdom, traffic lights use an intermediate "Get Ready" state to alert drivers with manual transmissions to put their cars in gear. 
 
