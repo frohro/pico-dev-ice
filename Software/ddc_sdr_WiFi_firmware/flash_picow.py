@@ -75,6 +75,21 @@ def trigger_bootsel_serial(port):
         return False
 
 
+def trigger_bootsel_udp(ip, port=1024):
+    """Trigger BOOTSEL mode via OpenHPSDR Protocol 1 UDP reboot command."""
+    print(f"[*] Trying OpenHPSDR UDP reset on {ip}:{port}...")
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.settimeout(1.0)
+        s.sendto(bytes([0xEF, 0xFE, 0xBB]), (ip, port))
+        s.close()
+        print("    [+] Sent BOOTSEL command over OpenHPSDR UDP!")
+        return True
+    except Exception as e:
+        print(f"    [-] OpenHPSDR UDP reset failed: {e}")
+        return False
+
+
 def trigger_bootsel_wifi(ip, port=5000):
     """Trigger BOOTSEL mode via Wi-Fi TCP Control Server."""
     print(f"[*] Trying Wi-Fi TCP reset on {ip}:{port}...")
@@ -126,7 +141,11 @@ def main():
                     reset_sent = True
                     break
 
-        # 3. If serial didn't trigger, try Wi-Fi TCP
+        # 2. Try OpenHPSDR UDP reset over Wi-Fi
+        if not reset_sent and args.ip:
+            reset_sent = trigger_bootsel_udp(args.ip)
+
+        # 3. If UDP didn't trigger, try Wi-Fi TCP
         if not reset_sent and args.ip:
             reset_sent = trigger_bootsel_wifi(args.ip)
 

@@ -1,6 +1,8 @@
 #include "openhpsdr.h"
 #include <string.h>
 #include "pico/cyw43_arch.h"
+#include "pico/bootrom.h"
+#include "cyw43_internal.h"
 #include "lwip/pbuf.h"
 
 static struct udp_pcb *s_pcb = NULL;
@@ -169,6 +171,30 @@ static void hpsdr_recv_callback(void *arg, struct udp_pcb *pcb, struct pbuf *p,
         s_active = true;
         handle_cc_packet(data, p->len);
     }
+    // Remote BOOTSEL reboot: 0xEFFE 0xBB
+    else if (p->len >= 3 && data[0] == 0xEF && data[1] == 0xFE && data[2] == 0xBB) {
+        pbuf_free(p);
+        reset_usb_boot(0, 0);
+        return;
+    }
+    // Remote stats query: 0xEFFE 0xCC
+    else if (p->len >= 3 && data[0] == 0xEF && data[1] == 0xFE && data[2] == 0xCC) {
+        struct pbuf *rp = pbuf_alloc(PBUF_TRANSPORT, 32, PBUF_POOL);
+        if (rp) {
+            uint32_t stats[8];
+            stats[0] = s_push_calls;
+            stats[1] = s_pkts_sent;
+            stats[2] = s_udp_err;
+            stats[3] = s_pbuf_alloc_failed;
+            stats[4] = s_max_send_us;
+            stats[5] = s_last_send_us;
+            stats[6] = get_ring_overruns();
+            stats[7] = get_dma_irq_count();
+            memcpy(rp->payload, stats, sizeof(stats));
+            udp_sendto(s_pcb, rp, addr, port);
+            pbuf_free(rp);
+        }
+    }
 
     pbuf_free(p);
 }
@@ -206,6 +232,27 @@ void openhpsdr_task(void) {
 
 bool openhpsdr_is_active(void) {
     return s_active && (s_host_port != 0);
+}
+
+bool openhpsdr_can_send(void) {
+    if (!s_active || s_host_port == 0 || s_pcb == NULL) {
+        return false;
+    }
+    cyw43_int_t *ci = (cyw43_int_t *)&cyw43_state;
+    if (ci->wlan_flow_control) {
+        return false;
+    }
+    if (ci->wwd_sdpcm_last_bus_data_credit == ci->wwd_sdpcm_packet_transmit_sequence_number) {
+        if (cyw43_poll) {
+            cyw43_arch_lwip_begin();
+            cyw43_poll();
+            cyw43_arch_lwip_end();
+        }
+        if (ci->wwd_sdpcm_last_bus_data_credit == ci->wwd_sdpcm_packet_transmit_sequence_number) {
+            return false;
+        }
+    }
+    return true;
 }
 
 static void init_hpsdr_packet(void) {
@@ -255,7 +302,37 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
 
     // Fast path: Exact 1-packet buffer (126 stereo samples = 252 words)
     if (count == HPSDR_WORDS_PER_PACKET && s_sample_idx == 0) {
-        init_hpsdr_packet();
+        cyw43_arch_lwip_begin();
+        struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_POOL);
+        if (!p) {
+            s_pbuf_alloc_failed++;
+            cyw43_arch_lwip_end();
+            return;
+        }
+
+        uint8_t *payload = (uint8_t *)p->payload;
+        memset(payload, 0, HPSDR_PACKET_SIZE);
+
+        payload[0] = 0xEF;
+        payload[1] = 0xFE;
+        payload[2] = HPSDR_DATA_PACKET;
+        payload[3] = HPSDR_EP6_ENDPOINT;
+
+        payload[4] = (uint8_t)(s_sequence >> 24);
+        payload[5] = (uint8_t)(s_sequence >> 16);
+        payload[6] = (uint8_t)(s_sequence >> 8);
+        payload[7] = (uint8_t)(s_sequence);
+        s_sequence++;
+
+        // Subframe 1 Sync & Status Header (Offset 8)
+        payload[8]  = 0x7F;
+        payload[9]  = 0x7F;
+        payload[10] = 0x7F;
+
+        // Subframe 2 Sync & Status Header (Offset 520)
+        payload[520] = 0x7F;
+        payload[521] = 0x7F;
+        payload[522] = 0x7F;
 
         // Subframe 1: 63 stereo samples (words 0..125)
         for (uint32_t s = 0; s < 63; s++) {
@@ -263,16 +340,13 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             uint32_t w_q = samples[2 * s];     // Left/I  -> sq -> SDR++ .re
             uint32_t offset = 16 + (s * 8);
 
-            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
-            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
-            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+            payload[offset + 0] = (uint8_t)(w_i >> 24);
+            payload[offset + 1] = (uint8_t)(w_i >> 16);
+            payload[offset + 2] = (uint8_t)(w_i >> 8);
 
-            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
-            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
-            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
-
-            s_packet_buffer[offset + 6] = 0x00;
-            s_packet_buffer[offset + 7] = 0x00;
+            payload[offset + 3] = (uint8_t)(w_q >> 24);
+            payload[offset + 4] = (uint8_t)(w_q >> 16);
+            payload[offset + 5] = (uint8_t)(w_q >> 8);
         }
 
         // Subframe 2: 63 stereo samples (words 126..251)
@@ -281,42 +355,28 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
             uint32_t w_q = samples[126 + (2 * s)];
             uint32_t offset = 528 + (s * 8);
 
-            s_packet_buffer[offset + 0] = (uint8_t)(w_i >> 24);
-            s_packet_buffer[offset + 1] = (uint8_t)(w_i >> 16);
-            s_packet_buffer[offset + 2] = (uint8_t)(w_i >> 8);
+            payload[offset + 0] = (uint8_t)(w_i >> 24);
+            payload[offset + 1] = (uint8_t)(w_i >> 16);
+            payload[offset + 2] = (uint8_t)(w_i >> 8);
 
-            s_packet_buffer[offset + 3] = (uint8_t)(w_q >> 24);
-            s_packet_buffer[offset + 4] = (uint8_t)(w_q >> 16);
-            s_packet_buffer[offset + 5] = (uint8_t)(w_q >> 8);
-
-            s_packet_buffer[offset + 6] = 0x00;
-            s_packet_buffer[offset + 7] = 0x00;
+            payload[offset + 3] = (uint8_t)(w_q >> 24);
+            payload[offset + 4] = (uint8_t)(w_q >> 16);
+            payload[offset + 5] = (uint8_t)(w_q >> 8);
         }
 
         s_push_calls++;
         uint32_t t0 = time_us_32();
-        cyw43_arch_lwip_begin();
-        struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, HPSDR_PACKET_SIZE, PBUF_POOL);
-        if (p) {
-            pbuf_take(p, s_packet_buffer, HPSDR_PACKET_SIZE);
-            err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
-            if (err == ERR_OK) {
-                s_pkts_sent++;
-            } else {
-                s_udp_err++;
-            }
-            pbuf_free(p);
+        err_t err = udp_sendto(s_pcb, p, &s_host_ip, s_host_port);
+        if (err == ERR_OK) {
+            s_pkts_sent++;
         } else {
-            s_pbuf_alloc_failed++;
+            s_udp_err++;
         }
+        pbuf_free(p);
         cyw43_arch_lwip_end();
-        cyw43_arch_poll();
+
         uint32_t dt = time_us_32() - t0;
         if (dt > s_max_send_us) s_max_send_us = dt;
-        if (dt > 100000) {
-            s_stall_seq = s_sequence;
-            s_stall_dt = dt;
-        }
         s_last_send_us = dt;
         return;
     }
@@ -368,7 +428,6 @@ void openhpsdr_push_samples(const uint32_t *samples, uint32_t count) {
                 s_pbuf_alloc_failed++;
             }
             cyw43_arch_lwip_end();
-            cyw43_arch_poll();
             uint32_t dt = time_us_32() - t0;
             if (dt > s_max_send_us) s_max_send_us = dt;
             s_last_send_us = dt;

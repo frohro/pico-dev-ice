@@ -10,7 +10,7 @@ import glob
 import subprocess
 import serial
 
-FIRMWARE_DIR = "/home/frohro/Projects/pico-dev-ice/Software/ddc_sdr_firmware"
+FIRMWARE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_IP = "192.168.1.191"
 
 def find_serial_port():

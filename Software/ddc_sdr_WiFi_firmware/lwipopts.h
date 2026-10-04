@@ -18,7 +18,7 @@
 #define MEMP_NUM_TCP_SEG                32
 #define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 4)
 
-#define PBUF_POOL_SIZE                  64
+#define PBUF_POOL_SIZE                  80
 #define PBUF_POOL_BUFSIZE               1536
 
 // Protocol enabling
