@@ -10,11 +10,7 @@ import glob
 import subprocess
 import serial
 
-<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/manage_sdr.py
 FIRMWARE_DIR = os.path.dirname(os.path.abspath(__file__))
-=======
-FIRMWARE_DIR = "/home/frohro/Projects/pico-dev-ice/Software/ddc_sdr_firmware"
->>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/manage_sdr.py
 DEFAULT_IP = "192.168.1.191"
 
 def find_serial_port():
@@ -68,8 +64,32 @@ def wait_for_wifi(timeout=25):
     print("[-] Timeout waiting for Wi-Fi")
     return False
 
+def query_udp_stats(ip=DEFAULT_IP):
+    import socket, struct
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(1.5)
+    s.sendto(bytes([0xEF, 0xFE, 0xCC]), (ip, 1024))
+    try:
+        data, addr = s.recvfrom(128)
+        stats = struct.unpack('<8I', data[:32])
+        return (f"OpenHPSDR Wi-Fi Telemetry from {ip}:\n"
+                f"  push_calls:       {stats[0]}\n"
+                f"  pkts_sent:        {stats[1]}\n"
+                f"  udp_err:          {stats[2]}\n"
+                f"  pbuf_alloc_failed:{stats[3]}\n"
+                f"  max_send_us:      {stats[4]} us\n"
+                f"  last_send_us:     {stats[5]} us\n"
+                f"  ring_overruns:    {stats[6]}\n"
+                f"  dma_irq_count:    {stats[7]}")
+    except Exception as e:
+        return f"UDP stats query failed: {e}"
+
 def show_stats():
-    print(send_cdc_command("HPSDR"))
+    port = find_serial_port()
+    if port:
+        print(send_cdc_command("HPSDR"))
+    else:
+        print(query_udp_stats())
 
 def show_prof():
     print(send_cdc_command("PROF"))

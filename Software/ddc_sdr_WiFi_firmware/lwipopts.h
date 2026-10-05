@@ -9,20 +9,16 @@
 #define LWIP_NETCONN                    0
 #define MEM_ALIGNMENT                   4
 
-// Memory sizing tuned for high-throughput 24-bit SDR streaming
-#define MEM_SIZE                        32768
-#define MEMP_NUM_PBUF                   64
+// Memory sizing tuned for 128-slot ring buffer & high-throughput SDR streaming
+#define MEM_SIZE                        16384
+#define MEMP_NUM_PBUF                   32
 #define MEMP_NUM_UDP_PCB                6
-#define MEMP_NUM_TCP_PCB                6
+#define MEMP_NUM_TCP_PCB                4
 #define MEMP_NUM_TCP_PCB_LISTEN         2
 #define MEMP_NUM_TCP_SEG                32
 #define MEMP_NUM_SYS_TIMEOUT            (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 4)
 
-<<<<<<< HEAD:Software/ddc_sdr_WiFi_firmware/lwipopts.h
-#define PBUF_POOL_SIZE                  80
-=======
-#define PBUF_POOL_SIZE                  64
->>>>>>> 2c582b7f3dbeef4b2d189d66162b7aa516944c06:Software/ddc_sdr_firmware/lwipopts.h
+#define PBUF_POOL_SIZE                  32
 #define PBUF_POOL_BUFSIZE               1536
 
 // Protocol enabling
