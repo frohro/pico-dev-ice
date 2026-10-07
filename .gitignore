@@ -64,6 +64,13 @@ backups/
 *.csv
 *.tsv
 
+# Jupyter Notebook files
+*.ipynb_checkpoints
+__pycache__/
+.env
+.pytest_cache/
+
+
 # -------------------------------------------------------------------------
 # Output / Fabrication Directories
 # -------------------------------------------------------------------------
