@@ -30,6 +30,14 @@ The FPGA is the I2S master. The firmware supports 48 kHz (and 96 kHz)
 UAC1 streaming, with standard Philips I2S framing, two channels (Left = I, Right = Q),
 24 valid bits, and little-endian three-byte (`S24_3LE`) USB samples.
 
+### I2S edge contract
+
+The FPGA changes `WS` on the BCK rising edge that samples the previous
+channel's final bit. It presents the new channel's MSB on the following BCK
+falling edge; the Pico PIO samples that MSB on the next BCK rising edge. This
+is the standard Philips one-bit WS-to-data delay. Each slot has 32 BCK bits,
+with the 24-bit sample in bits `[31:8]` and zero padding in bits `[7:0]`.
+
 ## FPGA SPI protocol
 
 Runtime SPI uses the same CS as CRAM configuration, GPIO 5. The Pico sends
@@ -92,6 +100,24 @@ with support for both `\r` (CR) and `\n` (LF) line endings, backspace (`0x08` / 
 | `HELP` / `?` | Command list / `OK` | Lists all available interactive CDC commands |
 
 ## Build
+
+The firmware CMake project requires both the Raspberry Pi Pico SDK and the
+Dev-iCE SDK integration. Set `PICO_ICE_SDK_PATH` to a checkout containing
+`cmake/preinit_pico_ice_sdk.cmake`; set `PICO_SDK_PATH` if the Pico SDK is not
+under that Dev-iCE checkout. The checked-in `build.sh` also accepts
+`FPGA_RX_BITSTREAM_BIN`, `FPGA_TX_BITSTREAM_BIN`, and `FPGA_DEFAULT_IMAGE`.
+
+For example, to build the USB firmware with the Lab 10 TX image selected at
+boot:
+
+```sh
+PICO_ICE_SDK_PATH=/path/to/pico-ice-sdk \
+FPGA_TX_BITSTREAM_BIN="$PWD/ENGR433-Solutions/Lab_10/build-tx/lab10_tx_top.bin" \
+FPGA_DEFAULT_IMAGE=TX \
+Software/ddc_sdr_firmware_usb_working/build.sh
+```
+
+The resulting board image is `Software/ddc_sdr_firmware_usb_working/build/ddc_sdr.uf2`.
 
 Use the checked-in Pico SDK through the SDK port. Without a bitstream, the
 firmware builds as a USB/DFU development image and waits for FPGA CRAM to be

@@ -1,9 +1,21 @@
 cmake_minimum_required(VERSION 3.13)
 
+if(NOT DEFINED PICO_ICE_SDK_PATH AND DEFINED ENV{PICO_ICE_SDK_PATH})
+    set(PICO_ICE_SDK_PATH "$ENV{PICO_ICE_SDK_PATH}")
+elseif(NOT DEFINED PICO_ICE_SDK_PATH)
+    set(PICO_ICE_SDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk)
+endif()
+
+if(NOT EXISTS "${PICO_ICE_SDK_PATH}/cmake/preinit_pico_ice_sdk.cmake")
+    message(FATAL_ERROR
+        "PICO_ICE_SDK_PATH must point to a Dev-iCE SDK checkout containing "
+        "cmake/preinit_pico_ice_sdk.cmake")
+endif()
+
 if(NOT DEFINED PICO_SDK_PATH AND DEFINED ENV{PICO_SDK_PATH})
     set(PICO_SDK_PATH "$ENV{PICO_SDK_PATH}")
 elseif(NOT DEFINED PICO_SDK_PATH)
-    set(PICO_SDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk/lib/pico-sdk)
+    set(PICO_SDK_PATH ${PICO_ICE_SDK_PATH}/lib/pico-sdk)
 endif()
 
 if(NOT DEFINED PICO_TINYUSB_PATH AND DEFINED ENV{PICO_TINYUSB_PATH})
@@ -15,7 +27,7 @@ elseif(NOT DEFINED PICO_TINYUSB_PATH AND DEFINED ENV{HOME}
     set(PICO_TINYUSB_PATH "$ENV{HOME}/tinyusb" CACHE PATH
         "Path to the TinyUSB checkout used by the DDC firmware")
 endif()
-include(${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk/cmake/preinit_pico_ice_sdk.cmake)
+include(${PICO_ICE_SDK_PATH}/cmake/preinit_pico_ice_sdk.cmake)
 include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 project(ddc_sdr C CXX ASM)
@@ -23,7 +35,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../pico-ice-sdk pico-ice-sdk)
+add_subdirectory(${PICO_ICE_SDK_PATH} pico-ice-sdk)
 
 set(FPGA_BITSTREAM_BIN "" CACHE FILEPATH
     "Legacy packed iCE40 bitstream (.bin), used as the stored RX image")

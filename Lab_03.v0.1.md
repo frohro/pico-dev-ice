@@ -20,8 +20,8 @@ For this lab, use the following Dev-iCE contract. The signal names match
     *   `WS = 1` indicates the **Right Channel**.
 3.  **Frame Size:** 64 bits total per `WS` cycle (32 bits per channel). 
 4.  **Data Alignment:** We transmit a 24-bit sample in the most-significant 24 bit times of a 32-bit slot. The final 8 bit times are zero, so the slot word is `{sample[23:0], 8'b0}`. Data is MSB-first.
-5.  **Local alignment rule:** The FPGA changes `i2s_rx_data` and `WS` on a BCK falling edge. The Pico's PIO samples `i2s_rx_data` on the next BCK rising edge and collects 32 bits for the channel selected by `WS`. Therefore the first bit of each slot must already be valid before that first rising edge. Do not add an extra dummy bit to this lab.
-6.  **Important terminology:** Generic I2S documents often describe a one-bit delay between a WS transition and the first data bit, but that phrase is easy to interpret incorrectly at the signal edges. The checked-in Pico PIO is the receiver contract for this board; prove the exact edge relationship in your waveform.
+5.  **Philips alignment rule:** WS changes on the channel-boundary BCK rising edge, which completes the previous slot. The FPGA presents the new slot's MSB on the following BCK falling edge, and the Pico's PIO samples it on the next BCK rising edge. Each slot therefore has 32 sampled bits, with the WS transition occurring one BCK period before the new slot's MSB.
+6.  **Verification requirement:** Do not infer the protocol from reconstructed words alone. Prove in the waveform that WS changes first, data changes on a falling BCK edge, and the new MSB is sampled on the following rising edge.
 
 ### The Clock Budget
 Your master clock is **30.720 MHz**.
@@ -57,7 +57,7 @@ Now that you know the math, use this template to prompt your AI (Claude, Gemini,
 > * Create a 24-bit register `sawtooth_val` that increments by [X] every time `i2s_ws` completes a full cycle. 
 > 
 > **I2S Shift Register:**
-> * Update `i2s_rx_data` and `i2s_ws` on the master-clock event that creates a falling edge of `i2s_bck`. The first data bit must be valid for the following BCK rising edge, matching the Pico PIO.
+> * Change `i2s_ws` on the channel-boundary rising edge. Present the new slot's first data bit on the following BCK falling edge so it is valid for the next BCK rising-edge sample, matching standard Philips I2S.
 > * `i2s_ws` = 0 is Left and `i2s_ws` = 1 is Right. Send `{sawtooth_val, 8'b0}` MSB-first. Send the same sample in both slots and increment it once per complete 64-bit frame.
 
 ---

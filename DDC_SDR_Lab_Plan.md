@@ -106,6 +106,14 @@ values, then try a repeating sawtooth sequence. The testbench checks the exact
 relationship between BCK, WS, and data: 48 kHz WS, 3.072 MHz BCK, two 32-bit
 slots, 24 valid MSB-first bits, and the standard one-bit I2S data delay.
 
+The checked-in implementation uses the Philips edge contract consistently:
+`WS` changes on the BCK rising edge that samples the previous slot's final
+bit; the new channel MSB is driven on the following BCK falling edge and
+sampled on the next rising edge. `WS=0` is left/I and `WS=1` is right/Q.
+The 24-bit sample occupies bits `[31:8]` of each 32-bit slot and bits `[7:0]`
+are zero. This edge relationship must be checked in waveforms, not inferred
+only from reconstructed sample words.
+
 Do not begin by trying to make the sound impressive. First prove that a logic
 analyzer or testbench can reconstruct the two known samples from the bitstream.
 

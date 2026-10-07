@@ -3,7 +3,8 @@
 ;
 ; The FPGA is the I2S master. It drives BCK and WS on GPIOs 15 and 16;
 ; TX_DATA is driven on GPIO 13. The program emits 32-bit left and right
-; slots, MSB first, with the standard one-bit I2S data delay.
+; slots, MSB first, using standard Philips timing: WS changes at the channel
+; boundary and the new MSB is driven during the following BCK low phase.
 ;
 .program i2s_tx
 
