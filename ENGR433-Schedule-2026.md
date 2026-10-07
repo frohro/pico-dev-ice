@@ -4,7 +4,7 @@
 **Lecture:** Mon, Wed, Fri 1:00 – 1:50 p.m.
 **Lab:** Tuesday 2:00 – 4:50 p.m.
 
-*Note: There is no written homework for this course. You are expected to spend your 12 hours a week designing your blueprints, prompting the AI, writing your testbenches, and preparing for your Oral Defense.*
+*Note: There is no written homework for this course. You are expected to spend your 12 hours a week designing your blueprints, prompting the AI, writing your testbenches, and preparing for your Oral Defense. Lab 2 completion and demonstration are deferred because of the October 12-13 Senior Trip.*
 
 | Week | Day | Date   | Topic / Activity | Evaluation |
 | :--: | :-: | :----- | :----------------------------------------------- | :---------------- |
@@ -13,15 +13,15 @@
 |      | W   | Sep 30 | Mixed-Signal Schematics & Power Domains          | |
 |      | F   | Oct 2  | Toolchain Setup: Icarus Verilog & GTKWave        | |
 | **2**| M   | Oct 5  | Control Logic: FSMs in SystemVerilog             | |
-|      | T   | Oct 6  | **Lab 2: Traffic Light and AI Verification**     | Oral Defense L1   |
-|      | W   | Oct 7  | Writing Self-Checking Testbenches                | |
-|      | F   | Oct 9  | Simulation vs. Synthesis & Hardware Bring-up     | |
+|      | T   | Oct 6  | **Lab 2: Traffic Light and AI Verification**     | Lab 2 assigned; completion deferred |
+|      | W   | Oct 7  | I2S Transmitter: Contract, Timing, and Testbench | Lab 3 assigned |
+|      | F   | Oct 9  | Lab 3 Solution Walkthrough and Hardware Bring-up| |
 | **3**| M   | Oct 12 | Serial Protocols & Shift Registers               | |
-|      | T   | Oct 13 | **Lab 3: I2S Audio Transmitter**                 | Oral Defense L2   |
-|      | W   | Oct 14 | I2S Timing & Fractional Clock Division           | |
-|      | F   | Oct 16 | Generating Python Golden Vectors for Verification| |
-| **4**| M   | Oct 19 | Clock Domain Crossing (CDC) & Metastability      | |
-|      | T   | Oct 20 | **Lab 4: SPI Command Parser**                    | Oral Defense L3   |
+|      | T   | Oct 13 | ***Senior Trip — No Class or Lab***              | |
+|      | W   | Oct 14 | Lab 2/3 Readiness Check; SPI Frames and Parser Introduction | Lab 2 ready for teach-and-demo; Lab 3 work plan |
+|      | F   | Oct 16 | SPI Parser Architecture and Testbench Planning    | Lab 2 teach-and-demo window |
+| **4**| M   | Oct 19 | Clock Domain Crossing (CDC) & Metastability      | Lab 2 teach-and-demo window; Lab 3 final preparation |
+|      | T   | Oct 20 | **Lab 4: SPI Command Parser**                    | Lab 2 final teach/demo; Lab 3 hardware validation and teach-back; Oral Defense L2 |
 |      | W   | Oct 21 | ***Service Day — No Class***                     | |
 |      | F   | Oct 23 | Resolving CDC: Synchronizers and Handshakes      | |
 | **5**| M   | Oct 26 | High-Speed I/O & Setup/Hold Times                | |
