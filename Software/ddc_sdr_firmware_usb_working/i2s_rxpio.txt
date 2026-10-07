@@ -1,0 +1,29 @@
+;
+; I2S slave receiver for the Dev-iCE FPGA audio output.
+;
+; The FPGA is the I2S master. It drives RX_DATA, BCK, and WS on the Pico
+; GPIOs 14, 15, and 16 respectively. The serial format matches standard
+; Philips I2S, MSB first, 24/32 bits, with one-bit data delay after WS edge.
+;
+.program i2s_rx
+
+.wrap_target
+    wait 1 pin 2            ; Ensure WS is HIGH first (sync anchor: avoids mid-frame start)
+    wait 0 pin 2            ; Wait for WS falling edge (Left / I channel start)
+
+    set x, 31
+left_loop:
+    wait 0 pin 1            ; Wait for BCK LOW
+    wait 1 pin 1            ; Sample DATA on BCK rising edge
+    in pins, 1
+    jmp x-- left_loop
+
+    wait 1 pin 2            ; Wait for WS HIGH (Right / Q channel start)
+
+    set x, 31
+right_loop:
+    wait 0 pin 1            ; Wait for BCK LOW
+    wait 1 pin 1            ; Sample DATA on BCK rising edge
+    in pins, 1
+    jmp x-- right_loop
+.wrap
