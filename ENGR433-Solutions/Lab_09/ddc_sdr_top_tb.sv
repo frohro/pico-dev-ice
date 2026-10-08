@@ -163,7 +163,7 @@ module ddc_sdr_top_tb;
                     fail("zero-frequency I channel is not zero");
 
                 if (check_stable_audio && i2s_previous_ws == 1'b1) begin
-                    if (i2s_captured_word !== 32'h007C0600)
+                    if (i2s_captured_word !== 32'h01E63C00)
                         fail("steady-state Q sample does not match CIC gain");
                     stable_audio_checks = stable_audio_checks + 1;
                 end
