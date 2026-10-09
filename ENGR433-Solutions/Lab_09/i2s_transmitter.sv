@@ -5,7 +5,7 @@ module i2s_transmitter #(
     input logic reset_n,
     input logic signed [23:0] sample_i,
     input logic signed [23:0] sample_q,
-    input logic sample_valid,
+    output logic sample_req,
     output logic i2s_bck,
     output logic i2s_ws,
     output logic i2s_rx_data
@@ -17,11 +17,6 @@ module i2s_transmitter #(
     logic [5:0] frame_bit;
     logic signed [23:0] pending_i;
     logic signed [23:0] pending_q;
-    logic [31:0] left_word;
-    logic [31:0] right_word;
-
-    wire signed [23:0] pending_i_for_frame = sample_valid ? sample_i : pending_i;
-    wire signed [23:0] pending_q_for_frame = sample_valid ? sample_q : pending_q;
 
     always_ff @(posedge clk_30m or negedge reset_n) begin
         if (!reset_n) begin
@@ -29,34 +24,29 @@ module i2s_transmitter #(
             frame_bit <= 6'd0;
             pending_i <= 24'sd0;
             pending_q <= 24'sd0;
-            left_word <= 32'd0;
-            right_word <= 32'd0;
             i2s_bck <= 1'b0;
             i2s_ws <= 1'b0;
             i2s_rx_data <= 1'b0;
+            sample_req <= 1'b0;
         end else begin
-            if (sample_valid) begin
-                pending_i <= sample_i;
-                pending_q <= sample_q;
-            end
+            sample_req <= 1'b0;
 
             if (bck_divider == BCK_HALF_DIV - 1) begin
                 bck_divider <= '0;
                 if (i2s_bck) begin
                     i2s_bck <= 1'b0;
                     if (frame_bit == 6'd0)
-                        i2s_rx_data <= left_word[31];
+                        i2s_rx_data <= pending_i[23];
+                    else if (frame_bit <= 6'd23)
+                        i2s_rx_data <= pending_i[23 - frame_bit];
                     else if (frame_bit <= 6'd31)
-                        i2s_rx_data <= left_word[31 - frame_bit];
+                        i2s_rx_data <= 1'b0;
                     else if (frame_bit == 6'd32)
-                        i2s_rx_data <= right_word[31];
-                    else begin
-                        i2s_rx_data <= right_word[63 - frame_bit];
-                        if (frame_bit == 6'd63) begin
-                            left_word <= {pending_i_for_frame, 8'b0};
-                            right_word <= {pending_q_for_frame, 8'b0};
-                        end
-                    end
+                        i2s_rx_data <= pending_q[23];
+                    else if (frame_bit <= 6'd55)
+                        i2s_rx_data <= pending_q[55 - frame_bit];
+                    else
+                        i2s_rx_data <= 1'b0;
                 end else begin
                     i2s_bck <= 1'b1;
                     if (frame_bit == 6'd31) begin
@@ -65,6 +55,9 @@ module i2s_transmitter #(
                     end else if (frame_bit == 6'd63) begin
                         i2s_ws <= 1'b0;
                         frame_bit <= 6'd0;
+                        pending_i <= sample_i;
+                        pending_q <= sample_q;
+                        sample_req <= 1'b1;
                     end else begin
                         frame_bit <= frame_bit + 1'b1;
                     end

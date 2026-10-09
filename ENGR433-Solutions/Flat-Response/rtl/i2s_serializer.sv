@@ -6,6 +6,7 @@ module i2s_serializer (
     input  logic signed [23:0] sample_i,
     input  logic signed [23:0] sample_q,
     input  logic sample_valid,
+    output logic sample_req,
     output logic i2s_data
 );
 
@@ -25,8 +26,10 @@ module i2s_serializer (
             left_word <= 32'd0;
             right_word <= 32'd0;
             i2s_data <= 1'b0;
+            sample_req <= 1'b0;
         end else begin
             bck_delayed <= i2s_bck;
+            sample_req <= 1'b0;
             if (sample_valid) begin
                 left_word <= {sample_i, 8'd0};
                 right_word <= {sample_q, 8'd0};
@@ -34,6 +37,8 @@ module i2s_serializer (
 
             if (bck_falling) begin
                 if (i2s_ws != slot_ws) begin
+                    if (slot_ws && !i2s_ws)
+                        sample_req <= 1'b1;
                     slot_ws <= i2s_ws;
                     i2s_data <= i2s_ws ? right_word[31] : left_word[31];
                     bit_index <= 5'd30;

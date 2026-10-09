@@ -50,12 +50,12 @@ module i2s_tb;
                     $fatal(1);
                 end
                 word_count = word_count + 1;
-                bit_count = 0;
-                captured_word = '0;
                 if (word_count == SLOT_COUNT) begin
                     $display("PASS: checked %0d I2S channel slots", SLOT_COUNT);
                     $finish;
                 end
+                bit_count = 0;
+                captured_word = '0;
             end else begin
                 if (bit_count == 31) begin
                     $display("FAIL: slot %0d did not receive a Philips WS transition", word_count);

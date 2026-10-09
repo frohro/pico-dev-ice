@@ -9,7 +9,6 @@ module i2s_transmitter_tb;
     logic reset_n = 1'b0;
     logic signed [23:0] sample_i = 24'sd0;
     logic signed [23:0] sample_q = 24'sd0;
-    logic sample_valid = 1'b0;
     logic i2s_bck;
     logic i2s_ws;
     logic i2s_rx_data;
@@ -26,7 +25,6 @@ module i2s_transmitter_tb;
         .reset_n(reset_n),
         .sample_i(sample_i),
         .sample_q(sample_q),
-        .sample_valid(sample_valid),
         .i2s_bck(i2s_bck),
         .i2s_ws(i2s_ws),
         .i2s_rx_data(i2s_rx_data)
@@ -44,9 +42,6 @@ module i2s_transmitter_tb;
         @(posedge clk_30m);
         sample_i <= 24'h812345;
         sample_q <= 24'hFEDCBA;
-        sample_valid <= 1'b1;
-        @(posedge clk_30m);
-        sample_valid <= 1'b0;
     end
 
     initial begin
