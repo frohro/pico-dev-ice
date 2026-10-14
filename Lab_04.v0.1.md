@@ -105,9 +105,9 @@ If the LEDs match your commands, your SPI FSM and Clock Domain Crossing are flaw
 
 ---
 
-## 📝 Deliverables & Oral Defense
-At your weekly 15-minute team meeting, you must provide:
-1. **The Blueprint:** Your FSM diagram or Shift-Register architecture drawing.
+## 📝 Deliverables & Lesson for Dr. Frohne
+At your weekly team meeting, you must provide:
+1. **The Blueprint:** Your FSM diagram, Instruction-Table or Shift-Register architecture drawing.  You must teach your professor all about your design.
 2. **The Endianness Math:** Explain manually how `0x78 0x56 0x34 0x12` becomes `32'h12345678`.
 3. **The Simulation Proof:** Demonstrate your testbench safely ignoring the aborted CS frame, and show the exact clock cycle where the 2-flop synchronizer passes the valid data.
 4. **The Hardware Demo:** Send frequency commands via the Pico's serial terminal and show the FPGA LEDs reacting instantly to the payload.
