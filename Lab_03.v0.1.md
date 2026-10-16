@@ -12,7 +12,7 @@ Chat-based AI is permitted for this lab. You may ask a chat AI for explanations,
 The Pico is expecting to receive audio from the FPGA. The FPGA is the **I2S Master**, meaning it generates the clocks. The Pico's PIO state machine (which you used with the PCM1808 last spring quarter) is the **I2S Slave**, meaning it listens.
 
 For this lab, use the following Dev-iCE contract. The signal names match
-`Software/ddc_sdr_firmware/fpga/ddc_sdr.pcf` and the receiver in
+`Software/i2s_bringup.pcf` and the receiver in
 `Software/ddc_sdr_firmware/i2s_rx.pio`:
 1.  **Bit Clock (`BCK`):** Runs at exactly **3.072 MHz**.
 2.  **Word Select (`WS`):** Its complete low-to-high-to-low cycle runs at exactly **48 kHz**. It changes level every 32 BCK periods.

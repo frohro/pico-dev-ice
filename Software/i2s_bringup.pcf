@@ -1,0 +1,7 @@
+set_io clk_30m 37
+set_io i2s_bck 11
+set_io i2s_ws 12
+set_io i2s_rx_data 10
+set_io led_r 39
+set_io led_y 40
+set_io led_g 41
