@@ -75,6 +75,9 @@ Settings are configured in [`wifi_config.h`](wifi_config.h):
 - Secondary SSID: `Frohne-2.4GHz`
 - Fallback Static IP: `192.168.1.191` (used if DHCP lease times out)
 - Subnet Gateway: `192.168.1.1` | Netmask: `255.255.255.0`
+- Password: put `#define DEFAULT_WIFI_PASSWORD "..."` in a `wifi_secrets.h` next to `wifi_config.h` (keep it out of git). With no password the firmware joins open networks only.
+- If a connection attempt fails, the firmware alternates between the primary and secondary SSID.
+- In SDR++ choose a **48 kHz or 96 kHz** sample rate. SDR++ defaults to 384 kHz, which this hardware cannot produce.
 
 ## Pico W Status LED
 
@@ -100,6 +103,10 @@ To capture live packets and analyze the RF spectrum:
 ```bash
 python3 test_openhpsdr_stream.py 192.168.1.191
 ```
+
+### Runtime stats (find the cause of choppy audio)
+`python3 query_stats.py 192.168.1.191` polls the extended stats query (`EF FE CD`) once a second and prints per-second deltas
+(packets sent, UDP errors, pbuf failures, ring overruns, PIO RX stalls, ring fill, slowest send).
 
 ### 3. Comprehensive Protocol 1 Compliance Test
 ```bash

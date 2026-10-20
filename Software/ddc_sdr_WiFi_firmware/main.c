@@ -15,7 +15,6 @@
 #include "hardware/vreg.h"
 #include "pico/stdlib.h"
 #include "pico/bootrom.h"
-#include "pico/multicore.h"
 
 #include "pico/cyw43_arch.h"
 #include "cyw43_internal.h"
@@ -68,6 +67,8 @@ static uint32_t last_frequency_hz = 7050000u;
 static uint32_t freq_cmd_count = 0;
 
 static const char *s_current_ssid = DEFAULT_WIFI_SSID_PRIMARY;
+static bool s_ssid_is_primary = true;
+static bool s_attempt_failed = true;   // true until a connection attempt reaches LINK_UP
 static bool s_ip_configured = false;
 static uint32_t s_noip_since = 0;
 
@@ -81,6 +82,26 @@ static void i2s_stop(void);
 static volatile uint32_t s_pending_freq = 0;
 static volatile uint32_t s_pending_rate = 0;
 static volatile int8_t s_pending_gain = -1;
+
+// Atomically fetch-and-clear a value written from the lwIP/CYW43 background
+// (IRQ) context, so an update arriving between the read and the clear is not lost.
+static uint32_t take_pending_u32(volatile uint32_t *value)
+{
+    uint32_t irq = save_and_disable_interrupts();
+    uint32_t v = *value;
+    *value = 0;
+    restore_interrupts(irq);
+    return v;
+}
+
+static int take_pending_gain(void)
+{
+    uint32_t irq = save_and_disable_interrupts();
+    int v = s_pending_gain;
+    s_pending_gain = -1;
+    restore_interrupts(irq);
+    return v;
+}
 
 static void on_hpsdr_freq_change(uint32_t freq_hz) {
     s_pending_freq = freq_hz;
@@ -102,11 +123,10 @@ static void tr_set_receive(bool receive)
 static void pga_set_code(uint8_t code)
 {
     code &= DDC_PGA_MAX_CODE;
-    for (uint gpio = DDC_PGA_GPIO_BASE;
-         gpio < DDC_PGA_GPIO_BASE + DDC_PGA_GPIO_COUNT;
-         gpio++) {
-        gpio_put(gpio, (code >> (gpio - DDC_PGA_GPIO_BASE)) & 1u);
-    }
+    // One write to all four pins, so the attenuator never sees an
+    // intermediate code (which could glitch the signal path).
+    gpio_put_masked(((1u << DDC_PGA_GPIO_COUNT) - 1u) << DDC_PGA_GPIO_BASE,
+                    (uint32_t)code << DDC_PGA_GPIO_BASE);
 }
 
 static void fpga_interrupt_handler(uint gpio, uint32_t events)
@@ -119,11 +139,18 @@ static void fpga_interrupt_handler(uint gpio, uint32_t events)
 
 static void handle_fpga_interrupt(void)
 {
-    if (!fpga_interrupt_pending || !fpga_ready || !runtime_spi_ready) {
+    if (!fpga_ready || !runtime_spi_ready) {
         return;
     }
 
+    uint32_t irq = save_and_disable_interrupts();
+    bool pending = fpga_interrupt_pending;
     fpga_interrupt_pending = false;
+    restore_interrupts(irq);
+    if (!pending) {
+        return;
+    }
+
     if (ddc_agc_on_otr(&agc_state))
         pga_set_code(agc_state.pga_code);
     fpga_write_command(DDC_FPGA_CMD_CLEAR_OTR, 1u);
@@ -142,6 +169,9 @@ static void agc_task(void)
     if (ddc_agc_tick(&agc_state, fpga_int_high, now_ms))
         pga_set_code(agc_state.pga_code);
 }
+
+static uint32_t pio_rx_stalls = 0;
+static uint32_t ring_max_fill = 0;
 
 static volatile uint32_t dma_a_irq_count = 0;
 static volatile uint32_t dma_b_irq_count = 0;
@@ -195,6 +225,9 @@ static void i2s_configure(void)
     pio_sm_config config = i2s_rx_program_get_default_config(g_pio_offset);
     sm_config_set_in_pins(&config, DDC_I2S_DATA_PIN);
     sm_config_set_in_shift(&config, false, true, 32);
+    // We never transmit: join the FIFOs so RX is 8 words deep. That doubles the
+    // time DMA may be delayed (CPU/WiFi bus traffic) before the PIO stalls.
+    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_RX);
     sm_config_set_clkdiv(&config, 1.0f);
     pio_sm_init(pio0, 0, g_pio_offset, &config);
 }
@@ -205,10 +238,16 @@ static void i2s_stop(void)
         return;
     }
 
+    // Stop the source first so no DMA transfer is in flight, then abort.
+    // Aborting can raise a spurious completion IRQ (RP2040-E13): mask, abort, ack.
+    pio_sm_set_enabled(pio0, 0, false);
+    dma_channel_set_irq0_enabled(dma_channel_a, false);
+    dma_channel_set_irq0_enabled(dma_channel_b, false);
     dma_channel_abort(dma_channel_a);
     dma_channel_abort(dma_channel_b);
     dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
-    pio_sm_set_enabled(pio0, 0, false);
+    dma_channel_set_irq0_enabled(dma_channel_a, true);
+    dma_channel_set_irq0_enabled(dma_channel_b, true);
     pio_sm_clear_fifos(pio0, 0);
     i2s_running = false;
     irq_set_enabled(DMA_IRQ_0, false);
@@ -239,6 +278,7 @@ static void i2s_start(void)
     dma_channel_set_write_addr(dma_channel_b, audio_ring[1], false);
     dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
     dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
+    pio0->fdebug = 1u << (PIO_FDEBUG_RXSTALL_LSB + 0);   // clear stale SM0 RX-stall flag
     irq_set_enabled(DMA_IRQ_0, true);
     dma_channel_start(dma_channel_a);
 
@@ -247,17 +287,6 @@ static void i2s_start(void)
     // guaranteeing that word 0 received by DMA is ALWAYS Left (I).
     pio_sm_set_enabled(pio0, 0, true);
     i2s_running = true;
-}
-
-static void runtime_spi_stop(void)
-{
-    if (!runtime_spi_ready) {
-        return;
-    }
-
-    ice_spi_chip_deselect(FPGA_DATA.bus.CS_cram);
-    ice_spi_deinit();
-    runtime_spi_ready = false;
 }
 
 static bool fpga_runtime_init(void)
@@ -393,10 +422,32 @@ static bool apply_sample_rate(uint32_t rate)
     return true;
 }
 
+// If the PIO ever stalls on a full RX FIFO it drops bits and can lose a word,
+// which leaves every later I/Q pair swapped until the stream is restarted.
+// Detect that and re-anchor the stream on the next WS edge.
+static void pio_stall_task(void)
+{
+    if (!i2s_running) {
+        return;
+    }
+    if (pio0->fdebug & (1u << (PIO_FDEBUG_RXSTALL_LSB + 0))) {
+        pio0->fdebug = 1u << (PIO_FDEBUG_RXSTALL_LSB + 0);
+        pio_rx_stalls++;
+        i2s_stop();
+        i2s_start();
+    }
+}
+
 static void audio_task(void)
 {
     if (!i2s_running || !openhpsdr_is_active()) {
         return;
+    }
+
+    uint32_t fill = (uint32_t)(ring_write_idx + DDC_AUDIO_RING_COUNT - ring_read_idx)
+                    % DDC_AUDIO_RING_COUNT;
+    if (fill > ring_max_fill) {
+        ring_max_fill = fill;
     }
 
     int budget = 8;
@@ -416,6 +467,19 @@ uint32_t get_ring_overruns(void) {
 
 uint32_t get_dma_irq_count(void) {
     return dma_a_irq_count + dma_b_irq_count;
+}
+
+uint32_t get_pio_rx_stalls(void) {
+    return pio_rx_stalls;
+}
+
+uint32_t get_ring_fill(void) {
+    return (uint32_t)(ring_write_idx + DDC_AUDIO_RING_COUNT - ring_read_idx)
+           % DDC_AUDIO_RING_COUNT;
+}
+
+uint32_t get_ring_max_fill(void) {
+    return ring_max_fill;
 }
 
 int main(void)
@@ -449,6 +513,10 @@ int main(void)
     set_sys_clock_khz(150000, true);
 
     g_pio_offset = pio_add_program(pio0, &i2s_rx_program);
+    // We use pio0 SM0 directly; claim it so the CYW43 driver can never be given it.
+    if (!pio_sm_is_claimed(pio0, 0)) {
+        pio_sm_claim(pio0, 0);
+    }
     pga_configure();
     fpga_interrupt_configure();
     dma_channel_a = dma_claim_unused_channel(true);
@@ -460,6 +528,7 @@ int main(void)
     channel_config_set_write_increment(&config_a, true);
     channel_config_set_dreq(&config_a, pio_get_dreq(pio0, 0, false));
     channel_config_set_chain_to(&config_a, dma_channel_b);
+    channel_config_set_high_priority(&config_a, true);
     dma_channel_configure(dma_channel_a, &config_a, audio_ring[0],
                           &pio0->rxf[0], words_per_buffer, false);
 
@@ -469,6 +538,7 @@ int main(void)
     channel_config_set_write_increment(&config_b, true);
     channel_config_set_dreq(&config_b, pio_get_dreq(pio0, 0, false));
     channel_config_set_chain_to(&config_b, dma_channel_a);
+    channel_config_set_high_priority(&config_b, true);
     dma_channel_configure(dma_channel_b, &config_b, audio_ring[1],
                           &pio0->rxf[0], words_per_buffer, false);
 
@@ -513,29 +583,24 @@ int main(void)
         cyw43_arch_poll();
         handle_fpga_interrupt();
         agc_task();
+        pio_stall_task();
         audio_task();
 
-        if (s_pending_freq != 0) {
-            uint32_t freq = s_pending_freq;
-            s_pending_freq = 0;
-            if (fpga_ready) {
-                fpga_set_frequency(freq);
-                last_frequency_hz = freq;
-                freq_cmd_count++;
-            }
+        uint32_t freq = take_pending_u32(&s_pending_freq);
+        if (freq != 0 && fpga_ready) {
+            fpga_set_frequency(freq);
+            last_frequency_hz = freq;
+            freq_cmd_count++;
         }
-        if (s_pending_gain >= 0) {
-            uint8_t code = (uint8_t)s_pending_gain;
-            s_pending_gain = -1;
-            agc_state.pga_code = code;
-            pga_set_code(code);
+        int gain = take_pending_gain();
+        if (gain >= 0) {
+            // Slider move: becomes the new gain AND the level the AGC relaxes back to.
+            ddc_agc_set_manual(&agc_state, (uint8_t)gain);
+            pga_set_code(agc_state.pga_code);
         }
-        if (s_pending_rate != 0) {
-            uint32_t rate = s_pending_rate;
-            s_pending_rate = 0;
-            if (rate == 48000u || rate == 96000u) {
-                apply_sample_rate(rate);
-            }
+        uint32_t rate = take_pending_u32(&s_pending_rate);
+        if (rate == 48000u || rate == 96000u) {
+            apply_sample_rate(rate);
         }
 
         if (wifi_ok) {
@@ -578,6 +643,7 @@ int main(void)
                         cyw43_wifi_pm(&cyw43_state, CYW43_NONE_PM);
                     }
                     last_reconnect_ms = now_ms;
+                    s_attempt_failed = false;
                     led_val = (now_ms / 500) % 2;
                 } else if (st == CYW43_LINK_JOIN || st == CYW43_LINK_NOIP) {
                     last_reconnect_ms = now_ms;
@@ -604,6 +670,13 @@ int main(void)
                     led_val = (now_ms / 1000) % 2;
                     if (now_ms - last_reconnect_ms >= 15000) {
                         last_reconnect_ms = now_ms;
+                        // If the last attempt never got an IP, try the other network.
+                        if (s_attempt_failed) {
+                            s_ssid_is_primary = !s_ssid_is_primary;
+                            s_current_ssid = s_ssid_is_primary ? DEFAULT_WIFI_SSID_PRIMARY
+                                                               : DEFAULT_WIFI_SSID_SECONDARY;
+                        }
+                        s_attempt_failed = true;
                         uint32_t auth = (DEFAULT_WIFI_PASSWORD[0] == 0) ? CYW43_AUTH_OPEN : CYW43_AUTH_WPA2_AES_PSK;
                         const char *pass_param = (DEFAULT_WIFI_PASSWORD[0] == 0) ? NULL : DEFAULT_WIFI_PASSWORD;
                         cyw43_arch_wifi_connect_async(s_current_ssid, pass_param, auth);
