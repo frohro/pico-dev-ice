@@ -32,7 +32,7 @@ To prevent the FPGA from acting on garbage data or static, the Pico wraps every 
 Every time the Pico pulls `ICE_SSN` LOW, it will transmit exactly 8 bytes:
 1.  **Byte 0 (Sync):** `0xD5`
 2.  **Byte 1 (Version):** `0x01`
-3.  **Byte 2 (Command):** e.g., `0x01` (Set Freq), `0x02` (Set Rate), `0x04` (Clear OTR).
+3.  **Byte 2 (Command):** e.g., `0x01` (Set Freq), `0x02` (Set Rate), `0x04` (Clear OTR, out of range for the ADC).
 4.  **Byte 3 (Length):** `0x04` (Indicating a 4-byte payload follows).
 5.  **Bytes 4, 5, 6, 7 (Payload):** A 32-bit value in **Little-Endian** format. (Byte 4 is the Least Significant Byte; Byte 7 is the Most Significant Byte).
 
