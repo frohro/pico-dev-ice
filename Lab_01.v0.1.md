@@ -18,7 +18,7 @@ Open the provided KiCad schematic PDF for the Pico Dev-iCE board. Trace the sign
 
 ### 2. The Analog Front End (AFE)
 Follow the RF signal path from the `SDR_ANT` SMA connector to the MS9280 ADC. 
-*   **The Ethernet Transformer:** Why is an Ethernet LAN transformer (`TR1`) placed immediately after the antenna? What two specific types of RF noise does this filter out?
+*   **The Ethernet Transformer:** Why is an Ethernet LAN transformer (`TR4`) placed immediately after the antenna? What two specific types of RF noise does this filter out?
 *   **The Programmable Gain Amplifier (PGA):** Look at the 5 dB, 10 dB, and 20 dB T-networks. 
     *   Why are the shunt resistors connected to ground through 0.1µF capacitors instead of being grounded directly?
     *   The `74LVC1G3157` analog switches are powered by 4.5V (`AVDD`). How does the schematic safely bias the RF signal to float at 2.25V (`VA/2`) so it doesn't clip against the Ground diodes?
