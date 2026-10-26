@@ -152,6 +152,9 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${PICO_TINYUSB_PATH}/hw
     ${PICO_TINYUSB_PATH}/src
     )
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
+    "$<$<COMPILE_LANGUAGE:C,CXX>:-include;stddef.h>"
+    )
 target_link_libraries(${CMAKE_PROJECT_NAME}
     pico_ice_preinit_common
     pico_ice_sdk

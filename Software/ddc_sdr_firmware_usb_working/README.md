@@ -196,14 +196,14 @@ only a between-session operation.
 Stop or close the SDR++/Quisk audio stream before updating. Then run:
 
 ```sh
-python3 Software/ddc_sdr_firmware/tools/dfu_fpga.py /path/to/ddc_sdr.bin
+python3 Software/ddc_sdr_firmware_usb_working/tools/dfu_fpga.py /path/to/student_design.bin
 ```
 
 The helper sends `DFU,PREPARE`, which stops I2S/DMA and releases runtime SPI,
 then invokes:
 
 ```sh
-dfu-util -d 1209:b1c0 -a 0 -D /path/to/ddc_sdr.bin
+dfu-util -d 1209:b1c0 -a 0 -D /path/to/student_design.bin
 ```
 
 The SDK's DFU callback streams the raw packed bitstream into FPGA CRAM and
@@ -216,8 +216,44 @@ The SDK also prepares automatically when the first DFU block arrives, so
 `--skip-prepare` is available for manual testing:
 
 ```sh
-python3 Software/ddc_sdr_firmware/tools/dfu_fpga.py --skip-prepare /path/to/ddc_sdr.bin
+python3 Software/ddc_sdr_firmware_usb_working/tools/dfu_fpga.py --skip-prepare /path/to/student_design.bin
 ```
+
+For a student workflow, distribute the already-built
+`Software/ddc_sdr_firmware_usb_working/build/ddc_sdr.uf2` once, together with
+this `tools/dfu_fpga.py` helper. Students should not rebuild the Pico
+firmware for every FPGA assignment:
+
+1. Build and pack the FPGA design into a raw `.bin` file with `icepack`.
+2. Flash the supplied `.uf2` to the Pico once through BOOTSEL.
+3. Close SDR++/Quisk and run the helper with the student's `.bin`:
+
+    ```sh
+    python3 Software/ddc_sdr_firmware_usb_working/tools/dfu_fpga.py student_design.bin
+    ```
+
+The helper sends `DFU,PREPARE` over USB and then transfers the `.bin` directly
+into FPGA CRAM. The FPGA image changes immediately, while the Pico firmware
+does not. Because Dev-iCE has volatile FPGA configuration memory, repeat the
+command after a Pico reset or power cycle. A `.bin` generated for the wrong
+board, pinout, or top-level interface will not work; it must use the Dev-iCE
+`.pcf` and preserve the firmware's SPI/I2S contract.
+
+The helper requires `pyserial` and `dfu-util` on the student's computer. On
+Linux, install the included udev rule once so `dfu-util` can access the USB
+device without running the whole loader as root:
+
+```sh
+sudo cp Software/ddc_sdr_firmware_usb_working/tools/99-ddc-sdr.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+Unplug and reconnect the Pico if the existing USB device does not pick up the
+new permissions. If the Pico is already prepared for DFU, `--skip-prepare` can
+be used. This is a development load only; to make a student's image the
+power-on default, build a new UF2 with `FPGA_RX_BITSTREAM_BIN` or
+`FPGA_TX_BITSTREAM_BIN` instead.
 
 ## Current gateware dependency
 

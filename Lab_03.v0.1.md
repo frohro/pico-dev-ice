@@ -78,13 +78,54 @@ The provided solution checks six channel slots in simulation: three left slots a
 ## Part 5: Hardware Validation and Teach-Back
 Once your testbench passes perfectly, deploy the standalone bring-up design to the Pico Dev-iCE. Hardware validation is required at the Lab 4 meeting; it is not an optional bonus for this lab.
 
+### Student firmware test workflow (recommended)
+The easiest way to test your FPGA bitstream is not to rebuild the Pico firmware every time. Use the provided working USB firmware once, then hot-load your own packed `.bin` into FPGA CRAM over USB DFU.
+
+1. Flash the instructor-supplied working firmware UF2 to the Pico:
+   - `Software/ddc_sdr.uf2`
+   - Hold the Pico in BOOTSEL mode and drag the `.uf2` onto the `RPI-RP2` drive.
+
+2. After the Pico reboots, confirm the firmware is enumerating correctly:
+   - `lsusb` should show the `1209:b1c0` device.
+   - `aplay -l` / `arecord -l` should show the USB audio device named something like `DDC SDR 2026`.
+   - `lsusb -t` should show the USB audio interfaces and the CDC/DFU interfaces.
+
+3. Synthesize and pack your design into a final FPGA bitstream:
+   - from your final RTL, run the proper `yosys` + `nextpnr-ice40` flow,
+   - pack the placed-and-routed result to a `.bin` file with `icepack`.
+   - The final file should look like `student_i2s.bin` or similar.
+
+4. Load your `.bin` without rebuilding the Pico firmware:
+
+   ```sh
+   python3 Software/ddc_sdr_firmware_usb_working/tools/dfu_fpga.py student_i2s.bin
+   ```
+
+   The helper sends `DFU,PREPARE`, then invokes `dfu-util` to stream the raw bitstream into FPGA CRAM. The Pico remains running and the FPGA reconfigures without reflashing the RP2040.
+
+5. Test the board again with the same signal checks as above. If the Pico is reset or power-cycled, reload the bitstream using the same command.
+
+### Host setup notes
+- Windows: install the USB driver for `dfu-util` if needed; then run the same Python helper.
+- macOS: install `dfu-util` and `pyserial` (for example with Homebrew).
+- Linux: install `pyserial` and `dfu-util`, then install the provided udev rule so the DFU device can be accessed without sudo:
+
+  ```sh
+  sudo cp Software/ddc_sdr_firmware_usb_working/tools/99-ddc-sdr.rules /etc/udev/rules.d/
+  sudo udevadm control --reload-rules
+  sudo udevadm trigger
+  ```
+
+  Then unplug and reconnect the Pico.
+
+### Required hardware validation checklist
 1. Synthesize the standalone bring-up top from `ENGR433-Solutions/Lab_03` and generate `i2s_test.bin`.
-2. Flash the bitstream to the FPGA.
+2. Use the supported USB firmware and then load your bitstream with the DFU helper.
 3. Verify that BCK, WS, and I2S data are present on the assigned pins. Use an oscilloscope or logic analyzer to check the clock rates and edge relationship.
 4. Confirm the LED heartbeat or another documented power-on indicator.
 5. At the October 20 meeting, teach the design only after it is working: explain the clock divider, frame counter, shift-register alignment, and the testbench's injected failure, then demonstrate the working hardware. Lab 3 is not complete until the simulation passes, the intentionally broken design fails, and the hardware validation succeeds.
 
-Audacity and the full USB audio path are optional extensions. The required hardware evidence is a working I2S clock/data bring-up and a clear explanation of the measured signals.
+Audacity and the full USB audio path are optional extensions. The required hardware evidence is a working I2S clock/data bring-up, a valid USB device enumerating on the host, and a clear explanation of the measured signals.
 
 ---
 
