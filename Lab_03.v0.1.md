@@ -34,7 +34,7 @@ Your master clock is **30.720 MHz**.
 ---
 
 ## Part 2: Golden Vectors (The Verification)
-Before you ask AI to write the SystemVerilog, you must know exactly what the output is supposed to look like. Python programming is not the goal of this lab, so the reference generator and its output are provided in `ENGR433-Solutions/Lab_03` and in the October 9 lecture notebook.
+Before you ask AI to write the SystemVerilog, you must know exactly what the output is supposed to look like. Python programming is not the goal of this lab, so the reference generator and its output are provided in `Software/ directory` and in the October 9 lecture notebook.
 
 **Your Task:** Use the provided `generate_golden_vectors.py`, `expected_i2s.txt`, and `expected_words.mem` as the reference for your design. You must be able to explain how the vectors were generated and use them in your self-checking testbench. You may modify the sawtooth start value or step, but if you do, regenerate the expected files and explain the change.
 
