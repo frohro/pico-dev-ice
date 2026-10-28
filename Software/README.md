@@ -316,7 +316,10 @@ Below is the directory structure of the `Software/` folder and the purpose of ea
 Software/
 ├── README.md                    # DSP mathematics, PGA control, and architecture documentation (this file)
 ├── ddc_sdr_firmware/            # Primary active RP2040/Pico W production firmware
-├── ddc_sdr_firmware_usb_working/ # Historical baseline USB-only firmware snapshot
+├── ddc_sdr_firmware_usb_working/ # Historical baseline USB-only firmware snapshot (left-justified I2S)
+├── ddc_sdr_firmware_usb_working_philips/ # USB-only firmware for standard Philips I2S (builds ddc_sdr.uf2, DFU-only)
+├── ddc_sdr.uf2                  # Lab UF2: Philips I2S, DFU-only (no embedded FPGA image)
+├── ddc_sdr_leftjustified.uf2    # Previous UF2 built from the left-justified firmware
 ├── Soapy-Dev-iCE/               # SoapySDR hardware driver module for SDR++/Gqrx
 ├── Pico Dev-iCE MicroPython/     # MicroPython runtime & hardware peripheral bindings
 └── pico-ice-sdk/                # Low-level FPGA flashing & hardware abstraction library
@@ -342,6 +345,13 @@ Software/
 **Reference USB Baseline Firmware.**
 - Standalone snapshot of the firmware prior to Wi-Fi integration.
 - Useful for minimal-footprint USB deployments or as a test golden reference.
+- Expects left-justified I2S from the FPGA; kept unchanged for that purpose.
+
+### 4.2.1 `ddc_sdr_firmware_usb_working_philips`
+**USB baseline firmware for standard Philips I2S (used for the labs).**
+- `i2s_rx.pio` skips the one-bit delay after each WS change, samples 31 bits and pads the 32nd.
+- `./build.sh` builds a DFU-only `ddc_sdr.uf2` (`FPGA_BOOT_MODE=DFU`, no embedded bitstream); copy it to `Software/ddc_sdr.uf2`.
+- Students load their `.bin` with `tools/dfu_fpga.py`.
 
 ---
 
