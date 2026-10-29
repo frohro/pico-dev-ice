@@ -1,0 +1,45 @@
+;
+; I2S slave receiver for the Dev-iCE FPGA audio output.
+;
+; The FPGA is the I2S master. It drives RX_DATA, BCK, and WS on the Pico
+; GPIOs 14, 15, and 16 respectively (IN pin base = DATA, pin 1 = BCK, pin 2 = WS).
+;
+; Standard Philips I2S: the FPGA changes WS and DATA only on BCK falling
+; edges. WS changes one BCK period before the MSB of its slot, so the first
+; rising edge after a WS change carries only the LSB (zero padding) of the
+; previous slot, and the MSB of the new slot is on the rising edge after that.
+;
+; Each 32-bit slot word is {sample[23:0], 8'b0}, so per slot this program:
+;   1. waits for the WS edge, then skips one BCK rising edge (the delay bit),
+;   2. samples the next 31 bits (MSB first) on BCK rising edges,
+;   3. shifts in a zero for the 32nd (padding) bit.
+; Skipping the delay edge each slot re-synchronises on WS every half frame.
+;
+.program i2s_rx
+
+.wrap_target
+    wait 1 pin 2            ; Ensure WS is HIGH first (sync anchor: avoids mid-frame start)
+    wait 0 pin 2            ; WS falling edge: Left slot starts, BCK is LOW
+    wait 0 pin 1            ; BCK LOW
+    wait 1 pin 1            ; Skip the rising edge that carries the 1-bit delay
+
+    set x, 30
+left_loop:
+    wait 0 pin 1            ; Wait for BCK LOW
+    wait 1 pin 1            ; Sample DATA on BCK rising edge
+    in pins, 1
+    jmp x-- left_loop       ; 31 sampled bits: MSB .. bit 1
+    in null, 1              ; 32nd bit is zero padding
+
+    wait 1 pin 2            ; WS rising edge: Right slot starts
+    wait 0 pin 1            ; BCK LOW
+    wait 1 pin 1            ; Skip the rising edge that carries the 1-bit delay
+
+    set x, 30
+right_loop:
+    wait 0 pin 1            ; Wait for BCK LOW
+    wait 1 pin 1            ; Sample DATA on BCK rising edge
+    in pins, 1
+    jmp x-- right_loop      ; 31 sampled bits: MSB .. bit 1
+    in null, 1              ; 32nd bit is zero padding
+.wrap

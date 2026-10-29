@@ -1,0 +1,33 @@
+;
+; I2S slave receiver for the Dev-iCE FPGA audio output (copy of i2s_rx.pio).
+; Standard Philips I2S: skip the 1-bit delay edge after each WS change,
+; sample 31 bits MSB first, then shift in one zero padding bit per slot.
+;
+.program i2s_rx
+
+.wrap_target
+    wait 1 pin 2            ; Ensure WS is HIGH first (sync anchor: avoids mid-frame start)
+    wait 0 pin 2            ; WS falling edge: Left slot starts, BCK is LOW
+    wait 0 pin 1            ; BCK LOW
+    wait 1 pin 1            ; Skip the rising edge that carries the 1-bit delay
+
+    set x, 30
+left_loop:
+    wait 0 pin 1            ; Wait for BCK LOW
+    wait 1 pin 1            ; Sample DATA on BCK rising edge
+    in pins, 1
+    jmp x-- left_loop       ; 31 sampled bits: MSB .. bit 1
+    in null, 1              ; 32nd bit is zero padding
+
+    wait 1 pin 2            ; WS rising edge: Right slot starts
+    wait 0 pin 1            ; BCK LOW
+    wait 1 pin 1            ; Skip the rising edge that carries the 1-bit delay
+
+    set x, 30
+right_loop:
+    wait 0 pin 1            ; Wait for BCK LOW
+    wait 1 pin 1            ; Sample DATA on BCK rising edge
+    in pins, 1
+    jmp x-- right_loop      ; 31 sampled bits: MSB .. bit 1
+    in null, 1              ; 32nd bit is zero padding
+.wrap

@@ -1,0 +1,2 @@
+# Allow members of plugdev to load FPGA bitstreams through dfu-util.
+SUBSYSTEM=="usb", ATTR{idVendor}=="1209", ATTR{idProduct}=="b1c0", MODE="0660", GROUP="plugdev", TAG+="uaccess"
