@@ -690,6 +690,7 @@
       "pin_to_pin": "error",
       "power_pin_not_driven": "ignore",
       "same_local_global_label": "warning",
+      "same_local_global_power": "warning",
       "similar_label_and_power": "warning",
       "similar_labels": "warning",
       "similar_power": "warning",
@@ -775,7 +776,7 @@
     "meta": {
       "version": 5
     },
-    "net_colors": null,
+    "net_colors": {},
     "netclass_assignments": {
       "+4.7V": [
         "5V",
@@ -787,16 +788,7 @@
       "/AF DAC/VAA": [
         "5V0"
       ],
-      "Net-(A1-3V3)": [
-        "1V1"
-      ],
-      "Net-(C35-Pad1)": [
-        "5V0"
-      ],
       "Net-(C39-Pad1)": [
-        "5V0"
-      ],
-      "Net-(C42-Pad1)": [
         "5V0"
       ],
       "Net-(C46-Pad1)": [
@@ -805,28 +797,13 @@
       "Net-(C47-Pad1)": [
         "1V1"
       ],
-      "Net-(C87-Pad1)": [
-        "1V1"
-      ],
-      "Net-(D1-Pad1)": [
-        "5V0"
-      ],
       "Net-(D6-Pad1)": [
         "5V0"
       ],
       "Net-(FB4-Pad1)": [
         "5V0"
       ],
-      "Net-(FB5-Pad1)": [
-        "5V0"
-      ],
-      "Net-(J5-Pin_2)": [
-        "5V0"
-      ],
       "Net-(J7-Pin_2)": [
-        "5V0"
-      ],
-      "Net-(JP2-A)": [
         "5V0"
       ],
       "Net-(JP5-A)": [
@@ -835,20 +812,11 @@
       "Net-(JP7-A)": [
         "5V0"
       ],
-      "Net-(Q1-G)": [
-        "5V0"
-      ],
-      "Net-(Q1-S)": [
-        "5V0"
-      ],
       "Net-(Q3-G)": [
         "5V0"
       ],
       "Net-(Q3-S)": [
         "5V0"
-      ],
-      "Net-(U4-VDD)": [
-        "1V1"
       ],
       "Net-(U9-VDD)": [
         "1V1"
@@ -856,16 +824,7 @@
       "Net-(e1-EN)": [
         "5V0"
       ],
-      "Net-(e10-EN)": [
-        "5V0"
-      ],
       "Net-(e2-EN)": [
-        "5V0"
-      ],
-      "Net-(e4-EN)": [
-        "5V0"
-      ],
-      "VDDA": [
         "5V0"
       ]
     },
@@ -1504,7 +1463,7 @@
         "uuid": "7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
       }
     ],
-    "used_designators": "e1-4,C1-109,#PWR1-225,TP1-18,TP28-32,R1-90,#FLG1-2,#FLG7,#FLG101,TR1-4,S1,J1-14,J16,Je3-6,JP1-8,JP50-53,JP86,JP88-89,L1-3,FB1-7,H1,X1,SW1,A1,D1-8,U1-27,Q1-10",
+    "used_designators": "#FLG1-2,#FLG7,#FLG101,#PWR1-225,A1,C1-109,D1-8,FB1-7,H1,J1-14,J16,JP1-8,JP50-53,JP86,JP88-89,Je3-6,L1-3,Q1-10,R1-90,S1,SW1,TP1-18,TP28-32,TR1-4,U1-27,X1,e1-4",
     "variants": []
   },
   "sheets": [
