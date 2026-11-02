@@ -87,9 +87,22 @@ with support for both `\r` (CR) and `\n` (LF) line endings, backspace (`0x08` / 
 | `REF,<0\|1>` | `REF,<0\|1>` / `OK` | Sets front-end RF multiplexer (`0` = SDR RF RX, `1` = VNA) |
 | `PGA` | `PGA,<code>` / `OK` | Queries current PGA digital attenuator code (`0` = max $+40\text{ dB}$ gain) |
 | `PGA,<code>` | `PGA,<code>` / `OK` | Sets PGA digital attenuator code (`0..15`) |
+| `AUDIO,STATS` | `AUDIO,under=..,over=..,short=..,long=..,stale=..,occ=min..max` / `OK` | Capture buffer underruns/overruns, 47/49-frame packet counts, occupancy range (frames) |
 | `DEBUG` | `DEBUG: ready=...` / `OK` | Reports real-time DMA, I2S toggle counts, and GPIO states |
 | `BOOTSEL` | `REBOOTING_BOOTSEL` | Soft-reboots the RP2040 into USB BOOTSEL flash mode |
 | `HELP` / `?` | Command list / `OK` | Lists all available interactive CDC commands |
+
+## Capture audio buffering
+
+I2S RX data is DMA'd into a 4-slot ring (4 ms). A data channel fills one 1 ms slot and
+chains to a control channel that loads the next slot address; a slot-completion IRQ tracks
+ring laps. At Set Interface, the firmware preloads one packet after TinyUSB schedules its
+initial zero-length transfer. After each audio transfer, `tud_audio_tx_done_isr()` reads
+occupancy from the DMA write address and slot counter, then prepares one packet: nominal
+frames (48 at 48 kHz) while occupancy is within +/-10 frames of the 50 % target (96), 49
+above it and 47 below it. The stream primes to 50 % first and sends silence (never
+zero-length packets) while priming or after an underrun; an overrun resyncs to 50 %. Use
+`AUDIO,STATS` to inspect it.
 
 ## Build
 

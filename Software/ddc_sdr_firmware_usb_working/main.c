@@ -21,6 +21,7 @@
 
 #include "boards.h"
 #include "agc_control.h"
+#include "audio_rate_ctrl.h"
 #include "ddc_protocol.h"
 #include "ice_cram.h"
 #include "ice_fpga.h"
@@ -49,6 +50,7 @@
 #define DDC_RUNTIME_SPI_BAUD_HZ 10000000u
 #define DDC_MAX_WORDS_PER_BUFFER 192u
 #define DDC_TX_BUFFER_COUNT 4u
+#define DDC_RX_SLOTS 4u
 #define DDC_AUDIO_CAPTURE_INTERFACE 3u
 #define DDC_AUDIO_PLAYBACK_INTERFACE 4u
 #define DDC_LINE_BUFFER_SIZE 80u
@@ -64,18 +66,36 @@ typedef struct {
     size_t size;
 } ddc_fpga_bitstream_t;
 
-static uint32_t audio_buffer_a[DDC_MAX_WORDS_PER_BUFFER];
-static uint32_t audio_buffer_b[DDC_MAX_WORDS_PER_BUFFER];
+typedef enum {
+    RX_IDLE,
+    RX_PRIMING,
+    RX_RUNNING,
+} rx_state_t;
+
+/* One flat ring of DDC_RX_SLOTS slots of words_per_buffer words (1 ms each).
+ * A data DMA channel fills one slot and chains to a control channel that
+ * loads the next slot address from rx_slot_table. */
+static uint32_t rx_ring[DDC_RX_SLOTS * DDC_MAX_WORDS_PER_BUFFER];
+static uint32_t rx_slot_table[DDC_RX_SLOTS] __attribute__((aligned(16)));
+static volatile uint32_t rx_slot_irqs;
+static uint32_t rx_tail_words;
+static rx_state_t rx_state = RX_IDLE;
+static uint32_t rx_underruns;
+static uint32_t rx_overruns;
+static uint32_t rx_packets_short;
+static uint32_t rx_packets_long;
+static uint32_t rx_fifo_stale;
+static uint32_t rx_min_occupancy = UINT32_MAX;
+static uint32_t rx_max_occupancy;
 static uint32_t tx_audio_buffers[DDC_TX_BUFFER_COUNT][DDC_MAX_WORDS_PER_BUFFER];
 static uint32_t tx_silence_buffer[DDC_MAX_WORDS_PER_BUFFER];
 static uint g_pio_offset;
 static uint g_tx_pio_offset;
-static int dma_channel_a = -1;
-static int dma_channel_b = -1;
+static int rx_data_ch = -1;
+static int rx_ctrl_ch = -1;
 static int tx_dma_channel = -1;
 static dma_channel_config_t tx_dma_config;
 static volatile uint32_t words_per_buffer = 96u;
-static volatile uint32_t ready_buffers;
 static volatile uint32_t tx_ready_mask;
 static volatile bool tx_dma_active;
 static volatile bool tx_dma_silence;
@@ -204,17 +224,9 @@ static void dma_handler(void)
 {
     uint32_t status = dma_hw->ints0;
 
-    if (status & (1u << dma_channel_a)) {
-        dma_hw->ints0 = 1u << dma_channel_a;
-        dma_channel_set_write_addr(dma_channel_a, audio_buffer_a, false);
-        dma_channel_set_trans_count(dma_channel_a, words_per_buffer, false);
-        ready_buffers |= 1u;
-    }
-    if (status & (1u << dma_channel_b)) {
-        dma_hw->ints0 = 1u << dma_channel_b;
-        dma_channel_set_write_addr(dma_channel_b, audio_buffer_b, false);
-        dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
-        ready_buffers |= 2u;
+    if (rx_data_ch >= 0 && (status & (1u << rx_data_ch))) {
+        dma_hw->ints0 = 1u << rx_data_ch;
+        rx_slot_irqs++;
     }
     if (tx_dma_channel >= 0 && (status & (1u << tx_dma_channel))) {
         uint32_t buffer_bit;
@@ -242,23 +254,33 @@ static void i2s_configure(void)
     pio_sm_config config = i2s_rx_program_get_default_config(g_pio_offset);
     sm_config_set_in_pins(&config, DDC_I2S_DATA_PIN);
     sm_config_set_in_shift(&config, false, true, 32);
+    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_RX);
     sm_config_set_clkdiv(&config, 1.0f);
     pio_sm_init(pio0, 0, g_pio_offset, &config);
 }
 
 static void i2s_stop(void)
 {
-    if (dma_channel_a < 0 || dma_channel_b < 0) {
+    uint32_t saved_interrupts;
+
+    if (rx_data_ch < 0 || rx_ctrl_ch < 0) {
         return;
     }
 
-    dma_channel_abort(dma_channel_a);
-    dma_channel_abort(dma_channel_b);
-    dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
+    /* Abort the control channel first so it cannot re-trigger the data
+     * channel, then the data channel, then the control channel again in case
+     * the data channel chained to it meanwhile. */
+    dma_channel_abort(rx_ctrl_ch);
+    dma_channel_abort(rx_data_ch);
+    dma_channel_abort(rx_ctrl_ch);
+    dma_channel_set_irq0_enabled(rx_data_ch, false);
+    dma_hw->ints0 = 1u << rx_data_ch;
     pio_sm_set_enabled(pio0, 0, false);
     pio_sm_clear_fifos(pio0, 0);
-    ready_buffers = 0;
+    saved_interrupts = save_and_disable_interrupts();
+    rx_state = RX_IDLE;
     i2s_running = false;
+    restore_interrupts(saved_interrupts);
     if (!tx_running) {
         irq_set_enabled(DMA_IRQ_0, false);
     }
@@ -266,22 +288,54 @@ static void i2s_stop(void)
 
 static void i2s_start(void)
 {
+    uint32_t slot_words;
+    uint32_t saved_interrupts;
+    dma_channel_config data_config;
+    dma_channel_config ctrl_config;
+
     if (i2s_running || !fpga_ready || capture_alt == 0) {
         return;
     }
 
     i2s_configure();
-    dma_channel_set_write_addr(dma_channel_a, audio_buffer_a, false);
-    dma_channel_set_trans_count(dma_channel_a, words_per_buffer, false);
-    dma_channel_set_write_addr(dma_channel_b, audio_buffer_b, false);
-    dma_channel_set_trans_count(dma_channel_b, words_per_buffer, false);
-    dma_hw->ints0 = (1u << dma_channel_a) | (1u << dma_channel_b);
+    slot_words = words_per_buffer;
+    for (uint32_t slot = 0; slot < DDC_RX_SLOTS; slot++) {
+        rx_slot_table[slot] = (uint32_t)&rx_ring[slot * slot_words];
+    }
+
+    data_config = dma_channel_get_default_config(rx_data_ch);
+    channel_config_set_transfer_data_size(&data_config, DMA_SIZE_32);
+    channel_config_set_read_increment(&data_config, false);
+    channel_config_set_write_increment(&data_config, true);
+    channel_config_set_dreq(&data_config, pio_get_dreq(pio0, 0, false));
+    channel_config_set_chain_to(&data_config, rx_ctrl_ch);
+    dma_channel_configure(rx_data_ch, &data_config, rx_ring,
+                          &pio0->rxf[0], slot_words, false);
+
+    /* Each slot completion writes the next slot address into the data
+     * channel's trigger alias; the RP2040 reloads the live transfer count
+     * from the RELOAD value written above, so only the address is needed. */
+    ctrl_config = dma_channel_get_default_config(rx_ctrl_ch);
+    channel_config_set_transfer_data_size(&ctrl_config, DMA_SIZE_32);
+    channel_config_set_read_increment(&ctrl_config, true);
+    channel_config_set_write_increment(&ctrl_config, false);
+    channel_config_set_ring(&ctrl_config, false, 4);
+    dma_channel_configure(rx_ctrl_ch, &ctrl_config,
+                          &dma_hw->ch[rx_data_ch].al2_write_addr_trig,
+                          &rx_slot_table[1], 1, false);
+
+    saved_interrupts = save_and_disable_interrupts();
+    rx_slot_irqs = 0;
+    rx_tail_words = 0;
+    rx_state = RX_PRIMING;
+    restore_interrupts(saved_interrupts);
+    dma_hw->ints0 = 1u << rx_data_ch;
+    dma_channel_set_irq0_enabled(rx_data_ch, true);
     pio_sm_restart(pio0, 0);
     pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
-    pio_sm_set_enabled(pio0, 0, true);
-    ready_buffers = 0;
     irq_set_enabled(DMA_IRQ_0, true);
-    dma_channel_start(dma_channel_a);
+    dma_channel_start(rx_data_ch);
+    pio_sm_set_enabled(pio0, 0, true);
     i2s_running = true;
 }
 
@@ -683,48 +737,184 @@ static bool switch_stored_fpga(ddc_fpga_image_t image)
     return success && fpga_ready;
 }
 
-static void audio_task(void)
+/* Words written by the RX DMA since start. The slot IRQ counter gives the
+ * lap; write_addr gives the position. Both are combined modulo the ring so the
+ * result stays exact however long the main loop was stalled. */
+static uint32_t rx_head_words(uint32_t *ring_pos)
 {
-    uint32_t mask;
-    const uint32_t *source;
-    uint32_t words;
-    uint32_t saved_interrupts;
+    uint32_t slots;
+    uint32_t slots_again;
+    uint32_t address;
+    uint32_t offset;
+    uint32_t slot_words = words_per_buffer;
+    uint32_t ring_words = DDC_RX_SLOTS * slot_words;
+
+    do {
+        slots = rx_slot_irqs;
+        address = dma_hw->ch[rx_data_ch].write_addr;
+        slots_again = rx_slot_irqs;
+    } while (slots != slots_again);
+
+    offset = (address - (uint32_t)rx_ring) >> 2;
+    *ring_pos = offset % ring_words;
+    return slots * slot_words +
+           (offset + ring_words - (slots % DDC_RX_SLOTS) * slot_words) %
+               ring_words;
+}
+
+static void rx_note_occupancy(uint32_t frames)
+{
+    if (frames < rx_min_occupancy) {
+        rx_min_occupancy = frames;
+    }
+    if (frames > rx_max_occupancy) {
+        rx_max_occupancy = frames;
+    }
+}
+
+static void audio_fill_in_packet(void)
+{
+    static uint8_t packed[(DDC_MAX_WORDS_PER_BUFFER / 2u + 1u) * 6u];
+    uint32_t nominal = words_per_buffer / 2u;
+    uint32_t target = audio_rate_target_frames(nominal);
+    uint32_t frames = nominal;
+    bool silence = true;
     tu_fifo_t *fifo;
-    static uint8_t packed[DDC_MAX_WORDS_PER_BUFFER * 3u];
 
-    if (!i2s_running || !tud_audio_mounted()) {
-        return;
-    }
-
-    mask = ready_buffers;
-    if (mask == 0) {
-        return;
-    }
-
-    words = words_per_buffer;
     fifo = tud_audio_get_ep_in_ff();
-    if (fifo == NULL || tu_fifo_remaining(fifo) < words * 3u) {
+    if (fifo == NULL) {
         return;
     }
-
-    source = (mask & 1u) ? audio_buffer_a : audio_buffer_b;
-
-    for (uint32_t index = 0; index < words; index++) {
-        uint32_t word = source[index];
-        packed[3u * index] = (uint8_t)(word >> 8);
-        packed[3u * index + 1u] = (uint8_t)(word >> 16);
-        packed[3u * index + 2u] = (uint8_t)(word >> 24);
+    if (tu_fifo_count(fifo) != 0) {
+        tu_fifo_clear(fifo);
+        rx_fifo_stale++;
     }
-    tud_audio_write(packed, (uint16_t)(words * 3u));
 
-    saved_interrupts = save_and_disable_interrupts();
-    ready_buffers &= ~(mask & 1u ? 1u : 2u);
-    restore_interrupts(saved_interrupts);
+    if (i2s_running && rx_state != RX_IDLE) {
+        uint32_t ring_pos;
+        uint32_t head = rx_head_words(&ring_pos) & ~1u;
+        uint32_t occupancy = (head - rx_tail_words) >> 1;
+        uint32_t ring_words = DDC_RX_SLOTS * words_per_buffer;
+
+        ring_pos &= ~1u;
+        if (rx_state == RX_PRIMING && occupancy >= target) {
+            rx_tail_words = head - 2u * target;
+            occupancy = target;
+            rx_state = RX_RUNNING;
+        } else if (rx_state == RX_RUNNING && occupancy > 3u * nominal) {
+            rx_tail_words = head - 2u * target;
+            occupancy = target;
+            rx_overruns++;
+        }
+
+        if (rx_state == RX_RUNNING) {
+            frames = audio_rate_pick(occupancy, nominal);
+            if (occupancy < frames) {
+                rx_underruns++;
+                rx_state = RX_PRIMING;
+                frames = nominal;
+            } else {
+                uint32_t position =
+                    (ring_pos + ring_words - (head - rx_tail_words) % ring_words) %
+                    ring_words;
+
+                rx_note_occupancy(occupancy);
+                if (frames > nominal) {
+                    rx_packets_long++;
+                } else if (frames < nominal) {
+                    rx_packets_short++;
+                }
+                for (uint32_t index = 0; index < frames * 2u; index++) {
+                    uint32_t word = rx_ring[position];
+
+                    packed[3u * index] = (uint8_t)(word >> 8);
+                    packed[3u * index + 1u] = (uint8_t)(word >> 16);
+                    packed[3u * index + 2u] = (uint8_t)(word >> 24);
+                    if (++position == ring_words) {
+                        position = 0;
+                    }
+                }
+                rx_tail_words += frames * 2u;
+                silence = false;
+            }
+        }
+    }
+
+    if (silence) {
+        memset(packed, 0, frames * 6u);
+    }
+    tud_audio_write(packed, (uint16_t)(frames * 6u));
+}
+
+bool tud_audio_tx_done_isr(uint8_t rhport, uint16_t n_bytes_sent,
+                           uint8_t func_id, uint8_t ep_in,
+                           uint8_t cur_alt_setting)
+{
+    (void)rhport;
+    (void)n_bytes_sent;
+    (void)func_id;
+    (void)ep_in;
+    (void)cur_alt_setting;
+    audio_fill_in_packet();
+    return true;
+}
+
+/* TinyUSB schedules the first IN transfer before invoking set_itf_cb. Fill
+ * the FIFO here so that the first transfer completion can schedule audio
+ * instead of a second zero-length packet. */
+bool tud_audio_set_itf_cb(uint8_t rhport,
+                          tusb_control_request_t const *request)
+{
+    static const uint32_t rates[] = {0u, 48000u, 96000u};
+    uint8_t alt = (uint8_t)(request->wValue & 0xffu);
+    uint8_t interface = (uint8_t)(request->wIndex & 0xffu);
+
+    (void)rhport;
+    if (alt > 2u || (interface != DDC_AUDIO_CAPTURE_INTERFACE &&
+                     interface != DDC_AUDIO_PLAYBACK_INTERFACE)) {
+        return false;
+    }
+    if (alt != 0u &&
+        ((interface == DDC_AUDIO_CAPTURE_INTERFACE && playback_alt != 0u) ||
+         (interface == DDC_AUDIO_PLAYBACK_INTERFACE && capture_alt != 0u)) &&
+        rates[alt] != sample_rate) {
+        return false;
+    }
+
+    if (interface == DDC_AUDIO_CAPTURE_INTERFACE) {
+        capture_alt = alt;
+        if (alt == 0u) {
+            i2s_stop();
+            return true;
+        }
+        audio_requested_rate = rates[alt];
+        if (!apply_sample_rate(audio_requested_rate)) {
+            capture_alt = 0;
+            i2s_stop();
+            return false;
+        }
+        i2s_start();
+        audio_fill_in_packet();
+    } else {
+        playback_alt = alt;
+        if (alt == 0u) {
+            tx_stop();
+            return true;
+        }
+        audio_requested_rate = rates[alt];
+        if (!apply_sample_rate(audio_requested_rate)) {
+            playback_alt = 0;
+            tx_stop();
+            return false;
+        }
+        tx_start();
+    }
+    return true;
 }
 
 static void handle_line(const char *line, uint8_t length)
 {
-    char reply[96];
+    char reply[160];
 
     if (length == 0) {
         return;
@@ -745,6 +935,20 @@ static void handle_line(const char *line, uint8_t length)
     if (strcmp(line, "FPGA,STATUS") == 0) {
         snprintf(reply, sizeof(reply), "FPGA,%s\r\nOK\r\n",
                  fpga_image_name(active_fpga_image));
+        cdc_write(reply);
+        return;
+    }
+    if (strcmp(line, "AUDIO,STATS") == 0) {
+        snprintf(reply, sizeof(reply),
+                 "AUDIO,under=%lu,over=%lu,short=%lu,long=%lu,stale=%lu,"
+                 "occ=%lu..%lu\r\nOK\r\n",
+                 (unsigned long)rx_underruns, (unsigned long)rx_overruns,
+                 (unsigned long)rx_packets_short,
+                 (unsigned long)rx_packets_long,
+                 (unsigned long)rx_fifo_stale,
+                 (unsigned long)(rx_min_occupancy == UINT32_MAX
+                                     ? 0u : rx_min_occupancy),
+                 (unsigned long)rx_max_occupancy);
         cdc_write(reply);
         return;
     }
@@ -855,6 +1059,7 @@ static void handle_line(const char *line, uint8_t length)
                   "  MODE         - Show SDR mode (DDC)\r\n"
                   "  XTAL         - Show master clock (30.72 MHz)\r\n"
                   "  FPGA,STATUS  - Show FPGA gateware status\r\n"
+                  "  AUDIO,STATS  - Show capture buffer statistics\r\n"
                   "  FREQ,<hz>    - Set NCO tuning frequency in Hz\r\n"
                   "  RATE,<hz>    - Set audio sample rate in Hz\r\n"
                   "  REF,<0|1>    - Set REF mux (0=SDR RF RX, 1=VNA)\r\n"
@@ -919,55 +1124,6 @@ void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding)
 void tud_cdc_rx_cb(uint8_t itf)
 {
     (void)itf;
-}
-
-bool tud_audio_set_itf_cb(uint8_t rhport,
-                          tusb_control_request_t const *request)
-{
-    static const uint32_t rates[] = {0u, 48000u, 96000u};
-    uint8_t alt = (uint8_t)(request->wValue & 0xffu);
-    uint8_t interface = (uint8_t)(request->wIndex & 0xffu);
-
-    (void)rhport;
-    if (alt > 2u || (interface != DDC_AUDIO_CAPTURE_INTERFACE &&
-                     interface != DDC_AUDIO_PLAYBACK_INTERFACE)) {
-        return false;
-    }
-    if (alt != 0u &&
-        ((interface == DDC_AUDIO_CAPTURE_INTERFACE && playback_alt != 0u) ||
-         (interface == DDC_AUDIO_PLAYBACK_INTERFACE && capture_alt != 0u)) &&
-        rates[alt] != sample_rate) {
-        return false;
-    }
-
-    if (interface == DDC_AUDIO_CAPTURE_INTERFACE) {
-        capture_alt = alt;
-        if (alt == 0u) {
-            i2s_stop();
-            return true;
-        }
-        audio_requested_rate = rates[alt];
-        if (!apply_sample_rate(audio_requested_rate)) {
-            capture_alt = 0;
-            i2s_stop();
-            return false;
-        }
-        i2s_start();
-    } else {
-        playback_alt = alt;
-        if (alt == 0u) {
-            tx_stop();
-            return true;
-        }
-        audio_requested_rate = rates[alt];
-        if (!apply_sample_rate(audio_requested_rate)) {
-            playback_alt = 0;
-            tx_stop();
-            return false;
-        }
-        tx_start();
-    }
-    return true;
 }
 
 bool tud_audio_set_itf_close_ep_cb(uint8_t rhport,
@@ -1065,36 +1221,15 @@ int main(void)
     gpio_set_dir(21, GPIO_IN);
     gpio_pull_up(21);
 
-    vreg_set_voltage(VREG_VOLTAGE_1_10);
+    vreg_set_voltage(VREG_VOLTAGE_1_20);
     set_sys_clock_khz(125000, true);
 
     g_pio_offset = pio_add_program(pio0, &i2s_rx_program);
     g_tx_pio_offset = pio_add_program(pio0, &i2s_tx_program);
     pga_configure();
     fpga_interrupt_configure();
-    dma_channel_a = dma_claim_unused_channel(true);
-    dma_channel_b = dma_claim_unused_channel(true);
-
-    dma_channel_config config_a = dma_channel_get_default_config(dma_channel_a);
-    channel_config_set_transfer_data_size(&config_a, DMA_SIZE_32);
-    channel_config_set_read_increment(&config_a, false);
-    channel_config_set_write_increment(&config_a, true);
-    channel_config_set_dreq(&config_a, pio_get_dreq(pio0, 0, false));
-    channel_config_set_chain_to(&config_a, dma_channel_b);
-    dma_channel_configure(dma_channel_a, &config_a, audio_buffer_a,
-                          &pio0->rxf[0], words_per_buffer, false);
-
-    dma_channel_config config_b = dma_channel_get_default_config(dma_channel_b);
-    channel_config_set_transfer_data_size(&config_b, DMA_SIZE_32);
-    channel_config_set_read_increment(&config_b, false);
-    channel_config_set_write_increment(&config_b, true);
-    channel_config_set_dreq(&config_b, pio_get_dreq(pio0, 0, false));
-    channel_config_set_chain_to(&config_b, dma_channel_a);
-    dma_channel_configure(dma_channel_b, &config_b, audio_buffer_b,
-                          &pio0->rxf[0], words_per_buffer, false);
-
-    dma_channel_set_irq0_enabled(dma_channel_a, true);
-    dma_channel_set_irq0_enabled(dma_channel_b, true);
+    rx_data_ch = dma_claim_unused_channel(true);
+    rx_ctrl_ch = dma_claim_unused_channel(true);
     tx_dma_channel = dma_claim_unused_channel(true);
     tx_dma_config = dma_channel_get_default_config(tx_dma_channel);
     channel_config_set_transfer_data_size(&tx_dma_config, DMA_SIZE_32);
@@ -1141,9 +1276,8 @@ int main(void)
     while (true) {
         tud_task();
         cdc_task();
-        handle_fpga_interrupt();
-        agc_task();
-        audio_task();
+        // handle_fpga_interrupt();
+        // agc_task();
         tx_task();
     }
 }
