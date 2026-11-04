@@ -1,3 +1,19 @@
+/*
+ * RP2040 firmware for the Dev-iCE DDC SDR.
+ *
+ * The FPGA is the I2S clock master. RP2040 PIO state machines handle the
+ * bit-level I2S timing, while DMA moves whole 32-bit channel words between
+ * PIO and RAM. TinyUSB exposes the samples as UAC1 capture/playback streams
+ * and also provides a CDC serial command port.
+ *
+ * The main loop services USB, CDC commands, and audio playback. Capture is
+ * advanced by the USB audio transfer callback; the PIO/DMA hardware continues
+ * receiving I2S independently.
+ *
+ * FPGA SDR RX/TX names the RF mode or gateware image. USB capture is
+ * device-to-host; USB playback is host-to-device. Pico I2S capture receives
+ * samples from the FPGA, while Pico I2S playback sends samples to it.
+ */
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -30,6 +46,13 @@
 #include "ice_usb.h"
 #include "i2s_rx.pio.h"
 #include "i2s_tx.pio.h"
+
+/*
+ * CMake defines DDC_HAS_STORED_RX when FPGA_RX_BITSTREAM_BIN is configured.
+ * The build then runs tools/bin2header.py to generate fpga_bitstream_rx.h in
+ * the build directory and adds that directory to this target's include path.
+ * The generated header contains the binary as a const byte array.
+ */
 #ifdef DDC_HAS_STORED_RX
 #include "fpga_bitstream_rx.h"
 #endif
@@ -37,8 +60,10 @@
 #include "fpga_bitstream_tx.h"
 #endif
 
-#define DDC_I2S_DATA_PIN 14
-#define DDC_I2S_TX_PIN 13
+/* GPIO 14 carries I2S data from FPGA to Pico capture; GPIO 13 carries
+ * playback data from Pico to FPGA. The FPGA supplies BCK and WS on 15/16. */
+#define DDC_I2S_FPGA_TO_PICO_PIN 14
+#define DDC_I2S_PICO_TO_FPGA_PIN 13
 #define DDC_I2S_BCK_PIN 15
 #define DDC_I2S_WS_PIN 16
 #define DDC_TR_PIN 28
@@ -48,16 +73,19 @@
 #define DDC_PGA_GPIO_COUNT 4
 #define DDC_DEFAULT_SAMPLE_RATE 48000u
 #define DDC_RUNTIME_SPI_BAUD_HZ 10000000u
-#define DDC_MAX_WORDS_PER_BUFFER 192u
-#define DDC_TX_BUFFER_COUNT 4u
-#define DDC_RX_SLOTS 4u
+/* One word is one 32-bit I2S channel sample. At 96 kHz there are 192 words
+ * per millisecond; at the default 48 kHz there are 96. */
+#define DDC_MAX_I2S_WORDS_PER_MILLISECOND 192u
+#define DDC_PLAYBACK_BUFFER_COUNT 4u
+/* Four one-millisecond capture slots form a four-millisecond circular ring. */
+#define DDC_CAPTURE_RING_SLOTS 4u
 #define DDC_AUDIO_CAPTURE_INTERFACE 3u
 #define DDC_AUDIO_PLAYBACK_INTERFACE 4u
 #define DDC_LINE_BUFFER_SIZE 80u
 
 typedef enum {
-    DDC_FPGA_IMAGE_RX,
-    DDC_FPGA_IMAGE_TX,
+    DDC_FPGA_IMAGE_SDR_RX,
+    DDC_FPGA_IMAGE_SDR_TX,
     DDC_FPGA_IMAGE_DFU,
 } ddc_fpga_image_t;
 
@@ -66,42 +94,51 @@ typedef struct {
     size_t size;
 } ddc_fpga_bitstream_t;
 
+/* Capture state is independent of USB interface state: PRIMING sends silence
+ * until the DMA ring has enough samples, then RUNNING consumes ring data. */
 typedef enum {
-    RX_IDLE,
-    RX_PRIMING,
-    RX_RUNNING,
-} rx_state_t;
+    CAPTURE_IDLE,
+    CAPTURE_PRIMING,
+    CAPTURE_RUNNING,
+} capture_state_t;
 
-/* One flat ring of DDC_RX_SLOTS slots of words_per_buffer words (1 ms each).
+/* One flat ring of DDC_CAPTURE_RING_SLOTS slots of i2s_words_per_millisecond words (1 ms each).
  * A data DMA channel fills one slot and chains to a control channel that
- * loads the next slot address from rx_slot_table. */
-static uint32_t rx_ring[DDC_RX_SLOTS * DDC_MAX_WORDS_PER_BUFFER];
-static uint32_t rx_slot_table[DDC_RX_SLOTS] __attribute__((aligned(16)));
-static volatile uint32_t rx_slot_irqs;
-static uint32_t rx_tail_words;
-static rx_state_t rx_state = RX_IDLE;
-static uint32_t rx_underruns;
-static uint32_t rx_overruns;
-static uint32_t rx_packets_short;
-static uint32_t rx_packets_long;
-static uint32_t rx_fifo_stale;
-static uint32_t rx_min_occupancy = UINT32_MAX;
-static uint32_t rx_max_occupancy;
-static uint32_t tx_audio_buffers[DDC_TX_BUFFER_COUNT][DDC_MAX_WORDS_PER_BUFFER];
-static uint32_t tx_silence_buffer[DDC_MAX_WORDS_PER_BUFFER];
-static uint g_pio_offset;
-static uint g_tx_pio_offset;
-static int rx_data_ch = -1;
-static int rx_ctrl_ch = -1;
-static int tx_dma_channel = -1;
-static dma_channel_config_t tx_dma_config;
-static volatile uint32_t words_per_buffer = 96u;
-static volatile uint32_t tx_ready_mask;
-static volatile bool tx_dma_active;
-static volatile bool tx_dma_silence;
-static volatile uint8_t tx_dma_buffer;
-static bool i2s_running;
-static bool tx_running;
+ * loads the next slot address from capture_slot_table. */
+static uint32_t capture_ring[DDC_CAPTURE_RING_SLOTS * DDC_MAX_I2S_WORDS_PER_MILLISECOND];
+/* The RP2040 DMA read ring wraps on a power-of-two boundary, so this
+ * four-entry address table must start on a 16-byte boundary. */
+static uint32_t capture_slot_table[DDC_CAPTURE_RING_SLOTS] __attribute__((aligned(16)));
+/* Incremented by the capture data-DMA completion interrupt, once per slot.
+ * The DMA write address supplies the current position within the slot. */
+static volatile uint32_t capture_slot_irqs;
+static uint32_t capture_tail_words;
+static capture_state_t capture_state = CAPTURE_IDLE;
+/* Stream-health counters exposed by the AUDIO,STATS CDC command. */
+static uint32_t capture_underruns;
+static uint32_t capture_overruns;
+static uint32_t capture_packets_short;
+static uint32_t capture_packets_long;
+static uint32_t capture_fifo_stale;
+static uint32_t capture_min_occupancy = UINT32_MAX;
+static uint32_t capture_max_occupancy;
+/* Playback buffers are filled from USB OUT data and consumed by playback
+ * I2S DMA. The ready mask and active-buffer fields are shared with the DMA IRQ. */
+static uint32_t playback_audio_buffers[DDC_PLAYBACK_BUFFER_COUNT][DDC_MAX_I2S_WORDS_PER_MILLISECOND];
+static uint32_t playback_silence_buffer[DDC_MAX_I2S_WORDS_PER_MILLISECOND];
+static uint g_capture_pio_offset;
+static uint g_playback_pio_offset;
+static int capture_data_dma_channel = -1;
+static int capture_ctrl_dma_channel = -1;
+static int playback_dma_channel = -1;
+static dma_channel_config_t playback_dma_config;
+static volatile uint32_t i2s_words_per_millisecond = 96u;
+static volatile uint32_t playback_ready_mask;
+static volatile bool playback_dma_active;
+static volatile bool playback_dma_silence;
+static volatile uint8_t playback_dma_buffer;
+static bool capture_i2s_running;
+static bool playback_running;
 static bool runtime_spi_ready;
 static bool fpga_ready;
 static bool update_prepared;
@@ -110,13 +147,16 @@ static uint32_t sample_rate = DDC_DEFAULT_SAMPLE_RATE;
 static volatile bool fpga_interrupt_pending;
 static ddc_agc_state_t agc_state;
 
+/* USB audio alternate settings: 0 is stopped, 1 is 48 kHz, 2 is 96 kHz. */
 static uint8_t capture_alt;
 static uint8_t playback_alt;
 static uint32_t audio_requested_rate = DDC_DEFAULT_SAMPLE_RATE;
 static uint8_t audio_mute[3];
-static uint8_t tx_fill_buffer;
-static uint32_t tx_fill_words;
+static uint8_t playback_fill_buffer;
+static uint32_t playback_fill_words;
 
+/* CDC commands arrive a byte at a time; these variables hold the unfinished
+ * line and the last values returned by diagnostic commands. */
 static char line_buffer[DDC_LINE_BUFFER_SIZE];
 static uint8_t line_length;
 static bool ready_message_sent;
@@ -125,6 +165,8 @@ static uint32_t freq_cmd_count;
 
 static bool fpga_write_command(uint8_t command, uint32_t value);
 
+/* Return the generated bitstream array for the requested image. The
+ * DDC_HAS_STORED_* macros are build options, not Pico SDK definitions. */
 static bool fpga_get_stored_image(ddc_fpga_image_t image,
                                   ddc_fpga_bitstream_t *bitstream)
 {
@@ -133,7 +175,7 @@ static bool fpga_get_stored_image(ddc_fpga_image_t image,
     }
 
     switch (image) {
-    case DDC_FPGA_IMAGE_RX:
+    case DDC_FPGA_IMAGE_SDR_RX:
 #ifdef DDC_HAS_STORED_RX
         bitstream->data = ddc_fpga_rx_bitstream;
         bitstream->size = DDC_FPGA_RX_BITSTREAM_SIZE;
@@ -141,7 +183,7 @@ static bool fpga_get_stored_image(ddc_fpga_image_t image,
 #else
         return false;
 #endif
-    case DDC_FPGA_IMAGE_TX:
+    case DDC_FPGA_IMAGE_SDR_TX:
 #ifdef DDC_HAS_STORED_TX
         bitstream->data = ddc_fpga_tx_bitstream;
         bitstream->size = DDC_FPGA_TX_BITSTREAM_SIZE;
@@ -156,21 +198,24 @@ static bool fpga_get_stored_image(ddc_fpga_image_t image,
 
 static const char *fpga_image_name(ddc_fpga_image_t image)
 {
+    /* Preserve the CDC protocol's short names for FPGA SDR RF images. */
     switch (image) {
-    case DDC_FPGA_IMAGE_RX:
+    case DDC_FPGA_IMAGE_SDR_RX:
         return "RX";
-    case DDC_FPGA_IMAGE_TX:
+    case DDC_FPGA_IMAGE_SDR_TX:
         return "TX";
     default:
         return "DFU";
     }
 }
 
-static void tr_set_receive(bool receive)
+/* Control the board's TR switch: receive selects the SDR input path. */
+static void set_rf_path_receive(bool receive)
 {
     gpio_put(DDC_TR_PIN, receive ? 1u : 0u);
 }
 
+/* Drive the four parallel GPIO bits that select the RF attenuator setting. */
 static void pga_set_code(uint8_t code)
 {
     code &= DDC_PGA_MAX_CODE;
@@ -181,6 +226,8 @@ static void pga_set_code(uint8_t code)
     }
 }
 
+/* GPIO callbacks run in interrupt context. Defer SPI/AGC work to the main
+ * loop instead of doing it inside the short hardware interrupt. */
 static void fpga_interrupt_handler(uint gpio, uint32_t events)
 {
     (void)gpio;
@@ -200,6 +247,7 @@ static void handle_fpga_interrupt(void)
     fpga_write_command(DDC_FPGA_CMD_CLEAR_OTR, 1u);
 }
 
+/* Periodic AGC service. Currently disabled in the main loop below. */
 static void agc_task(void)
 {
     bool fpga_int_high;
@@ -214,245 +262,268 @@ static void agc_task(void)
         pga_set_code(agc_state.pga_code);
 }
 
+/* Queue a string for the USB CDC endpoint and ask TinyUSB to transmit it. */
 static void cdc_write(const char *text)
 {
     tud_cdc_write_str(text);
     tud_cdc_write_flush();
 }
 
+/* DMA IRQ 0 is shared by capture and playback. Capture only counts completed
+ * slots; the control DMA channel chains the next slot without CPU help.
+ * Playback completion releases the finished buffer for reuse. */
 static void dma_handler(void)
 {
     uint32_t status = dma_hw->ints0;
 
-    if (rx_data_ch >= 0 && (status & (1u << rx_data_ch))) {
-        dma_hw->ints0 = 1u << rx_data_ch;
-        rx_slot_irqs++;
+    if (capture_data_dma_channel >= 0 && (status & (1u << capture_data_dma_channel))) {
+        dma_hw->ints0 = 1u << capture_data_dma_channel;
+        capture_slot_irqs++;
     }
-    if (tx_dma_channel >= 0 && (status & (1u << tx_dma_channel))) {
+    if (playback_dma_channel >= 0 && (status & (1u << playback_dma_channel))) {
         uint32_t buffer_bit;
 
-        dma_hw->ints0 = 1u << tx_dma_channel;
-        buffer_bit = tx_dma_silence ? 0u : 1u << tx_dma_buffer;
-        tx_dma_active = false;
+        dma_hw->ints0 = 1u << playback_dma_channel;
+        buffer_bit = playback_dma_silence ? 0u : 1u << playback_dma_buffer;
+        playback_dma_active = false;
         if (buffer_bit != 0u) {
-            tx_ready_mask &= ~buffer_bit;
+            playback_ready_mask &= ~buffer_bit;
         }
-        tx_dma_silence = false;
+        playback_dma_silence = false;
     }
 }
 
-static void i2s_configure(void)
+/* Configure PIO state machine 0 as the FPGA-to-Pico I2S capture input. The
+ * PIO program waits on the FPGA's BCK/WS pins and pushes each channel word
+ * into its RX FIFO.
+ * Joining the two PIO FIFOs gives DMA more time to service the stream. */
+static void capture_i2s_configure(void)
 {
-    pio_gpio_init(pio0, DDC_I2S_DATA_PIN);
+    pio_gpio_init(pio0, DDC_I2S_FPGA_TO_PICO_PIN);
     pio_gpio_init(pio0, DDC_I2S_BCK_PIN);
     pio_gpio_init(pio0, DDC_I2S_WS_PIN);
-    gpio_pull_up(DDC_I2S_DATA_PIN);
+    gpio_pull_up(DDC_I2S_FPGA_TO_PICO_PIN);
     gpio_pull_up(DDC_I2S_BCK_PIN);
     gpio_pull_up(DDC_I2S_WS_PIN);
-    pio_sm_set_consecutive_pindirs(pio0, 0, DDC_I2S_DATA_PIN, 3, false);
+    pio_sm_set_consecutive_pindirs(pio0, 0, DDC_I2S_FPGA_TO_PICO_PIN, 3, false);
 
-    pio_sm_config config = i2s_rx_program_get_default_config(g_pio_offset);
-    sm_config_set_in_pins(&config, DDC_I2S_DATA_PIN);
+    pio_sm_config config = i2s_rx_program_get_default_config(g_capture_pio_offset);
+    sm_config_set_in_pins(&config, DDC_I2S_FPGA_TO_PICO_PIN);
     sm_config_set_in_shift(&config, false, true, 32);
     sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_RX);
     sm_config_set_clkdiv(&config, 1.0f);
-    pio_sm_init(pio0, 0, g_pio_offset, &config);
+    pio_sm_init(pio0, 0, g_capture_pio_offset, &config);
 }
 
-static void i2s_stop(void)
+static void capture_i2s_stop(void)
 {
     uint32_t saved_interrupts;
 
-    if (rx_data_ch < 0 || rx_ctrl_ch < 0) {
+    if (capture_data_dma_channel < 0 || capture_ctrl_dma_channel < 0) {
         return;
     }
 
     /* Abort the control channel first so it cannot re-trigger the data
      * channel, then the data channel, then the control channel again in case
      * the data channel chained to it meanwhile. */
-    dma_channel_abort(rx_ctrl_ch);
-    dma_channel_abort(rx_data_ch);
-    dma_channel_abort(rx_ctrl_ch);
-    dma_channel_set_irq0_enabled(rx_data_ch, false);
-    dma_hw->ints0 = 1u << rx_data_ch;
+    dma_channel_abort(capture_ctrl_dma_channel);
+    dma_channel_abort(capture_data_dma_channel);
+    dma_channel_abort(capture_ctrl_dma_channel);
+    dma_channel_set_irq0_enabled(capture_data_dma_channel, false);
+    dma_hw->ints0 = 1u << capture_data_dma_channel;
     pio_sm_set_enabled(pio0, 0, false);
     pio_sm_clear_fifos(pio0, 0);
     saved_interrupts = save_and_disable_interrupts();
-    rx_state = RX_IDLE;
-    i2s_running = false;
+    capture_state = CAPTURE_IDLE;
+    capture_i2s_running = false;
     restore_interrupts(saved_interrupts);
-    if (!tx_running) {
+    if (!playback_running) {
         irq_set_enabled(DMA_IRQ_0, false);
     }
 }
 
-static void i2s_start(void)
+/* Start continuous FPGA-to-RAM capture. One data-DMA transfer fills one
+ * 1-ms slot. Its chain starts the control channel, which writes the next slot
+ * address to the data channel's trigger alias. The four slot addresses wrap
+ * via the control channel's 16-byte read ring. */
+static void capture_i2s_start(void)
 {
     uint32_t slot_words;
     uint32_t saved_interrupts;
     dma_channel_config data_config;
     dma_channel_config ctrl_config;
 
-    if (i2s_running || !fpga_ready || capture_alt == 0) {
+    if (capture_i2s_running || !fpga_ready || capture_alt == 0) {
         return;
     }
 
-    i2s_configure();
-    slot_words = words_per_buffer;
-    for (uint32_t slot = 0; slot < DDC_RX_SLOTS; slot++) {
-        rx_slot_table[slot] = (uint32_t)&rx_ring[slot * slot_words];
+    capture_i2s_configure();
+    slot_words = i2s_words_per_millisecond;
+    for (uint32_t slot = 0; slot < DDC_CAPTURE_RING_SLOTS; slot++) {
+        capture_slot_table[slot] = (uint32_t)&capture_ring[slot * slot_words];
     }
 
-    data_config = dma_channel_get_default_config(rx_data_ch);
+    /* The capture channel reads the same PIO RX FIFO register every time, but
+     * increments its RAM destination. The PIO DREQ pauses DMA until a word is
+     * available. Completing a slot chains to the address-loader channel. */
+    data_config = dma_channel_get_default_config(capture_data_dma_channel);
     channel_config_set_transfer_data_size(&data_config, DMA_SIZE_32);
     channel_config_set_read_increment(&data_config, false);
     channel_config_set_write_increment(&data_config, true);
     channel_config_set_dreq(&data_config, pio_get_dreq(pio0, 0, false));
-    channel_config_set_chain_to(&data_config, rx_ctrl_ch);
-    dma_channel_configure(rx_data_ch, &data_config, rx_ring,
+    channel_config_set_chain_to(&data_config, capture_ctrl_dma_channel);
+    dma_channel_configure(capture_data_dma_channel, &data_config, capture_ring,
                           &pio0->rxf[0], slot_words, false);
 
     /* Each slot completion writes the next slot address into the data
      * channel's trigger alias; the RP2040 reloads the live transfer count
      * from the RELOAD value written above, so only the address is needed. */
-    ctrl_config = dma_channel_get_default_config(rx_ctrl_ch);
+    ctrl_config = dma_channel_get_default_config(capture_ctrl_dma_channel);
     channel_config_set_transfer_data_size(&ctrl_config, DMA_SIZE_32);
     channel_config_set_read_increment(&ctrl_config, true);
     channel_config_set_write_increment(&ctrl_config, false);
     channel_config_set_ring(&ctrl_config, false, 4);
-    dma_channel_configure(rx_ctrl_ch, &ctrl_config,
-                          &dma_hw->ch[rx_data_ch].al2_write_addr_trig,
-                          &rx_slot_table[1], 1, false);
+    dma_channel_configure(capture_ctrl_dma_channel, &ctrl_config,
+                          &dma_hw->ch[capture_data_dma_channel].al2_write_addr_trig,
+                          &capture_slot_table[1], 1, false);
 
     saved_interrupts = save_and_disable_interrupts();
-    rx_slot_irqs = 0;
-    rx_tail_words = 0;
-    rx_state = RX_PRIMING;
+    capture_slot_irqs = 0;
+    capture_tail_words = 0;
+    capture_state = CAPTURE_PRIMING;
     restore_interrupts(saved_interrupts);
-    dma_hw->ints0 = 1u << rx_data_ch;
-    dma_channel_set_irq0_enabled(rx_data_ch, true);
+    dma_hw->ints0 = 1u << capture_data_dma_channel;
+    dma_channel_set_irq0_enabled(capture_data_dma_channel, true);
     pio_sm_restart(pio0, 0);
-    pio_sm_exec(pio0, 0, pio_encode_jmp(g_pio_offset));
+    pio_sm_exec(pio0, 0, pio_encode_jmp(g_capture_pio_offset));
     irq_set_enabled(DMA_IRQ_0, true);
-    dma_channel_start(rx_data_ch);
+    dma_channel_start(capture_data_dma_channel);
     pio_sm_set_enabled(pio0, 0, true);
-    i2s_running = true;
+    capture_i2s_running = true;
 }
 
-static void tx_configure(void)
+/* Configure PIO state machine 1 to shift playback words out to the FPGA.
+ * The FPGA still provides BCK and WS; the PIO program synchronizes to them. */
+static void playback_i2s_configure(void)
 {
-    pio_gpio_init(pio0, DDC_I2S_TX_PIN);
-    pio_gpio_init(pio0, DDC_I2S_DATA_PIN);
+    pio_gpio_init(pio0, DDC_I2S_PICO_TO_FPGA_PIN);
+    pio_gpio_init(pio0, DDC_I2S_FPGA_TO_PICO_PIN);
     pio_gpio_init(pio0, DDC_I2S_BCK_PIN);
     pio_gpio_init(pio0, DDC_I2S_WS_PIN);
     gpio_pull_down(DDC_I2S_BCK_PIN);
     gpio_pull_down(DDC_I2S_WS_PIN);
-    pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_DATA_PIN, 3, false);
-    pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_TX_PIN, 1, true);
+    pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_FPGA_TO_PICO_PIN, 3, false);
+    pio_sm_set_consecutive_pindirs(pio0, 1, DDC_I2S_PICO_TO_FPGA_PIN, 1, true);
 
-    pio_sm_config config = i2s_tx_program_get_default_config(g_tx_pio_offset);
-    sm_config_set_in_pins(&config, DDC_I2S_DATA_PIN);
-    sm_config_set_out_pins(&config, DDC_I2S_TX_PIN, 1);
+    pio_sm_config config = i2s_tx_program_get_default_config(g_playback_pio_offset);
+    sm_config_set_in_pins(&config, DDC_I2S_FPGA_TO_PICO_PIN);
+    sm_config_set_out_pins(&config, DDC_I2S_PICO_TO_FPGA_PIN, 1);
     sm_config_set_out_shift(&config, false, true, 32);
     sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_TX);
     sm_config_set_clkdiv(&config, 1.0f);
-    pio_sm_init(pio0, 1, g_tx_pio_offset, &config);
+    pio_sm_init(pio0, 1, g_playback_pio_offset, &config);
 }
 
-static void tx_stop(void)
+/* Stop playback, discard queued buffers, and return the RF path to receive. */
+static void playback_i2s_stop(void)
 {
     uint32_t saved_interrupts = save_and_disable_interrupts();
 
-    if (tx_dma_channel >= 0) {
-        dma_channel_abort(tx_dma_channel);
-        dma_hw->ints0 = 1u << tx_dma_channel;
+    if (playback_dma_channel >= 0) {
+        dma_channel_abort(playback_dma_channel);
+        dma_hw->ints0 = 1u << playback_dma_channel;
     }
     pio_sm_set_enabled(pio0, 1, false);
     pio_sm_clear_fifos(pio0, 1);
-    tx_ready_mask = 0;
-    tx_dma_active = false;
-    tx_dma_silence = false;
-    tx_fill_buffer = 0;
-    tx_fill_words = 0;
-    tx_running = false;
-    tr_set_receive(true);
-    if (!i2s_running) {
+    playback_ready_mask = 0;
+    playback_dma_active = false;
+    playback_dma_silence = false;
+    playback_fill_buffer = 0;
+    playback_fill_words = 0;
+    playback_running = false;
+    set_rf_path_receive(true);
+    if (!capture_i2s_running) {
         irq_set_enabled(DMA_IRQ_0, false);
     }
     restore_interrupts(saved_interrupts);
 }
 
-static void tx_start_next_dma(void)
+/* Start DMA for the next complete playback buffer. If the USB host has not
+ * supplied one yet, transmit a zero-filled buffer to keep I2S clocks flowing. */
+static void playback_start_next_dma(void)
 {
     uint32_t ready;
     uint32_t saved_interrupts;
     uint8_t index;
 
     saved_interrupts = save_and_disable_interrupts();
-    if (!tx_running || tx_dma_active || tx_dma_channel < 0) {
+    if (!playback_running || playback_dma_active || playback_dma_channel < 0) {
         restore_interrupts(saved_interrupts);
         return;
     }
 
-    ready = tx_ready_mask;
-    for (index = 0; index < DDC_TX_BUFFER_COUNT; index++) {
+    ready = playback_ready_mask;
+    for (index = 0; index < DDC_PLAYBACK_BUFFER_COUNT; index++) {
         if (ready & (1u << index)) {
-            tx_dma_buffer = index;
-            tx_dma_silence = false;
-            tx_dma_active = true;
-            dma_channel_configure(tx_dma_channel, &tx_dma_config,
+            playback_dma_buffer = index;
+            playback_dma_silence = false;
+            playback_dma_active = true;
+            dma_channel_configure(playback_dma_channel, &playback_dma_config,
                                   &pio0->txf[1],
-                                  tx_audio_buffers[index],
-                                  words_per_buffer,
+                                  playback_audio_buffers[index],
+                                  i2s_words_per_millisecond,
                                   true);
             restore_interrupts(saved_interrupts);
             return;
         }
     }
 
-    tx_dma_silence = true;
-    tx_dma_active = true;
-    dma_channel_configure(tx_dma_channel, &tx_dma_config,
-                          &pio0->txf[1], tx_silence_buffer,
-                          words_per_buffer, true);
+    playback_dma_silence = true;
+    playback_dma_active = true;
+    dma_channel_configure(playback_dma_channel, &playback_dma_config,
+                          &pio0->txf[1], playback_silence_buffer,
+                          i2s_words_per_millisecond, true);
     restore_interrupts(saved_interrupts);
 }
 
-static void tx_start(void)
+static void playback_i2s_start(void)
 {
-    if (tx_running || !fpga_ready || playback_alt == 0) {
+    if (playback_running || !fpga_ready || playback_alt == 0) {
         return;
     }
 
-    tx_configure();
-    tx_running = true;
+    playback_i2s_configure();
+    playback_running = true;
     irq_set_enabled(DMA_IRQ_0, true);
-    tx_start_next_dma();
+    playback_start_next_dma();
     pio_sm_restart(pio0, 1);
     pio_sm_set_enabled(pio0, 1, true);
-    tr_set_receive(false);
+    set_rf_path_receive(false);
 }
 
-static bool tx_select_fill_buffer(void)
+/* Reserve an unused playback buffer for the USB-to-I2S task. The short
+ * interrupt-disabled section prevents the DMA IRQ from freeing/reusing it
+ * while the main loop checks the ready/active masks. */
+static bool playback_select_fill_buffer(void)
 {
     uint32_t occupied;
     uint32_t saved_interrupts;
     uint8_t offset;
 
-    if (tx_fill_words != 0) {
+    if (playback_fill_words != 0) {
         return true;
     }
 
     saved_interrupts = save_and_disable_interrupts();
-    occupied = tx_ready_mask;
-    if (tx_dma_active && !tx_dma_silence) {
-        occupied |= 1u << tx_dma_buffer;
+    occupied = playback_ready_mask;
+    if (playback_dma_active && !playback_dma_silence) {
+        occupied |= 1u << playback_dma_buffer;
     }
 
-    for (offset = 0; offset < DDC_TX_BUFFER_COUNT; offset++) {
-        uint8_t index = (uint8_t)((tx_fill_buffer + offset) % DDC_TX_BUFFER_COUNT);
+    for (offset = 0; offset < DDC_PLAYBACK_BUFFER_COUNT; offset++) {
+        uint8_t index = (uint8_t)((playback_fill_buffer + offset) % DDC_PLAYBACK_BUFFER_COUNT);
         if ((occupied & (1u << index)) == 0) {
-            tx_fill_buffer = index;
+            playback_fill_buffer = index;
             restore_interrupts(saved_interrupts);
             return true;
         }
@@ -461,26 +532,29 @@ static bool tx_select_fill_buffer(void)
     return false;
 }
 
-static void tx_task(void)
+/* Move complete S24_3LE USB frames into 32-bit I2S words. The 24 sample bits
+ * occupy the most significant bits of each I2S word, matching the FPGA data
+ * format. A finished RAM buffer is handed to the playback DMA path. */
+static void usb_playback_task(void)
 {
     uint8_t packet[582];
 
-    if (!tx_running || !tud_audio_mounted()) {
+    if (!playback_running || !tud_audio_mounted()) {
         return;
     }
 
-    while (tud_audio_available() >= 6u && tx_select_fill_buffer()) {
+    while (tud_audio_available() >= 6u && playback_select_fill_buffer()) {
         uint32_t available_frames = tud_audio_available() / 6u;
-        uint32_t capacity_frames = (words_per_buffer - tx_fill_words) / 2u;
+        uint32_t capacity_frames = (i2s_words_per_millisecond - playback_fill_words) / 2u;
         uint32_t frames = available_frames < capacity_frames
                         ? available_frames : capacity_frames;
         uint16_t bytes;
         uint16_t received;
 
         if (frames == 0) {
-            tx_ready_mask |= 1u << tx_fill_buffer;
-            tx_fill_words = 0;
-            tx_fill_buffer = (uint8_t)((tx_fill_buffer + 1u) % DDC_TX_BUFFER_COUNT);
+            playback_ready_mask |= 1u << playback_fill_buffer;
+            playback_fill_words = 0;
+            playback_fill_buffer = (uint8_t)((playback_fill_buffer + 1u) % DDC_PLAYBACK_BUFFER_COUNT);
             continue;
         }
 
@@ -501,22 +575,24 @@ static void tx_task(void)
                 left = 0;
                 right = 0;
             }
-            tx_audio_buffers[tx_fill_buffer][tx_fill_words++] = left << 8;
-            tx_audio_buffers[tx_fill_buffer][tx_fill_words++] = right << 8;
+            playback_audio_buffers[playback_fill_buffer][playback_fill_words++] = left << 8;
+            playback_audio_buffers[playback_fill_buffer][playback_fill_words++] = right << 8;
         }
 
-        if (tx_fill_words == words_per_buffer) {
+        if (playback_fill_words == i2s_words_per_millisecond) {
             uint32_t saved_interrupts = save_and_disable_interrupts();
-            tx_ready_mask |= 1u << tx_fill_buffer;
+            playback_ready_mask |= 1u << playback_fill_buffer;
             restore_interrupts(saved_interrupts);
-            tx_fill_words = 0;
-            tx_fill_buffer = (uint8_t)((tx_fill_buffer + 1u) % DDC_TX_BUFFER_COUNT);
+            playback_fill_words = 0;
+            playback_fill_buffer = (uint8_t)((playback_fill_buffer + 1u) % DDC_PLAYBACK_BUFFER_COUNT);
         }
     }
 
-    tx_start_next_dma();
+    playback_start_next_dma();
 }
 
+/* Release the runtime SPI bus used for FPGA commands. This is separate from
+ * the CRAM programming path used when loading a complete bitstream. */
 static void runtime_spi_stop(void)
 {
     if (!runtime_spi_ready) {
@@ -528,6 +604,8 @@ static void runtime_spi_stop(void)
     runtime_spi_ready = false;
 }
 
+/* Initialize the pico-ice-sdk SPI bus described by FPGA_DATA. The project
+ * sends runtime commands over this bus after the FPGA has been configured. */
 static bool fpga_runtime_init(void)
 {
     if (runtime_spi_ready) {
@@ -541,6 +619,8 @@ static bool fpga_runtime_init(void)
     return runtime_spi_ready;
 }
 
+/* Encode and send one DDC protocol command. The SPI helpers here come from
+ * pico-ice-sdk; ddc_make_u32_command() defines this project's wire format. */
 static bool fpga_write_command(uint8_t command, uint32_t value)
 {
     uint8_t frame[DDC_FPGA_FRAME_HEADER_LEN + 4u];
@@ -556,11 +636,13 @@ static bool fpga_write_command(uint8_t command, uint32_t value)
     return true;
 }
 
+/* The FPGA uses this command to change its generated I2S sample rate. */
 static bool fpga_set_sample_rate(uint32_t rate)
 {
     return fpga_write_command(DDC_FPGA_CMD_SET_SAMPLE_RATE, rate);
 }
 
+/* Convert hertz to the FPGA's NCO tuning word, then send it over SPI. */
 static bool fpga_set_frequency(uint32_t frequency_hz)
 {
     if (frequency_hz == 0 || frequency_hz > DDC_FPGA_MAX_FREQUENCY_HZ) {
@@ -570,6 +652,7 @@ static bool fpga_set_frequency(uint32_t frequency_hz)
                               ddc_frequency_to_fcw(frequency_hz));
 }
 
+/* Initialize the attenuator GPIOs and reset the AGC state machine. */
 static void pga_configure(void)
 {
     ddc_agc_init(&agc_state);
@@ -582,6 +665,8 @@ static void pga_configure(void)
     pga_set_code(agc_state.pga_code);
 }
 
+/* Configure the FPGA interrupt pin. The callback only sets a pending flag;
+ * handle_fpga_interrupt() performs the slower SPI work later. */
 static void fpga_interrupt_configure(void)
 {
     gpio_init(DDC_FPGA_INT_PIN);
@@ -593,6 +678,9 @@ static void fpga_interrupt_configure(void)
                                         fpga_interrupt_handler);
 }
 
+/* Program the FPGA's configuration RAM (CRAM) from a byte array. ice_fpga_*
+ * and ice_cram_* are pico-ice-sdk helpers; false means opening, writing, or
+ * closing the programming interface failed. */
 static bool configure_fpga_bitstream(const uint8_t *bitstream, size_t size)
 {
     ice_fpga_init(FPGA_DATA, 48);
@@ -607,6 +695,8 @@ static bool configure_fpga_bitstream(const uint8_t *bitstream, size_t size)
     return ice_cram_close();
 }
 
+/* Load one image embedded by CMake. This avoids a separate file transfer at
+ * boot; DFU remains available for replacing or reloading the FPGA image. */
 static bool configure_stored_fpga(ddc_fpga_image_t image)
 {
     ddc_fpga_bitstream_t bitstream;
@@ -617,6 +707,8 @@ static bool configure_stored_fpga(ddc_fpga_image_t image)
     return configure_fpga_bitstream(bitstream.data, bitstream.size);
 }
 
+/* Reinitialize runtime SPI after FPGA programming, mark the FPGA usable, and
+ * restore whichever I2S streams are currently selected by USB. */
 static bool restore_fpga_runtime(void)
 {
     if (!fpga_runtime_init()) {
@@ -625,11 +717,14 @@ static bool restore_fpga_runtime(void)
 
     fpga_ready = true;
     fpga_set_sample_rate(sample_rate);
-    i2s_start();
-    tx_start();
+    capture_i2s_start();
+    playback_i2s_start();
     return true;
 }
 
+/* Apply a supported USB-selected rate to the FPGA and update DMA slot sizes.
+ * Active streams are stopped before the rate change and restarted afterward
+ * so their PIO/DMA transfer counts match the new rate. */
 static bool apply_sample_rate(uint32_t rate)
 {
     bool was_running;
@@ -645,49 +740,52 @@ static bool apply_sample_rate(uint32_t rate)
         return true;
     }
 
-    was_running = i2s_running;
-    was_tx_running = tx_running;
+    was_running = capture_i2s_running;
+    was_tx_running = playback_running;
     if (was_running) {
-        i2s_stop();
+        capture_i2s_stop();
     }
     if (was_tx_running) {
-        tx_stop();
+        playback_i2s_stop();
     }
     if (!fpga_set_sample_rate(rate)) {
         if (was_running) {
-            i2s_start();
+            capture_i2s_start();
         }
         if (was_tx_running) {
-            tx_start();
+            playback_i2s_start();
         }
         return false;
     }
 
     sample_rate = rate;
-    words_per_buffer = rate == 96000u ? 192u : 96u;
+    i2s_words_per_millisecond = rate == 96000u ? 192u : 96u;
     if (was_running) {
-        i2s_start();
+        capture_i2s_start();
     }
     if (was_tx_running) {
-        tx_start();
+        playback_i2s_start();
     }
     return true;
 }
 
+/* pico-ice-sdk calls this before DFU changes the FPGA image. Stop all users of
+ * the FPGA and SPI bus while its configuration is being replaced. */
 static bool prepare_fpga_update(void)
 {
     if (update_prepared) {
         return true;
     }
 
-    i2s_stop();
-    tx_stop();
+    capture_i2s_stop();
+    playback_i2s_stop();
     runtime_spi_stop();
     fpga_ready = false;
     update_prepared = true;
     return true;
 }
 
+/* DFU completion callback: restart runtime access after an update attempt. */
 static void complete_fpga_update(bool success)
 {
     update_prepared = false;
@@ -700,6 +798,7 @@ static void complete_fpga_update(bool success)
     active_fpga_image = DDC_FPGA_IMAGE_DFU;
 }
 
+/* Resume the current FPGA image if a prepared DFU operation is cancelled. */
 static bool cancel_fpga_update(void)
 {
     if (!update_prepared) {
@@ -716,6 +815,7 @@ static bool cancel_fpga_update(void)
     return true;
 }
 
+/* CDC helper for switching to one of the bitstreams embedded in the firmware. */
 static bool switch_stored_fpga(ddc_fpga_image_t image)
 {
     bool success;
@@ -737,95 +837,122 @@ static bool switch_stored_fpga(ddc_fpga_image_t image)
     return success && fpga_ready;
 }
 
-/* Words written by the RX DMA since start. The slot IRQ counter gives the
- * lap; write_addr gives the position. Both are combined modulo the ring so the
- * result stays exact however long the main loop was stalled. */
-static uint32_t rx_head_words(uint32_t *ring_pos)
+/* Return the number of words DMA has written since capture started.
+ *
+ * A DMA address alone wraps every time the ring wraps, so capture_slot_irqs counts
+ * completed slots while the hardware write_addr identifies the current word.
+ * The second IRQ-counter read detects a slot interrupt arriving during this
+ * snapshot; retrying avoids combining an address from one lap with a count
+ * from another. ring_pos is the corresponding physical word index in capture_ring.
+ */
+static uint32_t capture_head_words(uint32_t *ring_pos)
 {
     uint32_t slots;
     uint32_t slots_again;
     uint32_t address;
     uint32_t offset;
-    uint32_t slot_words = words_per_buffer;
-    uint32_t ring_words = DDC_RX_SLOTS * slot_words;
+    uint32_t slot_words = i2s_words_per_millisecond;
+    uint32_t ring_words = DDC_CAPTURE_RING_SLOTS * slot_words;
 
     do {
-        slots = rx_slot_irqs;
-        address = dma_hw->ch[rx_data_ch].write_addr;
-        slots_again = rx_slot_irqs;
+        slots = capture_slot_irqs;
+        address = dma_hw->ch[capture_data_dma_channel].write_addr;
+        slots_again = capture_slot_irqs;
     } while (slots != slots_again);
 
-    offset = (address - (uint32_t)rx_ring) >> 2;
+    offset = (address - (uint32_t)capture_ring) >> 2;
     *ring_pos = offset % ring_words;
     return slots * slot_words +
-           (offset + ring_words - (slots % DDC_RX_SLOTS) * slot_words) %
+           (offset + ring_words - (slots % DDC_CAPTURE_RING_SLOTS) * slot_words) %
                ring_words;
 }
 
-static void rx_note_occupancy(uint32_t frames)
+static void capture_note_occupancy(uint32_t frames)
 {
-    if (frames < rx_min_occupancy) {
-        rx_min_occupancy = frames;
+    if (frames < capture_min_occupancy) {
+        capture_min_occupancy = frames;
     }
-    if (frames > rx_max_occupancy) {
-        rx_max_occupancy = frames;
+    if (frames > capture_max_occupancy) {
+        capture_max_occupancy = frames;
     }
 }
 
-static void audio_fill_in_packet(void)
+/* Prepare one USB capture packet from the FPGA-to-Pico I2S ring.
+ *
+ * TinyUSB sends the bytes currently in its audio IN FIFO. This function
+ * therefore writes exactly one packet (47/48/49 stereo frames at 48 kHz),
+ * which TinyUSB will consume on the next endpoint transfer. Samples arrive
+ * from PIO as 32-bit words with the 24-bit value in bits 31..8; the loop below
+ * strips the padding and writes the three sample bytes in little-endian order.
+ */
+static void capture_fill_usb_in_packet(void)
 {
-    static uint8_t packed[(DDC_MAX_WORDS_PER_BUFFER / 2u + 1u) * 6u];
-    uint32_t nominal = words_per_buffer / 2u;
+    /* At 96 kHz the largest packet is 97 frames; each stereo frame is 6 bytes. */
+    static uint8_t packed[(DDC_MAX_I2S_WORDS_PER_MILLISECOND / 2u + 1u) * 6u];
+    uint32_t nominal = i2s_words_per_millisecond / 2u;
     uint32_t target = audio_rate_target_frames(nominal);
     uint32_t frames = nominal;
     bool silence = true;
     tu_fifo_t *fifo;
 
+    /* This FIFO is TinyUSB's software queue for endpoint 0x81. If an earlier
+     * packet was not fully consumed, discard it rather than combine two
+     * independently sized packets into one USB frame. */
     fifo = tud_audio_get_ep_in_ff();
     if (fifo == NULL) {
         return;
     }
     if (tu_fifo_count(fifo) != 0) {
         tu_fifo_clear(fifo);
-        rx_fifo_stale++;
+        capture_fifo_stale++;
     }
 
-    if (i2s_running && rx_state != RX_IDLE) {
+    if (capture_i2s_running && capture_state != CAPTURE_IDLE) {
         uint32_t ring_pos;
-        uint32_t head = rx_head_words(&ring_pos) & ~1u;
-        uint32_t occupancy = (head - rx_tail_words) >> 1;
-        uint32_t ring_words = DDC_RX_SLOTS * words_per_buffer;
+        uint32_t head = capture_head_words(&ring_pos) & ~1u;
+        /* Convert word counts to stereo-frame counts; both channel words must
+         * be present before a frame can be sent. */
+        uint32_t occupancy = (head - capture_tail_words) >> 1;
+        uint32_t ring_words = DDC_CAPTURE_RING_SLOTS * i2s_words_per_millisecond;
 
         ring_pos &= ~1u;
-        if (rx_state == RX_PRIMING && occupancy >= target) {
-            rx_tail_words = head - 2u * target;
+        /* Begin at half-full. If the consumer lagged badly, drop the oldest
+         * buffered audio and restore the target while preserving channel
+         * alignment. */
+        if (capture_state == CAPTURE_PRIMING && occupancy >= target) {
+            capture_tail_words = head - 2u * target;
             occupancy = target;
-            rx_state = RX_RUNNING;
-        } else if (rx_state == RX_RUNNING && occupancy > 3u * nominal) {
-            rx_tail_words = head - 2u * target;
+            capture_state = CAPTURE_RUNNING;
+        } else if (capture_state == CAPTURE_RUNNING && occupancy > 3u * nominal) {
+            capture_tail_words = head - 2u * target;
             occupancy = target;
-            rx_overruns++;
+            capture_overruns++;
         }
 
-        if (rx_state == RX_RUNNING) {
+        if (capture_state == CAPTURE_RUNNING) {
             frames = audio_rate_pick(occupancy, nominal);
             if (occupancy < frames) {
-                rx_underruns++;
-                rx_state = RX_PRIMING;
+                /* Do not read incomplete DMA data. Send silence and wait for
+                 * the ring to refill to the priming level. */
+                capture_underruns++;
+                capture_state = CAPTURE_PRIMING;
                 frames = nominal;
             } else {
+                /* tail is an absolute word count; subtracting it from head
+                 * gives the unread region's length. Apply the same distance
+                 * to the physical ring position to find its oldest frame. */
                 uint32_t position =
-                    (ring_pos + ring_words - (head - rx_tail_words) % ring_words) %
+                    (ring_pos + ring_words - (head - capture_tail_words) % ring_words) %
                     ring_words;
 
-                rx_note_occupancy(occupancy);
+                capture_note_occupancy(occupancy);
                 if (frames > nominal) {
-                    rx_packets_long++;
+                    capture_packets_long++;
                 } else if (frames < nominal) {
-                    rx_packets_short++;
+                    capture_packets_short++;
                 }
                 for (uint32_t index = 0; index < frames * 2u; index++) {
-                    uint32_t word = rx_ring[position];
+                    uint32_t word = capture_ring[position];
 
                     packed[3u * index] = (uint8_t)(word >> 8);
                     packed[3u * index + 1u] = (uint8_t)(word >> 16);
@@ -834,7 +961,7 @@ static void audio_fill_in_packet(void)
                         position = 0;
                     }
                 }
-                rx_tail_words += frames * 2u;
+                capture_tail_words += frames * 2u;
                 silence = false;
             }
         }
@@ -850,12 +977,17 @@ bool tud_audio_tx_done_isr(uint8_t rhport, uint16_t n_bytes_sent,
                            uint8_t func_id, uint8_t ep_in,
                            uint8_t cur_alt_setting)
 {
+    /* TinyUSB's "tx" here means sending USB IN data to the host: this is
+     * the USB capture stream, not FPGA SDR transmit or USB playback. */
+    /* TinyUSB calls this from its isochronous IN completion path. It has
+     * already queued the next packet, so filling now prepares the following
+     * frame. The first packet is primed in tud_audio_set_itf_cb() below. */
     (void)rhport;
     (void)n_bytes_sent;
     (void)func_id;
     (void)ep_in;
     (void)cur_alt_setting;
-    audio_fill_in_packet();
+    capture_fill_usb_in_packet();
     return true;
 }
 
@@ -866,6 +998,7 @@ bool tud_audio_set_itf_cb(uint8_t rhport,
                           tusb_control_request_t const *request)
 {
     static const uint32_t rates[] = {0u, 48000u, 96000u};
+    /* UAC Set Interface selects alt 0 (off), 1 (48 kHz), or 2 (96 kHz). */
     uint8_t alt = (uint8_t)(request->wValue & 0xffu);
     uint8_t interface = (uint8_t)(request->wIndex & 0xffu);
 
@@ -884,34 +1017,39 @@ bool tud_audio_set_itf_cb(uint8_t rhport,
     if (interface == DDC_AUDIO_CAPTURE_INTERFACE) {
         capture_alt = alt;
         if (alt == 0u) {
-            i2s_stop();
+            capture_i2s_stop();
             return true;
         }
         audio_requested_rate = rates[alt];
         if (!apply_sample_rate(audio_requested_rate)) {
             capture_alt = 0;
-            i2s_stop();
+            capture_i2s_stop();
             return false;
         }
-        i2s_start();
-        audio_fill_in_packet();
+        capture_i2s_start();
+        /* TinyUSB queues an initial zero-length transfer before this callback.
+         * Preload the FIFO so its completion schedules an audio packet rather
+         * than another empty packet. */
+        capture_fill_usb_in_packet();
     } else {
         playback_alt = alt;
         if (alt == 0u) {
-            tx_stop();
+            playback_i2s_stop();
             return true;
         }
         audio_requested_rate = rates[alt];
         if (!apply_sample_rate(audio_requested_rate)) {
             playback_alt = 0;
-            tx_stop();
+            playback_i2s_stop();
             return false;
         }
-        tx_start();
+        playback_i2s_start();
     }
     return true;
 }
 
+/* Dispatch one complete CDC command line. Replies use cdc_write(), which
+ * queues text on TinyUSB's CDC interface. */
 static void handle_line(const char *line, uint8_t length)
 {
     char reply[160];
@@ -942,24 +1080,24 @@ static void handle_line(const char *line, uint8_t length)
         snprintf(reply, sizeof(reply),
                  "AUDIO,under=%lu,over=%lu,short=%lu,long=%lu,stale=%lu,"
                  "occ=%lu..%lu\r\nOK\r\n",
-                 (unsigned long)rx_underruns, (unsigned long)rx_overruns,
-                 (unsigned long)rx_packets_short,
-                 (unsigned long)rx_packets_long,
-                 (unsigned long)rx_fifo_stale,
-                 (unsigned long)(rx_min_occupancy == UINT32_MAX
-                                     ? 0u : rx_min_occupancy),
-                 (unsigned long)rx_max_occupancy);
+                 (unsigned long)capture_underruns, (unsigned long)capture_overruns,
+                 (unsigned long)capture_packets_short,
+                 (unsigned long)capture_packets_long,
+                 (unsigned long)capture_fifo_stale,
+                 (unsigned long)(capture_min_occupancy == UINT32_MAX
+                                     ? 0u : capture_min_occupancy),
+                 (unsigned long)capture_max_occupancy);
         cdc_write(reply);
         return;
     }
     if (strcmp(line, "FPGA,LOAD,RX") == 0) {
-        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_RX)
+        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_SDR_RX)
                       ? "FPGA,RX\r\nOK\r\n"
                       : "ERROR,RX image unavailable\r\n");
         return;
     }
     if (strcmp(line, "FPGA,LOAD,TX") == 0) {
-        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_TX)
+        cdc_write(switch_stored_fpga(DDC_FPGA_IMAGE_SDR_TX)
                       ? "FPGA,TX\r\nOK\r\n"
                       : "ERROR,TX image unavailable\r\n");
         return;
@@ -1072,6 +1210,8 @@ static void handle_line(const char *line, uint8_t length)
     cdc_write("ERR\r\n");
 }
 
+/* Poll the CDC receive FIFO and assemble CR- or LF-terminated commands. This
+ * is called from the main loop, not from a per-byte USB interrupt callback. */
 static void cdc_task(void)
 {
     while (tud_cdc_available()) {
@@ -1099,6 +1239,8 @@ static void cdc_task(void)
     }
 }
 
+/* TinyUSB calls this when the host opens/closes the virtual serial port.
+ * DTR is the host's "terminal is connected" signal. */
 void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
 {
     (void)itf;
@@ -1116,11 +1258,13 @@ void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
 void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding)
 {
     (void)itf;
+    /* A 1200-baud open is the common host convention for requesting BOOTSEL. */
     if (p_line_coding->bit_rate == 1200) {
         reset_usb_boot(0, 0);
     }
 }
 
+/* CDC bytes are polled by cdc_task(); this notification needs no work. */
 void tud_cdc_rx_cb(uint8_t itf)
 {
     (void)itf;
@@ -1130,10 +1274,11 @@ bool tud_audio_set_itf_close_ep_cb(uint8_t rhport,
                                    tusb_control_request_t const *request)
 {
     (void)rhport;
+    /* TinyUSB calls this when it closes the old alternate setting's endpoint. */
     if ((request->wIndex & 0xffu) == DDC_AUDIO_CAPTURE_INTERFACE) {
-        i2s_stop();
+        capture_i2s_stop();
     } else if ((request->wIndex & 0xffu) == DDC_AUDIO_PLAYBACK_INTERFACE) {
-        tx_stop();
+        playback_i2s_stop();
     }
     return true;
 }
@@ -1143,6 +1288,8 @@ bool tud_audio_set_req_ep_cb(uint8_t rhport,
                              uint8_t *buffer)
 {
     (void)rhport;
+    /* The host sends sample frequency as three little-endian bytes. Save it;
+     * the Set Interface callback applies the actual supported rate. */
     if ((request->wValue >> 8) == AUDIO10_EP_CTRL_SAMPLING_FREQ) {
         audio_requested_rate = (uint32_t)buffer[0]
                              | ((uint32_t)buffer[1] << 8)
@@ -1162,10 +1309,14 @@ bool tud_audio_get_req_ep_cb(uint8_t rhport,
     frequency[0] = (uint8_t)audio_requested_rate;
     frequency[1] = (uint8_t)(audio_requested_rate >> 8);
     frequency[2] = (uint8_t)(audio_requested_rate >> 16);
+    /* TinyUSB requires control replies to be copied into a scheduled EP0
+     * transfer; this helper owns that buffer until the control transfer ends. */
     return tud_audio_buffer_and_schedule_control_xfer(rhport, request,
                                                         frequency, sizeof(frequency));
 }
 
+/* UAC1 feature-unit controls carry a channel number and control selector in
+ * wValue. Channel 0 is master; channels 1 and 2 are left and right. */
 bool tud_audio_set_req_entity_cb(uint8_t rhport,
                                  tusb_control_request_t const *request,
                                  uint8_t *buffer)
@@ -1197,13 +1348,15 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport,
 
 int main(void)
 {
+    /* Initialize the Pico SDK board support, then set the board's RF routing
+     * and status GPIOs to safe defaults. */
     board_init();
     gpio_init(25);
     gpio_set_dir(25, GPIO_OUT);
     gpio_put(25, 1);
     gpio_init(DDC_TR_PIN);
     gpio_set_dir(DDC_TR_PIN, GPIO_OUT);
-    tr_set_receive(true);
+    set_rf_path_receive(true);
     gpio_init(DDC_REF_PIN);
     gpio_set_dir(DDC_REF_PIN, GPIO_OUT);
     gpio_put(DDC_REF_PIN, 0);
@@ -1221,33 +1374,41 @@ int main(void)
     gpio_set_dir(21, GPIO_IN);
     gpio_pull_up(21);
 
+    /* Set the RP2040 core voltage before raising its system clock to 125 MHz. */
     vreg_set_voltage(VREG_VOLTAGE_1_20);
     set_sys_clock_khz(125000, true);
 
-    g_pio_offset = pio_add_program(pio0, &i2s_rx_program);
-    g_tx_pio_offset = pio_add_program(pio0, &i2s_tx_program);
+    /* Load the PIO programs into PIO0 instruction memory. The returned offsets
+     * identify where their instructions start; state machines use them below. */
+    g_capture_pio_offset = pio_add_program(pio0, &i2s_rx_program);
+    g_playback_pio_offset = pio_add_program(pio0, &i2s_tx_program);
     pga_configure();
     fpga_interrupt_configure();
-    rx_data_ch = dma_claim_unused_channel(true);
-    rx_ctrl_ch = dma_claim_unused_channel(true);
-    tx_dma_channel = dma_claim_unused_channel(true);
-    tx_dma_config = dma_channel_get_default_config(tx_dma_channel);
-    channel_config_set_transfer_data_size(&tx_dma_config, DMA_SIZE_32);
-    channel_config_set_read_increment(&tx_dma_config, true);
-    channel_config_set_write_increment(&tx_dma_config, false);
-    channel_config_set_dreq(&tx_dma_config, pio_get_dreq(pio0, 1, true));
-    dma_channel_configure(tx_dma_channel, &tx_dma_config, &pio0->txf[1],
-                          tx_audio_buffers[0], words_per_buffer, false);
-    dma_channel_set_irq0_enabled(tx_dma_channel, true);
+    /* Claim DMA channels from the Pico SDK so they cannot collide with other
+     * users: capture data, capture address reload, and playback data. */
+    capture_data_dma_channel = dma_claim_unused_channel(true);
+    capture_ctrl_dma_channel = dma_claim_unused_channel(true);
+    playback_dma_channel = dma_claim_unused_channel(true);
+    playback_dma_config = dma_channel_get_default_config(playback_dma_channel);
+    channel_config_set_transfer_data_size(&playback_dma_config, DMA_SIZE_32);
+    channel_config_set_read_increment(&playback_dma_config, true);
+    channel_config_set_write_increment(&playback_dma_config, false);
+    channel_config_set_dreq(&playback_dma_config, pio_get_dreq(pio0, 1, true));
+    dma_channel_configure(playback_dma_channel, &playback_dma_config, &pio0->txf[1],
+                          playback_audio_buffers[0], i2s_words_per_millisecond, false);
+    /* The common handler acknowledges capture and playback DMA completion. */
+    dma_channel_set_irq0_enabled(playback_dma_channel, true);
     irq_set_exclusive_handler(DMA_IRQ_0, dma_handler);
 
 #ifdef DDC_FPGA_BOOT_FROM_STORED
 #ifdef DDC_DEFAULT_FPGA_TX
-    active_fpga_image = DDC_FPGA_IMAGE_TX;
+    active_fpga_image = DDC_FPGA_IMAGE_SDR_TX;
 #else
-    active_fpga_image = DDC_FPGA_IMAGE_RX;
+    active_fpga_image = DDC_FPGA_IMAGE_SDR_RX;
 #endif
     fpga_ready = false;
+    /* Configure the FPGA before USB starts. Retry because CRAM programming
+     * can fail transiently during board power-up. */
     for (int retry = 0; retry < 5; retry++) {
         gpio_put(22, 0);
         sleep_ms(10);
@@ -1270,14 +1431,18 @@ int main(void)
     active_fpga_image = DDC_FPGA_IMAGE_DFU;
 #endif
 
+    /* Register pico-ice-sdk hooks so its TinyUSB DFU interface can stop and
+     * restart the FPGA runtime around an image update. */
     ice_usb_set_dfu_callbacks(prepare_fpga_update, complete_fpga_update);
     ice_usb_init();
 
+    /* TinyUSB's device stack is cooperative: tud_task() processes queued USB
+     * events; the following calls handle application data and commands. */
     while (true) {
-        tud_task();
-        cdc_task();
+        tud_task();  /* Handle USB control and endpoint events. */
+        cdc_task();  /* Parse commands received on the virtual serial port. */
         // handle_fpga_interrupt();
         // agc_task();
-        tx_task();
+        usb_playback_task();   /* Move USB playback samples to Pico-to-FPGA I2S. */
     }
 }

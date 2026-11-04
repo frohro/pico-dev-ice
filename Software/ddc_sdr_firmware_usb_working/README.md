@@ -5,6 +5,21 @@ PCM1808 implementation. The FPGA replaces the Si5351a LO, Tayloe detector, and P
 receives the FPGA's I/Q stream as PCM1808-compatible I2S and exposes the same
 UAC1 stereo 24-bit capture format to SDR++ or Quisk.
 
+For the current USB/audio investigation and remote-debugging handoff, see
+[USB debugging notes](USB_DEBUGGING_NOTES.md).
+
+## Audio direction terminology
+
+- **FPGA SDR RX/TX** means the FPGA's RF operating mode or gateware image.
+  The existing `FPGA,LOAD,RX/TX` CDC commands and `RX`/`TX` status strings keep
+  this meaning.
+- **USB capture** sends samples from the Pico to the host on the USB Audio IN
+  endpoint. **USB playback** sends samples from the host to the Pico on the
+  USB Audio OUT endpoint.
+- **Pico I2S capture input** receives the FPGA's baseband data on GPIO 14.
+  **Pico I2S playback output** sends data to the FPGA on GPIO 13. The FPGA
+  supplies the shared bit and word clocks.
+
 ## Dev-iCE Pico pins
 
 | Signal | GPIO | Direction | Notes |
@@ -13,16 +28,16 @@ UAC1 stereo 24-bit capture format to SDR++ or Quisk.
 | FPGA SPI0 CS | 5 | Pico output | Shared CS for boot CRAM and runtime SPI |
 | FPGA SPI0 SCK | 6 | Pico output | 10 MHz runtime SPI clock |
 | FPGA SPI0 MOSI | 7 | Pico output | Runtime command frames to FPGA |
-| FPGA I2S RX_DATA | 14 | Pico input | Baseband SDR I/Q audio from FPGA (Pin 11) |
-| FPGA I2S BCK | 15 | Pico input | 3.072 MHz Bit Clock from FPGA (Pin 12) |
-| FPGA I2S WS | 16 | Pico input | 48 kHz Word Select / LRCLK from FPGA (Pin 9) |
-| FPGA I2S TX_DATA | 13 | Pico output | Transmit audio to FPGA (Pin 10) |
+| FPGA I2S data to Pico | 14 | Pico input | Baseband SDR I/Q; USB capture source (FPGA pin 11) |
+| FPGA I2S bit clock | 15 | Pico input | 3.072 MHz BCK from FPGA (pin 12) |
+| FPGA I2S word clock | 16 | Pico input | 48 kHz WS/LRCLK from FPGA (pin 9) |
+| Pico I2S playback data to FPGA | 13 | Pico output | USB playback destination (FPGA pin 10) |
 | FPGA interrupt | 0 | Pico input | Active-high OTR clipping notification |
 | PGA control mask | 8..11 | Pico outputs | PGA0..PGA3 digital step attenuators |
 | FPGA CDONE | 21 | Pico input | HIGH when FPGA CRAM boot is complete |
 | FPGA CRESET | 22 | Pico output | Active-low FPGA hardware reset |
 | REF Multiplexer | 26 | Pico output | **0 = SDR RF Antenna RX**, 1 = VNA Input |
-| T/R Switch | 28 | Pico output | **1 = RX Mode**, 0 = TX Mode |
+| T/R Switch | 28 | Pico output | **1 = RF receive path**, 0 = RF transmit path |
 | Onboard Pico LED | 25 | Pico output | Toggles on FREQ and RATE tuning activity |
 | 30.720 MHz clock | FPGA pin 37 | External oscillator | Master DSP clock reference |
 
@@ -78,9 +93,9 @@ with support for both `\r` (CR) and `\n` (LF) line endings, backspace (`0x08` / 
 | `VER` | `VER,DDC SDR 0.1` / `OK` | Reports firmware version |
 | `MODE` | `MODE,DDC` / `OK` | Reports SDR architecture mode (`DDC`) |
 | `XTAL` | `XTAL,30720000` / `OK` | Reports master clock frequency in Hz |
-| `FPGA,STATUS` | `FPGA,RX` / `OK` | Reports currently active FPGA image (`RX`, `TX`, or `DFU`) |
-| `FPGA,LOAD,RX` | `FPGA,RX` / `OK` | Reconfigures FPGA CRAM with stored RX image |
-| `FPGA,LOAD,TX` | `FPGA,TX` / `OK` | Reconfigures FPGA CRAM with stored TX image |
+| `FPGA,STATUS` | `FPGA,RX` / `OK` | Reports active FPGA SDR RF image (`RX`, `TX`, or `DFU`) |
+| `FPGA,LOAD,RX` | `FPGA,RX` / `OK` | Reconfigures FPGA CRAM with the stored SDR RF receive image |
+| `FPGA,LOAD,TX` | `FPGA,TX` / `OK` | Reconfigures FPGA CRAM with the stored SDR RF transmit image |
 | `FREQ,<hz>` | `<hz>` / `OK` | Sets NCO tuning frequency in Hz (calculates 32-bit FCW) |
 | `RATE,<hz>` | `RATE,<hz> OK` | Sets baseband audio sample rate in Hz (e.g. 48000) |
 | `REF` | `REF,<0\|1>` / `OK` | Queries front-end RF multiplexer (`0` = SDR RF RX, `1` = VNA) |
@@ -94,7 +109,7 @@ with support for both `\r` (CR) and `\n` (LF) line endings, backspace (`0x08` / 
 
 ## Capture audio buffering
 
-I2S RX data is DMA'd into a 4-slot ring (4 ms). A data channel fills one 1 ms slot and
+Pico I2S capture input is DMA'd into a 4-slot ring (4 ms). A data channel fills one 1 ms slot and
 chains to a control channel that loads the next slot address; a slot-completion IRQ tracks
 ring laps. At Set Interface, the firmware preloads one packet after TinyUSB schedules its
 initial zero-length transfer. After each audio transfer, `tud_audio_tx_done_isr()` reads
@@ -128,8 +143,8 @@ cmake -S Software/ddc_sdr_firmware -B Software/ddc_sdr_firmware/build-embedded \
 cmake --build Software/ddc_sdr_firmware/build-embedded -j2
 ```
 
-To store separate RX and TX images in the Pico firmware and boot into TX by
-default, use:
+To store separate FPGA SDR receive (RX) and transmit (TX) images in the Pico
+firmware and boot into the SDR transmit image by default, use:
 
 ```sh
 cmake -S Software/ddc_sdr_firmware -B Software/ddc_sdr_firmware/build-stored \
@@ -142,10 +157,10 @@ cmake --build Software/ddc_sdr_firmware/build-stored -j2
 
 `FPGA_BOOT_MODE=DFU` builds the development behavior: the Pico does not load
 an image at reset and waits for `dfu-util`. `FPGA_BOOT_MODE=STORED` loads the
-selected embedded image at every reset. `FPGA_DEFAULT_IMAGE` chooses RX or TX
-when both images are present. The stored images are generated as separate C
-arrays, so the same firmware can switch between them without reflashing the
-Pico.
+selected embedded image at every reset. `FPGA_DEFAULT_IMAGE` chooses the SDR
+receive (RX) or transmit (TX) image when both are present. The stored images
+are generated as separate C arrays, so the same firmware can switch between
+them without reflashing the Pico.
 
 The `.uf2` flashes the RP2040. Dev-iCE has no FPGA configuration flash, so
 FPGA CRAM is volatile and must be loaded again after reset or power loss.

@@ -27,6 +27,8 @@ extern "C" {
 #define CFG_TUD_AUDIO_ENABLE_EP_IN 1
 #define CFG_TUD_AUDIO_FUNC_1_EP_IN_SZ_MAX 582
 #define CFG_TUD_AUDIO_FUNC_1_EP_IN_SW_BUF_SZ 4656
+/* The capture ring already chooses the packet size from its own occupancy. */
+#define CFG_TUD_AUDIO_EP_IN_FLOW_CONTROL 0
 #define CFG_TUD_AUDIO_ENABLE_EP_OUT 1
 #define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SZ_MAX 582
 #define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SW_BUF_SZ 4656
