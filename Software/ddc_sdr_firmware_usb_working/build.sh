@@ -5,6 +5,34 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_DIR="${SCRIPT_DIR}/build"
 
 export PICO_SDK_PATH="${PICO_SDK_PATH:-/home/frohro/Projects/pico-sdk}"
+export PICO_ICE_SDK_PATH="${PICO_ICE_SDK_PATH:-${SCRIPT_DIR}/../pico-ice-sdk}"
+
+# If arm-none-eabi-gcc is not in PATH, check common local toolchain locations
+if ! command -v arm-none-eabi-gcc >/dev/null 2>&1; then
+    if [ -d "${HOME}/.bin/arm-gnu-toolchain/bin" ]; then
+        export PICO_TOOLCHAIN_PATH="${PICO_TOOLCHAIN_PATH:-${HOME}/.bin/arm-gnu-toolchain/bin}"
+        export PATH="${HOME}/.bin/arm-gnu-toolchain/bin:${HOME}/.bin:${PATH}"
+    elif [ -x "${HOME}/.bin/arm-none-eabi-gcc" ]; then
+        export PATH="${HOME}/.bin:${PATH}"
+    fi
+fi
+
+# Ensure pico-ice-sdk submodules (like tinyuf2) are initialized
+if [ -d "${PICO_ICE_SDK_PATH}/.git" ] || [ -f "${PICO_ICE_SDK_PATH}/.git" ]; then
+    if [ ! -f "${PICO_ICE_SDK_PATH}/lib/tinyuf2/src/uf2.h" ]; then
+        echo "Initializing pico-ice-sdk tinyuf2 submodule..."
+        git -C "${PICO_ICE_SDK_PATH}" submodule update --init --recursive lib/tinyuf2 || true
+    fi
+fi
+
+# If the folder was moved or renamed, clear stale CMake cache
+if [ -f "${BUILD_DIR}/CMakeCache.txt" ]; then
+    cached_source_dir=$(grep "^CMAKE_HOME_DIRECTORY:INTERNAL=" "${BUILD_DIR}/CMakeCache.txt" 2>/dev/null | cut -d= -f2 || true)
+    if [ -n "${cached_source_dir}" ] && [ "${cached_source_dir}" != "${SCRIPT_DIR}" ]; then
+        echo "Detected moved/renamed directory. Clearing stale CMake cache..."
+        rm -rf "${BUILD_DIR}/CMakeCache.txt" "${BUILD_DIR}/CMakeFiles"
+    fi
+fi
 
 mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
