@@ -163,7 +163,7 @@ isolate which board-level difference matters.
 ### User measurements and school test
 
 The user measured approximately 3.19 V on the YD-RP2040 and 3.30 V on the
-Pico W. Connecting a second YD-RP2040's 3.3 V output raised the reading to
+Pico W. The next day i measured 3.3V on another YD-RP2040 unit in a different Pico iCE-Device.  Connecting a second YD-RP2040's 3.3 V output raised the reading to
 3.29 V. That direct parallel-regulator arrangement is **not a recommended
 test setup**: independently powered regulator outputs can backfeed or
 contend unless their design explicitly supports it. A steady DC reading
