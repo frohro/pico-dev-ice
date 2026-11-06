@@ -1,4 +1,4 @@
-# USB audio debugging: evening of 3 November 2026
+# USB audio debugging: 3-5 November 2026
 
 ## Where we left off
 
@@ -8,13 +8,18 @@ One definite source of lost samples was removed: TinyUSB's audio IN flow
 control is now disabled so it does not compete with the firmware's own
 packet-size decisions. The remaining symptoms need more investigation.
 
-The device under test (DUT) and a second Pico acting as a CMSIS-DAP debug
-probe are connected to the second Linux computer through a USB 2.0 hub. At
-the end of the session, the DUT was restored to the earlier symbol-enabled
-**normal capture firmware with the sawtooth FPGA image**, not the
+At the end of the 3 November session, the device under test (DUT) and a
+second Pico acting as a CMSIS-DAP debug probe were connected to the second
+Linux computer through a USB 2.0 hub. The DUT was restored to the earlier
+symbol-enabled **normal capture firmware with the sawtooth FPGA image**, not the
 Pico-generated USB-only diagnostic. Flash contents were verified during
 programming, and CDC responded to `VER` afterward. The image is useful for
 testing, but it is not known to be reliable.
+
+On 4 November the YD-RP2040 was replaced with a Pico W for remote tests
+without a debug probe. On 5 November a separate school test used a
+Chinese Pico clone. The present physical configuration should be confirmed
+before resuming; do not assume the probe is still connected.
 
 ## Background
 
@@ -100,6 +105,13 @@ the cause is an FPGA pin, electrical interference, power, firmware state,
 or something else. Likewise, the flat-response comparison does not prove
 which difference between the bitstreams matters.
 
+In particular, the USB-only diagnostic did not consume I2S via capture
+PIO/DMA, but the FPGA was still connected to the Pico's pins. Consequently
+the results are consistent with an effect from active FPGA outputs such as
+BCK, WS, or data, even when software is not receiving them. We did not
+isolate or measure those individual signals, so this is a hypothesis, not a
+demonstrated cause. FPGA reset also changes other signals and switching.
+
 The user noted that `flat_response.bin` is an SDR bitstream, does not
 produce the sawtooth, and could drive OTR. That is compatible with the
 USB-only experiment because its sawtooth was generated on the Pico. The
@@ -124,6 +136,97 @@ The `-32` control stall and the `-71` packet errors may be related, but
 that has not been demonstrated. Trace the first failure in TinyUSB's
 interface/endpoint setup and application callback, and examine CDC
 progress, before treating them as one cause.
+
+## Subsequent board and power comparisons
+
+### Pico W: remote tests on 4 November
+
+The same normal symbol-enabled sawtooth firmware used in the earlier tests
+was programmed and flash-verified on the Pico W. No debug probe was
+connected. Six four-second captures and two 30-second captures all
+completed: 84 seconds total. Their sawtooth checks found zero skipped or
+repeated samples after the expected initial silence. USB traces showed
+84,000 successful nonempty audio packets and no `-71` protocol errors.
+Fourteen of those packets had 49 frames, consistent with rate modulation.
+
+We then ran a 60-second capture while issuing 300 CDC commands (`VER`,
+`AUDIO,STATS`, and `FPGA,STATUS`) over approximately 46 seconds. Every
+command received the expected response prefix and `OK`. Fifty further `VER` commands
+after capture also succeeded. That recording had no sawtooth discontinuities,
+the USB trace had 60,000 successful nonempty audio packets and no `-71`
+errors, and capture statistics reported no underruns or overruns.
+
+These are encouraging observations for this Pico W and setup, not proof
+that every Pico W or every longer run will be error-free. They do not
+isolate which board-level difference matters.
+
+### User measurements and school test
+
+The user measured approximately 3.19 V on the YD-RP2040 and 3.30 V on the
+Pico W. Connecting a second YD-RP2040's 3.3 V output raised the reading to
+3.29 V. That direct parallel-regulator arrangement is **not a recommended
+test setup**: independently powered regulator outputs can backfeed or
+contend unless their design explicitly supports it. A steady DC reading
+does not rule out transients, and no controlled packet test of that
+parallel arrangement was performed.
+
+On 5 November, the user powered the SDR circuitry from a separate SGM2205
+3.3 V regulator while the YD-RP2040 continued to use its own LDO. The
+problem persisted. The user then substituted a Chinese Pico clone and
+reported that audio had no missing packets and CDC and UAC1 stayed
+responsive, without making any change to GPIO23. These school observations
+were reported by the user; no USB trace or capture duration was supplied.
+
+The user also measured 160 mA at the Pico Dev-iCE's 5 V USB input. The
+earlier 225 mA reading included the USB hub and debug probe. The 160 mA is
+the total current at that 5 V input under the measured conditions, not
+the current through the YD's 3.3 V regulator or an instantaneous peak.
+The separate-SDR-supply result weakens the idea that the SDR load alone
+overloaded the YD regulator, but it does not rule out YD-side voltage
+ripple, transient behavior, grounding, or another board difference.
+
+### Schematic comparison and testable hypotheses
+
+The supplied [YD-RP2040 2022-V1.1 schematic][yd-schematic] and
+[original Raspberry Pi Pico schematic][pico-schematic] show:
+
+* **Regulation:** the YD schematic shows an ME6215C33M5G linear regulator;
+  the original Pico schematic shows an RT6150B-33GQW switching regulator.
+  Their response to load changes and noise may differ, but the schematic
+  does not measure either rail in the assembled SDR.
+* **USB:** both schematics show 27-ohm series resistors in D+ and D-. This
+  shared nominal value does not eliminate differences in actual components,
+  connector, PCB routing, grounding, USB signal integrity, or clock accuracy.
+* **Clock:** both show a 12 MHz crystal and a 1-kilohm series resistor.
+  The YD schematic shows 10 pF crystal capacitors; the original Pico
+  schematic shows 15 pF. Crystal specifications and board parasitics also
+  matter, so the capacitor difference alone does not establish a frequency
+  error. The earlier approximately 48 MHz USB PLL measurement was relative
+  to the Pico's own reference and did not verify absolute clock accuracy.
+* **GPIO23 and the module header:** on the YD schematic GPIO23 drives an
+  onboard WS2812B-style RGB LED circuit and is brought to header pin 37.
+  On the original Pico, RP2040 GPIO23 controls regulator power-save mode,
+  whereas header pin 37 is `3V3_EN`. These are not equivalent connections.
+  The checked-in [carrier schematic](../../Hardware/Pico-Dev-iCE.pdf)
+  marks pin 37 unconnected and notes a USB/VSYS jumper setting for the YD;
+  verify the actual assembled carrier and jumper position rather than
+  assuming they match that revision. The Pico W has its own board design,
+  and neither the supplied original-Pico schematic nor the YD schematic
+  establishes its internal wiring. GPIO23 has not been proven causal.
+
+Neither schematic establishes the manufactured board's exact components,
+layout, soldering, or power integrity. To distinguish these hypotheses,
+repeat the USB-only YD test with a controlled FPGA diagnostic image that
+keeps the FPGA configured while independently holding or toggling the
+I2S outputs, comparing identical captures and CDC traffic. Change one
+signal at a time where practical; also account for the FPGA's own
+switching activity. Verify actual pin mappings before modifying gateware.
+Separately, measure the YD's 3.3 V rail and relevant ground points under
+load with suitable instrumentation, and compare the USB clock against an
+independent reference. Avoid direct parallel regulator outputs.
+
+[yd-schematic]: https://github.com/initdc/YD-RP2040/blob/master/YD-2040-2022-V1.1-SCH.pdf
+[pico-schematic]: https://deepbluembedded.com/wp-content/uploads/2023/10/Raspberry-Pi-Pico-Schematic-Diagram.png
 
 ## Remote debugging notes
 
@@ -172,8 +275,9 @@ At the time of this investigation that tracked bitstream had SHA-256:
 95cedcd9a762345bd8e417cf24860de4094820f35e7e1e2f235b296cf184ad68
 ```
 
-The separate user-supplied `flat_response.bin` was not committed. Its
-SHA-256 was `499cce45de23d502deab5d74b35c37395fdf68a8bd2c7de5fc17272d8659a963`.
+The separate user-supplied [`flat_response.bin`](flat_response.bin) is now
+tracked. Its SHA-256 was
+`499cce45de23d502deab5d74b35c37395fdf68a8bd2c7de5fc17272d8659a963`.
 Do not silently replace the tracked bitstream when comparing images.
 
 For a normal sawtooth capture, substituting the current ALSA card number:
