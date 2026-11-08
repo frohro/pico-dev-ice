@@ -185,6 +185,8 @@ The separate-SDR-supply result weakens the idea that the SDR load alone
 overloaded the YD regulator, but it does not rule out YD-side voltage
 ripple, transient behavior, grounding, or another board difference.
 
+Rob just testet the 2026 v0.2 software on the Intro to CAD 2026 board and he can't hear any difference between the YD-RP2040 and the Pico W on that board.
+
 ### Schematic comparison and testable hypotheses
 
 The supplied [YD-RP2040 2022-V1.1 schematic][yd-schematic] and
