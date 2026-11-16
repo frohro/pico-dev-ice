@@ -325,3 +325,5 @@ The packet-rate boundary test can be run on the host:
 gcc -std=c11 -Wall -Wextra -Werror tools/test_audio_rate_ctrl.c -o /tmp/ddc-audio-rate-test
 /tmp/ddc-audio-rate-test
 ```
+11/16/2026
+We modified main.c so we could have the pico make the sawtooth wave for easier debugging (#define DDC_DIAG_USB_SAWTOOTH 1).  We discovered first that the YD-RP2040 disconnected from the Pico Dev-iCE worked fine.  Eventually we connected the YD-RP2040 using 10 cm Dupont cables and everything worked perfectly (with the RP2040 generating the sawtooth wave).  If we bend the wires so they are close to the board, the error (71) USB errors come back, so it is an electromagnetic interference (EMI) problem.
