@@ -1,0 +1,28 @@
+;
+; I2S slave transmitter for the Dev-iCE FPGA audio input.
+;
+; The FPGA is the I2S master. It drives BCK and WS on GPIOs 15 and 16;
+; TX_DATA is driven on GPIO 13. The program emits 32-bit left and right
+; slots, MSB first, with the standard one-bit I2S data delay.
+;
+.program i2s_tx
+
+.wrap_target
+    wait 1 pin 2
+    wait 0 pin 2
+    set x, 31
+left_loop:
+    wait 0 pin 1
+    out pins, 1
+    wait 1 pin 1
+    jmp x-- left_loop
+
+    wait 1 pin 2
+
+    set x, 31
+right_loop:
+    wait 0 pin 1
+    out pins, 1
+    wait 1 pin 1
+    jmp x-- right_loop
+.wrap

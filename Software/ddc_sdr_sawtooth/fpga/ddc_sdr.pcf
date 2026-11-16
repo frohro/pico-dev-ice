@@ -1,0 +1,54 @@
+# Dev-iCE iCE40UP5K-SG48 constraints for the DDC SDR top level.
+#
+# These names are the Pico-side contract documented in README.md. Keep the
+# top-level port names stable so the bitstream can be built independently of
+# the RP2040 firmware.
+
+set_io clk 37
+set_io adc_clk 23
+set_io dac_clk 6
+
+set_io adc_data[0] 25
+set_io adc_data[1] 26
+set_io adc_data[2] 27
+set_io adc_data[3] 28
+set_io adc_data[4] 31
+set_io adc_data[5] 32
+set_io adc_data[6] 34
+set_io adc_data[7] 35
+set_io adc_otr 36
+
+set_io dac_data[0] 4
+set_io dac_data[1] 3
+set_io dac_data[2] 2
+set_io dac_data[3] 48
+set_io dac_data[4] 47
+set_io dac_data[5] 46
+set_io dac_data[6] 45
+set_io dac_data[7] 44
+
+set_io spi_miso 14
+set_io spi_mosi 17
+set_io spi_sck 15
+set_io spi_cs 16
+
+set_io i2s_bck 11
+set_io i2s_ws 12
+set_io i2s_rx_data 10
+set_io i2s_tx_data 9
+set_io fpga_int 13
+
+set_io encoder_a 38
+set_io encoder_b 42
+set_io encoder_button 43
+
+set_io pmod[0] 21
+set_io pmod[1] 19
+set_io pmod[2] 18
+set_io pmod[3] 20
+
+set_io led_red 39
+set_io led_yellow 40
+set_io led_green 41
+set_io cdone 7
+set_io creset 8

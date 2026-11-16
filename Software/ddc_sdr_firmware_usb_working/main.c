@@ -48,6 +48,15 @@
 #include "i2s_tx.pio.h"
 
 /*
+ * Diagnostic mode: generate a 24-bit stereo sawtooth (0x800000 + 0x010000/step)
+ * directly in the USB packet-fill path without starting capture I2S PIO/DMA.
+ * Comment out DDC_DIAG_USB_SAWTOOTH to restore normal FPGA I2S capture.
+ */
+#define DDC_DIAG_USB_SAWTOOTH 1
+#define DDC_DIAG_SAW_START 0x800000u
+#define DDC_DIAG_SAW_STEP  0x010000u
+
+/*
  * CMake defines DDC_HAS_STORED_RX when FPGA_RX_BITSTREAM_BIN is configured.
  * The build then runs tools/bin2header.py to generate fpga_bitstream_rx.h in
  * the build directory and adds that directory to this target's include path.
@@ -94,6 +103,7 @@ typedef struct {
     size_t size;
 } ddc_fpga_bitstream_t;
 
+#ifndef DDC_DIAG_USB_SAWTOOTH
 /* Capture state is independent of USB interface state: PRIMING sends silence
  * until the DMA ring has enough samples, then RUNNING consumes ring data. */
 typedef enum {
@@ -114,6 +124,13 @@ static uint32_t capture_slot_table[DDC_CAPTURE_RING_SLOTS] __attribute__((aligne
 static volatile uint32_t capture_slot_irqs;
 static uint32_t capture_tail_words;
 static capture_state_t capture_state = CAPTURE_IDLE;
+static uint g_capture_pio_offset;
+static int capture_data_dma_channel = -1;
+static int capture_ctrl_dma_channel = -1;
+#else
+static uint32_t diag_sawtooth_sample = DDC_DIAG_SAW_START;
+#endif
+
 /* Stream-health counters exposed by the AUDIO,STATS CDC command. */
 static uint32_t capture_underruns;
 static uint32_t capture_overruns;
@@ -126,10 +143,7 @@ static uint32_t capture_max_occupancy;
  * I2S DMA. The ready mask and active-buffer fields are shared with the DMA IRQ. */
 static uint32_t playback_audio_buffers[DDC_PLAYBACK_BUFFER_COUNT][DDC_MAX_I2S_WORDS_PER_MILLISECOND];
 static uint32_t playback_silence_buffer[DDC_MAX_I2S_WORDS_PER_MILLISECOND];
-static uint g_capture_pio_offset;
 static uint g_playback_pio_offset;
-static int capture_data_dma_channel = -1;
-static int capture_ctrl_dma_channel = -1;
 static int playback_dma_channel = -1;
 static dma_channel_config_t playback_dma_config;
 static volatile uint32_t i2s_words_per_millisecond = 96u;
@@ -276,10 +290,12 @@ static void dma_handler(void)
 {
     uint32_t status = dma_hw->ints0;
 
+#ifndef DDC_DIAG_USB_SAWTOOTH
     if (capture_data_dma_channel >= 0 && (status & (1u << capture_data_dma_channel))) {
         dma_hw->ints0 = 1u << capture_data_dma_channel;
         capture_slot_irqs++;
     }
+#endif
     if (playback_dma_channel >= 0 && (status & (1u << playback_dma_channel))) {
         uint32_t buffer_bit;
 
@@ -293,6 +309,7 @@ static void dma_handler(void)
     }
 }
 
+#ifndef DDC_DIAG_USB_SAWTOOTH
 /* Configure PIO state machine 0 as the FPGA-to-Pico I2S capture input. The
  * PIO program waits on the FPGA's BCK/WS pins and pushes each channel word
  * into its RX FIFO.
@@ -314,9 +331,15 @@ static void capture_i2s_configure(void)
     sm_config_set_clkdiv(&config, 1.0f);
     pio_sm_init(pio0, 0, g_capture_pio_offset, &config);
 }
+#endif
 
 static void capture_i2s_stop(void)
 {
+#ifdef DDC_DIAG_USB_SAWTOOTH
+    uint32_t saved_interrupts = save_and_disable_interrupts();
+    capture_i2s_running = false;
+    restore_interrupts(saved_interrupts);
+#else
     uint32_t saved_interrupts;
 
     if (capture_data_dma_channel < 0 || capture_ctrl_dma_channel < 0) {
@@ -340,14 +363,24 @@ static void capture_i2s_stop(void)
     if (!playback_running) {
         irq_set_enabled(DMA_IRQ_0, false);
     }
+#endif
 }
 
-/* Start continuous FPGA-to-RAM capture. One data-DMA transfer fills one
- * 1-ms slot. Its chain starts the control channel, which writes the next slot
- * address to the data channel's trigger alias. The four slot addresses wrap
- * via the control channel's 16-byte read ring. */
+/* Start continuous FPGA-to-RAM capture (or diagnostic USB-only sawtooth). */
 static void capture_i2s_start(void)
 {
+#ifdef DDC_DIAG_USB_SAWTOOTH
+    uint32_t saved_interrupts;
+
+    if (capture_i2s_running || capture_alt == 0) {
+        return;
+    }
+
+    saved_interrupts = save_and_disable_interrupts();
+    diag_sawtooth_sample = DDC_DIAG_SAW_START;
+    capture_i2s_running = true;
+    restore_interrupts(saved_interrupts);
+#else
     uint32_t slot_words;
     uint32_t saved_interrupts;
     dma_channel_config data_config;
@@ -400,6 +433,7 @@ static void capture_i2s_start(void)
     dma_channel_start(capture_data_dma_channel);
     pio_sm_set_enabled(pio0, 0, true);
     capture_i2s_running = true;
+#endif
 }
 
 /* Configure PIO state machine 1 to shift playback words out to the FPGA.
@@ -733,9 +767,11 @@ static bool apply_sample_rate(uint32_t rate)
     if (rate != 48000u && rate != 96000u) {
         return false;
     }
+#ifndef DDC_DIAG_USB_SAWTOOTH
     if (!fpga_ready) {
         return false;
     }
+#endif
     if (rate == sample_rate) {
         return true;
     }
@@ -748,6 +784,11 @@ static bool apply_sample_rate(uint32_t rate)
     if (was_tx_running) {
         playback_i2s_stop();
     }
+#ifdef DDC_DIAG_USB_SAWTOOTH
+    if (fpga_ready && runtime_spi_ready) {
+        fpga_set_sample_rate(rate);
+    }
+#else
     if (!fpga_set_sample_rate(rate)) {
         if (was_running) {
             capture_i2s_start();
@@ -757,6 +798,7 @@ static bool apply_sample_rate(uint32_t rate)
         }
         return false;
     }
+#endif
 
     sample_rate = rate;
     i2s_words_per_millisecond = rate == 96000u ? 192u : 96u;
@@ -837,6 +879,7 @@ static bool switch_stored_fpga(ddc_fpga_image_t image)
     return success && fpga_ready;
 }
 
+#ifndef DDC_DIAG_USB_SAWTOOTH
 /* Return the number of words DMA has written since capture started.
  *
  * A DMA address alone wraps every time the ring wraps, so capture_slot_irqs counts
@@ -876,20 +919,57 @@ static void capture_note_occupancy(uint32_t frames)
         capture_max_occupancy = frames;
     }
 }
+#endif
 
-/* Prepare one USB capture packet from the FPGA-to-Pico I2S ring.
+/* Prepare one USB capture packet from the FPGA-to-Pico I2S ring
+ * (or directly from the RP2040 sawtooth generator in diagnostic mode).
  *
  * TinyUSB sends the bytes currently in its audio IN FIFO. This function
- * therefore writes exactly one packet (47/48/49 stereo frames at 48 kHz),
- * which TinyUSB will consume on the next endpoint transfer. Samples arrive
- * from PIO as 32-bit words with the 24-bit value in bits 31..8; the loop below
- * strips the padding and writes the three sample bytes in little-endian order.
+ * therefore writes exactly one packet, which TinyUSB will consume on the
+ * next endpoint transfer.
  */
 static void capture_fill_usb_in_packet(void)
 {
     /* At 96 kHz the largest packet is 97 frames; each stereo frame is 6 bytes. */
     static uint8_t packed[(DDC_MAX_I2S_WORDS_PER_MILLISECOND / 2u + 1u) * 6u];
     uint32_t nominal = i2s_words_per_millisecond / 2u;
+#ifdef DDC_DIAG_USB_SAWTOOTH
+    uint32_t frames = nominal;
+    tu_fifo_t *fifo;
+
+    fifo = tud_audio_get_ep_in_ff();
+    if (fifo == NULL) {
+        return;
+    }
+    if (tu_fifo_count(fifo) != 0) {
+        tu_fifo_clear(fifo);
+        capture_fifo_stale++;
+    }
+
+    if (capture_i2s_running) {
+        for (uint32_t i = 0; i < frames; i++) {
+            uint32_t s = diag_sawtooth_sample;
+            uint32_t base = 6u * i;
+            uint8_t b0 = (uint8_t)(s);
+            uint8_t b1 = (uint8_t)(s >> 8);
+            uint8_t b2 = (uint8_t)(s >> 16);
+
+            /* Left channel (S24_3LE) */
+            packed[base] = b0;
+            packed[base + 1u] = b1;
+            packed[base + 2u] = b2;
+            /* Right channel (S24_3LE) */
+            packed[base + 3u] = b0;
+            packed[base + 4u] = b1;
+            packed[base + 5u] = b2;
+
+            diag_sawtooth_sample = (s + DDC_DIAG_SAW_STEP) & 0xffffffu;
+        }
+    } else {
+        memset(packed, 0, frames * 6u);
+    }
+    tud_audio_write(packed, (uint16_t)(frames * 6u));
+#else
     uint32_t target = audio_rate_target_frames(nominal);
     uint32_t frames = nominal;
     bool silence = true;
@@ -971,6 +1051,7 @@ static void capture_fill_usb_in_packet(void)
         memset(packed, 0, frames * 6u);
     }
     tud_audio_write(packed, (uint16_t)(frames * 6u));
+#endif
 }
 
 bool tud_audio_tx_done_isr(uint8_t rhport, uint16_t n_bytes_sent,
@@ -1059,7 +1140,11 @@ static void handle_line(const char *line, uint8_t length)
     }
 
     if (strncmp(line, "VER", 3) == 0) {
+#ifdef DDC_DIAG_USB_SAWTOOTH
+        cdc_write("VER,DDC SDR 0.2-DIAG-SAWTOOTH\r\nOK\r\n");
+#else
         cdc_write("VER,DDC SDR 0.2\r\nOK\r\n");
+#endif
         return;
     }
     if (strncmp(line, "XTAL", 4) == 0) {
@@ -1366,7 +1451,7 @@ int main(void)
     gpio_set_dir(22, GPIO_OUT);
     gpio_put(22, 0);
     sleep_ms(30);
-    gpio_put(22, 1);
+  // gpio_put(22, 1);
     sleep_ms(15);
 
     // CDONE pin (GPIO 21)
@@ -1380,14 +1465,18 @@ int main(void)
 
     /* Load the PIO programs into PIO0 instruction memory. The returned offsets
      * identify where their instructions start; state machines use them below. */
+#ifndef DDC_DIAG_USB_SAWTOOTH
     g_capture_pio_offset = pio_add_program(pio0, &i2s_rx_program);
+#endif
     g_playback_pio_offset = pio_add_program(pio0, &i2s_tx_program);
     pga_configure();
     fpga_interrupt_configure();
     /* Claim DMA channels from the Pico SDK so they cannot collide with other
      * users: capture data, capture address reload, and playback data. */
+#ifndef DDC_DIAG_USB_SAWTOOTH
     capture_data_dma_channel = dma_claim_unused_channel(true);
     capture_ctrl_dma_channel = dma_claim_unused_channel(true);
+#endif
     playback_dma_channel = dma_claim_unused_channel(true);
     playback_dma_config = dma_channel_get_default_config(playback_dma_channel);
     channel_config_set_transfer_data_size(&playback_dma_config, DMA_SIZE_32);
@@ -1402,7 +1491,7 @@ int main(void)
 
 #ifdef DDC_FPGA_BOOT_FROM_STORED
 #ifdef DDC_DEFAULT_FPGA_TX
-    active_fpga_image = DDC_FPGA_IMAGE_SDR_TX;
+ //   active_fpga_image = DDC_FPGA_IMAGE_SDR_TX;
 #else
     active_fpga_image = DDC_FPGA_IMAGE_SDR_RX;
 #endif
