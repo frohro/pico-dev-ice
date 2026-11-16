@@ -23,7 +23,7 @@ Follow the RF signal path from the `SDR_ANT` SMA connector to the MS9280 ADC.
     *   Why are the shunt resistors connected to ground through 0.1µF capacitors instead of being grounded directly?
     *   The `74LVC1G3157` analog switches are powered by 4.5V (`AVDD`). How does the schematic safely bias the RF signal to float at 2.25V (`VA/2`) so it doesn't clip against the Ground diodes?
 *   **LNA Bypassing:** Why did the designers choose to bypass the op-amps (LNA 1 and LNA 2) using RF switches instead of just changing the feedback resistors to lower their gain?
-*   **The ADC Balun (`TR2`):** Explain how this transformer converts the single-ended RF signal into a differential signal for the ADC. How does it apply the 2.25V DC bias to the ADC inputs?
+*   **The ADC Balun (`TR3`):** Explain how this transformer converts the single-ended RF signal into a differential signal for the ADC. How does it apply the 2.25V DC bias to the ADC inputs?
 
 ### 3. Digital Control & Clocking
 *   **The Clock:** Find the 30.72 MHz CMOS Oscillator. Why is there a 22 Ω resistor (`R34`) placed in series with the clock output trace before it reaches the FPGA?
