@@ -325,5 +325,29 @@ The packet-rate boundary test can be run on the host:
 gcc -std=c11 -Wall -Wextra -Werror tools/test_audio_rate_ctrl.c -o /tmp/ddc-audio-rate-test
 /tmp/ddc-audio-rate-test
 ```
-11/16/2026
+### 11/16/2026
 We modified main.c so we could have the pico make the sawtooth wave for easier debugging (#define DDC_DIAG_USB_SAWTOOTH 1).  We discovered first that the YD-RP2040 disconnected from the Pico Dev-iCE worked fine.  Eventually we connected the YD-RP2040 using 10 cm Dupont cables and everything worked perfectly (with the RP2040 generating the sawtooth wave).  If we bend the wires so they are close to the board, the error (71) USB errors come back, so it is an electromagnetic interference (EMI) problem.
+
+### 11/17/2026
+At school I have another Pico-Dev-iCE board.  That board works with the YD-RP2040 and the Pico or Pico W.  I found that JP6 was shorted (should have been open) which shorted 4.7 V to VDDA, but unshorting that did not change the fact that it skips samples.  The commands for testing this are:
+```sh
+ arecord -D hw:1,0 -f S24_3LE -r 48000 -c 2 -d 10 /tmp/sawtooth.wav
+ python3 tools/check_sawtooth.py /tmp/sawtooth.wav 
+```
+These tests were done with the FPGA generating the sawtooth wave.  The board that works is the one with the yellow and red jumper wires.  Unfortunately, I discovered the FPGA isn't loading and the green LED doesn't light and there is no signal on any I2S pin with the board that "works".  
+
+Further investigation reveals that the really fast square wave edges from the FPGA are causing a comb of 6.14 MHz harmonics (at every 2 x 3.072 MHz or the odd harmonics of the square wave). I added a ferrite bead on the BCK, which helped, but not enough.  I added a copper shield on the bottom of the YD-RP2040 soldered to the USB connector's holes where it mounts.  I ground off some ferrite beads so you could put one on BCK and one on RX-DATA and with the shield it was enough, but without the shield it was not.  We will probably have to do something to TX-DATA too.  The Pico or Pico-W still work with no modifications.  The next spin I need to add 100 Ohm resistors to all the I2S pins.  Here is the comb of EMI before and after ferrites, which seems to have knocked about 10 dB of the EMI out.
+
+![Before adding ferrites...](USB_DEBUGGING_NOTES_20261116194355039.png)
+
+![After adding ferrites...](USB_DEBUGGING_NOTES_20261116194459090.png)
+
+Here is how the ferrites and shield were done.
+
+![Ferrites and shield...](USB_DEBUGGING_NOTES_20261116194916950.png)
+
+I wish you could turn down the drive on the iCE40UP5K.  The issue is probably because the way the D+ and D- USB lines are run on the YD-RP2040.  It goes from the RP2040 through vias so D+ and D- are side by side, but then on the bottom up to about the USB-C connector, through two more vias, through the 27 Ohm source resistors directly to the USB connector.  The resistors should have been by the RP2040 and the lines should have been on the top layer with ground plane under them all the way.  See the photos below.
+
+![](USB_DEBUGGING_NOTES_20261116195941401.png)
+
+![](USB_DEBUGGING_NOTES_20261116200039214.png)

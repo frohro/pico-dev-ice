@@ -52,7 +52,7 @@
  * directly in the USB packet-fill path without starting capture I2S PIO/DMA.
  * Comment out DDC_DIAG_USB_SAWTOOTH to restore normal FPGA I2S capture.
  */
-#define DDC_DIAG_USB_SAWTOOTH 1
+#define DDC_DIAG_USB_SAWTOOTH 0
 #define DDC_DIAG_SAW_START 0x800000u
 #define DDC_DIAG_SAW_STEP  0x010000u
 
@@ -1451,7 +1451,7 @@ int main(void)
     gpio_set_dir(22, GPIO_OUT);
     gpio_put(22, 0);
     sleep_ms(30);
-  // gpio_put(22, 1);
+    gpio_put(22, 1);
     sleep_ms(15);
 
     // CDONE pin (GPIO 21)
@@ -1491,7 +1491,7 @@ int main(void)
 
 #ifdef DDC_FPGA_BOOT_FROM_STORED
 #ifdef DDC_DEFAULT_FPGA_TX
- //   active_fpga_image = DDC_FPGA_IMAGE_SDR_TX;
+    active_fpga_image = DDC_FPGA_IMAGE_SDR_TX;
 #else
     active_fpga_image = DDC_FPGA_IMAGE_SDR_RX;
 #endif

@@ -17684,6 +17684,16 @@
 		)
 		(uuid "e8ee3acf-6b5c-45eb-849a-6ae3db2d72b3")
 	)
+	(text "For v0.2, put series resistors near the FPGA on BCK, DATA and WS of the I2S to try and stop the EMI problem with I2S coming from the FPGA that is causing YD-RP2040 USB (71) errors."
+		(exclude_from_sim no)
+		(at 261.366 -3.048 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "eb622c77-aa29-45cb-b5cc-70f30ed81894")
+	)
 	(text "PMOD connector will work\nas with an extra Pico as a\nlogic analyzer using pins\n29-24."
 		(exclude_from_sim no)
 		(at 204.47 78.994 0)
