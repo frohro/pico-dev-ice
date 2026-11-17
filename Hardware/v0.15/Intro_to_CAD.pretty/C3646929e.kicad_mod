@@ -1,0 +1,109 @@
+(footprint "C3646929e"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "ConnectorMicromatch-4")
+	(property "Reference" "D8"
+		(at 0 -2.05 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "f011d465-e193-4720-965e-a4ef95082eef")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "XL-0807RGBC-2812B"
+		(at 0 2.05 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "cb0ca2b7-709d-4ab9-905a-ba196503c570")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "https://jlcpcb.com/api/file/downloadByFileSystemAccessId/8589835209639432192"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "158e5066-3b07-4e45-ae86-21f6907bce31")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "RGB LED with integrated controller"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "48d25b28-2933-48de-b04a-a8baade346e9")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "LCSC" "C3646929"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "fb66fd9c-1293-4a75-81e1-18079fb7ab05")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "bb7fdd25-bcbe-4181-968b-aae919fa8e25")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -0.75 -0.45)
+		(size 0.6 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(thermal_bridge_angle 45)
+		(uuid "cfc966bb-5815-4b4a-b6f6-818c8acc63eb")
+	)
+	(pad "2" smd rect
+		(at -0.75 0.45)
+		(size 0.6 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(thermal_bridge_angle 45)
+		(uuid "d903e41c-9d6d-4d3b-8a4d-6bf1a9c07607")
+	)
+	(pad "3" smd rect
+		(at 0.75 0.45)
+		(size 0.6 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(thermal_bridge_angle 45)
+		(uuid "9a016855-4889-413f-8c4f-510302b4493b")
+	)
+	(pad "4" smd rect
+		(at 0.75 -0.45)
+		(size 0.6 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(thermal_bridge_angle 45)
+		(uuid "0e111e9a-2e0f-4b65-b3b0-122548e97826")
+	)
+	(embedded_fonts no)
+)

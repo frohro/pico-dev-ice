@@ -2776,7 +2776,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://jlc-prod-smt.oss-eu-central-1.aliyuncs.com/smtDataManualFile/8588933966032617472-C390505.pdf?response-content-disposition=attachment%3B%20filename%3DC390505.pdf%3B%20filename%2A%3DUTF-8%27%27C390505.pdf&x-oss-date=20260722T003906Z&x-oss-expires=1800&x-oss-security-token=CAISgAN1q6Ft5B2yfSjIr5rHM%2B3smZ1Gx5CjaXPhtkIPXbwVnITJkTz2IHhMdHJsAOodtv0%2FmmhT6PkclqRLcbhpcmfjV%2BZHzLB8qeAV7l5R4J7b16cNrbH4M4H6aXeirtuwDsz9SNTCALjPD3nPii50x5bjaDymRCbLGJaViJlhHLN1Ow6jdmhpCctxLAlvo9NgFxm3D%2Fu2NQPwiWf9FVdhvhEG6Vly8qOi2MaRmFy8yFTx0b0SvJ%2BjYMrmPctoN9JnSdC5mfdzau3a1TJ84gRD0a5wkaVA1zbDs5bfISEIuUzebreLqY03dV4mOvdqIcMe8qigz88fk%2FfIioH6xyxKOexoSCnFTOiiupCcQLPyao9jLu6iayqViY7QaIOTqQohZmkAMwVOasAsI3Ngh4zF97Qt0cVNkXO9gWfLI8DtuMleWhpDE1NnmtHD0eS19jklBdzSlusJRAJJUVBflCeKEaRNSAd3WGhEfM2%2BBt4QT30w5N2u00S8OSMIMiDpfqKWD5sagAEIuex4%2FS4WddUM%2Fq31QMVuF1DjmKritBzmY7UsaeVXE5Y6cA2DIdCzyPbeZ7RXLbCbbvJ2w5S1gitzOQ2fpNn9WVrjqKde8H8UphDH%2FgQAWjP3Pk81SE5E2wJntjGHD%2B6K7yM2tP4pwvLZeXjm3G7dh4KBqQB8jh4W0%2FJBLiEqkiAA&x-oss-signature-version=OSS4-HMAC-SHA256&x-oss-credential=STS.NYrxWXtBgpRHkUPRBZQ39sAbs%2F20260722%2Feu-central-1%2Foss%2Faliyun_v4_request&x-oss-signature=a025f17aa42fdaad05dfb79b8c5d52c1bd33945fd76a011e5d9cb6ae45cacf93"
+		(property "Datasheet" "https://download.epsondevice.com/td/pdf/brief/SG-8018CE_en.pdf"
 			(at 107.95 91.44 0)
 			(hide yes)
 			(show_name no)
