@@ -351,3 +351,5 @@ I wish you could turn down the drive on the iCE40UP5K.  The issue is probably be
 ![](USB_DEBUGGING_NOTES_20261116195941401.png)
 
 ![](USB_DEBUGGING_NOTES_20261116200039214.png)
+
+These issues are addressed in the Hardware v0.15.
