@@ -446,7 +446,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "0.1"
+      "sch_revision": "0.15"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -1466,7 +1466,7 @@
         "uuid": "7dfef218-ca21-47b0-a8d3-67c7d55cb9d2"
       }
     ],
-    "used_designators": "#FLG1-2,#FLG7,#FLG101,#PWR1-225,A1,C1-109,D1-8,FB1-7,H1,J1-14,J16,JP1-8,JP50-53,JP86,JP88-89,Je3-6,L1-3,Q1-10,R1-90,S1,SW1,TP1-18,TP28-32,TR1-4,U1-27,X1,e1-4",
+    "used_designators": "#FLG1-2,#FLG7,#FLG101,#PWR1-225,A1,C1-109,D1-8,FB1-7,H1,J1-14,J16,JP1-8,JP50-53,JP86,JP88-89,Je3-6,L1-3,Q1-10,R1-93,S1,SW1,TP1-18,TP28-32,TR1-4,U1-27,X1,e1-4",
     "variants": []
   },
   "sheets": [
