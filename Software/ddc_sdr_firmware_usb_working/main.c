@@ -52,7 +52,7 @@
  * directly in the USB packet-fill path without starting capture I2S PIO/DMA.
  * Comment out DDC_DIAG_USB_SAWTOOTH to restore normal FPGA I2S capture.
  */
-#define DDC_DIAG_USB_SAWTOOTH 0
+// #define DDC_DIAG_USB_SAWTOOTH 1
 #define DDC_DIAG_SAW_START 0x800000u
 #define DDC_DIAG_SAW_STEP  0x010000u
 
@@ -176,6 +176,20 @@ static uint8_t line_length;
 static bool ready_message_sent;
 static uint32_t last_frequency_hz;
 static uint32_t freq_cmd_count;
+
+
+static void heartbeat_task(void)
+{
+    static uint64_t next_toggle_us;
+    static bool led_on = true;
+    uint64_t now_us = time_us_64();
+
+    if (now_us >= next_toggle_us) {
+        next_toggle_us = now_us + 500000u;
+        led_on = !led_on;
+        gpio_put(25, led_on);
+    }
+}
 
 static bool fpga_write_command(uint8_t command, uint32_t value);
 
@@ -1530,8 +1544,10 @@ int main(void)
     while (true) {
         tud_task();  /* Handle USB control and endpoint events. */
         cdc_task();  /* Parse commands received on the virtual serial port. */
-        // handle_fpga_interrupt();
-        // agc_task();
+        handle_fpga_interrupt();
+        agc_task();
         usb_playback_task();   /* Move USB playback samples to Pico-to-FPGA I2S. */
+	heartbeat_task();
     }
 }
+
