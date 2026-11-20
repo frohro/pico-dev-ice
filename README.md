@@ -16,6 +16,9 @@ Here is a video of the SDR receiving on 20 meters.[![](https://img.youtube.com/v
 * **Real-Time Spectrum Analyzer:** Visualize the entire 15 MHz HF spectrum simultaneously via FPGA-accelerated FFTs.
 * **Standalone Operation:** Onboard Audio DAC/Headphone amp and rotary encoder support allows the board to operate as a standalone radio without a PC.
 
+#### Cost
+I am not selling these, but the cost to order from JLCPCB for ten beards was about $700 plus taxes and shipping or for us in the US these days with tariffs and shipping it was about $1,100 for ten beards.  Version v0.1 works fine with the Raspberry Pi Pico or Pico W.  I recommend v0.15 which incorporates some resistors to quell EMI from the sharp edges of the iCE40UP5K.   You cannot turn the drive down on ouptups of this FPGA vi gateware.  The YD-RP20240 with its less optimum PCB layout must be modified to avoid occasional (71) USB errors.
+
 ---
 
 ## 🧠 Hardware Architecture
