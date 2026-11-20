@@ -1,0 +1,27 @@
+CMakeFiles/ddc_sdr.dir/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/pico-ice-sdk/src/ice_led.c.o: \
+ /home/frohro/Classes/Digital_Design/pico-dev-ice/Software/pico-ice-sdk/src/ice_led.c \
+ /home/frohro/.bin/arm-gnu-toolchain/lib/gcc/arm-none-eabi/13.3.1/include/stddef.h \
+ /home/frohro/Classes/Digital_Design/pico-dev-ice/Software/pico-ice-sdk/include/boards.h \
+ /home/frohro/Classes/Digital_Design/pico-dev-ice/Software/pico-ice-sdk/include/boards/pico_dev_ice.h \
+ /home/frohro/Classes/Digital_Design/pico-dev-ice/Software/pico-ice-sdk/include/boards/ice40up5k.h \
+ /home/frohro/Classes/Digital_Design/pico-dev-ice/Software/pico-ice-sdk/include/ice_HAL.h \
+ /home/frohro/.bin/arm-gnu-toolchain/lib/gcc/arm-none-eabi/13.3.1/include/stdint.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/stdint.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/machine/_default_types.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/features.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/_newlib_version.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/_intsup.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/_stdint.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/errno.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/errno.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/reent.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/_ansi.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/newlib.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/config.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/machine/ieeefp.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/cdefs.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/_types.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/machine/_types.h \
+ /home/frohro/.bin/arm-gnu-toolchain/arm-none-eabi/include/sys/lock.h \
+ /home/frohro/Classes/Digital_Design/pico-dev-ice/Software/pico-ice-sdk/include/ice_led.h \
+ /home/frohro/.bin/arm-gnu-toolchain/lib/gcc/arm-none-eabi/13.3.1/include/stdbool.h

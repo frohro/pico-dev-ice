@@ -1,0 +1,7 @@
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool/picotool
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool/picotoolTargets.cmake
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool/picotoolTargets-release.cmake
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool/picotoolConfig.cmake
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool/picotoolConfigVersion.cmake
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool/enc_bootloader.elf
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool/enc_bootloader_mbedtls.elf

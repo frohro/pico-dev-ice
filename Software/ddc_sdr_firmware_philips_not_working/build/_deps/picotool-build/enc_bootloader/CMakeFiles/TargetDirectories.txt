@@ -1,0 +1,2 @@
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool-build/enc_bootloader/CMakeFiles/edit_cache.dir
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/_deps/picotool-build/enc_bootloader/CMakeFiles/rebuild_cache.dir

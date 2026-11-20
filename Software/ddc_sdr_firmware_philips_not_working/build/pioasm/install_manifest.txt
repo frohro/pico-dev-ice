@@ -1,0 +1,5 @@
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/pioasm-install/pioasm/pioasm
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/pioasm-install/pioasm/pioasmTargets.cmake
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/pioasm-install/pioasm/pioasmTargets-release.cmake
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/pioasm-install/pioasm/pioasmConfig.cmake
+/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/pioasm-install/pioasm/pioasmConfigVersion.cmake

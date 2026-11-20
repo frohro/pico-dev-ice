@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/CMakeFiles/picotoolBuild"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/CMakeFiles/picotoolBuild.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/CMakeFiles/picotoolBuild-complete.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-build.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-configure.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-download.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-install.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-mkdir.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-patch.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-test.rule"
+		},
+		{
+			"file" : "/home/frohro/Classes/Digital_Design/pico-dev-ice/Software/ddc_sdr_firmware_philips_not_working/build/picotool/src/picotoolBuild-stamp/picotoolBuild-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"picotoolBuild"
+		],
+		"name" : "picotoolBuild"
+	}
+}
