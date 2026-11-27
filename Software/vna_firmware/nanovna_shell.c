@@ -155,6 +155,7 @@ static void cmd_info(void) {
     printf("DAC: %.2fMHz\r\n", fpga_vna_get_dac_clk_hz() / 1.0e6);
     printf("Integ: %u cycles\r\n", (unsigned)g_integ_cycles);
     printf("Port: %s\r\n", port_mode_str(g_port_mode));
+    printf("FPGA: %s\r\n", fpga_vna_is_configured() ? "CDONE=1" : "CDONE=0");
 }
 
 static void cmd_help(void) {

@@ -15,6 +15,8 @@
  *   GPIO 5  -> ICE_SSN   (Manual GPIO CS, active-low, shared with FPGA boot)
  *   GPIO 6  -> SPI0_CLK  (SCK)
  *   GPIO 7  -> SPI0_TX   (MOSI: data leaving Pico to FPGA)
+ *   GPIO 21 -> ICE_DONE  (FPGA CDONE status input, active-HIGH)
+ *   GPIO 22 -> ~ICE_RST  (FPGA ~CRESET reset output, active-LOW)
  *   GPIO 26 -> REF       (Front-end RF mux: 0 = SDR ANT, 1 = VNA Input)
  *   GPIO 28 -> ~T/R      (T/R switch: 1 = RX Mode, 0 = TX Mode)
  *   GPIO 8..11 -> PGA0..3 (0 = default max gain, 1 = attenuate/bypass)
@@ -22,18 +24,20 @@
  * Note: RP2040 GPIOs 13-16 are routed to the FPGA I2S audio bus and are left
  * untouched by SPI0.
  */
-#define PIN_FPGA_INT  0u
-#define PIN_SPI_MISO  4u
-#define PIN_SPI_CS    5u
-#define PIN_SPI_SCK   6u
-#define PIN_SPI_MOSI  7u
+#define PIN_FPGA_INT    0u
+#define PIN_SPI_MISO    4u
+#define PIN_SPI_CS      5u
+#define PIN_SPI_SCK     6u
+#define PIN_SPI_MOSI    7u
 
-#define PIN_PGA0      8u
-#define PIN_PGA1      9u
-#define PIN_PGA2      10u
-#define PIN_PGA3      11u
-#define PIN_VNA_REF   26u
-#define PIN_TR_SW     28u
+#define PIN_PGA0        8u
+#define PIN_PGA1        9u
+#define PIN_PGA2        10u
+#define PIN_PGA3        11u
+#define PIN_FPGA_CDONE  21u
+#define PIN_FPGA_CRESET 22u
+#define PIN_VNA_REF     26u
+#define PIN_TR_SW       28u
 
 /* SPI bus configuration */
 #define FPGA_SPI_PORT           spi0
@@ -87,6 +91,8 @@ typedef struct {
 } vna_complex_t;
 
 void fpga_vna_init(void);
+bool fpga_vna_load_stored_bitstream(void);
+bool fpga_vna_is_configured(void);
 
 void fpga_vna_write_reg(uint8_t cmd, uint32_t value);
 uint32_t fpga_vna_read_reg(uint8_t cmd);

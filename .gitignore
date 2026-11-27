@@ -81,7 +81,7 @@ __pycache__/
 /fabrication/
 /production/
 /jlcpcb/
-/build/
+**/build/
 
 # Ignore loose manufacturing files if they accidentally save to the root folder:
 *.gbr

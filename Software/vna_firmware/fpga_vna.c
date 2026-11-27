@@ -1,9 +1,14 @@
 #include "fpga_vna.h"
 
 #include <math.h>
+#include <stddef.h>
 #include "hardware/gpio.h"
 #include "hardware/spi.h"
 #include "pico/stdlib.h"
+
+#ifdef VNA_HAS_STORED_BITSTREAM
+#include "vna_bitstream.h"
+#endif
 
 static vna_dac_clk_t g_dac_clk_mode = VNA_DAC_30M72;
 
@@ -15,6 +20,62 @@ static inline void cs_deselect(void) {
     gpio_put(PIN_SPI_CS, 1);
     /* Wait >= 1 us between frames for FPGA CDC settling (CS shared with ICE_SSN). */
     busy_wait_us(2);
+}
+
+bool fpga_vna_is_configured(void) {
+    return gpio_get(PIN_FPGA_CDONE) != 0;
+}
+
+static bool fpga_load_cram(const uint8_t *data, size_t len) {
+    if (!data || len == 0u) {
+        return false;
+    }
+
+    /* Drive ~CRESET LOW and ICE_SSN LOW to select iCE40 Slave-SPI configuration mode. */
+    gpio_put(PIN_FPGA_CRESET, 0);
+    gpio_put(PIN_SPI_CS, 0);
+    busy_wait_us(50);
+
+    /* Release ~CRESET HIGH while holding ICE_SSN LOW, wait >= 1200 us for CRAM clear. */
+    gpio_put(PIN_FPGA_CRESET, 1);
+    busy_wait_us(1500);
+
+    /* Send 8 dummy clocks with ICE_SSN HIGH per Lattice iCE40 TN-02001. */
+    gpio_put(PIN_SPI_CS, 1);
+    const uint8_t dummy = 0x00u;
+    spi_write_blocking(FPGA_SPI_PORT, &dummy, 1);
+
+    /* Drive ICE_SSN LOW and stream the packed .bin bitstream MSB-first. */
+    gpio_put(PIN_SPI_CS, 0);
+    spi_write_blocking(FPGA_SPI_PORT, data, len);
+
+    /* Drive ICE_SSN HIGH and supply >= 100 clocks until CDONE rises. */
+    gpio_put(PIN_SPI_CS, 1);
+    const uint8_t zeros[16] = {0};
+    for (int attempt = 0; attempt < 10; attempt++) {
+        spi_write_blocking(FPGA_SPI_PORT, zeros, sizeof(zeros));
+        if (gpio_get(PIN_FPGA_CDONE)) {
+            break;
+        }
+    }
+
+    /* Supply >= 49 additional clocks after CDONE HIGH so user I/Os release cleanly. */
+    spi_write_blocking(FPGA_SPI_PORT, zeros, 8);
+    busy_wait_us(10);
+
+    return gpio_get(PIN_FPGA_CDONE) != 0;
+}
+
+bool fpga_vna_load_stored_bitstream(void) {
+#ifdef VNA_HAS_STORED_BITSTREAM
+    bool ok = fpga_load_cram(vna_fpga_bitstream, vna_fpga_bitstream_len);
+    if (ok) {
+        fpga_vna_write_reg(FPGA_REG_CLEAR_OTR, 0x00000001u);
+    }
+    return ok;
+#else
+    return false;
+#endif
 }
 
 void fpga_vna_init(void) {
@@ -32,6 +93,14 @@ void fpga_vna_init(void) {
     gpio_init(PIN_TR_SW);
     gpio_put(PIN_TR_SW, 1);
     gpio_set_dir(PIN_TR_SW, GPIO_OUT);
+
+    /* Configure FPGA CDONE (input) and ~CRESET (output, default HIGH). */
+    gpio_init(PIN_FPGA_CDONE);
+    gpio_set_dir(PIN_FPGA_CDONE, GPIO_IN);
+
+    gpio_init(PIN_FPGA_CRESET);
+    gpio_put(PIN_FPGA_CRESET, 1);
+    gpio_set_dir(PIN_FPGA_CRESET, GPIO_OUT);
 
     /* Drive CS HIGH before enabling output so ICE_SSN never glitches LOW. */
     gpio_init(PIN_SPI_CS);
@@ -51,6 +120,9 @@ void fpga_vna_init(void) {
     gpio_set_function(PIN_SPI_SCK, GPIO_FUNC_SPI);
     gpio_set_function(PIN_SPI_MOSI, GPIO_FUNC_SPI);
     gpio_set_function(PIN_SPI_MISO, GPIO_FUNC_SPI);
+
+    /* Program the iCE40UP5K volatile CRAM with embedded vna_top.bin before VNA startup. */
+    fpga_vna_load_stored_bitstream();
 
     /* Clear any sticky OTR state from power-up. */
     fpga_vna_write_reg(FPGA_REG_CLEAR_OTR, 0x00000001u);

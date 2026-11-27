@@ -20,13 +20,46 @@ set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
 
+set(FPGA_BITSTREAM_BIN "${CMAKE_CURRENT_SOURCE_DIR}/bitstream/vna_top.bin" CACHE FILEPATH
+    "Packed iCE40 VNA bitstream (.bin) to embed in the RP2040 firmware")
+
+if(NOT EXISTS "${FPGA_BITSTREAM_BIN}" AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/bitstreams/vna_top.bin")
+    set(FPGA_BITSTREAM_BIN "${CMAKE_CURRENT_SOURCE_DIR}/bitstreams/vna_top.bin")
+endif()
+
+if(NOT EXISTS "${FPGA_BITSTREAM_BIN}")
+    message(FATAL_ERROR
+        "Cannot find VNA FPGA bitstream at '${FPGA_BITSTREAM_BIN}'. "
+        "Place vna_top.bin in bitstream/ or pass -DFPGA_BITSTREAM_BIN=/path/to/vna_top.bin.")
+endif()
+
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+set(VNA_BITSTREAM_HEADER "${CMAKE_CURRENT_BINARY_DIR}/vna_bitstream.h")
+add_custom_command(
+    OUTPUT ${VNA_BITSTREAM_HEADER}
+    COMMAND ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_SOURCE_DIR}/tools/bin2header.py
+            ${FPGA_BITSTREAM_BIN}
+            ${VNA_BITSTREAM_HEADER}
+            vna_fpga_bitstream
+    DEPENDS ${FPGA_BITSTREAM_BIN}
+            ${CMAKE_CURRENT_SOURCE_DIR}/tools/bin2header.py
+    VERBATIM
+)
+add_custom_target(vna_fpga_bitstream_header DEPENDS ${VNA_BITSTREAM_HEADER})
+
 add_executable(pico_vna
     main.c
     fpga_vna.c
     nanovna_shell.c
 )
 
-target_include_directories(pico_vna PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+add_dependencies(pico_vna vna_fpga_bitstream_header)
+target_compile_definitions(pico_vna PRIVATE VNA_HAS_STORED_BITSTREAM=1)
+target_include_directories(pico_vna PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_compile_options(pico_vna PRIVATE -Wall -Wextra)
 
 target_link_libraries(pico_vna
