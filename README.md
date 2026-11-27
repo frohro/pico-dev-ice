@@ -8,7 +8,10 @@ Designed specifically as an educational platform, it abandons "black box" RF chi
 
 ![](README_20260730193606897.png)
 
-Here is a video of the SDR receiving on 20 meters.[![](https://img.youtube.com/vi/qYo4EEl96wU/maxresdefault.jpg)](https://youtu.be/qYo4EEl96wU).
+Here is a video of the SDR receiving on 20 meters. 
+https://www.youtube.com/watch?v=QM4t2_SC2FE
+
+
 ## 🚀 Key Capabilities
 * **HF Software Defined Radio (RX/TX):** Full-duplex DDC/DUC transceiver covering 0 - 15.36 MHz (1st Nyquist) with Super-Nyquist capabilities up to 30+ MHz.
 * **Vector Network Analyzer (VNA):** Built-in Return Loss Bridge (RLB) for S11 (reflection) antenna tuning, and Port-to-Port S21 (transmission) filter characterization.
