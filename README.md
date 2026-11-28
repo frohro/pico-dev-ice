@@ -10,6 +10,7 @@ Designed specifically as an educational platform, it abandons "black box" RF chi
 
 Here is a video of the SDR receiving on 20 meters. 
 [![The Pico-Dev-iCE DDC SDR](https://img.youtube.com/vi/QM4t2_SC2FE/maxresdefault.jpg)](https://www.youtube.com/watch?v=QM4t2_SC2FE&t=13s)
+The video has some drops in the audio that I don't detect unless I'm recording.
 
 
 ## 🚀 Key Capabilities
